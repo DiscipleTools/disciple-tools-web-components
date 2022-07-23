@@ -1,21 +1,21 @@
-# \<dt-text-field>
+# \<dt-text>
 
 These web components mostly follow the [open-wc](https://github.com/open-wc/open-wc) recommendations.
 
 ## Installation
 
 <!-- ```bash
-npm i dt-text-field
+npm i dt-text
 ``` -->
 
 ## Usage
 
 ```html
 <script type="module">
-  import 'dt-text-field/dt-text-field.js';
+  import 'dt-text/dt-text.js';
 </script>
 
-<dt-text-field></dt-text-field>
+<dt-text></dt-text>
 ```
 
 ## Linting and formatting
