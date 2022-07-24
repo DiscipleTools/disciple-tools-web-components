@@ -1,14 +1,29 @@
-# \<dt-text>
+# \Disciple Tools Web Component Library
 
 These web components mostly follow the [open-wc](https://github.com/open-wc/open-wc) recommendations.
 
 ## Installation
 
-<!-- ```bash
-npm i dt-text
-``` -->
+Clone the Repo then run
+```bash
+npm install
+```
 
-## Usage
+## Demoing with Storybook
+
+To run a local instance of Storybook for your component, run
+
+```bash
+npm run storybook
+```
+
+To build a production version of Storybook, run
+
+```bash
+npm run storybook:build
+```
+
+<!-- ## Usage
 
 ```html
 <script type="module">
@@ -16,7 +31,7 @@ npm i dt-text
 </script>
 
 <dt-text></dt-text>
-```
+``` -->
 
 ## Linting and formatting
 
@@ -45,21 +60,6 @@ To run the tests in interactive watch mode run:
 ```bash
 npm run test:watch
 ```
-
-## Demoing with Storybook
-
-To run a local instance of Storybook for your component, run
-
-```bash
-npm run storybook
-```
-
-To build a production version of Storybook, run
-
-```bash
-npm run storybook:build
-```
-
 
 ## Tooling configs
 
