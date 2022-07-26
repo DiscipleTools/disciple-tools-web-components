@@ -19,7 +19,7 @@ export class DtSingleSelect extends LitElement {
         background-position: right -1.0666666667rem center;
         background-repeat: no-repeat;
         background-size: 9px 6px;
-        border: 1px solid #cacaca;
+        border: 1px solid var(--dt-component-border-color, #cacaca);
         border-radius: 0;
         color: #0a0a0a;
         font-family: Helvetica, Arial, sans-serif;

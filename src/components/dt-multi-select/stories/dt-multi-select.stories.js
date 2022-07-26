@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import '../dt-multi-select.js';
+import { themeCss } from '../../../stories-theme.js';
 
 const basicOptions = [
   {
@@ -41,39 +42,25 @@ export default {
   argTypes: {
     name: { control: 'text' },
     placeholderLabel: { control: 'text' },
-    // value: { control: 'text' },
     isLoading: { control: 'boolean' },
     isSaved: { control: 'boolean' },
-    /* options: {
-      type: 'select',
-      labels: {
-        empty: 'Empty',
-        basic: 'Basic',
-      },
-      options: ['empty', 'basic'],
-      mapping: {
-        empty: [],
-        basic: basicOptions,
-      }
-    }, */
   },
 };
 
-function Template({
-  name = 'my-input',
-  options,
-  placeholderLabel,
-  value,
-  saveData,
-  isLoading,
-  isSaved,
-  open,
-}) {
+function Template(args) {
+  const {
+    name = 'my-input',
+    options,
+    placeholderLabel,
+    value,
+    saveData,
+    isLoading,
+    isSaved,
+    open,
+  } = args;
   return html`
     <style>
-      :root {
-        --primary-color: #3f729b;
-      }
+      ${themeCss(args)}
     </style>
     <script>
       window.saveFakeData = function (field, value, onSuccess, onError) {
