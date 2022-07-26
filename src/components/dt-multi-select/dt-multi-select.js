@@ -193,9 +193,9 @@ export class DtMultiSelect extends LitElement {
         type: Number,
         state: true,
       },
-      saveData: { type: String },
-      isLoading: { type: Boolean, attribute: false },
-      isSaved: { type: Boolean, attribute: false },
+      loading: { type: Boolean },
+      saved: { type: Boolean },
+      onchange: { type: String },
     };
   }
 
@@ -213,23 +213,6 @@ export class DtMultiSelect extends LitElement {
       this.containerHeight = this.shadowRoot.children[0].offsetHeight;
     }
     this._scrollOptionListToActive();
-  }
-
-  _change(e) {
-    this.value = e.target.value;
-
-    // if (this.saveData && window[this.saveData]) {
-    //   this.isLoading = true;
-    //   this.isSaved = false;
-    //   window[this.saveData](this.name, this.value, () => {
-    //     this.isLoading = false;
-    //     this.isSaved = true;
-    //     console.log('success');
-    //   }, (err) => {
-    //     this.isLoading = false;
-    //     console.log('error');
-    //   })
-    // }
   }
 
   /**
@@ -264,13 +247,34 @@ export class DtMultiSelect extends LitElement {
   }
 
   _select(value) {
+    // Create custom event with new/old values to pass to onchange function
+    const event = new CustomEvent('change', {
+      detail: {
+        oldValue: this.value,
+        newValue: value,
+      },
+    });
+
+    // update value in this component
     if (this.value && this.value.length) {
       this.value = [...this.value, value];
     } else {
       this.value = [value];
     }
-    this.open = false;
-    this.activeIndex = -1;
+    this.open = false; // close options list
+    this.activeIndex = -1; // reset keyboard-selected option
+
+    // dispatch event for use with addEventListener from javascript
+    this.dispatchEvent(event);
+
+    // check for `onchange` html attribute to trigger event from attribute
+    // todo: test across browsers, `dispatchEvent` seems to work for html `onchange` in Chrome on MacOS
+    // if (this.onchange) {
+    //   // eslint-disable-next-line no-new-func
+    //   const fn = new Function('event', this.onchange);
+    //   // eval(this.onchange + '()');
+    //   fn(event);
+    // }
   }
 
   _clickAddNew(e) {
@@ -429,10 +433,10 @@ export class DtMultiSelect extends LitElement {
             </li>`
           : null}
       </ul>
-      ${this.isLoading
+      ${this.loading
         ? html`<div class="icon-overlay loading-spinner"></div>`
         : null}
-      ${this.isSaved ? html`<div class="icon-overlay checkmark"></div>` : null}
+      ${this.saved ? html`<div class="icon-overlay checkmark"></div>` : null}
     `;
   }
 }
