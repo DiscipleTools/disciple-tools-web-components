@@ -46,20 +46,6 @@ export default {
     value: { control: 'text' },
     isLoading: { control: 'boolean' },
     isSaved: { control: 'boolean' },
-    options: {
-      type: 'select',
-      labels: {
-        empty: 'Empty',
-        basic: 'Basic',
-        color: 'Colors',
-      },
-      options: ['empty', 'basic', 'color'],
-      mapping: {
-        empty: [],
-        basic: basicOptions,
-        color: colorOptions,
-      },
-    },
   },
 };
 
@@ -68,7 +54,7 @@ function Template({
   options,
   placeholderLabel,
   value,
-  saveData,
+  onChange,
   isLoading,
   isSaved,
 }) {
@@ -79,21 +65,30 @@ function Template({
       }
     </style>
     <script>
-      window.saveFakeData = function (field, value, onSuccess, onError) {
-        console.log(field, value);
-        setTimeout(function () {
-          onSuccess();
-        }, 1000);
-      };
+      function onChange(event) {
+        if (event?.target) {
+          event.target.setAttribute('loading', true);
+          console.log(
+            'Value changed from ' +
+              JSON.stringify(event.detail.oldValue) +
+              ' to ' +
+              JSON.stringify(event.detail.newValue)
+          );
+          setTimeout(function () {
+            event.target.removeAttribute('loading');
+            event.target.setAttribute('saved', true);
+          }, 1000);
+        }
+      }
     </script>
     <dt-single-select
       name="${name}"
       placeholderLabel="${placeholderLabel}"
       options="${JSON.stringify(options)}"
       value="${value}"
-      saveData="${saveData}"
-      .isLoading="${isLoading}"
-      .isSaved="${isSaved}"
+      onchange="${onChange}"
+      ?loading="${isLoading}"
+      ?saved="${isSaved}"
     >
     </dt-single-select>
   `;
@@ -126,7 +121,7 @@ ColorChange.args = {
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
-  saveData: 'saveFakeData',
+  onChange: 'onChange(event)',
 };
 
 export const Loading = Template.bind({});

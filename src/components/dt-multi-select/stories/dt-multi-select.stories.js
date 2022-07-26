@@ -41,21 +41,8 @@ export default {
   argTypes: {
     name: { control: 'text' },
     placeholderLabel: { control: 'text' },
-    // value: { control: 'text' },
     isLoading: { control: 'boolean' },
     isSaved: { control: 'boolean' },
-    /* options: {
-      type: 'select',
-      labels: {
-        empty: 'Empty',
-        basic: 'Basic',
-      },
-      options: ['empty', 'basic'],
-      mapping: {
-        empty: [],
-        basic: basicOptions,
-      }
-    }, */
   },
 };
 
@@ -64,7 +51,7 @@ function Template({
   options,
   placeholderLabel,
   value,
-  saveData,
+  onChange,
   isLoading,
   isSaved,
   open,
@@ -76,21 +63,30 @@ function Template({
       }
     </style>
     <script>
-      window.saveFakeData = function (field, value, onSuccess, onError) {
-        console.log(field, value);
-        setTimeout(function () {
-          onSuccess();
-        }, 1000);
-      };
+      function onChange(event) {
+        if (event?.target) {
+          event.target.setAttribute('loading', true);
+          console.log(
+            'Value changed from ' +
+              JSON.stringify(event.detail.oldValue) +
+              ' to ' +
+              JSON.stringify(event.detail.newValue)
+          );
+          setTimeout(function () {
+            event.target.removeAttribute('loading');
+            event.target.setAttribute('saved', true);
+          }, 1000);
+        }
+      }
     </script>
     <dt-multi-select
       name="${name}"
       placeholderLabel="${placeholderLabel}"
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
-      saveData="${saveData}"
-      .isLoading="${isLoading}"
-      .isSaved="${isSaved}"
+      onchange="${onChange}"
+      ?loading="${isLoading}"
+      ?saved="${isSaved}"
       .open="${open}"
     >
     </dt-multi-select>
@@ -130,4 +126,23 @@ NoOptionsAvailable.args = {
   value: ['opt1', 'opt2', 'opt3'],
   options: basicOptions.slice(0, 3),
   open: true,
+};
+
+export const AutoSave = Template.bind({});
+AutoSave.args = {
+  options: basicOptions,
+  onChange: 'onChange(event)',
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+  value: ['opt2'],
+  options: basicOptions,
+  isLoading: true,
+};
+export const Saved = Template.bind({});
+Saved.args = {
+  value: ['opt2'],
+  options: basicOptions,
+  isSaved: true,
 };
