@@ -1,4 +1,4 @@
-# \Disciple Tools Web Component Library
+# Disciple Tools Web Component Library
 
 These web components mostly follow the [open-wc](https://github.com/open-wc/open-wc) recommendations.
 
