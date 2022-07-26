@@ -115,9 +115,9 @@ export class DtSingleSelect extends LitElement {
         type: String,
         state: true,
       },
-      saveData: { type: String },
-      isLoading: { type: Boolean, attribute: false },
-      isSaved: { type: Boolean, attribute: false },
+      loading: { type: Boolean },
+      saved: { type: Boolean },
+      onchange: { type: String },
     };
   }
 
@@ -137,7 +137,7 @@ export class DtSingleSelect extends LitElement {
     }
 
     if (this.color) {
-      if (this.isColorLight(this.color)) {
+      if (DtSingleSelect.isColorLight(this.color)) {
         this.textColor = '#000000';
       } else {
         this.textColor = '#FFFFFF';
@@ -171,25 +171,28 @@ export class DtSingleSelect extends LitElement {
   }
 
   _change(e) {
+    // Create custom event with new/old values to pass to onchange function
+    const event = new CustomEvent('change', {
+      detail: {
+        oldValue: this.value,
+        newValue: e.target.value,
+      },
+    });
+
+    // update value in this component
     this.value = e.target.value;
 
-    if (this.saveData && window[this.saveData]) {
-      this.isLoading = true;
-      this.isSaved = false;
-      window[this.saveData](
-        this.name,
-        this.value,
-        () => {
-          this.isLoading = false;
-          this.isSaved = true;
-          console.log('success');
-        },
-        err => {
-          this.isLoading = false;
-          console.log(err);
-        }
-      );
-    }
+    // dispatch event for use with addEventListener from javascript
+    this.dispatchEvent(event);
+
+    // check for `onchange` html attribute to trigger event from attribute
+    // todo: test across browsers, `dispatchEvent` seems to work for html `onchange` in Chrome on MacOS
+    // if (this.onchange) {
+    //   // eslint-disable-next-line no-new-func
+    //   const fn = new Function('event', this.onchange);
+    //   // eval(this.onchange + '()');
+    //   fn(event);
+    // }
   }
 
   render() {
@@ -198,7 +201,7 @@ export class DtSingleSelect extends LitElement {
         name="${this.name}"
         @change="${this._change}"
         style="background-color: ${this.color}; color: ${this.textColor};"
-        ?disabled="${this.isLoading}"
+        ?disabled="${this.loading}"
       >
         <option>${this.placeholderLabel}</option>
 
@@ -211,10 +214,10 @@ export class DtSingleSelect extends LitElement {
           `
         )}
       </select>
-      ${this.isLoading
+      ${this.loading
         ? html`<div class="icon-overlay loading-spinner"></div>`
         : null}
-      ${this.isSaved ? html`<div class="icon-overlay checkmark"></div>` : null}
+      ${this.saved ? html`<div class="icon-overlay checkmark"></div>` : null}
     `;
   }
 }
