@@ -18,6 +18,7 @@
     "storybook:build": "npm run analyze -- --exclude dist && build-storybook"
   },
   "dependencies": {
+    "@web/test-runner-commands": "^0.6.3",
     "lit": "^2.0.2"
   },
   "devDependencies": {
