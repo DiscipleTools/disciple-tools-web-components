@@ -172,7 +172,6 @@ export class DtMultiSelect extends LitElement {
       placeholderLabel: { type: String },
       options: { type: Array },
       filteredOptions: { type: Array, state: true },
-      allowAdd: { type: Boolean },
       value: {
         type: Array,
         reflect: true,
@@ -181,7 +180,7 @@ export class DtMultiSelect extends LitElement {
         type: Boolean,
         state: true,
       },
-      searchValue: {
+      query: {
         type: String,
         state: true,
       },
@@ -202,6 +201,7 @@ export class DtMultiSelect extends LitElement {
   constructor() {
     super();
     this.activeIndex = -1;
+    this.filteredOptions = [];
   }
 
   firstUpdated() {
@@ -243,6 +243,12 @@ export class DtMultiSelect extends LitElement {
   _clickOption(e) {
     if (e.target && e.target.value) {
       this._select(e.target.value);
+    }
+  }
+
+  _keyboardSelectOption() {
+    if (this.activeIndex > -1) {
+      this._select(this.filteredOptions[this.activeIndex].id);
     }
   }
 
@@ -317,40 +323,53 @@ export class DtMultiSelect extends LitElement {
         break;
       case 38: // arrow up
         this.open = true;
-        this.activeIndex = Math.max(0, this.activeIndex - 1);
+        this._listHighlightPrevious();
         break;
       case 40: // arrow down
         this.open = true;
-        this.activeIndex = Math.min(
-          this.filteredOptions.length - 1,
-          this.activeIndex + 1
-        );
+        this._listHighlightNext();
         break;
       case 13: // tab
       case 9: // enter
-        if (this.activeIndex > -1) {
-          this._select(this.filteredOptions[this.activeIndex].id);
-        }
+        this._keyboardSelectOption();
         break;
       case 27: // escape
         this.open = false;
         this.activeIndex = -1;
         break;
       default:
+        this.open = true;
         break;
     }
   }
 
   _inputKeyUp(e) {
     this.query = e.target.value;
-    this.filteredOptions = (this.options || []).filter(
-      opt =>
-        (this.value || []).indexOf(opt.id) < 0 &&
-        (!this.query ||
-          opt.label
-            .toLocaleLowerCase()
-            .includes(this.query.toLocaleLowerCase()))
+
+    // If key pressed was not one for navigating the option list,
+    // filter the list of options
+    const keycode = e.keyCode || e.which;
+    const ignoredKeyCodes = [
+      9, // enter
+      13, // tab
+      38, // arrow up
+      40, // arrow down
+    ];
+
+    if (!ignoredKeyCodes.includes(keycode)) {
+      this._filterOptions();
+    }
+  }
+
+  _listHighlightNext() {
+    this.activeIndex = Math.min(
+      this.filteredOptions.length - 1,
+      this.activeIndex + 1
     );
+  }
+
+  _listHighlightPrevious() {
+    this.activeIndex = Math.max(0, this.activeIndex - 1);
   }
 
   /**
@@ -362,7 +381,7 @@ export class DtMultiSelect extends LitElement {
   _filterOptions() {
     this.filteredOptions = (this.options || []).filter(
       opt =>
-        (this.value || []).indexOf(opt.id) < 0 &&
+        !(this.value || []).includes(opt.id) &&
         (!this.query ||
           opt.label
             .toLocaleLowerCase()
@@ -371,30 +390,53 @@ export class DtMultiSelect extends LitElement {
     return this.filteredOptions;
   }
 
+  _renderSelectedOptions() {
+    return (
+      this.options &&
+      this.options
+        .filter(opt => this.value && this.value.indexOf(opt.id) > -1)
+        .map(
+          opt => html`
+            <div class="selected-option">
+              <span>${opt.label}</span>
+              <button @click="${this._remove}" data-value="${opt.id}">x</button>
+            </div>
+          `
+        )
+    );
+  }
+
+  _renderOptions() {
+    if (!this.filteredOptions.length) {
+      return html`<li><div>No options available</div></li>`;
+    }
+
+    return this.filteredOptions.map(
+      (opt, idx) => html`
+        <li>
+          <button
+            value="${opt.id}"
+            data-label="${opt.label}"
+            @click="${this._clickOption}"
+            class="${this.activeIndex > -1 && this.activeIndex === idx
+              ? 'active'
+              : null}"
+          >
+            ${opt.label}
+          </button>
+        </li>
+      `
+    );
+  }
+
   render() {
-    // Filter out options that:
-    //  1: are already selected
-    //  2: match the searcy query
-    const filteredOptions = this._filterOptions();
     return html`
       <div
         class="field-container"
         @click="${this._focusInput}"
         @keydown="${this._focusInput}"
       >
-        ${this.options &&
-        this.options
-          .filter(opt => this.value && this.value.indexOf(opt.id) > -1)
-          .map(
-            opt => html`
-              <div class="selected-option">
-                <span>${opt.label}</span>
-                <button @click="${this._remove}" data-value="${opt.id}">
-                  x
-                </button>
-              </div>
-            `
-          )}
+        ${this._renderSelectedOptions()}
         <input
           type="text"
           placeholder="${this.placeholderLabel}"
@@ -409,29 +451,7 @@ export class DtMultiSelect extends LitElement {
         style="display:${this.open ? 'block' : 'none'};top:${this
           .containerHeight}px;"
       >
-        ${this.filteredOptions.map(
-          (opt, idx) => html`
-            <li>
-              <button
-                value="${opt.id}"
-                @click="${this._clickOption}"
-                class="${this.activeIndex > -1 && this.activeIndex === idx
-                  ? 'active'
-                  : null}"
-              >
-                ${opt.label}
-              </button>
-            </li>
-          `
-        )}
-        ${!filteredOptions.length
-          ? html`<li><div>No options available</div></li>`
-          : null}
-        ${this.allowAdd && this.query
-          ? html`<li>
-              <button @click="${this._clickAddNew}">Add "${this.query}"</button>
-            </li>`
-          : null}
+        ${this._renderOptions()}
       </ul>
       ${this.loading
         ? html`<div class="icon-overlay loading-spinner"></div>`
