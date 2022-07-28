@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import '../dt-multi-select.js';
 import { themeCss } from '../../../stories-theme.js';
+import '../dt-multi-select.js';
 
 const basicOptions = [
   {
@@ -40,10 +40,72 @@ export default {
   title: 'dt-multi-select',
   component: 'dt-multi-select',
   argTypes: {
-    name: { control: 'text' },
-    placeholderLabel: { control: 'text' },
-    isLoading: { control: 'boolean' },
-    isSaved: { control: 'boolean' },
+    name: {
+      control: 'text',
+      type: { name: 'string', required: true },
+      description:
+        'Passed to `change` function to identify which input triggered the event',
+    },
+    value: {
+      control: 'text',
+      type: { name: 'array' },
+      table: {
+        type: {
+          summary: 'string[]',
+          detail: `['1', '345', '83']`,
+        },
+      },
+      description:
+        'Array of values indicating the selected values. Should be an array of strings converted to a string with `JSON.stringify`. <br/>**Note:** This attribute will be updated on the HTML element when value changes.',
+    },
+    options: {
+      description:
+        'Array of available options to choose.' +
+        '<br/>**Format:** Array of objects with keys `id` and `label`. Convert to string with `JSON.stringify`. ',
+      table: {
+        type: {
+          summary: '{id:string, label:string}[]',
+          detail: `[{id:'1',label:'Item 1'},{id:'345',label:'Item 345'}]`,
+        },
+      },
+    },
+    placeholderLabel: {
+      control: 'text',
+      description: 'String rendered as placeholder text',
+    },
+    loading: {
+      control: 'boolean',
+      description:
+        '(true|false) If attribute is present, the loading spinner will be displayed within the field',
+      table: {
+        type: {
+          summary: 'loading',
+          detail: '<dt-multi-select loading />',
+        },
+      },
+    },
+    saved: {
+      control: 'boolean',
+      description:
+        '(true|false) If attribute is present, the saved checkmark will be displayed within the field',
+      table: {
+        type: {
+          summary: 'saved',
+          detail: '<dt-multi-select saved />',
+        },
+      },
+    },
+    onchange: {
+      control: 'text',
+      description:
+        'Javascript code to be executed when the value of the field changes. Makes available a `event` variable that includes field name, old value, and new value in `event.details`',
+      table: {
+        type: {
+          summary: 'onChange(event)',
+          detail: '<dt-multi-select onchange="onChange(event)" />',
+        },
+      },
+    },
   },
 };
 
@@ -53,9 +115,9 @@ function Template(args) {
     options,
     placeholderLabel,
     value,
-    onChange,
-    isLoading,
-    isSaved,
+    onchange,
+    loading,
+    saved,
     open,
   } = args;
   return html`
@@ -84,9 +146,9 @@ function Template(args) {
       placeholderLabel="${placeholderLabel}"
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
-      onchange="${onChange}"
-      ?loading="${isLoading}"
-      ?saved="${isSaved}"
+      onchange="${onchange}"
+      ?loading="${loading}"
+      ?saved="${saved}"
       .open="${open}"
     >
     </dt-multi-select>
@@ -131,18 +193,18 @@ NoOptionsAvailable.args = {
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
-  onChange: 'onChange(event)',
+  onchange: 'onChange(event)',
 };
 
 export const Loading = Template.bind({});
 Loading.args = {
   value: ['opt2'],
   options: basicOptions,
-  isLoading: true,
+  loading: true,
 };
 export const Saved = Template.bind({});
 Saved.args = {
   value: ['opt2'],
   options: basicOptions,
-  isSaved: true,
+  saved: true,
 };

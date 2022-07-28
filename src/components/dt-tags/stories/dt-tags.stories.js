@@ -40,14 +40,99 @@ export default {
   title: 'dt-tags',
   component: 'dt-tags',
   argTypes: {
-    name: { control: 'text' },
-    placeholderLabel: { control: 'text' },
-    isLoading: { control: 'boolean' },
-    isSaved: { control: 'boolean' },
+    name: {
+      control: 'text',
+      type: { name: 'string', required: true },
+      description:
+        'Passed to `change` function to identify which input triggered the event',
+    },
+    value: {
+      control: 'text',
+      type: { name: 'array' },
+      table: {
+        type: {
+          summary: '{id:string, label:string}[]',
+          detail: `[{id:'1',label:'Item 1'},{id:'345',label:'Item 345'}]`,
+        },
+      },
+      description:
+        'Array of values indicating the selected values. Should be an array of option objects converted to a string with `JSON.stringify`. <br/>**Note:** This attribute will be updated on the HTML element when value changes.',
+    },
+    options: {
+      description:
+        'Array of available options to choose.' +
+        '<br/>**Format:** Array of objects with keys `id` and `label`. Convert to string with `JSON.stringify`. ',
+      table: {
+        type: {
+          summary: '{id:string, label:string}[]',
+          detail: `[{id:'1',label:'Item 1'},{id:'345',label:'Item 345'}]`,
+        },
+      },
+    },
+    placeholderLabel: {
+      control: 'text',
+      description: 'String rendered as placeholder text',
+    },
+    allowAdd: {
+      control: 'boolean',
+      description:
+        "(true|false) If attribute is present, new values can be added if they don't exist yet",
+      table: {
+        type: {
+          summary: 'allowAdd',
+          detail: '<dt-multi-select allowAdd />',
+        },
+      },
+    },
+    loading: {
+      control: 'boolean',
+      description:
+        '(true|false) If attribute is present, the loading spinner will be displayed within the field',
+      table: {
+        type: {
+          summary: 'loading',
+          detail: '<dt-multi-select loading />',
+        },
+      },
+    },
+    saved: {
+      control: 'boolean',
+      description:
+        '(true|false) If attribute is present, the saved checkmark will be displayed within the field',
+      table: {
+        type: {
+          summary: 'saved',
+          detail: '<dt-multi-select saved />',
+        },
+      },
+    },
+    onchange: {
+      control: 'text',
+      description:
+        'Javascript code to be executed when the value of the field changes. Makes available a `event` variable that includes field name, old value, and new value in `event.details`',
+      table: {
+        type: {
+          summary: 'onChange(event)',
+          detail: '<dt-multi-select onchange="onChange(event)" />',
+        },
+      },
+    },
+    onload: {
+      control: 'text',
+      description:
+        'Javascript code to be executed when the search value changes and data should be loaded from API.<br/>' +
+        'Makes available a `event` variable that includes field name, search query, onSuccess event, and onError event in `event.details`',
+      table: {
+        type: {
+          summary: 'onLoad(event)',
+          detail: '<dt-multi-select onload="onLoad(event)" />',
+        },
+      },
+    },
   },
   args: {
     placeholderLabel: 'Select Tags',
-    onLoad: 'onLoad(event)',
+    onload: 'onLoad(event)',
   },
 };
 
@@ -58,10 +143,10 @@ function Template(args) {
     placeholderLabel,
     value,
     onChange,
-    onLoad,
+    onload,
     allowAdd,
-    isLoading,
-    isSaved,
+    loading,
+    saved,
     open,
   } = args;
   return html`
@@ -110,10 +195,10 @@ function Template(args) {
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
       onchange="${onChange}"
-      onload="${onLoad}"
+      onload="${onload}"
       ?allowAdd="${allowAdd}"
-      ?loading="${isLoading}"
-      ?saved="${isSaved}"
+      ?loading="${loading}"
+      ?saved="${saved}"
       .open="${open}"
     >
     </dt-tags>
@@ -122,7 +207,7 @@ function Template(args) {
 
 export const Empty = Template.bind({});
 Empty.args = {
-  onLoad: '',
+  onload: '',
 };
 
 export const StaticOptions = Template.bind({});
@@ -147,7 +232,7 @@ SelectedValue.args = {
 
 export const LoadOptionsFromAPI = Template.bind({});
 LoadOptionsFromAPI.args = {
-  onLoad: 'onLoad(event)',
+  onload: 'onLoad(event)',
 };
 
 export const AddNewOption = Template.bind({});
@@ -170,7 +255,7 @@ Loading.args = {
     },
   ],
   options: basicOptions,
-  isLoading: true,
+  loading: true,
 };
 export const Saved = Template.bind({});
 Saved.args = {
@@ -181,5 +266,5 @@ Saved.args = {
     },
   ],
   options: basicOptions,
-  isSaved: true,
+  saved: true,
 };
