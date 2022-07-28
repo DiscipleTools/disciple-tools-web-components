@@ -14,13 +14,19 @@ export const themes = {
       primaryColor: '#3f729b',
       fontFamily: 'Helvetica, Arial, sans-serif',
       borderColor: '#cacaca',
+
+      // dt-multi-select
       textColorMultiSelect: '#555',
       borderColorMultiSelectTag: '#c2e0ff',
       backgroundColorMultiSelectTag: '#ecf5fc',
       backgroundMultiSelectOptionHover: '#f5f5f5',
 
+      // dt-label
       fontSizeLabel: '14px',
       fontWeightLabel: '700',
+
+      // dt-spinner
+      colorSpinner: '#919191',
     },
   },
 };
@@ -50,6 +56,7 @@ export function themeCss(args) {
     )};
     --dt-label-font-size: ${getArg(args, 'fontSizeLabel')};
     --dt-label-font-weight: ${getArg(args, 'fontWeightLabel')};
+    --dt-spinner-color: ${getArg(args, 'colorSpinner')};
   }
   `;
 }

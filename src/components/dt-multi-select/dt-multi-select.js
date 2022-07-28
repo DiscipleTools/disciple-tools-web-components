@@ -1,4 +1,6 @@
 import { html, css, LitElement } from 'lit';
+import '../icons/dt-spinner.js';
+import '../icons/dt-checkmark.js';
 
 export class DtMultiSelect extends LitElement {
   static get styles() {
@@ -111,50 +113,6 @@ export class DtMultiSelect extends LitElement {
       }
 
       /* === Inline Icons === */
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-      .loading-spinner::before {
-        content: '';
-        -webkit-animation: spin 1s linear infinite;
-        animation: spin 1s linear infinite;
-        border: 0.25rem solid #919191;
-        border-radius: 50%;
-        border-top-color: #000;
-        display: inline-block;
-        height: 1rem;
-        width: 1rem;
-      }
-      @keyframes fadeOut {
-        0% {
-          opacity: 1;
-        }
-        75% {
-          opacity: 1;
-        }
-        100% {
-          opacity: 0;
-        }
-      }
-      .checkmark {
-        margin-top: -0.25rem;
-      }
-      .checkmark::before {
-        content: '';
-        transform: rotate(45deg);
-        height: 1rem;
-        width: 0.5rem;
-        opacity: 0;
-        border-bottom: var(--borderWidth) solid var(--borderColor);
-        border-right: var(--borderWidth) solid var(--borderColor);
-        animation: fadeOut 4s;
-      }
       .icon-overlay {
         position: absolute;
         right: 2rem;
@@ -451,9 +409,9 @@ export class DtMultiSelect extends LitElement {
         ${this._renderOptions()}
       </ul>
       ${this.loading
-        ? html`<div class="icon-overlay loading-spinner"></div>`
+        ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
         : null}
-      ${this.saved ? html`<div class="icon-overlay checkmark"></div>` : null}
+      ${this.saved ? html`<dt-checkmark class="icon-overlay"></dt-checkmark>` : null}
     `;
   }
 }
