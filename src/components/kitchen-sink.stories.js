@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import { argTypes, themeCss } from '../stories-theme.js';
 import './dt-label/dt-label.js';
+import './dt-text/dt-text.js';
+import './dt-textarea/dt-textarea.js';
 import './dt-multi-select/dt-multi-select.js';
 import './dt-single-select/dt-single-select.js';
 import './dt-tags/dt-tags.js';
@@ -22,6 +24,12 @@ function Template(args) {
     <style>
       ${themeCss(args)}
     </style>
+    
+    <dt-label>Text Field</dt-label>
+    <dt-text></dt-text>
+    
+    <dt-label>Textarea Field</dt-label>
+    <dt-textarea></dt-textarea>
 
     <dt-label>Single Select Field</dt-label>
     <dt-single-select placeholderLabel="Select Item"></dt-single-select>
