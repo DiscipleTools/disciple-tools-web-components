@@ -52,9 +52,6 @@ export class DtLabel extends LitElement {
   static get properties() {
     return {
       private: { type: Boolean },
-      privateAlt: {
-        type: String,
-      },
     };
   }
 
