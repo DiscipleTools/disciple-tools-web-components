@@ -25,7 +25,7 @@ function Template({ id = 'name', fieldName = 'Field Name' , value = '', disabled
       value=${value}
       .disabled=${disabled}
       icon=${icon}
-      privateField=${privateField}
+      .privateField=${privateField}
       loading=${loading}
       saved=${saved}
       onchange=${onchange}
