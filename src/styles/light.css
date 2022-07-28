@@ -34,4 +34,10 @@ body{
   --color-secondary-light:hsl(var(--secondary-color-h),
                        var(--secondary-color-s),
                        var(--secondary-color-light-l));
+
+  --color-gray: hsl(0, 0%, 79%);
+
+
+  --background-color: #fefefe;
+  --border-color: var(--color-gray);
 }
