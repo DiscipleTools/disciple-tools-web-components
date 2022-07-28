@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import { themeCss } from '../../../stories-theme.js';
-import '../dt-multi-select.js';
+import { themeCss } from '../../stories-theme.js';
+import './dt-multi-select.js';
 
 const basicOptions = [
   {

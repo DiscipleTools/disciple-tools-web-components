@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import { themeCss } from '../../../stories-theme.js';
-import '../dt-tags.js';
+import { themeCss } from '../../stories-theme.js';
+import './dt-tags.js';
 
 const basicOptions = [
   {

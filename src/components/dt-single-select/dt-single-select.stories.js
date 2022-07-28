@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import '../dt-single-select.js';
+import './dt-single-select.js';
 
 const basicOptions = [
   {
