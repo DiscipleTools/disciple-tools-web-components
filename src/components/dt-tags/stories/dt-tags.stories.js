@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { themeCss } from '../../../stories-theme.js';
-import '../dt-multi-select.js';
+import '../dt-tags.js';
 
 const basicOptions = [
   {
@@ -37,8 +37,8 @@ const basicOptions = [
   },
 ];
 export default {
-  title: 'dt-multi-select',
-  component: 'dt-multi-select',
+  title: 'dt-tags',
+  component: 'dt-tags',
   argTypes: {
     name: {
       control: 'text',
@@ -51,12 +51,12 @@ export default {
       type: { name: 'array' },
       table: {
         type: {
-          summary: 'string[]',
-          detail: `['1', '345', '83']`,
+          summary: '{id:string, label:string}[]',
+          detail: `[{id:'1',label:'Item 1'},{id:'345',label:'Item 345'}]`,
         },
       },
       description:
-        'Array of values indicating the selected values. Should be an array of strings converted to a string with `JSON.stringify`. <br/>**Note:** This attribute will be updated on the HTML element when value changes.',
+        'Array of values indicating the selected values. Should be an array of option objects converted to a string with `JSON.stringify`. <br/>**Note:** This attribute will be updated on the HTML element when value changes.',
     },
     options: {
       description:
@@ -72,6 +72,17 @@ export default {
     placeholderLabel: {
       control: 'text',
       description: 'String rendered as placeholder text',
+    },
+    allowAdd: {
+      control: 'boolean',
+      description:
+        "(true|false) If attribute is present, new values can be added if they don't exist yet",
+      table: {
+        type: {
+          summary: 'allowAdd',
+          detail: '<dt-multi-select allowAdd />',
+        },
+      },
     },
     loading: {
       control: 'boolean',
@@ -106,6 +117,22 @@ export default {
         },
       },
     },
+    onload: {
+      control: 'text',
+      description:
+        'Javascript code to be executed when the search value changes and data should be loaded from API.<br/>' +
+        'Makes available a `event` variable that includes field name, search query, onSuccess event, and onError event in `event.details`',
+      table: {
+        type: {
+          summary: 'onLoad(event)',
+          detail: '<dt-multi-select onload="onLoad(event)" />',
+        },
+      },
+    },
+  },
+  args: {
+    placeholderLabel: 'Select Tags',
+    onload: 'onLoad(event)',
   },
 };
 
@@ -115,7 +142,9 @@ function Template(args) {
     options,
     placeholderLabel,
     value,
-    onchange,
+    onChange,
+    onload,
+    allowAdd,
     loading,
     saved,
     open,
@@ -140,25 +169,49 @@ function Template(args) {
           }, 1000);
         }
       }
+      function onLoad(event) {
+        console.log('fetching data', event);
+        const { field, query, onSuccess, onError } = event.detail;
+        fetch('https://jsonplaceholder.typicode.com/posts')
+          .then(response => response.json())
+          .then(json => {
+            onSuccess(
+              json
+                .filter(
+                  post =>
+                    !query || post.title.includes(query) || post.id === query
+                )
+                .map(post => ({
+                  id: post.id.toString(),
+                  label: post.title,
+                }))
+            );
+          });
+      }
     </script>
-    <dt-multi-select
+    <dt-tags
       name="${name}"
       placeholderLabel="${placeholderLabel}"
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
-      onchange="${onchange}"
+      onchange="${onChange}"
+      onload="${onload}"
+      ?allowAdd="${allowAdd}"
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
     >
-    </dt-multi-select>
+    </dt-tags>
   `;
 }
 
 export const Empty = Template.bind({});
+Empty.args = {
+  onload: '',
+};
 
-export const CustomOptions = Template.bind({});
-CustomOptions.args = {
+export const StaticOptions = Template.bind({});
+StaticOptions.args = {
   options: basicOptions,
 };
 
@@ -169,42 +222,49 @@ CustomPlaceholder.args = {
 
 export const SelectedValue = Template.bind({});
 SelectedValue.args = {
-  value: ['opt2', 'opt3'],
-  options: basicOptions,
+  value: [
+    {
+      id: '2',
+      label: 'qui est esse',
+    },
+  ],
 };
-export const OptionsWrap = Template.bind({});
-OptionsWrap.args = {
-  value: ['opt1', 'opt2', 'opt3', 'opt4', 'opt5', 'opt6', 'opt7'],
-  options: basicOptions,
+
+export const LoadOptionsFromAPI = Template.bind({});
+LoadOptionsFromAPI.args = {
+  onload: 'onLoad(event)',
 };
-export const OptionsOpen = Template.bind({});
-OptionsOpen.args = {
-  value: ['opt1'],
-  options: basicOptions,
-  open: true,
-};
-export const NoOptionsAvailable = Template.bind({});
-NoOptionsAvailable.args = {
-  value: ['opt1', 'opt2', 'opt3'],
-  options: basicOptions.slice(0, 3),
-  open: true,
+
+export const AddNewOption = Template.bind({});
+AddNewOption.args = {
+  allowAdd: true,
 };
 
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
-  onchange: 'onChange(event)',
+  onChange: 'onChange(event)',
 };
 
 export const Loading = Template.bind({});
 Loading.args = {
-  value: ['opt2'],
+  value: [
+    {
+      id: '2',
+      label: 'qui est esse',
+    },
+  ],
   options: basicOptions,
   loading: true,
 };
 export const Saved = Template.bind({});
 Saved.args = {
-  value: ['opt2'],
+  value: [
+    {
+      id: '2',
+      label: 'qui est esse',
+    },
+  ],
   options: basicOptions,
   saved: true,
 };
