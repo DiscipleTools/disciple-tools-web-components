@@ -1,6 +1,4 @@
 import { html, css, LitElement } from 'lit';
-// eslint-disable-next-line parsing-errors
-import '../../styles/light.css' assert { type: 'css' };
 
 export class DtTextField extends LitElement {
   static get styles() {
