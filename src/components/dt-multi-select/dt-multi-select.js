@@ -75,6 +75,7 @@ export class DtMultiSelect extends LitElement {
         margin: 0;
         padding: 0;
         border: 1px solid var(--dt-component-border-color, #cacaca);
+        background: #fff;
         z-index: 10;
         position: absolute;
         width: 100%;
@@ -282,11 +283,6 @@ export class DtMultiSelect extends LitElement {
     //   // eval(this.onchange + '()');
     //   fn(event);
     // }
-  }
-
-  _clickAddNew(e) {
-    e.preventDefault();
-    this.open = true;
   }
 
   _remove(e) {

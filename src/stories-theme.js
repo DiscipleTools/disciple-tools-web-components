@@ -12,11 +12,15 @@ export const themes = {
     name: 'Default',
     args: {
       primaryColor: '#3f729b',
+      fontFamily: 'Helvetica, Arial, sans-serif',
       borderColor: '#cacaca',
       textColorMultiSelect: '#555',
       borderColorMultiSelectTag: '#c2e0ff',
       backgroundColorMultiSelectTag: '#ecf5fc',
       backgroundMultiSelectOptionHover: '#f5f5f5',
+
+      fontSizeLabel: '14px',
+      fontWeightLabel: '700',
     },
   },
 };
@@ -29,6 +33,7 @@ export function themeCss(args) {
   html {
     font-family: Helvetica, Arial, sans-serif;
     --primary-color: ${getArg(args, 'primaryColor')};
+    --font-family: ${getArg(args, 'fontFamily')};
     --dt-component-border-color: ${getArg(args, 'borderColor')};
     --dt-multi-select-text-color: ${getArg(args, 'textColorMultiSelect')};
     --dt-multi-select-tag-border-color: ${getArg(
@@ -43,6 +48,8 @@ export function themeCss(args) {
       args,
       'backgroundMultiSelectOptionHover'
     )};
+    --dt-label-font-size: ${getArg(args, 'fontSizeLabel')};
+    --dt-label-font-weight: ${getArg(args, 'fontWeightLabel')};
   }
   `;
 }

@@ -34,6 +34,12 @@ export class DtTags extends DtMultiSelect {
     }
   }
 
+  _remove(e) {
+    if (e.target && e.target.dataset && e.target.dataset.value) {
+      this.value = (this.value || []).filter(i => i.id !== e.target.dataset.value);
+    }
+  }
+
   _keyboardSelectOption() {
     if (this.activeIndex > -1) {
       if (this.activeIndex + 1 > this.filteredOptions.length) {
