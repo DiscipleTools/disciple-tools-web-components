@@ -10,6 +10,7 @@ npm install
 ```
 
 ## Demoing with Storybook
+See the current Storybook [here](https://jade-chebakia-17493f.netlify.app/).
 
 To run a local instance of Storybook for your component, run
 
