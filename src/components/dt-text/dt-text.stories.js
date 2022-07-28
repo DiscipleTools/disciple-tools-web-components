@@ -34,14 +34,21 @@ function Template({ id = 'name', fieldName = 'Field Name' , value = '', disabled
   `;
 }
 
-export const Regular = Template.bind({});
+export const Empty = Template.bind({});
+
+export const EnteredValue = Template.bind({});
+EnteredValue.args = {
+  value: 'Lorem Ipsum',
+};
 
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
+  value: 'Lorem Ipsum',
 };
 
 export const privateField = Template.bind({});
 privateField.args = {
   privateField: true,
+  value: 'Lorem Ipsum',
 };
