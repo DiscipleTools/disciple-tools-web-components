@@ -6,28 +6,30 @@ export default {
   component: 'dt-text',
   argTypes: {
     id: { control: 'text' },
-    fieldName: { control: 'text' },
+    name: { control: 'text' },
+    label: { control: 'text' },
     value: { control: 'text' },
     disabled: { control: 'boolean' },
     icon: { control: 'text' },
-    privateField: { control: 'boolean' },
+    isPrivate: { control: 'boolean' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
     onchange: { control: 'text' },
   },
 };
 
-function Template({ id = 'name', fieldName = 'Field Name' , value = '', disabled = false, icon='https://cdn-icons-png.flaticon.com/512/1077/1077114.png', privateField = false, loading = false, saved = false, onchange = 'onChange' }) {
+function Template({ id = 'name', name = 'field-name', label = 'Field Name' , value = '', disabled = false, icon='https://cdn-icons-png.flaticon.com/512/1077/1077114.png', isPrivate = false, loading = false, saved = false, onchange = 'onChange' }) {
   return html`
     <dt-text
       id=${id}
-      fieldName=${fieldName}
+      name=${name}
+      label=${label}
       value=${value}
-      .disabled=${disabled}
+      ?disabled=${disabled}
       icon=${icon}
-      .privateField=${privateField}
-      loading=${loading}
-      saved=${saved}
+      ?private=${isPrivate}
+      ?loading=${loading}
+      ?saved=${saved}
       onchange=${onchange}
     >
     </dt-text>
@@ -49,6 +51,6 @@ Disabled.args = {
 
 export const privateField = Template.bind({});
 privateField.args = {
-  privateField: true,
+  isPrivate: true,
   value: 'Lorem Ipsum',
 };

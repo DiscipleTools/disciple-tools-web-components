@@ -34,11 +34,15 @@ export class DtTextField extends LitElement {
   static get properties() {
     return {
       id: { type: String },
-      fieldName: { type: String },
-      value: { type: String },
+      name: { type: String },
+      label: { type: String },
+      value: {
+        type: String,
+        reflect: true,
+      },
       icon: { type: String },
       disabled: { type: Boolean },
-      privateField: { type: Boolean },
+      private: { type: Boolean },
       privateLabel: { type: String },
       loading: { type: Boolean },
       saved: { type: Boolean },
@@ -46,48 +50,44 @@ export class DtTextField extends LitElement {
     };
   }
 
-  constructor() {
-    super();
-    this.id = '';
-    this.fieldName = '';
-    this.value = '';
-    this.icon = '';
-
-    this.disabled = false;
-    this.privateField = false;
-    this.privateLabel = "Private Field: Only I can see it's content";
-  }
-
   onChange(e) {
+    const event = new CustomEvent('change', {
+      detail: {
+        field: this.name,
+        oldValue: this.value,
+        newValue: e.target.value,
+      },
+    });
+
     this.value = e.target.value;
 
-    console.log('updated');
-
-    this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
+    this.dispatchEvent(event);
   }
 
   labelTemplate() {
-    console.log(this.privateField);
     return html`
       <dt-label
-        ?private="${this.privateField}"
+        ?private="${this.private}"
       >
-        ${this.fieldName}
+        ${this.label}
+        ${this.privateLabel ? html`<span slot="private-label">${this.privateLabel}</span>` : null}
       </dt-label>
     `;
   }
+
   render() {
     return html`
       ${this.labelTemplate()}
 
       <input
-      id="${this.id}"
-      aria-label="${this.fieldName}"
-      type="text"
-      ?disabled=${this.disabled}
-      class="text-input"
-      value="${this.value}"
-      @change=${this.onChange}
+        id="${this.id}"
+        name="${this.name}"
+        aria-label="${this.label}"
+        type="text"
+        ?disabled=${this.disabled}
+        class="text-input"
+        value="${this.value}"
+        @change=${this.onChange}
       />
     `;
   }
