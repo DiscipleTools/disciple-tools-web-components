@@ -1,5 +1,5 @@
 import { html, css, LitElement } from 'lit';
-import '../icons/dt-spinner.js';
+import '../../icons/dt-spinner.js';
 import '../icons/dt-checkmark.js';
 
 export class DtSingleSelect extends LitElement {
@@ -67,7 +67,7 @@ export class DtSingleSelect extends LitElement {
   static get properties() {
     return {
       name: { type: String },
-      placeholderLabel: { type: String },
+      placeholder: { type: String },
       options: { type: Array },
       value: {
         type: String,
@@ -144,7 +144,7 @@ export class DtSingleSelect extends LitElement {
         style="background-color: ${this.color};"
         ?disabled="${this.loading}"
       >
-        <option disabled selected hidden>${this.placeholderLabel}</option>
+        <option disabled selected hidden>${this.placeholder}</option>
 
         ${this.options &&
         this.options.map(

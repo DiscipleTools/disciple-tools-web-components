@@ -38,7 +38,7 @@ export class DtTile extends LitElement {
       
       .section-body {
         display: grid;
-        grid-template-columns: auto;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         column-gap: 1.4rem;
         transition: height 1s ease 0s;
         overflow: hidden;
@@ -46,18 +46,6 @@ export class DtTile extends LitElement {
       }
       .section-body.collapsed {
         height: 0 !important;
-      }
-      
-      @media print, screen and (min-width: 30em) {
-        .section-body {
-          grid-template-columns: auto auto;
-        }
-      }
-      
-      @media print, screen and (min-width: 40em) {
-        .section-body {
-          grid-template-columns: auto auto auto;
-        }
       }
       
       button.toggle {

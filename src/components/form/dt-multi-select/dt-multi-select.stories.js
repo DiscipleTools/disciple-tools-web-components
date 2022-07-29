@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { themeCss } from '../../stories-theme.js';
+import { themeCss } from '../../../stories-theme.js';
 import './dt-multi-select.js';
 
 const basicOptions = [
@@ -69,7 +69,7 @@ export default {
         },
       },
     },
-    placeholderLabel: {
+    placeholder: {
       control: 'text',
       description: 'String rendered as placeholder text',
     },
@@ -113,7 +113,7 @@ function Template(args) {
   const {
     name = 'my-input',
     options,
-    placeholderLabel,
+    placeholder,
     value,
     onchange,
     loading,
@@ -143,7 +143,7 @@ function Template(args) {
     </script>
     <dt-multi-select
       name="${name}"
-      placeholderLabel="${placeholderLabel}"
+      placeholder="${placeholder}"
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
       onchange="${onchange}"
@@ -164,7 +164,7 @@ CustomOptions.args = {
 
 export const CustomPlaceholder = Template.bind({});
 CustomPlaceholder.args = {
-  placeholderLabel: 'Search Options',
+  placeholder: 'Search Options',
 };
 
 export const SelectedValue = Template.bind({});

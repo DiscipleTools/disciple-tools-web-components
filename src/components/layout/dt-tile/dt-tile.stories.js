@@ -1,8 +1,8 @@
 import { html } from 'lit-html';
-import { themeCss } from '../../stories-theme.js';
+import { themeCss } from '../../../stories-theme.js';
 import './dt-tile.js';
-import '../dt-label/dt-label.js';
-import '../dt-text/dt-text.js';
+import '../form/dt-label/dt-label.js';
+import '../form/dt-text/dt-text.js';
 
 export default {
   title: 'dt-tile',

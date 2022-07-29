@@ -1,4 +1,9 @@
 # Single Select (Key Select)
+Dropdown list that allows selection of a single value.
+
+## Attributes
+| Attribute | Description | Type | Default Value | Example Value | 
+| --------- | ----------- | ---- | ------------- | ------------- |
 
 ## Features
 - [x] value

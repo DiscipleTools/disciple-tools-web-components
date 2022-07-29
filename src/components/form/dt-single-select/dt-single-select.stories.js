@@ -42,7 +42,7 @@ export default {
   component: 'dt-single-select',
   argTypes: {
     name: { control: 'text' },
-    placeholderLabel: { control: 'text' },
+    placeholder: { control: 'text' },
     value: { control: 'text' },
     isLoading: { control: 'boolean' },
     isSaved: { control: 'boolean' },
@@ -52,7 +52,7 @@ export default {
 function Template({
   name = 'my-input',
   options,
-  placeholderLabel,
+  placeholder,
   value,
   onChange,
   isLoading,
@@ -83,7 +83,7 @@ function Template({
     </script>
     <dt-single-select
       name="${name}"
-      placeholderLabel="${placeholderLabel}"
+      placeholder="${placeholder}"
       options="${JSON.stringify(options)}"
       value="${value}"
       onchange="${onChange}"
@@ -103,7 +103,7 @@ CustomOptions.args = {
 
 export const CustomPlaceholder = Template.bind({});
 CustomPlaceholder.args = {
-  placeholderLabel: '--Select--',
+  placeholder: '--Select--',
 };
 
 export const SelectedValue = Template.bind({});

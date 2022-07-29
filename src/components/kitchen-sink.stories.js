@@ -1,11 +1,11 @@
 import { html } from 'lit';
 import { argTypes, themeCss } from '../stories-theme.js';
-import './dt-label/dt-label.js';
-import './dt-text/dt-text.js';
-import './dt-textarea/dt-textarea.js';
-import './dt-multi-select/dt-multi-select.js';
-import './dt-single-select/dt-single-select.js';
-import './dt-tags/dt-tags.js';
+import './form/dt-label/dt-label.js';
+import './form/dt-text/dt-text.js';
+import './form/dt-textarea/dt-textarea.js';
+import './form/dt-multi-select/dt-multi-select.js';
+import './form/dt-single-select/dt-single-select.js';
+import './form/dt-tags/dt-tags.js';
 
 export default {
   title: 'Kitchen Sink',
@@ -32,10 +32,10 @@ function Template(args) {
     <dt-textarea></dt-textarea>
 
     <dt-label>Single Select Field</dt-label>
-    <dt-single-select placeholderLabel="Select Item"></dt-single-select>
+    <dt-single-select placeholder="Select Item"></dt-single-select>
 
     <dt-label>Multi Select Field</dt-label>
-    <dt-multi-select placeholderLabel="Select Items" options="${JSON.stringify(tags)}"></dt-multi-select>
+    <dt-multi-select placeholder="Select Items" options="${JSON.stringify(tags)}"></dt-multi-select>
     
     <dt-label>Tags Field</dt-label>
     <dt-tags 

@@ -1,5 +1,5 @@
 import { html, css, LitElement } from 'lit';
-import '../icons/dt-spinner.js';
+import '../../icons/dt-spinner.js';
 import '../icons/dt-checkmark.js';
 
 export class DtMultiSelect extends LitElement {
@@ -128,7 +128,7 @@ export class DtMultiSelect extends LitElement {
   static get properties() {
     return {
       name: { type: String },
-      placeholderLabel: { type: String },
+      placeholder: { type: String },
       options: { type: Array },
       filteredOptions: { type: Array, state: true },
       value: {
@@ -394,7 +394,7 @@ export class DtMultiSelect extends LitElement {
         ${this._renderSelectedOptions()}
         <input
           type="text"
-          placeholder="${this.placeholderLabel}"
+          placeholder="${this.placeholder}"
           @focusin="${this._inputFocusIn}"
           @focusout="${this._inputFocusOut}"
           @keydown="${this._inputKeyDown}"

@@ -1,5 +1,5 @@
 import { html } from 'lit-html';
-import { themeCss } from '../../stories-theme.js';
+import { themeCss } from '../../../stories-theme.js';
 import './dt-label.js';
 
 export default {

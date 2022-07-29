@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { themeCss } from '../../stories-theme.js';
+import { themeCss } from '../../../stories-theme.js';
 import './dt-tags.js';
 
 const basicOptions = [
@@ -69,7 +69,7 @@ export default {
         },
       },
     },
-    placeholderLabel: {
+    placeholder: {
       control: 'text',
       description: 'String rendered as placeholder text',
     },
@@ -131,7 +131,7 @@ export default {
     },
   },
   args: {
-    placeholderLabel: 'Select Tags',
+    placeholder: 'Select Tags',
     onload: 'onLoad(event)',
   },
 };
@@ -140,7 +140,7 @@ function Template(args) {
   const {
     name = 'my-input',
     options,
-    placeholderLabel,
+    placeholder,
     value,
     onChange,
     onload,
@@ -191,7 +191,7 @@ function Template(args) {
     </script>
     <dt-tags
       name="${name}"
-      placeholderLabel="${placeholderLabel}"
+      placeholder="${placeholder}"
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
       onchange="${onChange}"
@@ -217,7 +217,7 @@ StaticOptions.args = {
 
 export const CustomPlaceholder = Template.bind({});
 CustomPlaceholder.args = {
-  placeholderLabel: 'Search Options',
+  placeholder: 'Search Options',
 };
 
 export const SelectedValue = Template.bind({});
