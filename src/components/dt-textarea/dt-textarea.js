@@ -69,9 +69,20 @@ export class DtTextArea extends LitElement {
     this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
   }
 
+  labelTemplate() {
+    return html`
+      <dt-label
+        ?private="${this.privateField}"
+      >
+        ${this.fieldName}
+      </dt-label>
+    `;
+  }
+
   render() {
     return html`
-      <!-- <dt-label></dt-label> -->
+      ${this.labelTemplate()}
+
       <textarea
       id="${this.id}"
       aria-label="${this.fieldName}"

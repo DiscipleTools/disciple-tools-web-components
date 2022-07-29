@@ -66,9 +66,19 @@ export class DtTextField extends LitElement {
     this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
   }
 
+  labelTemplate() {
+    console.log(this.privateField);
+    return html`
+      <dt-label
+        ?private="${this.privateField}"
+      >
+        ${this.fieldName}
+      </dt-label>
+    `;
+  }
   render() {
     return html`
-      <!-- <dt-label></dt-label> -->
+      ${this.labelTemplate()}
 
       <input
       id="${this.id}"
