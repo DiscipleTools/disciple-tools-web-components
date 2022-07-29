@@ -43,6 +43,14 @@ export class DtSingleSelect extends LitElement {
         width: 100%;
         text-transform: none;
       }
+      select.color-select {
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: white'></polygon></svg>");
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 700;
+        text-shadow: rgb(0 0 0 / 45%) 0 0 6px;
+      }
 
       .icon-overlay {
         position: absolute;
@@ -69,10 +77,6 @@ export class DtSingleSelect extends LitElement {
         type: String,
         state: true,
       },
-      textColor: {
-        type: String,
-        state: true,
-      },
       loading: { type: Boolean },
       saved: { type: Boolean },
       onchange: { type: String },
@@ -93,35 +97,13 @@ export class DtSingleSelect extends LitElement {
         this.color = options[0].color;
       }
     }
-
-    if (this.color) {
-      if (DtSingleSelect.isColorLight(this.color)) {
-        this.textColor = '#000000';
-      } else {
-        this.textColor = '#FFFFFF';
-      }
-    }
   }
 
-  /**
-   * Test if a color is considered light or dark
-   * https://stackoverflow.com/questions/12043187/how-to-check-if-hex-color-is-too-black
-   * @param color
-   */
-  static isColorLight(color) {
-    const c = color.substring(1); // strip #
-    const rgb = parseInt(c, 16); // convert rrggbb to decimal
-    /* eslint-disable no-bitwise */
-    const r = (rgb >> 16) & 0xff; // extract red
-    const g = (rgb >> 8) & 0xff; // extract green
-    const b = (rgb >> 0) & 0xff; // extract blue
-    /* eslint-enable no-bitwise */
-
-    const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-
-    return luma > 40;
+  isColorSelect() {
+    return (this.options || []).reduce((isColor, option) => {
+      return isColor || option.color;
+    }, false);
   }
-
   willUpdate(changedProperties) {
     if (changedProperties.has('value')) {
       this.updateColor();
@@ -158,10 +140,11 @@ export class DtSingleSelect extends LitElement {
       <select
         name="${this.name}"
         @change="${this._change}"
-        style="background-color: ${this.color}; color: ${this.textColor};"
+        class="${this.isColorSelect() ? 'color-select' : null}"
+        style="background-color: ${this.color};"
         ?disabled="${this.loading}"
       >
-        <option>${this.placeholderLabel}</option>
+        <option disabled selected hidden>${this.placeholderLabel}</option>
 
         ${this.options &&
         this.options.map(
