@@ -1,6 +1,6 @@
 import { html, css, LitElement } from 'lit';
 import '../../icons/dt-spinner.js';
-import '../icons/dt-checkmark.js';
+import '../../icons/dt-checkmark.js';
 
 export class DtSingleSelect extends LitElement {
   static get styles() {
