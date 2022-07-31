@@ -69,9 +69,13 @@ export class DtDateField extends LitElement {
   //     });
   // }
 
-  onChange(e) {
-    const timestampMilliseconds = new Date(e.target.value).getTime();
-    const timestampSecond = timestampMilliseconds/1000;
+  updateTimestamp(timestamp) {
+    let timestampSecond = '';
+    let timestampMilliseconds = '';
+    if (typeof timestamp === 'number') {
+      timestampMilliseconds = new Date(timestamp).getTime();
+      timestampSecond = timestampMilliseconds/1000;
+    }
     const event = new CustomEvent('change', {
       detail: {
         field: this.name,
@@ -81,9 +85,16 @@ export class DtDateField extends LitElement {
     });
 
     this.dispatchEvent(event);
-
     this.timestamp = timestampMilliseconds
-    this.value = e.target.value;
+    this.value = timestamp;
+  }
+
+  onChange(e) {
+    this.updateTimestamp(e.target.value);
+  }
+
+  clearInput() {
+    this.updateTimestamp('');
   }
 
   labelTemplate() {
@@ -125,7 +136,8 @@ export class DtDateField extends LitElement {
                 class="button alert clear-date-button"
                 data-inputid="${this.id}"
                 title="Delete Date"
-                type="button">
+                type="button"
+                @click="${this.clearInput}">
                 x
             </button>
           </div>
