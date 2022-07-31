@@ -14,8 +14,8 @@ Basic date input
 ## Features
 - [x] value
 - [x] onchange
-- [ ] datepicker UI
-- [ ] clear input/value
+- [x] datepicker UI - uses Native date input
+- [x] clear input/value
 - [x] placeholder
 - [ ] loading
 - [ ] saved
