@@ -7,26 +7,52 @@ export class DtDateField extends LitElement {
         color: var(--color-text, #000);
 
         appearance: none;
-        background-color: var(--background-color, pink);
-        border: 1px solid var(--color-gray, pink);
+        background-color: var(--background-color, #cecece);
+        border: 1px solid var(--color-gray, #cecece);
         border-radius: 0;
-        -webkit-box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
         box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
         box-sizing: border-box;
-        display: block;
+        display: inline-flex;
         font-family: inherit;
         font-size: 1rem;
         font-weight: 300;
         height: 2.5rem;
         line-height: 1.5;
-        margin: 0 0 1.0666666667rem;
         padding: 0.5333333333rem;
-        transition: box-shadow .5s,border-color .25s ease-in-out,-webkit-box-shadow .5s;
+        transition: box-shadow .5s,border-color .25s ease-in-out;
         width: 100%;
       }
       input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
-        background-color: #e6e6e6;
+        background-color: var(--color-gray-light, #e6e6e6);
         cursor: not-allowed;
+      }
+
+      .input-group {
+          position: relative;
+          display: inline-flex;
+          margin: 0 0 1.0666666667rem;
+          width: 100%;
+      }
+
+      .input-group .input-group-button {
+          font-size: .75rem;
+          line-height: 1em;
+          display: inline-flex;
+      }
+      .input-group .button {
+        display: inline-block;
+        background: var(--background-color, #fefefe);
+        border: 1px solid var(--border-color, #ccc);
+        border-left: 0;
+        color: var(--alert-red, #cc4b37);
+        align-self: stretch;
+        font-size: 1rem;
+        height: auto;
+        padding: 0 1em;
+      }
+      .input-group .button:hover {
+          background-color: var(--alert-red, #cc4b37);
+          color: var(--text-color-inverse, #fefefe);
       }
     `;
   }
@@ -97,6 +123,11 @@ export class DtDateField extends LitElement {
     this.updateTimestamp('');
   }
 
+  showDatePicker() {
+    const input = this.shadowRoot.querySelector('input');
+    input.showPicker();
+  }
+
   labelTemplate() {
     return html`
       <dt-label
@@ -129,18 +160,17 @@ export class DtDateField extends LitElement {
             .timestamp="${this.date}"
             ?disabled=${this.disabled}
             @change="${this.onChange}"
+            @click="${this.showDatePicker}"
           />
-          <div class="input-group-button">
-            <button
-                id="${this.id}-clear-button"
-                class="button alert clear-date-button"
-                data-inputid="${this.id}"
-                title="Delete Date"
-                type="button"
-                @click="${this.clearInput}">
-                x
-            </button>
-          </div>
+          <button
+              id="${this.id}-clear-button"
+              class="button alert clear-date-button"
+              data-inputid="${this.id}"
+              title="Delete Date"
+              type="button"
+              @click="${this.clearInput}">
+              x
+          </button>
       </div>
     `;
   }

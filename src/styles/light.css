@@ -36,8 +36,15 @@ body{
                        var(--secondary-color-light-l));
 
   --color-gray: hsl(0, 0%, 79%);
+  --color-gray-light: hsl(0, 0%, 90%);
+
+
 
 
   --background-color: #fefefe;
   --border-color: var(--color-gray);
+  --text-color: #0a0a0a;
+  --text-color-inverse: #fefefe;
+
+  --alert-red: HSL(10, 50%, 50%)
 }
