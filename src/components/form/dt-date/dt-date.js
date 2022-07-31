@@ -49,6 +49,7 @@ export class DtDateField extends LitElement {
         font-size: 1rem;
         height: auto;
         padding: 0 1em;
+        margin: 0;
       }
       .input-group .button:hover {
           background-color: var(--alert-red, #cc4b37);
