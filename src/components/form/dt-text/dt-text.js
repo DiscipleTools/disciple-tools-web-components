@@ -27,7 +27,7 @@ export class DtTextField extends LitElement {
       input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
         background-color: #e6e6e6;
         cursor: not-allowed;
-
+      }
     `;
   }
 
@@ -86,7 +86,7 @@ export class DtTextField extends LitElement {
         type="text"
         ?disabled=${this.disabled}
         class="text-input"
-        value="${this.value}"
+        .value="${this.value}"
         @change=${this.onChange}
       />
     `;

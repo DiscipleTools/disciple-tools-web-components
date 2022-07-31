@@ -64,7 +64,6 @@ export class DtTextArea extends LitElement {
 
     this.value = e.target.value;
 
-    console.log(this.value);
 
     this.dispatchEvent(event);
   }
