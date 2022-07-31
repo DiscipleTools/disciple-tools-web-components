@@ -27,7 +27,7 @@ export class DtNumberField extends LitElement {
       input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
         background-color: #e6e6e6;
         cursor: not-allowed;
-
+      }
     `;
   }
 
