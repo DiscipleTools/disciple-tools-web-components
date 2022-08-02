@@ -241,6 +241,7 @@ export class DtMultiSelect extends LitElement {
     //   // eval(this.onchange + '()');
     //   fn(event);
     // }
+    this._filterOptions();
   }
 
   _remove(e) {
@@ -262,7 +263,8 @@ export class DtMultiSelect extends LitElement {
 
   _inputFocusOut(e) {
     // allow clicks on option list button to not close the option list
-    if (!e.relatedTarget || e.relatedTarget.nodeName !== 'BUTTON') {
+    // Safari actually passes the parent <li> as the relatedTarget
+    if (!e.relatedTarget || !['BUTTON','LI'].includes(e.relatedTarget.nodeName )) {
       this.open = false;
     }
   }
@@ -284,8 +286,17 @@ export class DtMultiSelect extends LitElement {
         this.open = true;
         this._listHighlightNext();
         break;
-      case 13: // tab
-      case 9: // enter
+      case 9: // tab
+        if (this.activeIndex < 0) {
+          // if pressing tab while no option is selected,
+          // close the list so you can go to next field
+          this.open = false;
+        } else {
+          e.preventDefault();
+        }
+        this._keyboardSelectOption();
+        break;
+      case 13: // enter
         this._keyboardSelectOption();
         break;
       case 27: // escape
@@ -367,15 +378,18 @@ export class DtMultiSelect extends LitElement {
     }
 
     return this.filteredOptions.map(
-      (opt, idx) => html`
-        <li>
+          (opt, idx) => html`
+        <li tabindex="-1">
           <button
             value="${opt.id}"
+            type="button"
             data-label="${opt.label}"
             @click="${this._clickOption}"
+            @touchstart="${this._clickOption}"
+            tabindex="-1"
             class="${this.activeIndex > -1 && this.activeIndex === idx
-              ? 'active'
-              : null}"
+            ? 'active'
+            : null}"
           >
             ${opt.label}
           </button>
@@ -397,7 +411,7 @@ export class DtMultiSelect extends LitElement {
           type="text"
           placeholder="${this.placeholder}"
           @focusin="${this._inputFocusIn}"
-          @focusout="${this._inputFocusOut}"
+          @blur="${this._inputFocusOut}"
           @keydown="${this._inputKeyDown}"
           @keyup="${this._inputKeyUp}"
         />
