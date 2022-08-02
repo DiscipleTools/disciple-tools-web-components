@@ -5,7 +5,7 @@ import '../../icons/dt-checkmark.js';
 export class DtMultiSelect extends LitElement {
   static get styles() {
     return css`
-      :host {
+      :host, .container {
         position: relative;
         --borderWidth: 3px;
         --borderColor: #78b13f;
@@ -386,6 +386,7 @@ export class DtMultiSelect extends LitElement {
 
   render() {
     return html`
+    <div class="container">
       <div
         class="field-container"
         @click="${this._focusInput}"
@@ -412,6 +413,7 @@ export class DtMultiSelect extends LitElement {
         ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
         : null}
       ${this.saved ? html`<dt-checkmark class="icon-overlay"></dt-checkmark>` : null}
+    </div>
     `;
   }
 }
