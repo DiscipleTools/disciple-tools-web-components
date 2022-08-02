@@ -14,6 +14,17 @@ export default {
   argTypes,
 };
 
+const options = [{
+  id: 'opt1', label: 'Option 1',
+}, {
+  id: 'opt2', label: 'Option 2',
+}, {
+  id: 'opt3', label: 'Option 3',
+}, {
+  id: 'opt4', label: 'Option 4',
+}, {
+  id: 'opt5', label: 'Option 5',
+}];
 const tags = [{
   id: 'personal', label: 'Personal',
 }, {
@@ -40,11 +51,17 @@ function Template(args) {
     <dt-date></dt-date>
 
     <dt-label>Single Select Field</dt-label>
-    <dt-single-select placeholder="Select Item"></dt-single-select>
+    <dt-single-select placeholder="Select Item"
+      value="opt1" 
+      options="${JSON.stringify(options)}"
+    ></dt-single-select>
 
     <dt-label>Multi Select Field</dt-label>
-    <dt-multi-select placeholder="Select Items" options="${JSON.stringify(tags)}"></dt-multi-select>
-
+    <dt-multi-select placeholder="Select Items"
+      value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}" 
+      options="${JSON.stringify(options)}"
+    ></dt-multi-select>
+    
     <dt-label>Tags Field</dt-label>
     <dt-tags
       value="${JSON.stringify([{id:'personal',label:'Personal'}])}"

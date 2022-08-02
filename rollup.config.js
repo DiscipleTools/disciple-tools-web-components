@@ -13,12 +13,12 @@ const copyConfig = {
 
 const config = {
   input: [
-    './src/components/*/*.js',
-    '!./src/components/*/*.stories.js',
-    '!./src/components/*/*.test.js',
+    './src/components/**/*.js',
+    '!./src/components/**/*.stories.js',
+    '!./src/components/**/*.test.js',
   ],
   output: {
-    dir: 'build',
+    dir: 'dist',
     format: 'es'
   },
   plugins: [
@@ -41,9 +41,5 @@ const config = {
   ],
   preserveEntrySignatures: false
 };
-
-if (process.env.NODE_ENV !== 'development') {
-  config.plugins.push(terser());
-}
 
 export default config;
