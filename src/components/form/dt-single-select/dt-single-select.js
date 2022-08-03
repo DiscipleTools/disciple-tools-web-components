@@ -144,7 +144,7 @@ export class DtSingleSelect extends LitElement {
         style="background-color: ${this.color};"
         ?disabled="${this.loading}"
       >
-        <option disabled selected hidden>${this.placeholder}</option>
+        <option disabled selected hidden value="">${this.placeholder}</option>
 
         ${this.options &&
         this.options.map(
