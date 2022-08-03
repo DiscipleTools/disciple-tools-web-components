@@ -1,4 +1,5 @@
 import { html, css, LitElement } from 'lit';
+import '../dt-label/dt-label.js';
 
 export class DtTextField extends LitElement {
   static get styles() {
@@ -67,7 +68,7 @@ export class DtTextField extends LitElement {
   labelTemplate() {
     return html`
       <dt-label
-        ?private="${this.private}"
+        ?private=${this.private}
       >
         ${this.label}
         ${this.privateLabel ? html`<span slot="private-label">${this.privateLabel}</span>` : null}
