@@ -53,4 +53,5 @@ export const privateField = Template.bind({});
 privateField.args = {
   isPrivate: true,
   value: 'Lorem Ipsum',
+  privateLabel: 'This is a custom tooltip',
 };

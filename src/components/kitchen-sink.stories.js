@@ -38,30 +38,26 @@ function Template(args) {
       ${themeCss(args)}
     </style>
 
-    <dt-label>Text Field</dt-label>
-    <dt-text id='textField' name='textField' value=''></dt-text>
+    <dt-text id='textField' name='textField' value='' label="Text Field"></dt-text>
 
-    <dt-label>Textarea Field</dt-label>
-    <dt-textarea id='textareaField' name='textareaField' value=''></dt-textarea>
+    <dt-textarea id='textareaField' name='textareaField' value='' label="Textarea Field"></dt-textarea>
 
-    <dt-label>Number Field</dt-label>
-    <dt-number></dt-number>
+    <dt-number id="numberField" name="numberField" label="Number Field"></dt-number>
 
-    <dt-label>Date Field</dt-label>
-    <dt-date></dt-date>
+    <dt-date id="dateField" name="dateField" label="Date Field"></dt-date>
 
     <dt-label>Single Select Field</dt-label>
     <dt-single-select placeholder="Select Item"
-      value="opt1" 
+      value="opt1"
       options="${JSON.stringify(options)}"
     ></dt-single-select>
 
     <dt-label>Multi Select Field</dt-label>
     <dt-multi-select placeholder="Select Items"
-      value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}" 
+      value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
       options="${JSON.stringify(options)}"
     ></dt-multi-select>
-    
+
     <dt-label>Tags Field</dt-label>
     <dt-tags
       value="${JSON.stringify([{id:'personal',label:'Personal'}])}"
