@@ -114,6 +114,7 @@ export class DtSingleSelect extends LitElement {
     // Create custom event with new/old values to pass to onchange function
     const event = new CustomEvent('change', {
       detail: {
+        field: this.name,
         oldValue: this.value,
         newValue: e.target.value,
       },

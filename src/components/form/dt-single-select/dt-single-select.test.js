@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import { fixture, expect, oneEvent } from '@open-wc/testing';
-import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-single-select.js';
 
@@ -14,9 +13,6 @@ const options = [{
   id: 'opt3',
   label: 'Option Three',
 }];
-async function wait(ms) {
-  return new Promise(r => setTimeout(r, ms));
-}
 
 describe('dt-single-select', () => {
 
@@ -45,25 +41,26 @@ describe('dt-single-select', () => {
   });
 
   it('updates value attribute', async () => {
-    const el = await fixture(html`<dt-single-select options="${JSON.stringify(options)}"></dt-single-select>`);
+    const el = await fixture(html`<dt-single-select value="" options="${JSON.stringify(options)}"></dt-single-select>`);
     const select = el.shadowRoot.querySelector('select');
-    select.focus();
 
-    await sendKeys({ press: 'ArrowDown' });
-    await sendKeys({ press: 'Enter' });
+    select.value = "opt1";
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('change', true, false);
+    select.dispatchEvent(event);
 
     expect(select.value).to.equal('opt1');
     expect(el.value).to.equal('opt1');
   });
 
-  it.skip('triggers change event', async () => {
-    const el = await fixture(html`<dt-single-select name="custom-name" value="${JSON.stringify(['opt2'])}" options="${JSON.stringify(options)}"></dt-single-select>`);
+  it('triggers change event', async () => {
+    const el = await fixture(html`<dt-single-select name="custom-name" options="${JSON.stringify(options)}"></dt-single-select>`);
     const select = el.shadowRoot.querySelector('select');
-    select.focus();
 
-    sendKeys({ press: 'ArrowDown' });
-
-    setTimeout(() => sendKeys({ press: 'Enter' }));
+    select.value = "opt1";
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('change', true, false);
+    setTimeout(() => select.dispatchEvent(event));
 
     const { detail } = await oneEvent(el, 'change');
 
