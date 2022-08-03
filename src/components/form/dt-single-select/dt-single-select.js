@@ -140,6 +140,7 @@ export class DtSingleSelect extends LitElement {
     return html`
       <select
         name="${this.name}"
+        aria-label="${this.name}"
         @change="${this._change}"
         class="${this.isColorSelect() ? 'color-select' : null}"
         style="background-color: ${this.color};"

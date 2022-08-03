@@ -69,5 +69,11 @@ describe('dt-single-select', () => {
     expect(detail.oldValue).to.eql(undefined);
   });
 
+  it('passes the a11y audit', async () => {
+    const el = await fixture(html`<dt-single-select name="custom-name" options="${JSON.stringify(options)}"></dt-single-select>`);
+
+    await expect(el).shadowDom.to.be.accessible();
+  });
+
   // todo: sets color
 });
