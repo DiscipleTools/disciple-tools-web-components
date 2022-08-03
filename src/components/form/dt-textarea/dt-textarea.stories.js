@@ -30,7 +30,7 @@ function Template({ id = 'name', name = 'field-name', label = 'Field Name' , val
       ?loading=${loading}
       ?saved=${saved}
       onchange=${onchange}
-      value=${value}
+      .value=${value}
     >
     </dt-textarea>
   `;

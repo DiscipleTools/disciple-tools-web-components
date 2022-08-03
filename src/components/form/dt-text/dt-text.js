@@ -71,7 +71,7 @@ export class DtTextField extends LitElement {
         ?private=${this.private}
       >
         ${this.label}
-        ${this.privateLabel ? html`<span slot="private-label">${this.privateLabel}</span>` : null}
+        ${this.privateLabel ? html`<span slot="private-tooltip">${this.privateLabel}</span>` : null}
       </dt-label>
     `;
   }

@@ -52,18 +52,29 @@ export class DtNumberField extends LitElement {
     };
   }
 
+  _checkValue(value) {
+    if (value < this.min || value > this.max) {
+      return false;
+    }
+
+    return true;
+  }
+
   onChange(e) {
-    const event = new CustomEvent('change', {
-      detail: {
-        field: this.name,
-        oldValue: this.value,
-        newValue: e.target.value,
-      },
-    });
+    if (this._checkValue(e.target.value)) {
+      const event = new CustomEvent('change', {
+        detail: {
+          field: this.name,
+          oldValue: this.value,
+          newValue: e.target.value,
+        },
+      });
 
-    this.value = e.target.value;
-
-    this.dispatchEvent(event);
+      this.value = e.target.value;
+      this.dispatchEvent(event);
+    } else {
+      e.currentTarget.value = '';
+    }
   }
 
   labelTemplate() {
@@ -88,7 +99,7 @@ export class DtNumberField extends LitElement {
         type="number"
         ?disabled=${this.disabled}
         class="text-input"
-        value="${this.value}"
+        .value="${this.value}"
         min="${this.min}"
         max="${this.max}"
         @change=${this.onChange}
