@@ -217,7 +217,6 @@ export class DtMultiSelect extends LitElement {
       detail: {
         field: this.name,
         oldValue: this.value,
-        newValue: value,
       },
     });
 
@@ -227,6 +226,7 @@ export class DtMultiSelect extends LitElement {
     } else {
       this.value = [value];
     }
+    event.detail.newValue = this.value;
     this.open = false; // close options list
     this.activeIndex = -1; // reset keyboard-selected option
 

@@ -62,6 +62,12 @@ To run the tests in interactive watch mode run:
 npm run test:watch
 ```
 
+### Resources for writing tests
+- [@open-wc/testing](https://open-wc.org/docs/testing/testing-package/) - Overall testing framework
+- [@web/test-runner-commands](https://modern-web.dev/docs/test-runner/commands/) - simulating keyboard/mouse input
+- [ChaiJS](https://www.chaijs.com/api/bdd/) - Basic assertions
+- [Chai DOM](https://github.com/nathanboktae/chai-dom) - DOM assertions
+
 ## Tooling configs
 
 For most of the tools, the configuration is in the `package.json` to minimize the amount of files in your project.
