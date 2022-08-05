@@ -8,6 +8,7 @@ import './form/dt-date/dt-date.js';
 import './form/dt-multi-select/dt-multi-select.js';
 import './form/dt-single-select/dt-single-select.js';
 import './form/dt-tags/dt-tags.js';
+import './form/dt-connection/dt-connection.js';
 
 export default {
   title: 'Kitchen Sink',
@@ -31,6 +32,15 @@ const tags = [{
   id: 'web', label: 'Web',
 }, {
   id: 'facebook', label: 'Facebook',
+}];
+const posts = [{
+  id: '1', label: 'John Doe',
+}, {
+  id: '2', label: 'Jane Smith', user: true,
+}, {
+  id: '3', label: 'Trevor Virtue', user: true,
+}, {
+  id: '4', label: 'Jane Meldrum',
 }]
 function Template(args) {
   return html`
@@ -63,6 +73,11 @@ function Template(args) {
       value="${JSON.stringify([{id:'personal',label:'Personal'}])}"
       options="${JSON.stringify(tags)}"
     ></dt-tags>
+
+    <dt-label>Connection Field</dt-label>
+    <dt-connection
+      options="${JSON.stringify(posts)}"
+    ></dt-connection>
 
     <pre><code>
     ${themeCss(args)}

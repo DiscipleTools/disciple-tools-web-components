@@ -1,44 +1,45 @@
 import { html } from 'lit';
 import { themeCss } from '../../../stories-theme.js';
-import './dt-tags.js';
+import './dt-connection.js';
 
 const basicOptions = [
   {
-    id: 'opt1',
+    id: '1',
     label: 'Option 1',
   },
   {
-    id: 'opt2',
-    label: 'Option 2',
+    id: '2',
+    label: 'User 2',
+    user: true,
   },
   {
-    id: 'opt3',
+    id: '3',
     label: 'Option 3',
   },
   {
-    id: 'opt4',
+    id: '4',
     label: 'Option 4',
   },
   {
-    id: 'opt5',
+    id: '5',
     label: 'Option 5',
   },
   {
-    id: 'opt6',
+    id: '6',
     label: 'Option 6',
   },
   {
-    id: 'opt7',
+    id: '7',
     label: 'Option 7',
   },
   {
-    id: 'opt8',
+    id: '8',
     label: 'Option 8',
   },
 ];
 export default {
-  title: 'dt-tags',
-  component: 'dt-tags',
+  title: 'dt-connection',
+  component: 'dt-connection',
   argTypes: {
     name: {
       control: 'text',
@@ -131,7 +132,7 @@ export default {
     },
   },
   args: {
-    placeholder: 'Select Tags',
+    placeholder: 'Select Connection',
     onload: 'onLoad(event)',
   },
 };
@@ -189,7 +190,7 @@ function Template(args) {
           });
       }
     </script>
-    <dt-tags
+    <dt-connection
       name="${name}"
       placeholder="${placeholder}"
       options="${JSON.stringify(options)}"
@@ -201,7 +202,7 @@ function Template(args) {
       ?saved="${saved}"
       .open="${open}"
     >
-    </dt-tags>
+    </dt-connection>
   `;
 }
 
@@ -218,6 +219,7 @@ StaticOptions.args = {
 export const CustomPlaceholder = Template.bind({});
 CustomPlaceholder.args = {
   placeholder: 'Search Options',
+  options: basicOptions,
 };
 
 export const SelectedValue = Template.bind({});
@@ -228,6 +230,7 @@ SelectedValue.args = {
       label: 'qui est esse',
     },
   ],
+  options: basicOptions,
 };
 
 export const LoadOptionsFromAPI = Template.bind({});

@@ -1,5 +1,5 @@
 # Connection
-Implementation of the Tags field that customizes the options list for display posts (contacts, groups, etc).
+Implementation of the Tags field that customizes the options list for displaying posts (contacts, groups, etc).
 
 ## Attributes
 | Attribute | Description | Type | Default Value | Example Value | 
@@ -15,17 +15,17 @@ Implementation of the Tags field that customizes the options list for display po
 | `onload` | Event triggered when search query is changed or options list needs to be populated. Makes available `event` variable that includes field name, search query, onSuccess event, and onError event in `event.details` | `event` | - | `onLoad(event)` |
 
 ## Feature Status
-- [ ] value
-- [ ] options (static)
-- [ ] options (via API, onload event)
-- [ ] filter options (static)
-- [ ] filter options (from API)
-- [ ] select option (mouse)
-- [ ] select option (keyboard)
-- [ ] add new option
-- [ ] onchange
-- [ ] placeholder
-- [ ] loading
-- [ ] saved
+- [x] value
+- [x] options (static)
+- [x] options (via API, onload event)
+- [x] filter options (static)
+- [x] filter options (from API)
+- [x] select option (mouse)
+- [x] select option (keyboard)
+- [x] add new option
+- [x] onchange
+- [x] placeholder
+- [x] loading
+- [x] saved
 - [ ] disabled
 

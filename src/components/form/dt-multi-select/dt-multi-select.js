@@ -372,13 +372,8 @@ export class DtMultiSelect extends LitElement {
     );
   }
 
-  _renderOptions() {
-    if (!this.filteredOptions.length) {
-      return html`<li><div>No options available</div></li>`;
-    }
-
-    return this.filteredOptions.map(
-          (opt, idx) => html`
+  _renderOption(opt, idx) {
+    return html`
         <li tabindex="-1">
           <button
             value="${opt.id}"
@@ -388,14 +383,21 @@ export class DtMultiSelect extends LitElement {
             @touchstart="${this._clickOption}"
             tabindex="-1"
             class="${this.activeIndex > -1 && this.activeIndex === idx
-            ? 'active'
-            : null}"
+      ? 'active'
+      : null}"
           >
             ${opt.label}
           </button>
         </li>
-      `
-    );
+    `;
+  }
+
+  _renderOptions() {
+    if (!this.filteredOptions.length) {
+      return html`<li><div>No options available</div></li>`;
+    }
+
+    return this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx));
   }
 
   render() {

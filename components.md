@@ -13,7 +13,7 @@ Fields
 - [ ] [Number](src/components/form/dt-number/README.md)
 - [ ] Location Grid
 - [ ] Location Grid Meta (Mapbox)
-- [ ] [Connection](src/components/form/dt-connection/README.md)
+- [x] [Connection](src/components/form/dt-connection/README.md)
 - [ ] Connection Meta
 - [ ] Post User Meta
 - [x] [Label](src/components/form/dt-label/README.md)
