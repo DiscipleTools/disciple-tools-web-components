@@ -138,16 +138,22 @@ export default {
 
 function Template(args) {
   const {
-    name = 'my-input',
+    name = 'field-name',
+    label = 'Field Name',
     options,
     placeholder,
     value,
-    onChange,
+    disabled = false,
+    icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    isPrivate,
+    privateLabel,
+    loading = false,
+    saved = false,
+    onchange,
+    open,
+    slot,
     onload,
     allowAdd,
-    loading,
-    saved,
-    open,
   } = args;
   return html`
     <style>
@@ -191,16 +197,22 @@ function Template(args) {
     </script>
     <dt-tags
       name="${name}"
+      label=${label}
       placeholder="${placeholder}"
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
-      onchange="${onChange}"
+      onchange="${onchange}"
       onload="${onload}"
+      ?disabled=${disabled}
+      icon="${icon}"
+      ?private=${isPrivate}
+      privateLabel="${privateLabel}"
       ?allowAdd="${allowAdd}"
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
     >
+      ${slot}
     </dt-tags>
   `;
 }
@@ -208,6 +220,12 @@ function Template(args) {
 export const Empty = Template.bind({});
 Empty.args = {
   onload: '',
+};
+
+export const SvgIcon = Template.bind({});
+SvgIcon.args = {
+  icon: null,
+  slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
 };
 
 export const StaticOptions = Template.bind({});
@@ -243,7 +261,7 @@ AddNewOption.args = {
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
-  onChange: 'onChange(event)',
+  onchange: 'onChange(event)',
 };
 
 export const Loading = Template.bind({});

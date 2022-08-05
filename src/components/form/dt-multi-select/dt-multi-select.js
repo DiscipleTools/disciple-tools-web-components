@@ -1,17 +1,21 @@
-import { html, css, LitElement } from 'lit';
+import { html, css } from 'lit';
+import DtFormBase from '../dt-form-base.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
 
-export class DtMultiSelect extends LitElement {
+export class DtMultiSelect extends DtFormBase {
   static get styles() {
     return css`
       :host, .container {
         position: relative;
         --borderWidth: 3px;
         --borderColor: #78b13f;
-        color: var(--dt-multi-select-text-color, #555);
         position: relative;
         font-family: Helvetica, Arial, sans-serif;
+      }
+      
+      .container {
+        color: var(--dt-multi-select-text-color, #555);
       }
 
       .field-container {
@@ -127,6 +131,7 @@ export class DtMultiSelect extends LitElement {
 
   static get properties() {
     return {
+      ...super.properties,
       name: { type: String },
       placeholder: { type: String },
       options: { type: Array },
@@ -169,7 +174,7 @@ export class DtMultiSelect extends LitElement {
 
   updated() {
     if (this.shadowRoot.children && this.shadowRoot.children.length) {
-      this.containerHeight = this.shadowRoot.children[0].offsetHeight;
+      this.containerHeight = this.shadowRoot.querySelector('.container').offsetHeight;
     }
     this._scrollOptionListToActive();
   }
@@ -402,6 +407,8 @@ export class DtMultiSelect extends LitElement {
 
   render() {
     return html`
+    ${this.labelTemplate()}
+    
     <div class="container">
       <div
         class="field-container"

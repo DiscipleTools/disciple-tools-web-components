@@ -1,6 +1,7 @@
-import { html, css, LitElement } from 'lit';
+import { html, css } from 'lit';
+import DtFormBase from '../dt-form-base';
 
-export class DtDateField extends LitElement {
+export class DtDateField extends DtFormBase {
   static get styles() {
     return css`
       input {
@@ -60,9 +61,9 @@ export class DtDateField extends LitElement {
 
   static get properties() {
     return {
+      ...super.properties,
       id: { type: String },
       name: { type: String },
-      label: { type: String },
       value: {
         type: String,
        reflect: true,
@@ -78,10 +79,7 @@ export class DtDateField extends LitElement {
         },
         reflect: true
       },
-      icon: { type: String },
       disabled: { type: Boolean },
-      private: { type: Boolean },
-      privateLabel: { type: String },
       loading: { type: Boolean },
       saved: { type: Boolean },
       onchange: { type: String },
@@ -127,17 +125,6 @@ export class DtDateField extends LitElement {
   showDatePicker() {
     const input = this.shadowRoot.querySelector('input');
     input.showPicker();
-  }
-
-  labelTemplate() {
-    return html`
-      <dt-label
-        ?private="${this.private}"
-      >
-        ${this.label}
-        ${this.privateLabel ? html`<span slot="private-tooltip ">${this.privateLabel}</span>` : null}
-      </dt-label>
-    `;
   }
 
   render() {

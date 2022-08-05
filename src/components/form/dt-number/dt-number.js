@@ -1,6 +1,7 @@
-import { html, css, LitElement } from 'lit';
+import { html, css } from 'lit';
+import DtFormBase from '../dt-form-base.js';
 
-export class DtNumberField extends LitElement {
+export class DtNumberField extends DtFormBase {
   static get styles() {
     return css`
       input {
@@ -33,19 +34,16 @@ export class DtNumberField extends LitElement {
 
   static get properties() {
     return {
+      ...super.properties,
       id: { type: String },
       name: { type: String },
-      label: { type: String },
       value: {
         type: String,
         reflect: true,
       },
       min: { type: Number },
       max: { type: Number },
-      icon: { type: String },
       disabled: { type: Boolean },
-      private: { type: Boolean },
-      privateLabel: { type: String },
       loading: { type: Boolean },
       saved: { type: Boolean },
       onchange: { type: String },
@@ -75,17 +73,6 @@ export class DtNumberField extends LitElement {
     } else {
       e.currentTarget.value = '';
     }
-  }
-
-  labelTemplate() {
-    return html`
-      <dt-label
-        ?private="${this.private}"
-      >
-        ${this.label}
-        ${this.privateLabel ? html`<span slot="private-label">${this.privateLabel}</span>` : null}
-      </dt-label>
-    `;
   }
 
   render() {

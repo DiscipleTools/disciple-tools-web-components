@@ -13,8 +13,18 @@ Implementation of the Tags field that customizes the options list for displaying
 | `allowAdd`   | Allow new options to be added that don't exist in options list | `boolean` | `false` | `<dt-tags allowAdd>` |
 | `onchange` | Event triggered when value is changed. Makes available `event` variable that includes field name, old value, and new value in `event.details` | `event` | - | `onChange(event)` |
 | `onload` | Event triggered when search query is changed or options list needs to be populated. Makes available `event` variable that includes field name, search query, onSuccess event, and onError event in `event.details` | `event` | - | `onLoad(event)` |
+| `label`   | Text to be displayed in label | `string` | - | - |
+| `icon`    | URL to an icon to be displayed before the label | `string` | - | - |
+| `private` | Whether field should be marked as private | `boolean` | `false` | '<dt-label private>` |
+| `privateLabel` | Customize tooltip text for private icon hover state. Pass in correct language content. | `string` | - | - |
+
+## Slots
+| Name | Description |
+| ---- | ----------- |
+| `icon-start` | Icon to be displayed before label. Use if you want to embed an SVG directly on the page without an `img` tag |
 
 ## Feature Status
+- [x] label
 - [x] value
 - [x] options (static)
 - [x] options (via API, onload event)

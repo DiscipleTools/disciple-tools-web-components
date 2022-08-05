@@ -56,26 +56,28 @@ function Template(args) {
 
     <dt-date id="dateField" name="dateField" label="Date Field"></dt-date>
 
-    <dt-label>Single Select Field</dt-label>
-    <dt-single-select placeholder="Select Item"
+    <dt-single-select 
+      label="Single Select Field"
+      placeholder="Select Item"
       value="opt1"
       options="${JSON.stringify(options)}"
     ></dt-single-select>
 
-    <dt-label>Multi Select Field</dt-label>
-    <dt-multi-select placeholder="Select Items"
+    <dt-multi-select 
+      label="Multi Select Field"
+      placeholder="Select Items"
       value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
       options="${JSON.stringify(options)}"
     ></dt-multi-select>
 
-    <dt-label>Tags Field</dt-label>
     <dt-tags
+      label="Tags Field"
       value="${JSON.stringify([{id:'personal',label:'Personal'}])}"
       options="${JSON.stringify(tags)}"
     ></dt-tags>
 
-    <dt-label>Connection Field</dt-label>
     <dt-connection
+      label="Connection Field"
       options="${JSON.stringify(posts)}"
     ></dt-connection>
 

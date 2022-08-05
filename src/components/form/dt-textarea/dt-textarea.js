@@ -1,6 +1,7 @@
-import { html, css, LitElement } from 'lit';
+import { html, css } from 'lit';
+import DtFormBase from '../dt-form-base.js';
 
-export class DtTextArea extends LitElement {
+export class DtTextArea extends DtFormBase {
   static get styles() {
     return css`
       textarea {
@@ -36,17 +37,14 @@ export class DtTextArea extends LitElement {
 
   static get properties() {
     return {
+      ...super.properties,
       id: { type: String },
       name: { type: String },
-      label: { type: String },
       value: {
         type: String,
         reflect: true,
       },
-      icon: { type: String },
       disabled: { type: Boolean },
-      private: { type: Boolean },
-      privateLabel: { type: String },
       loading: { type: Boolean },
       saved: { type: Boolean },
       onchange: { type: String },
@@ -66,17 +64,6 @@ export class DtTextArea extends LitElement {
 
 
     this.dispatchEvent(event);
-  }
-
-  labelTemplate() {
-    return html`
-      <dt-label
-        ?private="${this.private}"
-      >
-        ${this.label}
-        ${this.privateLabel ? html`<span slot="private-label">${this.privateLabel}</span>` : null}
-      </dt-label>
-`;
   }
 
   render() {
