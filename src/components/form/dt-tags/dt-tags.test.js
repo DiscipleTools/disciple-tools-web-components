@@ -163,7 +163,7 @@ describe('dt-tags', () => {
 
     setTimeout(() => sendKeys({type: 'o'}));
 
-    const { detail } = await oneEvent(el, 'load');
+    const { detail } = await oneEvent(el, 'search');
 
     expect(detail.field).to.equal('custom-name');
     expect(detail.query).to.equal('o');

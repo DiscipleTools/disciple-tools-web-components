@@ -143,7 +143,7 @@ function Template(args) {
     placeholder,
     value,
     onChange,
-    onload,
+    onsearch,
     allowAdd,
     loading,
     saved,
@@ -169,7 +169,7 @@ function Template(args) {
           }, 1000);
         }
       }
-      function onLoad(event) {
+      function onSearch(event) {
         console.log('fetching data', event);
         const { field, query, onSuccess, onError } = event.detail;
         fetch('https://jsonplaceholder.typicode.com/posts')
@@ -195,7 +195,7 @@ function Template(args) {
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
       onchange="${onChange}"
-      onload="${onload}"
+      onsearch="${onsearch}"
       ?allowAdd="${allowAdd}"
       ?loading="${loading}"
       ?saved="${saved}"
@@ -207,7 +207,7 @@ function Template(args) {
 
 export const Empty = Template.bind({});
 Empty.args = {
-  onload: '',
+  onsearch: '',
 };
 
 export const StaticOptions = Template.bind({});
@@ -232,7 +232,7 @@ SelectedValue.args = {
 
 export const LoadOptionsFromAPI = Template.bind({});
 LoadOptionsFromAPI.args = {
-  onload: 'onLoad(event)',
+  onsearch: 'onSearch(event)',
 };
 
 export const AddNewOption = Template.bind({});

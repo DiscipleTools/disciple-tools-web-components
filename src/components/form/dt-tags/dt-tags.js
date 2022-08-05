@@ -6,7 +6,7 @@ export class DtTags extends DtMultiSelect {
     return {
       ...super.properties,
       allowAdd: { type: Boolean },
-      onload: { type: String },
+      onsearch: { type: String },
     };
   }
 
@@ -86,7 +86,7 @@ export class DtTags extends DtMultiSelect {
 
       // need to fetch data via API request
       const self = this;
-      const event = new CustomEvent('load', {
+      const event = new CustomEvent('search', {
         detail: {
           field: this.name,
           query: this.query,
