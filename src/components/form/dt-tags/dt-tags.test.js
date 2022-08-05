@@ -23,10 +23,8 @@ async function clickOption(el, id) {
   const optionBtn = el.shadowRoot.querySelector(`.option-list button[value=${id}]`);
 
   input.focus();
-  await wait( 50); // wait for UI update
 
   optionBtn.click();
-  await wait(100);
 
 }
 
@@ -79,7 +77,6 @@ describe('dt-tags', () => {
     const optionBtn = el.shadowRoot.querySelector('.option-list button[value=opt1]');
 
     input.focus();
-    await wait( 50); // wait for UI update
 
     optionBtn.click();
     await wait(100);
@@ -93,13 +90,12 @@ describe('dt-tags', () => {
     const input = el.shadowRoot.querySelector('input');
     input.focus();
 
-    sendKeys({
+    await sendKeys({
       press: 'ArrowDown',
     });
-    sendKeys({
+    await sendKeys({
       press: 'Enter',
     });
-    await wait(100);
 
     const container = el.shadowRoot.querySelector('.field-container');
     expect(container).to.contain('button[data-value=opt1]');
@@ -131,10 +127,9 @@ describe('dt-tags', () => {
     const optionsList = el.shadowRoot.querySelector('.option-list');
     input.focus();
 
-    sendKeys({
+    await sendKeys({
       type: 'Sec',
     });
-    await wait(50); // wait for UI update
 
     expect(optionsList).to.be.displayed;
     expect(optionsList).to.contain('button[value=opt2]');
@@ -148,8 +143,6 @@ describe('dt-tags', () => {
     const optionsList = el.shadowRoot.querySelector('.option-list');
     input.focus();
     await clickOption(el, 'opt1');
-
-    await wait(50); // wait for UI update
 
     expect(optionsList).not.to.contain('button[value=opt1]');
     expect(optionsList).to.contain('button[value=opt2]');
@@ -169,8 +162,7 @@ describe('dt-tags', () => {
     expect(detail.query).to.equal('o');
     expect(detail.onSuccess).to.exist;
 
-    detail.onSuccess([options[0]]);
-    await wait(50);
+    await detail.onSuccess([options[0]]);
 
     const optionList = el.shadowRoot.querySelector('.option-list');
     expect(optionList).to.contain('button[value=opt1]');
@@ -182,19 +174,18 @@ describe('dt-tags', () => {
     const el = await fixture(html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`);
     el.shadowRoot.querySelector('input').focus();
 
-    sendKeys({
+    await sendKeys({
       type: 'new',
     });
-    await wait(50); // wait for UI update (filter list)
 
-    sendKeys({ press: 'ArrowDown' });
-    sendKeys({ press: 'Enter' });
-    await wait(50); // wait for UI update
+    await sendKeys({ press: 'ArrowDown' });
+    await sendKeys({ press: 'Enter' });
 
     expect(el.value).not.to.be.empty;
     expect(el.value).to.eql([{
       id: '',
       label: 'new',
+      isNew: true,
     }]);
   });
 });

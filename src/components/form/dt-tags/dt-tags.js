@@ -30,6 +30,7 @@ export class DtTags extends DtMultiSelect {
       this._select({
         id: '',
         label: e.target.dataset?.label,
+        isNew: true,
       });
     }
   }
@@ -46,6 +47,7 @@ export class DtTags extends DtMultiSelect {
         this._select({
           id: '',
           label: this.query,
+          isNew: true,
         });
       } else {
         this._select(this.filteredOptions[this.activeIndex]);
