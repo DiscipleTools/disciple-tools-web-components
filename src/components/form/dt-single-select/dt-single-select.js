@@ -1,8 +1,9 @@
 import { html, css, LitElement } from 'lit';
+import DtFormBase from '../dt-form-base.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
 
-export class DtSingleSelect extends LitElement {
+export class DtSingleSelect extends DtFormBase {
   static get styles() {
     return css`
       :host {
@@ -66,6 +67,7 @@ export class DtSingleSelect extends LitElement {
 
   static get properties() {
     return {
+      ...super.properties,
       name: { type: String },
       placeholder: { type: String },
       options: { type: Array },
@@ -82,10 +84,6 @@ export class DtSingleSelect extends LitElement {
       onchange: { type: String },
     };
   }
-
-  // constructor() {
-  //   super();
-  // }
 
   /**
    * Find the color for the currently selected value
@@ -125,42 +123,37 @@ export class DtSingleSelect extends LitElement {
 
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
-
-    // check for `onchange` html attribute to trigger event from attribute
-    // todo: test across browsers, `dispatchEvent` seems to work for html `onchange` in Chrome on MacOS
-    // if (this.onchange) {
-    //   // eslint-disable-next-line no-new-func
-    //   const fn = new Function('event', this.onchange);
-    //   // eval(this.onchange + '()');
-    //   fn(event);
-    // }
   }
 
   render() {
     return html`
-      <select
-        name="${this.name}"
-        aria-label="${this.name}"
-        @change="${this._change}"
-        class="${this.isColorSelect() ? 'color-select' : null}"
-        style="background-color: ${this.color};"
-        ?disabled="${this.loading}"
-      >
-        <option disabled selected hidden value="">${this.placeholder}</option>
-
-        ${this.options &&
-        this.options.map(
-          i => html`
-            <option value="${i.id}" ?selected="${i.id === this.value}">
-              ${i.label}
-            </option>
-          `
-        )}
-      </select>
-      ${this.loading
-        ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-        : null}
-      ${this.saved ? html`<dt-checkmark class="icon-overlay"></dt-checkmark>` : null}
+      ${this.labelTemplate()}
+      
+      <div class="container">
+        <select
+          name="${this.name}"
+          aria-label="${this.name}"
+          @change="${this._change}"
+          class="${this.isColorSelect() ? 'color-select' : null}"
+          style="background-color: ${this.color};"
+          ?disabled="${this.loading}"
+        >
+          <option disabled selected hidden value="">${this.placeholder}</option>
+  
+          ${this.options &&
+          this.options.map(
+            i => html`
+              <option value="${i.id}" ?selected="${i.id === this.value}">
+                ${i.label}
+              </option>
+            `
+          )}
+        </select>
+        ${this.loading
+          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
+          : null}
+        ${this.saved ? html`<dt-checkmark class="icon-overlay"></dt-checkmark>` : null}
+      </div>
     `;
   }
 }
