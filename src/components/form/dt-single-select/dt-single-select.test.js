@@ -75,5 +75,15 @@ describe('dt-single-select', () => {
     await expect(el).shadowDom.to.be.accessible();
   });
 
-  // todo: sets color
+  it('sets color from options', async () => {
+    const colorOptions = options.map((o, idx) => ({
+      ...o,
+      color: `#${idx}${idx}${idx}`,
+    }));
+    const el = await fixture(html`<dt-single-select value="opt1" options="${JSON.stringify(colorOptions)}"></dt-single-select>`);
+    const select = el.shadowRoot.querySelector('select');
+
+
+    expect(select).to.have.style('backgroundColor', 'rgb(0, 0, 0)');
+  });
 });
