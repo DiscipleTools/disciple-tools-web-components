@@ -16,7 +16,7 @@ export class DtConnection extends DtTags {
         margin-bottom: -4px
       }
       li button svg use {
-        fill: var(--primary-color, #3f729b);
+        fill: var(--dt-connection-icon-fill, #3f729b);
       }
     `;
   }

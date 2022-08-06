@@ -5,12 +5,11 @@ export class DtTextArea extends DtFormBase {
   static get styles() {
     return css`
       textarea {
-        color: var(--color-text, #000);
+        color: var(--dt-textarea-text-color, #0a0a0a);
         appearance: none;
-        background-color: var(--background-color, pink);
-        border: 1px solid var(--color-gray, pink);
+        background-color: var(--dt-textarea-background-color, pink);
+        border: 1px solid var(--dt-textarea-border-color, pink);
         border-radius: 3px;
-        -webkit-box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
         box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
         box-sizing: border-box;
         display: block;
@@ -21,7 +20,7 @@ export class DtTextArea extends DtFormBase {
         line-height: 1.5;
         margin: 0 0 1.0666666667rem;
         padding: 0.5333333333rem;
-        transition: box-shadow .5s,border-color .25s ease-in-out,-webkit-box-shadow .5s;
+        transition: box-shadow .5s,border-color .25s ease-in-out;
         width: 100%;
         overflow: hidden;
         position: relative;
@@ -29,7 +28,7 @@ export class DtTextArea extends DtFormBase {
         resize: none;
       }
       input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
-        background-color: #e6e6e6;
+        background-color: var(--dt-textarea-disabled-background-color, #e6e6e6);
         cursor: not-allowed;
       }
     `;

@@ -8,28 +8,25 @@ export class DtMultiSelect extends DtFormBase {
     return css`
       :host, .container {
         position: relative;
-        --borderWidth: 3px;
-        --borderColor: #78b13f;
         position: relative;
         font-family: Helvetica, Arial, sans-serif;
       }
-      
+
       .container {
-        color: var(--dt-multi-select-text-color, #555);
+        color: var(--dt-multi-select-text-color, #0a0a0a);
       }
 
       .field-container {
-        background-color: #fefefe;
-        border: 1px solid var(--dt-component-border-color, #cacaca);
+        background-color: var( --dt-multi-select-background-color, #fefefe);
+        border: 1px solid var(--dt-form-border-color, #cacaca);
         border-radius: 0;
-        color: #0a0a0a;
+        color: var(--dt-multi-select-text-color, #0a0a0a);
         font-size: 1rem;
         font-weight: 300;
         min-height: 2.5rem;
         line-height: 1.5;
         margin: 0 0 1.0666666667rem;
         padding: 0.5333333333rem 1.6rem 0.5333333333rem 0.5333333333rem;
-        -webkit-box-sizing: border-box;
         box-sizing: border-box;
         width: 100%;
         text-transform: none;
@@ -39,7 +36,7 @@ export class DtMultiSelect extends DtFormBase {
 
       .selected-option {
         border: 1px solid var(--dt-multi-select-tag-border-color, #c2e0ff);
-        background-color: var(--dt-multi-select-tag-bkrd-color, #ecf5fc);
+        background-color: var(--dt-multi-select-tag-background-color, #ecf5fc);
 
         display: flex;
         font-size: 0.875rem;
@@ -80,8 +77,8 @@ export class DtMultiSelect extends DtFormBase {
         list-style: none;
         margin: 0;
         padding: 0;
-        border: 1px solid var(--dt-component-border-color, #cacaca);
-        background: #fff;
+        border: 1px solid var(--dt-form-border-color, #cacaca);
+        background: var(--dt-form-background-color, #fefefe);
         z-index: 10;
         position: absolute;
         width: 100%;
@@ -92,13 +89,13 @@ export class DtMultiSelect extends DtFormBase {
         overflow-y: scroll;
       }
       .option-list li {
-        border-top: 1px solid var(--dt-component-border-color, #cacaca);
+        border-top: 1px solid var(--dt-form-border-color, #cacaca);
         outline: 0;
       }
       .option-list li div,
       .option-list li button {
         padding: 0.5rem 0.75rem;
-        color: #333;
+        color: var(--dt-multi-select-text-color, #0a0a0a);
         font-weight: 100;
         font-size: 1rem;
         text-decoration: none;
@@ -113,7 +110,7 @@ export class DtMultiSelect extends DtFormBase {
       .option-list li button:hover,
       .option-list li button.active {
         cursor: pointer;
-        background: var(--dt-multi-select-option-hover-bkrd, #f5f5f5);
+        background: var(--dt-multi-select-option-hover-background, #f5f5f5);
       }
 
       /* === Inline Icons === */

@@ -8,10 +8,9 @@ export class DtTextField extends DtFormBase {
         color: var(--color-text, #000);
 
         appearance: none;
-        background-color: var(--background-color, pink);
-        border: 1px solid var(--color-gray, pink);
+        background-color: var(--dt-text-background-color, #0a0a0a);
+        border: 1px solid var(--dt-text-border-color, #fefefe);
         border-radius: 0;
-        -webkit-box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
         box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
         box-sizing: border-box;
         display: block;
@@ -22,11 +21,11 @@ export class DtTextField extends DtFormBase {
         line-height: 1.5;
         margin: 0 0 1.0666666667rem;
         padding: 0.5333333333rem;
-        transition: box-shadow .5s,border-color .25s ease-in-out,-webkit-box-shadow .5s;
+        transition: box-shadow .5s, border-color .25s ease-in-out;
         width: 100%;
       }
       input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
-        background-color: #e6e6e6;
+        background-color: var(--dt-text-disabled-background-color, #e6e6e6);
         cursor: not-allowed;
       }
     `;

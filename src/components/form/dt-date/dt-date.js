@@ -6,10 +6,9 @@ export class DtDateField extends DtFormBase {
     return css`
       input {
         color: var(--color-text, #000);
-
         appearance: none;
-        background-color: var(--background-color, #cecece);
-        border: 1px solid var(--color-gray, #cecece);
+        background-color: var(--dt-form-background-color, #cecece);
+        border: 1px solid var(--dt-form-border-color, #cacaca);
         border-radius: 0;
         box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
         box-sizing: border-box;
@@ -24,7 +23,7 @@ export class DtDateField extends DtFormBase {
         width: 100%;
       }
       input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
-        background-color: var(--color-gray-light, #e6e6e6);
+        background-color: var(--dt-form-disabled-background-color, #e6e6e6);
         cursor: not-allowed;
       }
 
@@ -42,10 +41,10 @@ export class DtDateField extends DtFormBase {
       }
       .input-group .button {
         display: inline-block;
-        background: var(--background-color, #fefefe);
-        border: 1px solid var(--border-color, #ccc);
+        background:  var(--dt-form-background-color, #fefefe);
+        border: 1px solid var(--dt-form-border-color, #fefefe);
         border-left: 0;
-        color: var(--alert-red, #cc4b37);
+        color: var(--alert-color, #cc4b37);
         align-self: stretch;
         font-size: 1rem;
         height: auto;
@@ -53,7 +52,7 @@ export class DtDateField extends DtFormBase {
         margin: 0;
       }
       .input-group .button:hover {
-          background-color: var(--alert-red, #cc4b37);
+          background-color: var(--alert-color, #cc4b37);
           color: var(--text-color-inverse, #fefefe);
       }
     `;

@@ -8,38 +8,28 @@ export class DtSingleSelect extends DtFormBase {
     return css`
       :host {
         position: relative;
-        --borderWidth: 3px;
-        --borderColor: #78b13f;
       }
 
       select {
-        -webkit-appearance: none;
-        -moz-appearance: none;
         appearance: none;
-        background-color: #fefefe;
+        background-color: var(--dt-form-background-color, #fefefe);
         background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
         background-origin: content-box;
         background-position: right -1.0666666667rem center;
         background-repeat: no-repeat;
         background-size: 9px 6px;
-        border: 1px solid var(--dt-component-border-color, #cacaca);
+        border: 1px solid var(--dt-form-border-color, #cacaca);
         border-radius: 0;
-        color: #0a0a0a;
-        font-family: Helvetica, Arial, sans-serif;
+        color: var(--dt-single-select-text-color, #0a0a0a);
+        font-family: var(--dt-font-family, sans-serif);
         font-size: 1rem;
         font-weight: 300;
         height: 2.5rem;
         line-height: 1.5;
         margin: 0 0 1.0666666667rem;
         padding: 0.5333333333rem 1.6rem 0.5333333333rem 0.5333333333rem;
-        -webkit-transition: border-color 0.25s ease-in-out,
-          -webkit-box-shadow 0.5s;
-        transition: border-color 0.25s ease-in-out, -webkit-box-shadow 0.5s;
+        transition: border-color 0.25s ease-in-out;
         transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-        transition: box-shadow 0.5s, border-color 0.25s ease-in-out,
-          -webkit-box-shadow 0.5s;
-
-        -webkit-box-sizing: border-box;
         box-sizing: border-box;
         width: 100%;
         text-transform: none;
@@ -48,7 +38,7 @@ export class DtSingleSelect extends DtFormBase {
         background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: white'></polygon></svg>");
         border: none;
         border-radius: 10px;
-        color: #fff;
+        color: var(--dt-single-select-text-color-inverse, #fff);
         font-weight: 700;
         text-shadow: rgb(0 0 0 / 45%) 0 0 6px;
       }
