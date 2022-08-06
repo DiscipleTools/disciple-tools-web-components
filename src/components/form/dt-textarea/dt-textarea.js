@@ -7,8 +7,8 @@ export class DtTextArea extends DtFormBase {
       textarea {
         color: var(--dt-textarea-text-color, #0a0a0a);
         appearance: none;
-        background-color: var(--dt-textarea-background-color, pink);
-        border: 1px solid var(--dt-textarea-border-color, pink);
+        background-color: var(--dt-textarea-background-color, #fefefe);
+        border: 1px solid var(--dt-textarea-border-color, #cecece);
         border-radius: 3px;
         box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
         box-sizing: border-box;

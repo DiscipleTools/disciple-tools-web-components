@@ -54,6 +54,7 @@ export class DtMultiSelect extends DtFormBase {
         outline: 0;
         border: 0;
         border-left: 1px solid var(--dt-multi-select-tag-border-color, #c2e0ff);
+        color: var(--dt-multi-select-text-color, #0a0a0a);
         margin-left: 4px;
       }
       .selected-option button:hover {
