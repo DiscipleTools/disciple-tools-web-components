@@ -92,7 +92,7 @@ export class DtMultiSelect extends DtFormBase {
         width: 100%;
         top: 0;
         left: 0;
-        box-shadow: 0px 5px 10px 0px;
+        box-shadow: var(--shadow-1);
         max-height: 150px;
         overflow-y: scroll;
       }

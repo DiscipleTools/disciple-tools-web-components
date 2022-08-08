@@ -13,11 +13,19 @@ export class DtSingleSelect extends DtFormBase {
       select {
         appearance: none;
         background-color: var(--dt-form-background-color, #fefefe);
-        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
-        background-origin: content-box;
-        background-position: right -1.0666666667rem center;
-        background-repeat: no-repeat;
-        background-size: 9px 6px;
+        background-image:
+    linear-gradient(45deg, transparent 50%, var(--dt-single-select-text-color) 50%),
+    linear-gradient(135deg, var(--dt-single-select-text-color) 50%, transparent 50%),
+    linear-gradient(to right, #ccc, #ccc);
+  background-position:
+    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    calc(100% - 2.5em) 0.5em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 1.5em;
+  background-repeat: no-repeat;
         border: 1px solid var(--dt-form-border-color, #cacaca);
         border-radius: 0;
         color: var(--dt-single-select-text-color, #0a0a0a);
