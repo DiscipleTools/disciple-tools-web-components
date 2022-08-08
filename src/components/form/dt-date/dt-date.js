@@ -5,7 +5,7 @@ export class DtDateField extends DtFormBase {
   static get styles() {
     return css`
       input {
-        color: var(--color-text, #000);
+        color: var(--dt-form-text-color, #000);
         appearance: none;
         background-color: var(--dt-form-background-color, #cecece);
         border: 1px solid var(--dt-form-border-color, #cacaca);
@@ -26,6 +26,9 @@ export class DtDateField extends DtFormBase {
         background-color: var(--dt-form-disabled-background-color, #e6e6e6);
         cursor: not-allowed;
       }
+
+      /* input::-webkit-datetime-edit-text { color: red; padding: 0 0.3em; } */
+      input::-webkit-calendar-picker-indicator { color: red; }
 
       .input-group {
           position: relative;

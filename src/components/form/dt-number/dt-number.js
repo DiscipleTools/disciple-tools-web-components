@@ -5,7 +5,7 @@ export class DtNumberField extends DtFormBase {
   static get styles() {
     return css`
       input {
-        color: var(--color-text, #000);
+        color: var(--dt-form-text-color, #000);
         appearance: none;
         background-color: var(--dt-form-background-color, #fff);
         border: 1px solid var(--dt-form-border-color, #ccc);

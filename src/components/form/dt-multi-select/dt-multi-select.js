@@ -62,6 +62,8 @@ export class DtMultiSelect extends DtFormBase {
       }
 
       .field-container input {
+        background-color: var(--dt-form-background-color, #fff);
+        color: var(--dt-form-text-color, #000);
         flex-grow: 1;
         min-width: 50px;
         border: 0;
@@ -72,6 +74,11 @@ export class DtMultiSelect extends DtFormBase {
         border: 0;
         outline: 0;
       }
+      .field-container input::placeholder {
+        color: var(--dt-form-text-color, #000);;
+        opacity: 1;
+      }
+
 
       /* === Options List === */
       .option-list {
@@ -406,7 +413,7 @@ export class DtMultiSelect extends DtFormBase {
   render() {
     return html`
     ${this.labelTemplate()}
-    
+
     <div class="container">
       <div
         class="field-container"

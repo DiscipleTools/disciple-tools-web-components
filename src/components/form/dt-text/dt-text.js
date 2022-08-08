@@ -5,8 +5,7 @@ export class DtTextField extends DtFormBase {
   static get styles() {
     return css`
       input {
-        color: var(--color-text, #000);
-
+        color: var(--dt-form-text-color, #000);
         appearance: none;
         background-color: var(--dt-text-background-color, #0a0a0a);
         border: 1px solid var(--dt-text-border-color, #fefefe);

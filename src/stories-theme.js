@@ -2,6 +2,7 @@ export const themes = {
   default: {
     name: 'light',
     args: {
+      colorScheme: 'light',
       primaryColor: '#3f729b',
       primaryColorLight0: '#ecf5fc',
       primaryColorLight1: '#c2e0ff',
@@ -86,6 +87,7 @@ export const themes = {
   dark: {
     name: 'dark',
     args: {
+      colorScheme: 'dark',
       primaryColor: 'red',
       primaryColorLight0: 'pink',
       primaryColorLight1: 'lightpink',
@@ -168,6 +170,7 @@ export const themes = {
   dim: {
     name: 'dim',
     args: {
+      colorScheme: 'dark',
       primaryColor: 'green',
       primaryColorLight0: 'greenyellow',
       primaryColorLight1: 'yellow',
@@ -402,11 +405,12 @@ export function themeCss(theme) {
     --dt-tile-font-family: ${getArg(theme, 'tileFontFamily')};
     --dt-tile-font-size: ${getArg(theme, 'tileFontSize')};
     --dt-tile-font-weight: ${getArg(theme, 'tileFontWeight')};
-    --dt-tile-background: ${getArg(theme, 'tileBackground')};
+    --dt-tile-background-color: ${getArg(theme, 'tileBackground')};
     --dt-tile-border-color: ${getArg(theme, 'tileBorderColor')};
     --dt-tile-shadow: ${getArg(theme, 'tileShadow')};
     --dt-tile-header-color: ${getArg(theme, 'tileHeaderColor')};
     background: ${getArg(theme, 'surface0')};
+    color-scheme: ${getArg(theme, 'colorScheme')};
   }
   `;
 }

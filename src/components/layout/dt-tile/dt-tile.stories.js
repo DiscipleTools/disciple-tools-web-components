@@ -14,7 +14,6 @@ export default {
 
 const Template = (args) => html`
   <style>
-    body { background-color: #e2e2e2; }
     ${themeCss(args)}
   </style>
   <dt-tile

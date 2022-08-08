@@ -4,21 +4,22 @@ export class DtLabel extends LitElement {
   static get styles() {
     return css`
       :host {
-        font-family: var(--font-family);        
+        font-family: var(--font-family);
         font-size: var(--dt-label-font-size, 14px);
         font-weight: var(--dt-label-font-weight, 700);
+        color: var(--dt-label-color, #000);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      
-      
+
+
       .icon {
         height: var(--dt-label-font-size, 14px);
         width: auto;
         display: inline-block
       }
-      
+
       .icon.private {
         position: relative;
       }
