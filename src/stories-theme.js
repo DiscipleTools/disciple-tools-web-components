@@ -88,9 +88,9 @@ export const themes = {
     name: 'dark',
     args: {
       colorScheme: 'dark',
-      primaryColor: 'red',
-      primaryColorLight0: 'pink',
-      primaryColorLight1: 'lightpink',
+      primaryColor: 'hsla(207, 87%, 40%, 1)',
+      primaryColorLight0: 'hsla(207, 87%, 46%, 1)',
+      primaryColorLight1: 'hsla(207, 97%, 36%, 1)',
 
       gray0: '#666',
       gray1: '#919191',
@@ -100,24 +100,26 @@ export const themes = {
       textColorInverse: '#999',
 
       surface0: '#212529',
-      surface1: '#868e96',
-      surface2: '#dee2e6',
+      surface1: '#343a40',
+      surface2: '#495057',
+      surface3:'#868e96',
 
       borderColor: '#868e96v',
 
       shadow0: '0 2px 4px rgb(0 0 0 / 25%)',
+
       shadow1: '0 4px 4px rgb(0 0 0 / 25%)',
 
       alertColor: '#cc4b37',
       cautionColor: '#f2c962',
       successColor: '#4caf50',
       inactiveColor: '#808080',
-      disabledColor: '#e6e6e6',
+      disabledColor: '#343a40',
 
       fontFamily: 'Helvetica, Arial, sans-serif',
 
       formBorderColor: 'var(--border-color)',
-      formBackgroundColor: 'var(--surface-1)',
+      formBackgroundColor: 'var(--surface-3)',
       formDisabledBackgroundColor: 'var(--disabled-color)',
       formTextColor: 'var(--text-color)',
       formTextColorInverse: 'var(--text-color-inverse)',
@@ -128,7 +130,7 @@ export const themes = {
       connectionIconFill: 'var(--primary-color)',
 
       multiSelectTextColor: 'var(--text-color)',
-      multiSelectBackgroundColor: 'var(--surface-1)',
+      multiSelectBackgroundColor: 'var(--surface-3)',
       multiSelectTagBorderColor: 'var(--primary-color-light-1)',
       multiSelectTagBackgroundColor: 'var(--primary-color-light-0)',
       multiSelectOptionHoverBackground: 'var(--surface-2)',
@@ -171,9 +173,9 @@ export const themes = {
     name: 'dim',
     args: {
       colorScheme: 'dark',
-      primaryColor: 'green',
-      primaryColorLight0: 'greenyellow',
-      primaryColorLight1: 'yellow',
+      primaryColor: 'hsla(207, 87%, 40%, 1)',
+      primaryColorLight0: 'hsla(207, 87%, 46%, 1)',
+      primaryColorLight1: 'hsla(207, 97%, 36%, 1)',
 
       gray0: '#666',
       gray1: '#919191',
@@ -182,25 +184,27 @@ export const themes = {
       textColor: '#fefefe',
       textColorInverse: '#999',
 
-      surface0: '#212529',
-      surface1: '#495057',
-      surface2: '#868e96',
+      surface0: 'hsla(207, 9%, 31%, 1)',
+      surface1: 'hsla(207, 7%, 56%, 1)',
+      surface2: 'hsla(207, 7%, 60%, 1)',
+      surface3:'hsla(207, 4%, 70%, 1)',
 
       borderColor: '#868e96v',
 
       shadow0: '0 2px 4px rgb(0 0 0 / 25%)',
+
       shadow1: '0 4px 4px rgb(0 0 0 / 25%)',
 
       alertColor: '#cc4b37',
       cautionColor: '#f2c962',
       successColor: '#4caf50',
       inactiveColor: '#808080',
-      disabledColor: '#e6e6e6',
+      disabledColor: '#343a40',
 
       fontFamily: 'Helvetica, Arial, sans-serif',
 
       formBorderColor: 'var(--border-color)',
-      formBackgroundColor: 'var(--surface-1)',
+      formBackgroundColor: 'var(--surface-3)',
       formDisabledBackgroundColor: 'var(--disabled-color)',
       formTextColor: 'var(--text-color)',
       formTextColorInverse: 'var(--text-color-inverse)',
@@ -211,7 +215,7 @@ export const themes = {
       connectionIconFill: 'var(--primary-color)',
 
       multiSelectTextColor: 'var(--text-color)',
-      multiSelectBackgroundColor: 'var(--surface-1)',
+      multiSelectBackgroundColor: 'var(--surface-3)',
       multiSelectTagBorderColor: 'var(--primary-color-light-1)',
       multiSelectTagBackgroundColor: 'var(--primary-color-light-0)',
       multiSelectOptionHoverBackground: 'var(--surface-2)',
@@ -350,6 +354,7 @@ export function themeCss(theme) {
     --surface-0: ${getArg(theme, 'surface0')};
     --surface-1: ${getArg(theme, 'surface1')};
     --surface-2: ${getArg(theme, 'surface2')};
+    --surface-3: ${getArg(theme, 'surface3')};
 
     --border-color: ${getArg(theme, 'borderColor')};
 
