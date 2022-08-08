@@ -1,11 +1,12 @@
 import { html } from 'lit';
 import './dt-textarea.js';
-import { themeCss } from '../../../stories-theme';
+import { themes, themeCss } from '../../../stories-theme';
 
 export default {
   title: 'dt-textarea',
   component: 'dt-textarea',
   argTypes: {
+    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
     id: { control: 'text' },
     name: { control: 'text' },
     value: { control: 'text' },

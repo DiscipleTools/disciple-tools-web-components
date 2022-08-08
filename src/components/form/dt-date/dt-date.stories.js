@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './dt-date.js';
-import { themeCss } from '../../../stories-theme';
+import { themes, themeCss } from '../../../stories-theme.js';
 
 export default {
   title: 'dt-date',
@@ -8,6 +8,7 @@ export default {
   argTypes: {
     id: { control: 'text' },
     name: { control: 'text' },
+    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
     label: { control: 'text' },
     value: { control: 'number' },
     date: { control: 'text' },
@@ -18,6 +19,9 @@ export default {
     saved: { control: 'boolean' },
     onchange: { control: 'text' },
   },
+  args: {
+    theme: 'default'
+  }
 };
 
 function Template(args) {

@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { themeCss } from '../../../stories-theme.js';
+import { themes, themeCss } from '../../../stories-theme.js';
 import './dt-multi-select.js';
 
 const basicOptions = [
@@ -40,6 +40,7 @@ export default {
   title: 'dt-multi-select',
   component: 'dt-multi-select',
   argTypes: {
+    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
     name: {
       control: 'text',
       type: { name: 'string', required: true },

@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { themeCss } from '../../../stories-theme.js';
+import { themes, themeCss } from '../../../stories-theme.js';
 import './dt-connection.js';
 
 const basicOptions = [
@@ -41,6 +41,7 @@ export default {
   title: 'dt-connection',
   component: 'dt-connection',
   argTypes: {
+    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
     name: {
       control: 'text',
       type: { name: 'string', required: true },

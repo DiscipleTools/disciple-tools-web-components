@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { argTypes, themeCss } from '../stories-theme.js';
+
 import './form/dt-label/dt-label.js';
 import './form/dt-text/dt-text.js';
 import './form/dt-textarea/dt-textarea.js';
@@ -13,6 +14,7 @@ import './form/dt-connection/dt-connection.js';
 export default {
   title: 'Kitchen Sink',
   argTypes,
+  theme: 'default',
 };
 
 const options = [{
@@ -42,10 +44,11 @@ const posts = [{
 }, {
   id: '4', label: 'Jane Meldrum',
 }]
-function Template(args) {
+function Template(theme) {
+  console.log(theme);
   return html`
     <style>
-      ${themeCss(args)}
+      ${themeCss(theme)}
     </style>
 
     <dt-text id='textField' name='textField' value='' label="Text Field"></dt-text>
@@ -56,14 +59,14 @@ function Template(args) {
 
     <dt-date id="dateField" name="dateField" label="Date Field"></dt-date>
 
-    <dt-single-select 
+    <dt-single-select
       label="Single Select Field"
       placeholder="Select Item"
       value="opt1"
       options="${JSON.stringify(options)}"
     ></dt-single-select>
 
-    <dt-multi-select 
+    <dt-multi-select
       label="Multi Select Field"
       placeholder="Select Items"
       value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
@@ -82,7 +85,7 @@ function Template(args) {
     ></dt-connection>
 
     <pre><code>
-    ${themeCss(args)}
+    ${themeCss(theme)}
     </code></pre>
   `;
 }

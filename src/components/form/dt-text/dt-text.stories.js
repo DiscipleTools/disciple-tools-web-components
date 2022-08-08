@@ -1,11 +1,12 @@
 import { html } from 'lit';
-import { themeCss } from '../../../stories-theme.js';
+import { themes, themeCss } from '../../../stories-theme.js';
 import './dt-text.js';
 
 export default {
   title: 'dt-text',
   component: 'dt-text',
   argTypes: {
+    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
     id: { control: 'text' },
     name: { control: 'text' },
     label: { control: 'text' },

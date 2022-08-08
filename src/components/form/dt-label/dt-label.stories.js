@@ -1,10 +1,14 @@
 import { html } from 'lit-html';
-import { themeCss } from '../../../stories-theme.js';
+import { themes, themeCss } from '../../../stories-theme.js';
 import './dt-label.js';
 
 export default {
   title: 'dt-label',
   component: 'dt-label',
+  argTypes: {
+    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
+  }
+
 };
 
 const Template = (args) => {

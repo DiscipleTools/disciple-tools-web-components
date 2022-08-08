@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { themeCss } from '../../../stories-theme.js';
+import { themes, themeCss } from '../../../stories-theme.js';
 import './dt-single-select.js';
 
 const basicOptions = [
@@ -43,6 +43,7 @@ export default {
   component: 'dt-single-select',
   argTypes: {
     name: { control: 'text' },
+    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
     placeholder: { control: 'text' },
     value: { control: 'text' },
     isLoading: { control: 'boolean' },

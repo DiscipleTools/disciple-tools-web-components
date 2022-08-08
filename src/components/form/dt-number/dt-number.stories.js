@@ -1,11 +1,12 @@
 import { html } from 'lit';
 import './dt-number.js';
-import { themeCss } from '../../../stories-theme';
+import { themes, themeCss } from '../../../stories-theme.js';
 
 export default {
   title: 'dt-number',
   component: 'dt-number',
   argTypes: {
+    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
     id: { control: 'text' },
     name: { control: 'text' },
     label: { control: 'text' },
