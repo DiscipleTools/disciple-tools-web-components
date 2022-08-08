@@ -15,8 +15,7 @@ export class DtSingleSelect extends DtFormBase {
         background-color: var(--dt-form-background-color, #fefefe);
         background-image:
     linear-gradient(45deg, transparent 50%, var(--dt-single-select-text-color) 50%),
-    linear-gradient(135deg, var(--dt-single-select-text-color) 50%, transparent 50%),
-    linear-gradient(to right, #ccc, #ccc);
+    linear-gradient(135deg, var(--dt-single-select-text-color) 50%, transparent 50%);
   background-position:
     calc(100% - 20px) calc(1em + 2px),
     calc(100% - 15px) calc(1em + 2px),
@@ -126,7 +125,7 @@ export class DtSingleSelect extends DtFormBase {
   render() {
     return html`
       ${this.labelTemplate()}
-      
+
       <div class="container">
         <select
           name="${this.name}"
@@ -137,7 +136,7 @@ export class DtSingleSelect extends DtFormBase {
           ?disabled="${this.loading}"
         >
           <option disabled selected hidden value="">${this.placeholder}</option>
-  
+
           ${this.options &&
           this.options.map(
             i => html`
