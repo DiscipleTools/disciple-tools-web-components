@@ -26,7 +26,9 @@ export class DtMultiSelect extends DtFormBase {
         min-height: 2.5rem;
         line-height: 1.5;
         margin: 0 0 1.0666666667rem;
-        padding: 0.5333333333rem 1.6rem 0.5333333333rem 0.5333333333rem;
+        padding-top: 0.54rem;
+        padding-bottom: 0.54rem;
+        padding-inline: 0.54rem 1.6rem;
         box-sizing: border-box;
         width: 100%;
         text-transform: none;
@@ -124,7 +126,7 @@ export class DtMultiSelect extends DtFormBase {
       /* === Inline Icons === */
       .icon-overlay {
         position: absolute;
-        right: 2rem;
+        inset-inline-end: 2rem;
         top: 0;
         height: 100%;
         display: flex;
