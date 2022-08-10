@@ -257,7 +257,7 @@ export const themes = {
 };
 
 export const argTypes = {
-  theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
+  theme: { control: 'select', options: Object.keys(themes), defaultValue: ['default'] },
   RTL: { control: 'boolean', defaultValue: false },
   primaryColor: { control: 'color' },
   primaryColorLight0: { control: 'color' },
@@ -339,6 +339,7 @@ function getArg(theme, argName) {
   if (theme.theme) {
     return themes[theme.theme].args[argName]
   }
+  theme.theme = 'default';
   return themes.default.args[argName];
 }
 

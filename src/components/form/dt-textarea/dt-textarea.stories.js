@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './dt-textarea.js';
-import { themes, themeCss } from '../../../stories-theme';
+import { themes, themeCss, argTypes } from '../../../stories-theme';
 
 export default {
   title: 'dt-textarea',
@@ -16,6 +16,7 @@ export default {
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
     onchange: { control: 'text' },
+    ...argTypes,
   },
 };
 

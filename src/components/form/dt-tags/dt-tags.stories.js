@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { themes, themeCss } from '../../../stories-theme.js';
+import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-tags.js';
 
 const basicOptions = [
@@ -130,6 +130,7 @@ export default {
         },
       },
     },
+    ...argTypes,
   },
   args: {
     placeholder: 'Select Tags',

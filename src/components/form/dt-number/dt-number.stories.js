@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './dt-number.js';
-import { themes, themeCss } from '../../../stories-theme.js';
+import { themes, themeCss, argTypes} from '../../../stories-theme.js';
 
 export default {
   title: 'dt-number',
@@ -19,6 +19,7 @@ export default {
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
     onchange: { control: 'text' },
+    ...argTypes,
   },
 };
 

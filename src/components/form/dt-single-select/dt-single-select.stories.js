@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { themes, themeCss } from '../../../stories-theme.js';
+import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-single-select.js';
 
 const basicOptions = [
@@ -48,6 +48,7 @@ export default {
     value: { control: 'text' },
     isLoading: { control: 'boolean' },
     isSaved: { control: 'boolean' },
+    ...argTypes,
   },
 };
 

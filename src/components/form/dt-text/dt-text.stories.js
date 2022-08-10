@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { themes, themeCss } from '../../../stories-theme.js';
+import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-text.js';
 
 export default {
@@ -17,6 +17,7 @@ export default {
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
     onchange: { control: 'text' },
+    ...argTypes,
   },
 };
 
