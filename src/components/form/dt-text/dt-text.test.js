@@ -3,7 +3,7 @@ import { fixture, expect } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 
-import '../dt-text.js';
+import './dt-text.js';
 
 describe('DT-Text', () => {
   it('Check id, name, label, and value attributes display correctly', async () => {

@@ -3,7 +3,7 @@ import { fixture, expect } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 
-import '../dt-number.js';
+import './dt-number.js';
 
 describe('DT-Number', () => {
   it('Check id, name, label, and value attributes display correctly', async () => {
