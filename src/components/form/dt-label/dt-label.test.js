@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { fixture, expect } from '@open-wc/testing';
 
-import '../dt-label.js';
+import './dt-label.js';
 
 describe('DT-Label', () => {
   it('Check the label slot', async () => {
