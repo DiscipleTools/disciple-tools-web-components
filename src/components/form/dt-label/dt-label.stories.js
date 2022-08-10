@@ -1,5 +1,5 @@
 import { html } from 'lit-html';
-import { themes, themeCss } from '../../../stories-theme.js';
+import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-label.js';
 
 export default {
@@ -7,6 +7,7 @@ export default {
   component: 'dt-label',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
+    ...argTypes,
   }
 
 };
