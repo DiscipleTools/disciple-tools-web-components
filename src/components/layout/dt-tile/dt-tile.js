@@ -40,7 +40,6 @@ export class DtTile extends LitElement {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         column-gap: 1.4rem;
         transition: height 1s ease 0s;
-        overflow: hidden;
         height: auto;
       }
       .section-body.collapsed {
