@@ -46,7 +46,6 @@ export class DtDateField extends DtFormBase {
         display: inline-block;
         background:  var(--dt-form-background-color, #fefefe);
         border: 1px solid var(--dt-form-border-color, #fefefe);
-        border-left: 0;
         color: var(--alert-color, #cc4b37);
         align-self: stretch;
         font-size: 1rem;

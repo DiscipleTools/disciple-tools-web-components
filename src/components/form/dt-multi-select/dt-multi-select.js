@@ -43,10 +43,10 @@ export class DtMultiSelect extends DtFormBase {
         display: flex;
         font-size: 0.875rem;
         position: relative;
-        padding-left: 4px;
+        padding-inline-start: 4px;
         border-radius: 2px;
-        margin-right: 4px;
-        margin-bottom: 0.375rem;
+        margin-inline-end: 4px;
+        margin-block-end: 0.375rem;
       }
       .selected-option * {
         align-self: center;
@@ -55,9 +55,9 @@ export class DtMultiSelect extends DtFormBase {
         background: transparent;
         outline: 0;
         border: 0;
-        border-left: 1px solid var(--dt-multi-select-tag-border-color, #c2e0ff);
+        border-inline-start: 1px solid var(--dt-multi-select-tag-border-color, #c2e0ff);
         color: var(--dt-multi-select-text-color, #0a0a0a);
-        margin-left: 4px;
+        margin-inline-start: 4px;
       }
       .selected-option button:hover {
         cursor: pointer;
@@ -99,7 +99,7 @@ export class DtMultiSelect extends DtFormBase {
         overflow-y: scroll;
       }
       .option-list li {
-        border-top: 1px solid var(--dt-form-border-color, #cacaca);
+        border-block-start: 1px solid var(--dt-form-border-color, #cacaca);
         outline: 0;
       }
       .option-list li div,
