@@ -53,6 +53,7 @@ export class DtLabel extends LitElement {
   static get properties() {
     return {
       icon: { type: String },
+      altText: { type: String },
       private: { type: Boolean },
       privateLabel: { type: String },
     };
@@ -80,7 +81,7 @@ export class DtLabel extends LitElement {
       >
         <span class="icon">
           <slot name="icon-start">
-            ${this.icon ? html`<img src="${this.icon}" />` : null}
+            ${this.icon ? html`<img src="${this.icon}" alt="${this.altText}" />` : null}
           </slot>
         </span>
         <slot></slot>

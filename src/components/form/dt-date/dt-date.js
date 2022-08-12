@@ -1,5 +1,5 @@
 import { html, css } from 'lit';
-import DtFormBase from '../dt-form-base';
+import DtFormBase from '../dt-form-base.js';
 
 export class DtDateField extends DtFormBase {
   static get styles() {

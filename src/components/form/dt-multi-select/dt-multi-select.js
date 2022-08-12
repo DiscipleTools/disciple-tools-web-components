@@ -420,7 +420,7 @@ export class DtMultiSelect extends DtFormBase {
             tabindex="-1"
             class="${this.activeIndex > -1 && this.activeIndex === idx
       ? 'active'
-      : null}"
+      : ''}"
           >
             ${opt.label}
           </button>

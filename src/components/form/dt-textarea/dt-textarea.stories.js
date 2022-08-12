@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import './dt-textarea.js';
-import { themes, themeCss, argTypes } from '../../../stories-theme';
+import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 
 export default {
   title: 'dt-textarea',

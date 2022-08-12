@@ -1,4 +1,4 @@
-import { html, css, LitElement } from 'lit';
+import { html, css } from 'lit';
 import DtFormBase from '../dt-form-base.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
@@ -95,10 +95,9 @@ export class DtSingleSelect extends DtFormBase {
   }
 
   isColorSelect() {
-    return (this.options || []).reduce((isColor, option) => {
-      return isColor || option.color;
-    }, false);
+    return (this.options || []).reduce((isColor, option) => isColor || option.color, false);
   }
+
   willUpdate(changedProperties) {
     if (changedProperties.has('value')) {
       this.updateColor();
@@ -131,7 +130,7 @@ export class DtSingleSelect extends DtFormBase {
           name="${this.name}"
           aria-label="${this.name}"
           @change="${this._change}"
-          class="${this.isColorSelect() ? 'color-select' : null}"
+          class="${this.isColorSelect() ? 'color-select' : ''}"
           style="background-color: ${this.color};"
           ?disabled="${this.loading}"
         >

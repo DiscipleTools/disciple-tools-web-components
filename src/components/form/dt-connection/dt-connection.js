@@ -36,7 +36,7 @@ export class DtConnection extends DtTags {
             tabindex="-1"
             class="${this.activeIndex > -1 && this.activeIndex === idx
       ? 'active'
-      : null}"
+      : ''}"
           >
             ${opt.user ? svg : null }
 

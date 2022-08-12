@@ -101,7 +101,7 @@ export class DtTags extends DtMultiSelect {
             );
           },
           onError: error => {
-            console.log(error);
+            console.warn(error);
             self.loading = false;
           },
         },
@@ -128,7 +128,7 @@ export class DtTags extends DtMultiSelect {
           class="${this.activeIndex > -1 &&
           this.activeIndex >= this.filteredOptions.length
             ? 'active'
-            : null}"
+            : ''}"
         >
           Add "${this.query}"
         </button>
