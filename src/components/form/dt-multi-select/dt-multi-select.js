@@ -173,6 +173,7 @@ export class DtMultiSelect extends DtFormBase {
     super();
     this.activeIndex = -1;
     this.filteredOptions = [];
+    this.detectTap = false;
   }
 
   firstUpdated() {
@@ -214,6 +215,27 @@ export class DtMultiSelect extends DtFormBase {
   _clickOption(e) {
     if (e.target && e.target.value) {
       this._select(e.target.value);
+    }
+  }
+
+  _touchStart(e) {
+    if (e.target) {
+      this.detectTap = false;
+    }
+  }
+
+  _touchMove(e) {
+    if (e.target) {
+      this.detectTap = true;
+    }
+  }
+
+  _touchEnd(e) {
+    if(!this.detectTap) {
+      if (e.target && e.target.value) {
+        this._clickOption(e);
+      }
+      this.detectTap = false;
     }
   }
 
@@ -392,7 +414,9 @@ export class DtMultiSelect extends DtFormBase {
             type="button"
             data-label="${opt.label}"
             @click="${this._clickOption}"
-            @touchstart="${this._clickOption}"
+            @touchstart="${this._touchStart}"
+            @touchmove="${this._touchMove}"
+            @touchend="${this._touchEnd}"
             tabindex="-1"
             class="${this.activeIndex > -1 && this.activeIndex === idx
       ? 'active'

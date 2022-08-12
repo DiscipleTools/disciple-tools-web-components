@@ -122,6 +122,9 @@ export class DtTags extends DtMultiSelect {
         <button
           data-label="${this.query}"
           @click="${this._clickAddNew}"
+          @touchstart="${this._touchStart}"
+          @touchmove="${this._touchMove}"
+          @touchend="${this._touchEnd}"
           class="${this.activeIndex > -1 &&
           this.activeIndex >= this.filteredOptions.length
             ? 'active'

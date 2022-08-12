@@ -5,11 +5,11 @@ export class DtConnection extends DtTags {
   static get styles() {
     return css`
       ${super.styles}
-      
+
       li button * {
         pointer-events: none;
       }
-      
+
       li button svg {
         width: 20px;
         height: auto;
@@ -30,14 +30,16 @@ export class DtConnection extends DtTags {
             type="button"
             data-label="${opt.label}"
             @click="${this._clickOption}"
-            @touchstart="${this._clickOption}"
+            @touchstart="${this._touchStart}"
+            @touchmove="${this._touchMove}"
+            @touchend="${this._touchEnd}"
             tabindex="-1"
             class="${this.activeIndex > -1 && this.activeIndex === idx
       ? 'active'
       : null}"
           >
             ${opt.user ? svg : null }
-          
+
             ${opt.label} <span class="connection-id">(#${opt.id})</span>
           </button>
         </li>
