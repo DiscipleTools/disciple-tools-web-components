@@ -4,6 +4,10 @@ import {classMap} from 'lit/directives/class-map.js';
 export class DtAlert extends LitElement {
   static get styles() {
     return css`
+      :host {
+        display: block;
+      }
+
       .dt-alert {
         padding: 10px;
         font-family: var(--dt-alert-font-family);
