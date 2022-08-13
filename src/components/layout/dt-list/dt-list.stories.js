@@ -910,7 +910,11 @@ const defaultPosts = [
           "label": "Active"
       },
       "milestones": [
-          "milestone_has_bible"
+          "milestone_has_bible",
+          "milestone_reading_bible",
+          "milestone_belief",
+          "milestone_can_share",
+          "milestone_baptized"
       ],
       "assigned_to": {
           "id": "3",

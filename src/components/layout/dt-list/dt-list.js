@@ -9,7 +9,67 @@ export class DtList extends LitElement {
   static get styles() {
     return css`
       :host {
-        font-family: var(--dt-list-font-family);
+        font-family: var(--font-family);
+        font-size: var(--dt-list-font-size, 15px);
+        font-weight: var(--dt-list-font-weight, 300);
+        line-height: var(--dt-list-line-height, 1.5);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .section {
+        background-color: var(--dt-tile-background-color, #fefefe);
+        border: 1px solid var(--dt-tile-border-color, #cecece);
+        border-radius: 10px;
+        box-shadow: var(--dt-tile-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
+        padding: 1rem;
+      }
+
+      .section-header {
+        color: var(--dt-tile-header-color, #3f729b);
+        font-size: 1.5rem;
+        display: inline-block;
+      }
+
+      table {
+        border-collapse: collapse;
+        border-radius: 0;
+        margin-bottom: 1rem;
+        word-wrap: break-word;
+        table-layout: fixed;
+        width: 100%;
+      }
+      tr {
+        cursor: pointer;
+      }
+      tr:hover {
+        background-color: var(--dt-list-hover-background-color, #ecf5fc);
+
+      td, th, td {
+        padding: .5333333333rem .6666666667rem .6666666667rem;
+      }
+
+      tr ul {
+        margin: 0;
+        padding: 0;
+      }
+      tr ul li {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      thead th {
+        font-weight: 700;
+        text-align: start;
+        cursor: pointer;
+      }
+
+      th, td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     `;
   }
@@ -88,7 +148,9 @@ export class DtList extends LitElement {
       if (this.postTypeSettings[column].type === 'multi_select' || this.postTypeSettings[column].type === 'tags' && post[column] && post[column].length > 0) {
         return html`
         <td dir="auto" title="">
-            ${map(post[column], (value) => html`${value}`)}
+          <ul>
+            ${map(post[column], (value) => html`<li>${this.postTypeSettings[column].default[value].label}</li>`)}
+          </ul>
         </td>`
       }
       if (this.postTypeSettings[column].type === 'location' || this.postTypeSettings[column].type === 'location_meta') {
@@ -118,16 +180,17 @@ export class DtList extends LitElement {
           return html`<td dir="auto" title="">['&check;']</td>`
         }
       }
-
     });
   }
 
   render() {
     return html`
-      <div class="border-box">
-        <div class='section-header'>
-          <span class="section-header posts-header" style="display: inline-block">${this.postType} List</span>
-          <span class="filter-result-text">Showing 1 of ${this.total}</span>
+      <div class="section">
+        <div>
+          <div class='section-header'>
+            <span class="section-header posts-header" style="display: inline-block">${this.postType} List</span>
+          </div>
+            <span class="filter-result-text">Showing 1 of ${this.total}</span>
         </div>
         <div>
           <table>
