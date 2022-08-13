@@ -80,6 +80,16 @@ export const themes = {
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
 
+      alertTextColorLight: '#fff',
+      alertTextColorDark: '#000',
+      alertTextColor: 'var(--text-color)',
+      alertFontFamily: 'var(--font-family)',
+      alertFontSize: '14px;',
+      alertFontWeight: '700',
+      alertBackground: 'var(--surface-1)',
+      alertBorderColor: 'var(--border-color)',
+      alertShadow: 'var(--shadow-0)',
+
       background: 'var(--surface-0)',
 
     },
@@ -166,6 +176,16 @@ export const themes = {
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
 
+      alertTextColorLight: '#fff',
+      alertTextColorDark: '#000',
+      alertTextColor: 'var(--text-color)',
+      alertFontFamily: 'var(--font-family)',
+      alertFontSize: '14px;',
+      alertFontWeight: '700',
+      alertBackground: 'var(--surface-1)',
+      alertBorderColor:'var(--border-color)',
+      alertShadow: 'var(--shadow-0)',
+
       background: 'var(--surface-0)',
     },
   },
@@ -251,10 +271,22 @@ export const themes = {
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
 
+      alertTextColorLight: '#fff',
+      alertTextColorDark: '#000',
+      alertTextColor: 'var(--text-color)',
+      alertFontFamily: 'var(--font-family)',
+      alertFontSize: '14px;',
+      alertFontWeight: '700',
+      alertBackground: 'var(--surface-1)',
+      alertBorderColor: 'var(--border-color)',
+      alertShadow: 'var(--shadow-0)',
+
       background: 'var(--surface-0)',
     },
   },
 };
+
+export const contexts = ['primary', 'alert', 'caution', 'success', 'inactive', 'disabled'];
 
 export const argTypes = {
   theme: { control: 'select', options: Object.keys(themes), defaultValue: ['default'] },
@@ -333,6 +365,16 @@ export const argTypes = {
   tileBorderColor: { control: 'color' },
   tileShadow: { control: 'color' },
   tileHeaderColor: { control: 'color' },
+
+  alertTextColorLight: '#fff',
+  alertTextColorDark: '#000',
+  alertTextColor: { control: 'color' },
+  alertFontFamily: { control: 'color' },
+  alertFontSize: { control: 'text' },
+  alertFontWeight: { control: 'text' },
+  alertBackground: { control: 'color' },
+  alertBorderColor: { control: 'color' },
+  alertShadow: { control: 'color' },
 };
 
 function getArg(theme, argName) {
@@ -417,8 +459,16 @@ export function themeCss(theme) {
     --dt-tile-font-weight: ${theme.tileFontWeight ? theme.tileFontWeight : getArg(theme, 'tileFontWeight')};
     --dt-tile-background-color: ${theme.tileBackground ? theme.tileBackground : getArg(theme, 'tileBackground')};
     --dt-tile-border-color: ${theme.tileBorderColor ? theme.tileBorderColor : getArg(theme, 'tileBorderColor')};
-    --dt-tile-shadow: ${theme.tileShadow ? theme.tileShadow : getArg(theme, 'tileShadow')};
-    --dt-tile-header-color: ${theme.tileHeaderColor ? theme.tileHeaderColor : getArg(theme, 'tileHeaderColor')};
+    --dt-tile-shadow: ${theme.tileShadow ? themez.tileShadow : getArg(theme, 'tileShadow')};
+    --dt-alert-text-color-light: ${theme.alertTextColorLight ? theme.alertTextColorLight : getArg(theme, 'alertTextColorLight')};
+    --dt-alert-text-color-dark: ${theme.alertTextColorDark ? theme.alertTextColorDark : getArg(theme, 'alertTextColorDark')};
+    --dt-alert-text-color: ${theme.alertTextColor ? theme.alertTextColor : getArg(theme, 'alertTextColor')};
+    --dt-alert-font-family: ${theme.alertFontFamily ? theme.alertFontFamily : getArg(theme, 'alertFontFamily')};
+    --dt-alert-font-size: ${theme.alertFontSize ? theme.alertFontSize : getArg(theme, 'alertFontSize')};
+    --dt-alert-font-weight: ${theme.alertFontWeight ? theme.alertFontWeight : getArg(theme, 'alertFontWeight')};
+    --dt-alert-background-color: ${theme.alertBackground ? theme.alertBackground : getArg(theme, 'alertBackground')};
+    --dt-alert-border-color: ${theme.alertBorderColor ? theme.alertBorderColor : getArg(theme, 'alertBorderColor')};
+    --dt-alert-shadow: ${theme.alertShadow ? theme.alertShadow : getArg(theme, 'alertShadow')};
     background: ${theme.surface0 ? theme.surface0 : getArg(theme, 'surface0')};
     color-scheme: ${theme.colorScheme ? theme.colorScheme : getArg(theme, 'colorScheme')};
 
