@@ -1,0 +1,97 @@
+# List
+List for displaying list of posts (Contacts, Groups, etc.) and their corresponding fields in a table view.
+
+## Attributes
+| Attribute | Description | Type | Default Value | Example Value | 
+| --------- | ----------- | ---- | ------------- | ------------- |
+| `postType` | Type of posts in the list | `string` | - | `Contacts` |
+| `postTypeSettings` | The fields for the post type | `Object` | `false` | `{
+  "name": {
+    "name": "Name",
+    "type": "text",
+    "tile": "details",
+    "in_create_form": true,
+    "required": true,
+    "icon": "https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/name.svg",
+    "show_in_table": 5
+  },
+  "last_modified": {
+    "name": "Last Modified",
+    "type": "date",
+    "default": 0,
+    "icon": "https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-range.svg",
+    "customizable": false,
+    "show_in_table": 100
+  }...` |
+| `posts` | Array of posts from DT | `Array` | `` | `  {
+      "ID": "1",
+      "post_title": "test",
+      "post_type": "contacts",
+      "post_date": {
+          "timestamp": 1660333623,
+          "formatted": "2022-08-12"
+      },
+      "groups": [
+          {
+              "ID": "2",
+              "post_type": "groups",
+              "post_date_gmt": "2022-08-10 13:14:40",
+              "post_date": "2022-08-10 13:14:40",
+              "post_title": "Group 1",
+              "permalink": "https://rsdt.local/groups/5/",
+              "status": {
+                  "key": "active",
+                  "label": "Active",
+                  "color": "#4CAF50"
+              }
+          }
+      ],
+      "last_modified": {
+          "timestamp": 1660333623,
+          "formatted": "2022-08-12"
+      },
+      "seeker_path": {
+          "key": "none",
+          "label": "Contact Attempt Needed"
+      },
+      "overall_status": {
+          "key": "active",
+          "label": "Active"
+      },
+      "milestones": [
+          "milestone_has_bible",
+          "milestone_reading_bible",
+          "milestone_belief",
+          "milestone_can_share",
+          "milestone_baptized"
+      ],
+      "assigned_to": {
+          "id": "3",
+          "type": "user",
+          "display": "johndoe",
+          "assigned-to": "user-1"
+      },
+      "permalink": "https://rsdt.local/contacts/16",
+      "name": "test"
+  }` |
+
+## Slots
+| Name | Description |
+| ---- | ----------- |
+
+
+## Features
+- [x] header text
+- [x] Table column headers
+- [x] Table row content
+- [] Pagination
+- [] All field types supported
+- [] date formated properly
+- [] Sortable table
+- [] Fields COlumn Selector
+- [] Bulk Editor
+- [] Show Archived Toggle
+- [] current filter display
+- [] favorite start toggle
+- [] draggable table columns
+- [] mobile view styling

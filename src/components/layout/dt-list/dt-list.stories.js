@@ -1,5 +1,5 @@
 import { html } from 'lit-html';
-import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-list.js';
 
 const defaultColumns = ["favorite","name","overall_status","seeker_path","milestones","assigned_to","groups","last_modified"];

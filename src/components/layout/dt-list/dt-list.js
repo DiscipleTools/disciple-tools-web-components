@@ -70,8 +70,7 @@ export class DtList extends LitElement {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-      }
-    `;
+      }`;
   }
 
   static get properties() {
@@ -105,7 +104,7 @@ export class DtList extends LitElement {
   _rowTemplate() {
     return map(this.posts, (post) => html`
     <tr class="dnd-moved" data-link="${this.posts.permalink}">
-          <td class="bulk_edit_checkbox"><input type="checkbox" name="bulk_edit_id" value="${post.ID}"></td>
+          <td class="bulk_edit_checkbox"><input type="checkbox" name="bulk_edit_id" .value="${post.ID}"></td>
           <td style="white-space: nowrap">1.</td>
 
           <td dir="auto" title="★">
@@ -180,6 +179,7 @@ export class DtList extends LitElement {
           return html`<td dir="auto" title="">['&check;']</td>`
         }
       }
+      return html`<td dir="auto" title=""></td>`;
     });
   }
 
