@@ -103,10 +103,10 @@ export class DtAlert extends LitElement {
         margin-inline-start: auto;
         background: none;
         border: none;
-      }
-
-      button.toggle svg {
-        stroke: currentColor;
+        color: inherit;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
       }
     `;
   }
