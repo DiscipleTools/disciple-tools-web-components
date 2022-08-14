@@ -18,7 +18,7 @@ export class DtList extends LitElement {
 
       .section {
         background-color: var(--dt-tile-background-color, #fefefe);
-        border: 1px solid var(--dt-tile-border-color, #cecece);
+        border: 1px solid var(--dt-list-border-color, #f1f1f1);
         border-radius: 10px;
         box-shadow: var(--dt-tile-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
         padding: 1rem;
@@ -32,6 +32,8 @@ export class DtList extends LitElement {
 
       table {
         display: grid;
+        border: 1px solid var(--dt-list-border-color, #f1f1f1);
+        border-top: 0;
         border-collapse: collapse;
         min-width: 100%;
         grid-template-columns:
@@ -85,12 +87,15 @@ export class DtList extends LitElement {
       }
 
       td {
+        display: flex;
+        align-items: center;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         padding-top: 10px;
         padding-bottom: 10px;
         color: #808080;
+        border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
       }
 
       ul {
@@ -100,6 +105,10 @@ export class DtList extends LitElement {
 
       ul li {
         list-style-type: none;
+      }
+
+      input[type="checkbox"] {
+        margin: 1rem;
       }
       @media (max-width: 636px) {
 
@@ -214,6 +223,8 @@ export class DtList extends LitElement {
         </td>`
       }
       if (this.postTypeSettings[column].type === 'boolean') {
+        console.log(this.postTypeSettings[column]);
+        console.log(post[column]);
         if (this.postTypeSettings[column] === "favorite") {
           return html`<td dir="auto" title="★">
           <dt-star></dt-star>
