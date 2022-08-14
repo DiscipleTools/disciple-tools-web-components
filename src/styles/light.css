@@ -75,4 +75,14 @@
     --dt-tile-border-color: var(--border-color);
     --dt-tile-shadow: var(--shadow-0);
     --dt-tile-header-color: var(--primary-color);
+
+    --dt-alert-text-color-light: #fff;
+    --dt-alert-text-color-dark: #000;
+    --dt-alert-font-family: var(--font-family);
+    --dt-alert-font-size: 14px;;
+    --dt-alert-font-weight: 700;
+    --dt-alert-background-color: var(--surface-1);
+    --dt-alert-shadow: var(--shadow-0);
+    --dt-alert-border-color: var(--surface-0);
+    --dt-alert-text-color: var(--text-color);
   }
