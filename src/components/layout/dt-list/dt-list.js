@@ -92,8 +92,8 @@ export class DtList extends LitElement {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
         color: #808080;
         border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
       }
@@ -113,17 +113,40 @@ export class DtList extends LitElement {
       @media (max-width: 636px) {
 
         table {
-        grid-template-columns: repeat(1, 1fr)
+        grid-template-columns: minmax(32px, 0.1fr) minmax(32px, 0.1fr) minmax(50px, 0.8fr)
         }
 
+        table td:last-child {
+          border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
+          padding-bottom: 2rem;
+        }
 
         th {
           display: none
         }
 
+        td {
+          border: 0;
+          grid-column:  1 / span 3;
+          padding-inline-start: 1em;
+        }
+
         td::before {
           content: attr(title)": ";
           padding-inline-end: 1em;
+        }
+
+        td.no-title {
+          grid-column:  auto
+        }
+
+        td.bulk_edit_checkbox {
+          grid-column: 1 / auto
+        }
+
+        td.no-title::before {
+          content: "";
+          padding-inline-end: .25em;
         }
       }
     `;
@@ -160,8 +183,8 @@ export class DtList extends LitElement {
   _rowTemplate() {
     return map(this.posts, (post) => html`
       <tr class="dnd-moved" data-link="${this.posts.permalink}">
-          <td class="bulk_edit_checkbox"><input type="checkbox" name="bulk_edit_id" .value="${post.ID}"></td>
-          <td style="white-space: nowrap">1.</td>
+          <td class="bulk_edit_checkbox no-title"><input type="checkbox" name="bulk_edit_id" .value="${post.ID}"></td>
+          <td class="no-title">1.</td>
 
           ${this._cellTemplate(post) }
       </tr>
