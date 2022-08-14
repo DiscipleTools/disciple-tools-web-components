@@ -1,9 +1,7 @@
 import { html, css, LitElement } from 'lit';
 import { map } from 'lit/directives/map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-
-
-
+import '../../icons/dt-star.js';
 
 export class DtList extends LitElement {
   static get styles() {
@@ -33,44 +31,93 @@ export class DtList extends LitElement {
       }
 
       table {
+        display: grid;
         border-collapse: collapse;
-        border-radius: 0;
-        margin-bottom: 1rem;
-        word-wrap: break-word;
-        table-layout: fixed;
-        width: 100%;
+        min-width: 100%;
+        grid-template-columns:
+          minmax(32px, .5fr)
+          minmax(32px, .5fr)
+          minmax(32px, .5fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
       }
+
+      thead,
+      tbody,
+      tr {
+        display: contents;
+      }
+
       tr {
         cursor: pointer;
       }
-      tr:hover {
-        background-color: var(--dt-list-hover-background-color, #ecf5fc);
 
-      td, th, td {
-        padding: .5333333333rem .6666666667rem .6666666667rem;
+      tr:nth-child(2n+1) {
+        background: #f1f1f1;
       }
 
-      tr ul {
+      tr:hover {
+        background-color: var(--dt-list-hover-background-color, #ecf5fc);
+      }
+
+      th {
+        position: sticky;
+        top: 0;
+        background: var(--dt-list-header-background-color, var(--dt-tile-background-color, #fefefe));
+        text-align: start;
+        justify-self: start;
+        font-weight: normal;
+        font-size: 1.1rem;
+        color: var(--dt-list-header-color, #0a0a0a);
+        white-space: pre-wrap;
+        display: grid;
+        align-items: center;
+        justify-items: center;
+      }
+
+      th:last-child {
+        border: 0;
+      }
+
+      td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        color: #808080;
+      }
+
+      ul {
         margin: 0;
         padding: 0;
       }
-      tr ul li {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
 
-      thead th {
-        font-weight: 700;
-        text-align: start;
-        cursor: pointer;
+      ul li {
+        list-style-type: none;
       }
+      @media (max-width: 636px) {
 
-      th, td {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }`;
+        table {
+        grid-template-columns: repeat(1, 1fr)
+        }
+
+
+        th {
+          display: none
+        }
+
+        td::before {
+          content: attr(title)": ";
+          padding-inline-end: 1em;
+        }
+      }
+    `;
   }
 
   static get properties() {
@@ -87,11 +134,11 @@ export class DtList extends LitElement {
     return html`
       <thead>
         <tr>
-          <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default" draggable="true">
+          <th id="bulk_edit_master" class="bulk_edit_checkbox" draggable="true">
             <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
           </th>
 
-          <th style="width:32px; background-image:none; cursor:default" draggable="true">
+          <th draggable="true">
           </th>
 
           ${map(this.columns, (column) =>
@@ -103,50 +150,45 @@ export class DtList extends LitElement {
 
   _rowTemplate() {
     return map(this.posts, (post) => html`
-    <tr class="dnd-moved" data-link="${this.posts.permalink}">
+      <tr class="dnd-moved" data-link="${this.posts.permalink}">
           <td class="bulk_edit_checkbox"><input type="checkbox" name="bulk_edit_id" .value="${post.ID}"></td>
           <td style="white-space: nowrap">1.</td>
 
-          <td dir="auto" title="★">
-            <ul>
-              <li><svg class="icon-star" viewBox="0 0 32 32" data-id="${post.ID}"><use xlink:href="https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/star.svg#star"></use></svg></li>
-            </ul>
-          </td>
-            ${this._cellTemplate(post) }
-            </tr>
-          `);
+          ${this._cellTemplate(post) }
+      </tr>
+    `);
   }
 
   _cellTemplate(post) {
     return map(this.columns, (column) => {
       if (['text', 'textarea', 'number'].includes(this.postTypeSettings[column].type)) {
       return html`
-        <td dir="auto" title="">
+        <td dir="auto" title="${this.postTypeSettings[column].name}">
             <a href="${post[column]}" title="test">${post[column]}</a>
         </td>`
       }
       if (this.postTypeSettings[column].type === 'date') {
         // TODO: format date
         return html`
-        <td dir="auto" title="">
+        <td dir="auto" title="${this.postTypeSettings[column].name}">
             ${post[column].formatted}
         </td>`
       }
       if (this.postTypeSettings[column].type === 'user_select' && post[column] && post[column].display) {
           return html`
-          <td dir="auto" title="">
+          <td dir="auto" title="${this.postTypeSettings[column].name}">
               ${ifDefined(post[column].display)}
           </td>`
       }
       if (this.postTypeSettings[column].type === 'key_select'  && post[column] && post[column].label) {
         return html`
-        <td dir="auto" title="">
+        <td dir="auto" title="${this.postTypeSettings[column].name}">
             ${ifDefined(post[column].label)}
         </td>`
       }
       if (this.postTypeSettings[column].type === 'multi_select' || this.postTypeSettings[column].type === 'tags' && post[column] && post[column].length > 0) {
         return html`
-        <td dir="auto" title="">
+        <td dir="auto" title="${this.postTypeSettings[column].name}">
           <ul>
             ${map(post[column], (value) => html`<li>${this.postTypeSettings[column].default[value].label}</li>`)}
           </ul>
@@ -154,32 +196,34 @@ export class DtList extends LitElement {
       }
       if (this.postTypeSettings[column].type === 'location' || this.postTypeSettings[column].type === 'location_meta') {
         return html`
-        <td dir="auto" title="">
+        <td dir="auto" title="${this.postTypeSettings[column].name}">
             ${ifDefined(post[column].label)}
         </td>`
       }
       if (this.postTypeSettings[column].type === 'communication_channel') {
         return html`
-        <td dir="auto" title="">
+        <td dir="auto" title="${this.postTypeSettings[column].name}">
             ${ifDefined(post[column].value)}
         </td>`
       }
       if (this.postTypeSettings[column].type === 'connection') {
         return html`
-        <td dir="auto" title="">
+        <td dir="auto" title="${this.postTypeSettings[column].name}">
           <!-- TODO: look at this, it doesn't match the current theme. -->
             ${ifDefined(post[column].value)}
         </td>`
       }
       if (this.postTypeSettings[column].type === 'boolean') {
         if (this.postTypeSettings[column] === "favorite") {
-          return html`<td><svg class='icon-star${post[column] === true ? ' selected' : ''}' viewBox="0 0 32 32" data-id=${post.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg></td>`
+          return html`<td dir="auto" title="★">
+          <dt-star></dt-star>
+        </td>`
         }
         if (this.postTypeSettings[column] === true) {
-          return html`<td dir="auto" title="">['&check;']</td>`
+          return html`<td dir="auto" title="${this.postTypeSettings[column].name}">['&check;']</td>`
         }
       }
-      return html`<td dir="auto" title=""></td>`;
+      return html`<td dir="auto" title="${this.postTypeSettings[column].name}"></td>`;
     });
   }
 
@@ -192,12 +236,10 @@ export class DtList extends LitElement {
           </div>
             <span class="filter-result-text">Showing 1 of ${this.total}</span>
         </div>
-        <div>
-          <table>
-            ${this._headerTemplate()}
-            ${this._rowTemplate()}
-          </table>
-        </div>
+        <table>
+          ${this._headerTemplate()}
+          ${this._rowTemplate()}
+        </table>
       </div>
       `;
   }
