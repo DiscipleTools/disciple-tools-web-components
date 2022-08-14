@@ -246,11 +246,9 @@ export class DtList extends LitElement {
         </td>`
       }
       if (this.postTypeSettings[column].type === 'boolean') {
-        console.log(this.postTypeSettings[column]);
-        console.log(post[column]);
-        if (this.postTypeSettings[column] === "favorite") {
-          return html`<td dir="auto" title="★">
-          <dt-star></dt-star>
+        if (column === "favorite") {
+          return html`<td dir="auto" title="★" class="no-title">
+          <dt-star postID=${post.ID}></dt-star>
         </td>`
         }
         if (this.postTypeSettings[column] === true) {
