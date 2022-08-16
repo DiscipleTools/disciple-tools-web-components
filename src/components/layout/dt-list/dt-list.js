@@ -159,22 +159,52 @@ export class DtList extends LitElement {
       posts: { type: Array },
       total: { type: Number },
       columns: { type: Array },
+      loading: { type: Boolean, default: true },
     };
+  }
+
+  _getPosts(offset = 0, sort = null) {
+      this.loading = true;
+      this.filteredOptions = [];
+
+      // need to fetch data via API request
+      const self = this;
+      const event = new CustomEvent('load', {
+        detail: {
+          offset,
+          sort,
+          onSuccess: result => {
+            self.loading = false;
+            self.posts = result.posts;
+          },
+          onError: error => {
+            console.warn(error);
+            self.loading = false;
+          },
+        },
+      });
+      this.dispatchEvent(event);
+      return this.posts;
+  }
+
+  _headerClick(e) {
+    const column = e.target.dataset.id;
+    console.log(column);
   }
 
   _headerTemplate() {
     return html`
       <thead>
         <tr>
-          <th id="bulk_edit_master" class="bulk_edit_checkbox" draggable="true">
+          <th id="bulk_edit_master" class="bulk_edit_checkbox">
             <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
           </th>
 
-          <th draggable="true">
+          <th>
           </th>
 
           ${map(this.columns, (column) =>
-            html`<th class="all" data-id="${column}">${this.postTypeSettings[column].name}</th>`)}
+            html`<th class="all" data-id="${column}" @click=${this._headerClick}>${this.postTypeSettings[column].name}</th>`)}
         </tr>
       </thead>
       `;

@@ -959,6 +959,27 @@ const Template = (args) => html`
   <style>
     ${themeCss(args)}
   </style>
+  <script>
+    function onLoad(event) {
+      console.log('fetching data', event);
+      const { field, query, onSuccess, onError } = event.detail;
+      fetch('https://jsonplaceholder.typicode.com/posts')
+        .then(response => response.json())
+        .then(json => {
+          onSuccess(
+            json
+              .filter(
+                post =>
+                  !query || post.title.includes(query) || post.id === query
+              )
+              .map(post => ({
+                id: post.id.toString(),
+                label: post.title,
+              }))
+          );
+        });
+    }
+  </script>
   <dt-list
     postType="${args.postType}"
     postTypeSettings="${JSON.stringify(args.postTypeSettings)}"
