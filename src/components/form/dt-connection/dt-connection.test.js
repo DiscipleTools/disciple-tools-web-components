@@ -47,7 +47,7 @@ describe('dt-connection', () => {
     expect(optionList).to.contain('button[value="2"]');
     expect(optionList).to.contain('button[value="3"]');
 
-    expect(optionList).to.have.descendant('button[value="1"]').with.trimmed.text('Option 1 (#1)');
+    expect(optionList).to.have.descendant('button[value="1"]').with.contain.trimmed.text('Option 1');
     expect(optionList).to.have.descendant('button[value="2"]').and.contain('svg');
 
     expect(optionList).not.to.be.displayed;
@@ -160,7 +160,7 @@ describe('dt-connection', () => {
 
     setTimeout(() => sendKeys({type: 'o'}));
 
-    const { detail } = await oneEvent(el, 'search');
+    const { detail } = await oneEvent(el, 'load');
 
     expect(detail.field).to.equal('custom-name');
     expect(detail.query).to.equal('o');

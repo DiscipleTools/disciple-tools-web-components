@@ -27,6 +27,7 @@
     "lit": "^2.0.2"
   },
   "devDependencies": {
+    "@babel/eslint-plugin": "^7.6.0",
     "@custom-elements-manifest/analyzer": "^0.4.17",
     "@open-wc/eslint-config": "^4.3.0",
     "@open-wc/testing": "next",
