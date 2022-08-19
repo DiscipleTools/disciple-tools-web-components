@@ -88,10 +88,10 @@ List for displaying list of posts (Contacts, Groups, etc.) and their correspondi
 - [] All field types supported
 - [] date formated properly
 - [] Sortable table
-- [] Fields COlumn Selector
+- [] Fields Column Selector
 - [] Bulk Editor
 - [] Show Archived Toggle
 - [] current filter display
-- [] favorite start toggle
+- [x] favorite start toggle
 - [] draggable table columns
-- [] mobile view styling
+- [x] mobile view styling
