@@ -63,9 +63,17 @@ export class DtList extends LitElement {
         background-color: var(--dt-list-hover-background-color, #ecf5fc);
       }
 
-
       th {
         display: none
+      }
+
+      th.all::after {
+        content: "";
+        grid-template-columns: 4fr 1fr;
+        border-color: var(--text-color-mid) transparent transparent;
+        border-style: solid;
+        border-width: 6px 6px 0;
+        content: "";
       }
 
 
@@ -127,41 +135,40 @@ export class DtList extends LitElement {
         }
 
         th {
-        position: sticky;
-        top: 0;
-        background: var(--dt-list-header-background-color, var(--dt-tile-background-color, #fefefe));
-        text-align: start;
-        justify-self: start;
-        font-weight: normal;
-        font-size: 1.1rem;
-        color: var(--dt-list-header-color, #0a0a0a);
-        white-space: pre-wrap;
-        display: grid;
-        align-items: center;
-        justify-items: center;
-      }
+          position: sticky;
+          top: 0;
+          background: var(--dt-list-header-background-color, var(--dt-tile-background-color, #fefefe));
+          text-align: start;
+          justify-self: start;
+          font-weight: normal;
+          font-size: 1.1rem;
+          color: var(--dt-list-header-color, #0a0a0a);
+          white-space: pre-wrap;
+          display: grid;
+          place-items: center;
+          grid-template-columns: 2fr 1fr;
+        }
 
-      th:last-child {
-        border: 0;
-      }
-      td {
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        padding-top: .5rem;
-        padding-bottom: .5rem;
-        padding-inline-start: 0;
-        color: #808080;
-        border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
-        grid-column: auto;
-      }
-      td::before {
-        content: "";
-        display: none;
-      }
-
+        th:last-child {
+          border: 0;
+        }
+        td {
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          padding-top: .5rem;
+          padding-bottom: .5rem;
+          padding-inline-start: 0;
+          color: var(--text-color-mid);
+          border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
+          grid-column: auto;
+        }
+        td::before {
+          content: "";
+          display: none;
+        }
       }
     `;
   }
@@ -174,6 +181,7 @@ export class DtList extends LitElement {
       total: { type: Number },
       columns: { type: Array },
       loading: { type: Boolean, default: true },
+      offset: { type: Number }
     };
   }
 
@@ -203,7 +211,7 @@ export class DtList extends LitElement {
 
   _headerClick(e) {
     const column = e.target.dataset.id;
-    console.log(column);
+    this._getPosts(this.offset ? this.offset : 0, column)
   }
 
   _headerTemplate() {

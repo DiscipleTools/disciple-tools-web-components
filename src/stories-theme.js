@@ -12,6 +12,7 @@ export const themes = {
       black: '#0a0a0a',
 
       textColor: '#0a0a0a',
+      textColorMid: '#808080',
       textColorInverse: '#fefefe',
 
       surface0: '#e2e2e2',
@@ -355,6 +356,7 @@ export function themeCss(theme) {
 
     --text-color: ${theme.textColor ? theme.textColor : getArg(theme, 'textColor')};
     --text-color-inverse: ${theme.textColorInverse ? theme.textColorInverse : getArg(theme, 'textColorInverse')};
+    --text-color-mid: ${theme.textColorMid ? theme.textColorMid : getArg(theme, 'textColorMid')};
 
     --surface-0: ${theme.surface0 ? theme.surface0 : getArg(theme, 'surface0')};
     --surface-1: ${theme.surface1 ? theme.surface1 : getArg(theme, 'surface1')};
