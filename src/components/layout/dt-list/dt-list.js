@@ -83,6 +83,10 @@ export class DtList extends LitElement {
         grid-column:  auto
       }
 
+      td.line-count {
+        padding-block-start: .8em;
+      }
+
       td.bulk_edit_checkbox {
         grid-column: 1 / auto
       }
@@ -220,10 +224,10 @@ export class DtList extends LitElement {
   }
 
   _rowTemplate() {
-    return map(this.posts, (post) => html`
+    return map(this.posts, (post, i) => html`
       <tr class="dnd-moved" data-link="${this.posts.permalink}">
           <td class="bulk_edit_checkbox no-title"><input type="checkbox" name="bulk_edit_id" .value="${post.ID}"></td>
-          <td class="no-title">1.</td>
+          <td class="no-title line-count">${i+1}.</td>
 
           ${this._cellTemplate(post) }
       </tr>
@@ -286,7 +290,7 @@ export class DtList extends LitElement {
       }
       if (this.postTypeSettings[column].type === 'boolean') {
         if (column === "favorite") {
-          return html`<td dir="auto" title="★" class="no-title">
+          return html`<td dir="auto" title="${this.postTypeSettings[column].name}" class="">
           <dt-star postID=${post.ID}></dt-star>
         </td>`
         }
