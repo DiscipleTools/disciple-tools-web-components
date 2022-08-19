@@ -36,17 +36,12 @@ export class DtList extends LitElement {
         border-top: 0;
         border-collapse: collapse;
         min-width: 100%;
-        grid-template-columns:
-          minmax(32px, .5fr)
-          minmax(32px, .5fr)
-          minmax(32px, .5fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
+        grid-template-columns: minmax(32px, 0.1fr) minmax(32px, 0.1fr) minmax(50px, 0.8fr)
+      }
+
+      table td:last-child {
+        border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
+        padding-bottom: 2rem;
       }
 
       thead,
@@ -67,7 +62,66 @@ export class DtList extends LitElement {
         background-color: var(--dt-list-hover-background-color, #ecf5fc);
       }
 
+
       th {
+        display: none
+      }
+
+
+      td {
+        border: 0;
+        grid-column:  1 / span 3;
+        padding-inline-start: 1em;
+      }
+
+      td::before {
+        content: attr(title)": ";
+        padding-inline-end: 1em;
+      }
+
+      td.no-title {
+        grid-column:  auto
+      }
+
+      td.bulk_edit_checkbox {
+        grid-column: 1 / auto
+      }
+
+      td.no-title::before {
+        content: "";
+        padding-inline-end: .25em;
+      }
+
+
+      ul {
+        margin: 0;
+        padding: 0;
+      }
+
+      ul li {
+        list-style-type: none;
+      }
+
+      input[type="checkbox"] {
+        margin: 1rem;
+      }
+      @media (min-width: 636px) {
+
+        table {
+          grid-template-columns:
+          minmax(32px, .5fr)
+          minmax(32px, .5fr)
+          minmax(32px, .5fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
+          minmax(50px, 1fr)
+        }
+
+        th {
         position: sticky;
         top: 0;
         background: var(--dt-list-header-background-color, var(--dt-tile-background-color, #fefefe));
@@ -85,7 +139,6 @@ export class DtList extends LitElement {
       th:last-child {
         border: 0;
       }
-
       td {
         display: flex;
         align-items: center;
@@ -94,60 +147,16 @@ export class DtList extends LitElement {
         white-space: nowrap;
         padding-top: .5rem;
         padding-bottom: .5rem;
+        padding-inline-start: 0;
         color: #808080;
         border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
+        grid-column: auto;
+      }
+      td::before {
+        content: "";
+        display: none;
       }
 
-      ul {
-        margin: 0;
-        padding: 0;
-      }
-
-      ul li {
-        list-style-type: none;
-      }
-
-      input[type="checkbox"] {
-        margin: 1rem;
-      }
-      @media (max-width: 636px) {
-
-        table {
-        grid-template-columns: minmax(32px, 0.1fr) minmax(32px, 0.1fr) minmax(50px, 0.8fr)
-        }
-
-        table td:last-child {
-          border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
-          padding-bottom: 2rem;
-        }
-
-        th {
-          display: none
-        }
-
-        td {
-          border: 0;
-          grid-column:  1 / span 3;
-          padding-inline-start: 1em;
-        }
-
-        td::before {
-          content: attr(title)": ";
-          padding-inline-end: 1em;
-        }
-
-        td.no-title {
-          grid-column:  auto
-        }
-
-        td.bulk_edit_checkbox {
-          grid-column: 1 / auto
-        }
-
-        td.no-title::before {
-          content: "";
-          padding-inline-end: .25em;
-        }
       }
     `;
   }
