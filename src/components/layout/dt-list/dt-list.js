@@ -181,7 +181,8 @@ export class DtList extends LitElement {
       total: { type: Number },
       columns: { type: Array },
       loading: { type: Boolean, default: true },
-      offset: { type: Number }
+      offset: { type: Number },
+      showArchived: { type: Boolean, default: false }
     };
   }
 
@@ -214,6 +215,10 @@ export class DtList extends LitElement {
     this._getPosts(this.offset ? this.offset : 0, column)
   }
 
+  _toggleShowArchived() {
+    this.showArchived = !this.showArchived;
+  }
+
   _headerTemplate() {
     return html`
       <thead>
@@ -233,14 +238,19 @@ export class DtList extends LitElement {
   }
 
   _rowTemplate() {
-    return map(this.posts, (post, i) => html`
-      <tr class="dnd-moved" data-link="${this.posts.permalink}">
-          <td class="bulk_edit_checkbox no-title"><input type="checkbox" name="bulk_edit_id" .value="${post.ID}"></td>
-          <td class="no-title line-count">${i+1}.</td>
+    return map(this.posts, (post, i) => {
+      if (this.showArchived || !this.showArchived && post.overall_status.key !== 'closed') {
+        return html`
+        <tr class="dnd-moved" data-link="${this.posts.permalink}">
+            <td class="bulk_edit_checkbox no-title"><input type="checkbox" name="bulk_edit_id" .value="${post.ID}"></td>
+            <td class="no-title line-count">${i+1}.</td>
 
-          ${this._cellTemplate(post) }
-      </tr>
-    `);
+            ${this._cellTemplate(post) }
+        </tr>
+      `
+      }
+      return null
+    });
   }
 
   _cellTemplate(post) {
@@ -319,6 +329,7 @@ export class DtList extends LitElement {
             <span class="section-header posts-header" style="display: inline-block">${this.postType} List</span>
           </div>
             <span class="filter-result-text">Showing 1 of ${this.total}</span>
+            <button @click=${this._toggleShowArchived}>Show Archived</button>
         </div>
         <table>
           ${this._headerTemplate()}

@@ -90,7 +90,7 @@ List for displaying list of posts (Contacts, Groups, etc.) and their correspondi
 - [] Sortable table
 - [] Fields Column Selector
 - [] Bulk Editor
-- [] Show Archived Toggle
+- [x] Show Archived Toggle
 - [] current filter display
 - [x] favorite start toggle
 - [] draggable table columns

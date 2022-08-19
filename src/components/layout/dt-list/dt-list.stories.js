@@ -926,6 +926,36 @@ const defaultPosts = [
       "name": "test"
   },
   {
+      "ID": "17",
+      "post_title": "archived",
+      "post_type": "contacts",
+      "post_date": {
+          "timestamp": 1660924474,
+          "formatted": "2022-08-19"
+      },
+      "groups": [],
+      "last_modified": {
+          "timestamp": 1660924616,
+          "formatted": "2022-08-19"
+      },
+      "seeker_path": {
+          "key": "none",
+          "label": "Contact Attempt Needed"
+      },
+      "overall_status": {
+          "key": "closed",
+          "label": "Archived"
+      },
+      "assigned_to": {
+          "id": "1",
+          "type": "user",
+          "display": "micahmills",
+          "assigned-to": "user-1"
+      },
+      "permalink": "https://rsdt.local/contacts/17",
+      "name": "archived"
+  },
+  {
       "ID": "4",
       "post_title": "johndoe",
       "post_type": "contacts",
@@ -938,9 +968,13 @@ const defaultPosts = [
           "timestamp": 1660155962,
           "formatted": "2022-08-10"
       },
+      "overall_status": {
+        "key": "active",
+        "label": "Active"
+      },
       "permalink": "https://dt.local/contacts/15",
       "name": "johndoe"
-  }
+  },
 ]
 
 export default {
