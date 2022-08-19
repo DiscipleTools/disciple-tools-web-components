@@ -267,20 +267,20 @@ export class DtMultiSelect extends DtFormBase {
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
 
-    // check for `onchange` html attribute to trigger event from attribute
-    // todo: test across browsers, `dispatchEvent` seems to work for html `onchange` in Chrome on MacOS
-    // if (this.onchange) {
-    //   // eslint-disable-next-line no-new-func
-    //   const fn = new Function('event', this.onchange);
-    //   // eval(this.onchange + '()');
-    //   fn(event);
-    // }
     this._filterOptions();
   }
 
   _remove(e) {
     if (e.target && e.target.dataset && e.target.dataset.value) {
       this.value = (this.value || []).filter(i => i !== e.target.dataset.value);
+
+      // re-filter available options once option is de-selected
+      this._filterOptions();
+
+      // If option was de-selected while list was open, re-focus input
+      if (this.open) {
+        this.shadowRoot.querySelector('input').focus();
+      }
     }
   }
 

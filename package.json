@@ -7,6 +7,10 @@
   "version": "0.0.1",
   "main": "index.js",
   "module": "index.js",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
   "scripts": {
     "analyze": "cem analyze --litelement",
     "start": "web-dev-server",

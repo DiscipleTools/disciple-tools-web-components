@@ -155,4 +155,25 @@ describe('dt-multi-select', () => {
     expect(optionsList).to.contain('button[value=opt2]');
     expect(optionsList).to.contain('button[value=opt3]');
   });
+
+  it('filters options on option removal', async () => {
+    const el = await fixture(html`<dt-multi-select value="${JSON.stringify(['opt1','opt2'])}" options="${JSON.stringify(options)}"></dt-multi-select>`);
+    const container = el.shadowRoot.querySelector('.field-container');
+
+    expect(container).to.contain('button[data-value=opt1]');
+
+    const optionBtn = el.shadowRoot.querySelector(`.selected-option button[data-value=opt1]`);
+    optionBtn.click();
+    await wait(100);
+
+    const input = el.shadowRoot.querySelector('input');
+    const optionsList = el.shadowRoot.querySelector('.option-list');
+    input.focus();
+
+    await wait(50); // wait for UI update
+
+    expect(optionsList).to.contain('button[value=opt3]');
+    expect(optionsList).to.contain('button[value=opt1]');
+    expect(optionsList).not.to.contain('button[value=opt2]');
+  });
 });
