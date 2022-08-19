@@ -6,34 +6,42 @@ const basicOptions = [
   {
     id: 'opt1',
     label: 'Option 1',
+    link: '/#opt1',
   },
   {
     id: 'opt2',
     label: 'Option 2',
+    link: '/#opt2',
   },
   {
     id: 'opt3',
     label: 'Option 3',
+    link: '/#opt3',
   },
   {
     id: 'opt4',
     label: 'Option 4',
+    link: '/#opt4',
   },
   {
     id: 'opt5',
     label: 'Option 5',
+    link: '/#opt5',
   },
   {
     id: 'opt6',
     label: 'Option 6',
+    link: '/#opt6',
   },
   {
     id: 'opt7',
     label: 'Option 7',
+    link: '/#opt7',
   },
   {
     id: 'opt8',
     label: 'Option 8',
+    link: '/#opt8',
   },
 ];
 export default {
@@ -242,12 +250,7 @@ CustomPlaceholder.args = {
 
 export const SelectedValue = Template.bind({});
 SelectedValue.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
+  value: [basicOptions[1]],
 };
 
 export const LoadOptionsFromAPI = Template.bind({});

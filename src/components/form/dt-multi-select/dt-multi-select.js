@@ -43,10 +43,12 @@ export class DtMultiSelect extends DtFormBase {
         display: flex;
         font-size: 0.875rem;
         position: relative;
-        padding-inline-start: 4px;
         border-radius: 2px;
         margin-inline-end: 4px;
         margin-block-end: 0.375rem;
+      }
+      .selected-option > *:first-child {
+        padding-inline-start: 4px;      
       }
       .selected-option * {
         align-self: center;

@@ -6,35 +6,53 @@ const basicOptions = [
   {
     id: '1',
     label: 'Option 1',
+    link: '/#opt1',
+    status: {
+      key: 'active',
+      label: 'Active',
+      color: '#4CAF50',
+    },
   },
   {
     id: '2',
     label: 'User 2',
+    link: '/#opt2',
     user: true,
+    status: {
+      key: 'assigned',
+      label: 'Waiting to be accepted',
+      color: '#FF9800',
+    },
   },
   {
     id: '3',
     label: 'Option 3',
+    link: '/#opt3',
   },
   {
     id: '4',
     label: 'Option 4',
+    link: '/#opt4',
   },
   {
     id: '5',
     label: 'Option 5',
+    link: '/#opt5',
   },
   {
     id: '6',
     label: 'Option 6',
+    link: '/#opt6',
   },
   {
     id: '7',
     label: 'Option 7',
+    link: '/#opt7',
   },
   {
     id: '8',
     label: 'Option 8',
+    link: '/#opt8',
   },
 ];
 export default {
@@ -251,6 +269,13 @@ SelectedValue.args = {
     },
   ],
   options: basicOptions,
+};
+
+export const OptionsOpen = Template.bind({});
+OptionsOpen.args = {
+  value: [basicOptions[0]],
+  options: basicOptions,
+  open: true,
 };
 
 export const LoadOptionsFromAPI = Template.bind({});
