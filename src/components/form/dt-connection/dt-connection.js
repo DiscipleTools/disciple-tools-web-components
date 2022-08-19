@@ -3,9 +3,9 @@ import { DtTags } from '../dt-tags/dt-tags.js';
 
 export class DtConnection extends DtTags {
   static get styles() {
-    return css`
-      ${super.styles}
-
+    return [
+      ...super.styles,
+      css`
       .selected-option a {
         border-left: solid 3px transparent;
       }
@@ -39,7 +39,7 @@ export class DtConnection extends DtTags {
       li button svg use {
         fill: var(--dt-connection-icon-fill, #3f729b);
       }
-    `;
+    `];
   }
 
   _renderSelectedOptions() {

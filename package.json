@@ -36,6 +36,7 @@
     "@web/dev-server-storybook": "next",
     "@web/rollup-plugin-copy": "^0.3.0",
     "@web/test-runner": "^0.13.22",
+    "element-internals-polyfill": "^1.1.9",
     "eslint": "^8.20.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^4.3.8",

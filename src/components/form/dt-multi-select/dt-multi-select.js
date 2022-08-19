@@ -5,14 +5,15 @@ import '../../icons/dt-checkmark.js';
 
 export class DtMultiSelect extends DtFormBase {
   static get styles() {
-    return css`
-      :host, .container {
-        position: relative;
+    return [
+      ...super.styles,
+      css`
+      :host {
         position: relative;
         font-family: Helvetica, Arial, sans-serif;
       }
 
-      .container {
+      .input-group {
         color: var(--dt-multi-select-text-color, #0a0a0a);
       }
 
@@ -124,18 +125,7 @@ export class DtMultiSelect extends DtFormBase {
         cursor: pointer;
         background: var(--dt-multi-select-option-hover-background, #f5f5f5);
       }
-
-      /* === Inline Icons === */
-      .icon-overlay {
-        position: absolute;
-        inset-inline-end: 2rem;
-        top: 0;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    `;
+    `];
   }
 
   static get properties() {
@@ -165,8 +155,6 @@ export class DtMultiSelect extends DtFormBase {
         type: Number,
         state: true,
       },
-      loading: { type: Boolean },
-      saved: { type: Boolean },
       onchange: { type: String },
     };
   }
@@ -184,7 +172,7 @@ export class DtMultiSelect extends DtFormBase {
 
   updated() {
     if (this.shadowRoot.children && this.shadowRoot.children.length) {
-      this.containerHeight = this.shadowRoot.querySelector('.container').offsetHeight;
+      this.containerHeight = this.shadowRoot.querySelector('.input-group').offsetHeight;
     }
     this._scrollOptionListToActive();
   }
@@ -442,7 +430,7 @@ export class DtMultiSelect extends DtFormBase {
     return html`
     ${this.labelTemplate()}
 
-    <div class="container">
+    <div class="input-group">
       <div
         class="field-container"
         @click="${this._focusInput}"
@@ -468,7 +456,7 @@ export class DtMultiSelect extends DtFormBase {
       ${this.loading
         ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
         : null}
-      ${this.saved ? html`<dt-checkmark class="icon-overlay"></dt-checkmark>` : null}
+      ${this.saved ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}
     </div>
     `;
   }

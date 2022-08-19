@@ -28,6 +28,8 @@ function Template(args) {
     label = 'Field Name',
     value = '',
     disabled = false,
+    required = false,
+    requiredMessage = '',
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     isPrivate,
     privateLabel,
@@ -46,6 +48,8 @@ function Template(args) {
       label=${label}
       value=${value}
       ?disabled=${disabled}
+      ?required=${required}
+      requiredMessage=${requiredMessage}
       icon="${icon}"
       ?private=${isPrivate}
       privateLabel="${privateLabel}"
@@ -82,4 +86,58 @@ privateField.args = {
   isPrivate: true,
   value: 'Lorem Ipsum',
   privateLabel: 'This is a custom tooltip',
+};
+
+const FormDecorator = (story) => html`<form onsubmit="onFormSubmit(event)">
+    ${story()}  
+      
+    <button type="submit">Submit</button>
+    
+    <pre><output></output></pre>
+  </form>
+  <script>
+  function onFormSubmit(event) {
+    if (event) {
+      event.preventDefault();
+    }
+    
+    const output = document.querySelector('output');
+        
+    const form = event.target;
+  
+    /** Get all of the form data */
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((value, key) => data[key] = value);
+    output.innerHTML = JSON.stringify(data, null, 2);
+  }
+  </script>
+`;
+
+export const Loading = Template.bind({});
+Loading.args = {
+  loading: true,
+};
+export const Saved = Template.bind({});
+Saved.args = {
+  saved: true,
+};
+
+export const basicForm = Template.bind({});
+basicForm.decorators = [FormDecorator];
+basicForm.args = {
+  value: 'Lorem Ipsum',
+};
+
+export const required = Template.bind({});
+required.decorators = [FormDecorator];
+required.args = {
+  required: true,
+};
+
+export const requiredCustomMessage = Template.bind({});
+requiredCustomMessage.decorators = [FormDecorator];
+requiredCustomMessage.args = {
+  required: true,
+  requiredMessage: 'Custom error message',
 };

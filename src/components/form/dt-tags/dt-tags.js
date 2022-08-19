@@ -10,16 +10,16 @@ export class DtTags extends DtMultiSelect {
     };
   }
   static get styles() {
-    return css`
-      ${super.styles}
-      
+    return [
+      ...super.styles,
+      css`      
       .selected-option a,
       .selected-option a:active,
       .selected-option a:visited {
         text-decoration: none;
         color: var(--primary-color, #3f729b);
       }
-    `;
+    `];
   }
 
   firstUpdated() {

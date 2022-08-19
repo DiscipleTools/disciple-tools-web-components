@@ -23,8 +23,9 @@ export class DtCheckmark extends LitElement {
         height: 1rem;
         width: 0.5rem;
         opacity: 0;
-        border-bottom: var(--dt-checkmark-width) solid var(--dt-checkmark-color);
-        border-right: var(--dt-checkmark-width) solid var(--dt-checkmark-color);
+        color: inherit;
+        border-bottom: var(--dt-checkmark-width) solid currentcolor;
+        border-right: var(--dt-checkmark-width) solid currentcolor;
         animation: fadeOut 4s;
       }
     `;

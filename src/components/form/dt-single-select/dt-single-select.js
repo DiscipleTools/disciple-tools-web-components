@@ -5,7 +5,9 @@ import '../../icons/dt-checkmark.js';
 
 export class DtSingleSelect extends DtFormBase {
   static get styles() {
-    return css`
+    return [
+      ...super.styles,
+      css`
       :host {
         position: relative;
       }
@@ -51,15 +53,9 @@ export class DtSingleSelect extends DtFormBase {
       }
 
       .icon-overlay {
-        position: absolute;
-        right: 2rem;
-        top: 0;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        inset-inline-end: 2.5rem;
       }
-    `;
+    `];
   }
 
   static get properties() {
@@ -76,8 +72,6 @@ export class DtSingleSelect extends DtFormBase {
         type: String,
         state: true,
       },
-      loading: { type: Boolean },
-      saved: { type: Boolean },
       onchange: { type: String },
     };
   }
@@ -148,7 +142,7 @@ export class DtSingleSelect extends DtFormBase {
         ${this.loading
           ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
           : null}
-        ${this.saved ? html`<dt-checkmark class="icon-overlay"></dt-checkmark>` : null}
+        ${this.saved ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}
       </div>
     `;
   }
