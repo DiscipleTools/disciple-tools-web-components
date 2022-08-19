@@ -17,6 +17,7 @@ export class DtList extends LitElement {
       }
 
       .section {
+        container-type: inline-size;
         background-color: var(--dt-tile-background-color, #fefefe);
         border: 1px solid var(--dt-list-border-color, #f1f1f1);
         border-radius: 10px;
@@ -109,7 +110,7 @@ export class DtList extends LitElement {
       input[type="checkbox"] {
         margin: 1rem;
       }
-      @media (min-width: 636px) {
+      @container (min-width: 650px) {
 
         table {
           grid-template-columns:
