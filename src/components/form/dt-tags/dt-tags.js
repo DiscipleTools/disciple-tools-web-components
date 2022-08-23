@@ -29,7 +29,7 @@ export class DtTags extends DtMultiSelect {
   _clickOption(e) {
     if (e.target && e.target.value) {
       const id = e.target.value;
-      const option = this.options.reduce((result, option) => {
+      const option = this.filteredOptions.reduce((result, option) => {
         if (!result && option.id === id) {
           return option;
         }
@@ -165,8 +165,8 @@ export class DtTags extends DtMultiSelect {
     return (this.value || []).map(
       opt => html`
         <div class="selected-option">
-          <a href="${opt.link}" alt="${opt.status ? opt.status.label : opt.label}">${opt.label}</a>
-          <button @click="${this._remove}" data-value="${opt.id}">x</button>
+          <a href="${opt.link}" ?disabled="${this.disabled}" alt="${opt.status ? opt.status.label : opt.label}">${opt.label}</a>
+          <button @click="${this._remove}" ?disabled="${this.disabled}" data-value="${opt.id}">x</button>
         </div>
       `
     );

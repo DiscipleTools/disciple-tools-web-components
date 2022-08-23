@@ -1,21 +1,19 @@
 DT Components
 
 Fields
-- [ ] [Text](src/components/form/dt-text/README.md)
-- [ ] [Textarea](src/components/form/dt-textarea/README.md)
+- [x] [Text](src/components/form/dt-text/README.md)
+- [x] [Textarea](src/components/form/dt-textarea/README.md)
 - [ ] Boolean
 - [x] [Key select](src/components/form/dt-single-select/README.md)
 - [x] [Multi Select](src/components/form/dt-multi-select/README.md)
 - [x] [Tags](src/components/form/dt-tags/README.md)
-- [ ] [Communication Channel](src/components/form/dt-communication-channel/README.md)
-- [ ] [Date](src/components/form/dt-date/README.md)
+- [x] [Communication Channel](src/components/form/dt-communication-channel/README.md)
+- [x] [Date](src/components/form/dt-date/README.md)
 - [ ] [User Select](src/components/form/dt-user-select/README.md)
-- [ ] [Number](src/components/form/dt-number/README.md)
-- [ ] Location Grid
+- [x] [Number](src/components/form/dt-number/README.md)
+- [x] [Location](src/components/form/dt-location/README.md)
 - [ ] Location Grid Meta (Mapbox)
 - [x] [Connection](src/components/form/dt-connection/README.md)
-- [ ] Connection Meta
-- [ ] Post User Meta
 - [x] [Label](src/components/form/dt-label/README.md)
 
 Page Layout
@@ -24,7 +22,7 @@ Page Layout
 - [ ] Second Bar
 - [ ] Post List
 - [ ] Filters accordian
-- [ ] [Tile](src/components/layout/dt-tile/README.md)
+- [x] [Tile](src/components/layout/dt-tile/README.md)
 - [ ] Comments and Activity
     - [ ] Comment and Comment Type box
     - [ ] Quick Actions
