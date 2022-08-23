@@ -1,4 +1,5 @@
 import { html, css } from 'lit';
+import {styleMap} from 'lit/directives/style-map.js';
 import DtFormBase from '../dt-form-base.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
@@ -259,7 +260,27 @@ export class DtMultiSelect extends DtFormBase {
 
     // update value in this component
     if (this.value && this.value.length) {
-      this.value = [...this.value, value];
+      if (typeof this.value[0] === 'string') {
+        // If value is array of strings, check for same value prefixed with hyphen
+        this.value = [...this.value.filter(i => i !== '-' + value), value];
+      } else {
+        // If value is array of objects, check for same value with `delete` property
+        let foundPrevious = false;
+        const newVal = this.value.map(i => {
+          const val = {
+            ...i,
+          };
+          if (i.id === value.id && i.delete) {
+            delete val.delete;
+            foundPrevious = true;
+          }
+          return val;
+        });
+        if (!foundPrevious) {
+          newVal.push(value);
+        }
+        this.value = newVal;
+      }
     } else {
       this.value = [value];
     }
@@ -275,7 +296,7 @@ export class DtMultiSelect extends DtFormBase {
 
   _remove(e) {
     if (e.target && e.target.dataset && e.target.dataset.value) {
-      this.value = (this.value || []).filter(i => i !== e.target.dataset.value);
+      this.value = (this.value || []).map(i => i === e.target.dataset.value ? '-' + i : i);
 
       // re-filter available options once option is de-selected
       this._filterOptions();
@@ -440,6 +461,10 @@ export class DtMultiSelect extends DtFormBase {
   }
 
   render() {
+    const optionListStyles = {
+      display: this.open ? 'block' : 'none',
+      top: this.containerHeight + 'px',
+    };
     return html`
     ${this.labelTemplate()}
 
@@ -462,8 +487,7 @@ export class DtMultiSelect extends DtFormBase {
       </div>
       <ul
         class="option-list"
-        style="display:${this.open ? 'block' : 'none'};top:${this
-          .containerHeight}px;"
+        style=${styleMap(optionListStyles)}
       >
         ${this._renderOptions()}
       </ul>

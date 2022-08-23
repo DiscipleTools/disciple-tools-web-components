@@ -24,10 +24,6 @@ export class DtLocation extends DtTags {
     `];
   }
 
-  _changeEventDetails(details) {
-    return details;
-  }
-
   /**
    * Filter to options that:
    *   1: are not selected
@@ -35,7 +31,7 @@ export class DtLocation extends DtTags {
    * @private
    */
   _filterOptions() {
-    const selectedValues = (this.value || []).map(v => v?.id);
+    const selectedValues = (this.value || []).filter(i => !i.delete).map(v => v?.id);
 
     if (this.options?.length) {
       this.filteredOptions = (this.options || []).filter(
@@ -53,6 +49,7 @@ export class DtLocation extends DtTags {
       // need to fetch data via API request
       const self = this;
       const event = new CustomEvent('load', {
+        bubbles: true,
         detail: {
           field: this.name,
           query: this.query,

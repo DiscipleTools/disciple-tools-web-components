@@ -126,6 +126,31 @@ describe('dt-location', () => {
     expect(el).to.have.attr('value', JSON.stringify([options[0]]));
   });
 
+  it('marks removed options with `delete`', async () => {
+    const el = await fixture(html`<dt-location value="${JSON.stringify([options[0],options[1]])}" options="${JSON.stringify(options)}"></dt-location>`);
+
+    const optionBtn = el.shadowRoot.querySelector(`.selected-option button[data-value=opt1]`);
+    optionBtn.click();
+    await wait(100);
+
+    expect(el.value).to.deep.include({id: 'opt2', label: options[1].label});
+    expect(el.value).to.deep.include({id: 'opt1', label: options[0].label, delete: true});
+  });
+
+  it('adds previously removed value', async () => {
+    const el = await fixture(html`<dt-location value="${JSON.stringify([{id:options[0].id,label: 'old', delete:true}])}" options="${JSON.stringify(options)}"></dt-location>`);
+    const input = el.shadowRoot.querySelector('input');
+
+    input.focus();
+
+    const optionBtn = el.shadowRoot.querySelector('.option-list button[value=opt1]');
+    optionBtn.click();
+    await wait(100);
+
+    expect(el.value).to.deep.include({id: 'opt1', label: 'old'});
+    expect(el.value).to.not.deep.include({id: 'opt1', label: 'old', delete: true});
+  });
+
   it('triggers change event', async () => {
     const el = await fixture(html`<dt-location name="custom-name" value="${JSON.stringify([options[1]])}" options="${JSON.stringify(options)}"></dt-location>`);
 

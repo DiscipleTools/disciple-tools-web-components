@@ -113,6 +113,34 @@ describe('dt-multi-select', () => {
     expect(el).to.have.attr('value', JSON.stringify(['opt1']));
   });
 
+  it('prefixes removed options with hyphen', async () => {
+    const el = await fixture(html`<dt-multi-select value="${JSON.stringify(['opt1','opt2'])}" options="${JSON.stringify(options)}"></dt-multi-select>`);
+    const container = el.shadowRoot.querySelector('.field-container');
+
+    expect(container).to.contain('button[data-value=opt1]');
+
+    const optionBtn = el.shadowRoot.querySelector(`.selected-option button[data-value=opt1]`);
+    optionBtn.click();
+    await wait(100);
+
+    expect(el.value).to.contain('opt2');
+    expect(el.value).to.contain('-opt1');
+  });
+
+  it('adds previously removed value', async () => {
+    const el = await fixture(html`<dt-multi-select value="${JSON.stringify(['-opt1'])}" options="${JSON.stringify(options)}"></dt-multi-select>`);
+    const input = el.shadowRoot.querySelector('input');
+    const optionBtn = el.shadowRoot.querySelector('.option-list button[value=opt1]');
+
+    input.focus();
+
+    optionBtn.click();
+    await wait(100);
+
+    expect(el.value).to.contain('opt1');
+    expect(el.value).to.not.contain('-opt1');
+  });
+
   it('triggers change event', async () => {
     const el = await fixture(html`<dt-multi-select name="custom-name" value="${JSON.stringify(['opt2'])}" options="${JSON.stringify(options)}"></dt-multi-select>`);
 

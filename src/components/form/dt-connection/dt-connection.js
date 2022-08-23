@@ -43,7 +43,7 @@ export class DtConnection extends DtTags {
   }
 
   _renderSelectedOptions() {
-    return (this.value || []).map(
+    return (this.value || []).filter(i => !i.delete).map(
       opt => html`
         <div class="selected-option">
           <a href="${opt.link}" 
