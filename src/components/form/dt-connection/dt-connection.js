@@ -48,8 +48,9 @@ export class DtConnection extends DtTags {
         <div class="selected-option">
           <a href="${opt.link}" 
              style="border-left-color: ${opt.status ? opt.status.color : ''}"
+             ?disabled="${this.disabled}"
              title="${opt.status ? opt.status.label : opt.label}">${opt.label}</a>
-          <button @click="${this._remove}" data-value="${opt.id}">x</button>
+          <button @click="${this._remove}" ?disabled="${this.disabled}" data-value="${opt.id}">x</button>
         </div>
       `
     );

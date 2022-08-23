@@ -216,6 +216,12 @@ AutoSave.args = {
   onchange: 'onChange(event)',
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+  value: ['opt2'],
+  options: basicOptions,
+  disabled: true,
+};
 export const Loading = Template.bind({});
 Loading.args = {
   value: ['opt2'],

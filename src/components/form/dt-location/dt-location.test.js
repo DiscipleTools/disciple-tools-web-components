@@ -208,12 +208,16 @@ describe('dt-location', () => {
   });
 
   it('disables inputs', async () => {
-    const el = await fixture(html`<dt-location disabled></dt-location>`);
+    const el = await fixture(html`<dt-location disabled value="${JSON.stringify([options[1]])}" options="${JSON.stringify(options)}"></dt-location>`);
 
     const input = el.shadowRoot.querySelector(('input'));
     expect(input).to.have.attribute('disabled');
 
-    const select = el.shadowRoot.querySelector(('select'));
-    expect(select).to.have.attribute('disabled');
+    const inputGroup = el.shadowRoot.querySelector('.input-group');
+    expect(inputGroup).to.have.class('disabled');
+
+    const selectedOption = el.shadowRoot.querySelector('.selected-option');
+    expect(selectedOption).to.have.descendant('button').with.attribute('disabled');
+    expect(selectedOption).to.have.descendant('a').with.attribute('disabled');
   });
 });

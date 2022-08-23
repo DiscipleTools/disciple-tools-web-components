@@ -39,5 +39,5 @@ Implementation of the Tags field that customizes the options list for displaying
 - [x] placeholder
 - [x] loading
 - [x] saved
-- [ ] disabled
+- [x] disabled
 

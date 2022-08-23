@@ -39,5 +39,5 @@ Implementation of the Tags field that adds a filter dropdown to specify types of
 - [x] loading
 - [x] saved
 - [x] filter dropdown
-- [ ] disabled
+- [x] disabled
 

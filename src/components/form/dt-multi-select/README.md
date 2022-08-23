@@ -32,6 +32,5 @@ Select field that allows multiple values to be selected.
 - [x] placeholder
 - [x] loading
 - [x] saved
-- [ ] disabled
-- [ ] option icon
+- [x] disabled
 

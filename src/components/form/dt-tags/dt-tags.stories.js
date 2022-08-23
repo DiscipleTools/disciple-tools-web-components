@@ -269,6 +269,17 @@ AutoSave.args = {
   onchange: 'onChange(event)',
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+  value: [
+    {
+      id: '2',
+      label: 'qui est esse',
+    },
+  ],
+  options: basicOptions,
+  disabled: true,
+};
 export const Loading = Template.bind({});
 Loading.args = {
   value: [

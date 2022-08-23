@@ -12,6 +12,9 @@ export default class DtFormBase extends LitElement {
     .input-group {
       position: relative;
     }
+    .input-group.disabled {
+      background-color: var(--disabled-color);
+    }
     
     /* === Inline Icons === */
       .icon-overlay {
@@ -38,6 +41,7 @@ export default class DtFormBase extends LitElement {
       icon: { type: String },
       private: { type: Boolean },
       privateLabel: { type: String },
+      disabled: { type: Boolean },
       required: { type: Boolean },
       requiredMessage: { type: String },
       touched: {

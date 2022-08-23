@@ -15,6 +15,19 @@ export class DtMultiSelect extends DtFormBase {
 
       .input-group {
         color: var(--dt-multi-select-text-color, #0a0a0a);
+        margin-bottom: 1rem;
+      }
+      .input-group.disabled input,
+      .input-group.disabled .field-container {
+        background-color: var(--disabled-color);
+      }
+      .input-group.disabled a,
+      .input-group.disabled button {
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .input-group.disabled *:hover {
+        cursor: not-allowed;
       }
 
       .field-container {
@@ -26,7 +39,7 @@ export class DtMultiSelect extends DtFormBase {
         font-weight: 300;
         min-height: 2.5rem;
         line-height: 1.5;
-        margin: 0 0 1.0666666667rem;
+        margin: 0;
         padding-top: 0.54rem;
         padding-bottom: 0.54rem;
         padding-inline: 0.54rem 1.6rem;
@@ -389,7 +402,7 @@ export class DtMultiSelect extends DtFormBase {
           opt => html`
             <div class="selected-option">
               <span>${opt.label}</span>
-              <button @click="${this._remove}" data-value="${opt.id}">x</button>
+              <button @click="${this._remove}" ?disabled="${this.disabled}" data-value="${opt.id}">x</button>
             </div>
           `
         )
@@ -430,7 +443,7 @@ export class DtMultiSelect extends DtFormBase {
     return html`
     ${this.labelTemplate()}
 
-    <div class="input-group">
+    <div class="input-group ${this.disabled ? 'disabled' : ''}">
       <div
         class="field-container"
         @click="${this._focusInput}"
@@ -444,6 +457,7 @@ export class DtMultiSelect extends DtFormBase {
           @blur="${this._inputFocusOut}"
           @keydown="${this._inputKeyDown}"
           @keyup="${this._inputKeyUp}"
+          ?disabled="${this.disabled}"
         />
       </div>
       <ul

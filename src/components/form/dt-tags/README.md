@@ -39,5 +39,5 @@ Can also fetch options from API
 - [x] placeholder
 - [x] loading
 - [x] saved
-- [ ] disabled
+- [x] disabled
 
