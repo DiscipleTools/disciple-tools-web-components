@@ -1,4 +1,5 @@
 import { html, css } from 'lit';
+import {ifDefined} from 'lit/directives/if-defined.js';
 import DtFormBase from '../dt-form-base.js';
 
 export class DtNumberField extends DtFormBase {
@@ -84,9 +85,9 @@ export class DtNumberField extends DtFormBase {
         type="number"
         ?disabled=${this.disabled}
         class="text-input"
-        .value="${this.value}"
-        min="${this.min}"
-        max="${this.max}"
+        value="${this.value}"
+        min="${ifDefined(this.min)}"
+        max="${ifDefined(this.max)}"
         @change=${this.onChange}
       />
     `;
