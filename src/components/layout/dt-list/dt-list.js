@@ -188,7 +188,6 @@ export class DtList extends LitElement {
   }
 
   async _getPosts(offset = 0, sortBy = null, sortOrder = "desc") {
-    console.log(this.postType);
       this.loading = true;
       this.filteredOptions = [];
       const response = await DtAPI.makeRequestOnPosts('GET', this.postType, {
