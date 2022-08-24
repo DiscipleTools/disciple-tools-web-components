@@ -2,6 +2,7 @@ import { html } from 'lit-html';
 import { themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-list.js';
 
+
 const defaultColumns = ["favorite","name","overall_status","seeker_path","milestones","assigned_to","groups","last_modified"];
 
 const defaultPostTypeSettings = {
@@ -980,7 +981,7 @@ const defaultPosts = [
 export default {
   title: 'dt-list',
   component: 'dt-list',
-  postType: 'Contacts',
+  postType: 'contacts',
   args: {
     postTypeSettings: {},
     columns: [],
@@ -989,31 +990,15 @@ export default {
   argTypes,
 };
 
-const Template = (args) => html`
+function Template(args) {
+const {
+  loading = false,
+} = args;
+return html`
   <style>
     ${themeCss(args)}
   </style>
-  <script>
-    function onLoad(event) {
-      console.log('fetching data', event);
-      const { field, query, onSuccess, onError } = event.detail;
-      fetch('https://jsonplaceholder.typicode.com/posts')
-        .then(response => response.json())
-        .then(json => {
-          onSuccess(
-            json
-              .filter(
-                post =>
-                  !query || post.title.includes(query) || post.id === query
-              )
-              .map(post => ({
-                id: post.id.toString(),
-                label: post.title,
-              }))
-          );
-        });
-    }
-  </script>
+
   <dt-list
     postType="${args.postType}"
     postTypeSettings="${JSON.stringify(args.postTypeSettings)}"
@@ -1022,11 +1007,19 @@ const Template = (args) => html`
     columns="${args.columns}"
   ></dt-list>
   `;
+}
 
 export const Basic = Template.bind({});
 Basic.args = {
-  postType: 'Contact',
+  postType: 'contacts',
   postTypeSettings: defaultPostTypeSettings,
   columns: JSON.stringify(defaultColumns),
   posts:JSON.stringify(defaultPosts),
+};
+
+export const LoadFromApi = Template.bind({});
+LoadFromApi.args = {
+  postType: 'contacts',
+  postTypeSettings: defaultPostTypeSettings,
+  columns: JSON.stringify(defaultColumns),
 };

@@ -1,6 +1,7 @@
 import { html, css, LitElement } from 'lit';
 import { map } from 'lit/directives/map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { DtAPI } from '../../../services/dt-api.js';
 import '../../icons/dt-star.js';
 
 export class DtList extends LitElement {
@@ -186,28 +187,17 @@ export class DtList extends LitElement {
     };
   }
 
-  _getPosts(offset = 0, sort = null) {
+  async _getPosts(offset = 0, sortBy = null, sortOrder = "desc") {
+    console.log(this.postType);
       this.loading = true;
       this.filteredOptions = [];
+      const response = await DtAPI.makeRequestOnPosts('GET', this.postType, {
+        "sort": sortBy,
+        "fields_to_return": this.columns,
+    }, '/', 'c4ad4e06f8' )
 
-      // need to fetch data via API request
-      const self = this;
-      const event = new CustomEvent('load', {
-        detail: {
-          offset,
-          sort,
-          onSuccess: result => {
-            self.loading = false;
-            self.posts = result.posts;
-          },
-          onError: error => {
-            console.warn(error);
-            self.loading = false;
-          },
-        },
-      });
-      this.dispatchEvent(event);
-      return this.posts;
+    return response;
+
   }
 
   _headerClick(e) {
@@ -321,6 +311,16 @@ export class DtList extends LitElement {
     });
   }
 
+  connectedCallback() {
+    super.connectedCallback()
+    if (!this.posts) {
+      this._getPosts().then(posts => {
+        this.posts = posts
+      }
+      )
+    }
+  }
+
   render() {
     return html`
       <div class="section">
@@ -333,7 +333,7 @@ export class DtList extends LitElement {
         </div>
         <table>
           ${this._headerTemplate()}
-          ${this._rowTemplate()}
+          ${this.posts? this._rowTemplate() : 'Loading'}
         </table>
       </div>
       `;

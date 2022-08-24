@@ -25,7 +25,6 @@ export const DtAPI = (() => {
     const response = await fetch( fullURL, options )
 
     const content = await response.json();
-    console.log(content);
     return content
   }
 
@@ -49,7 +48,6 @@ export const DtAPI = (() => {
 
     const response = await fetch( fullURL, options )
     const content = await response.json();
-    console.log(content);
     return content
   }
 
