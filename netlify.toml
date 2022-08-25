@@ -1,3 +1,4 @@
+[[headers]]
 /assets/mocks/mock-service-worker.js
   # headers for that path:
   Service-Worker-Allowed: "/"
