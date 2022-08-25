@@ -1,5 +1,3 @@
-console.log('this is preview.js');
-
 const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
     try {
