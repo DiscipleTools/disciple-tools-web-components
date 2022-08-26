@@ -1,4 +1,4 @@
 [[headers]]
-/assets/mocks/mock-service-worker.js
-  # headers for that path:
-  Service-Worker-Allowed: "/"
+  for = "/assets/mocks/mock-service-worker.js"
+  [headers.values]
+    Service-Worker-Allowed: "/"
