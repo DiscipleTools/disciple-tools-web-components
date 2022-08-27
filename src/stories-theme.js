@@ -12,6 +12,7 @@ export const themes = {
       black: '#0a0a0a',
 
       textColor: '#0a0a0a',
+      textColorMid: '#808080',
       textColorInverse: '#fefefe',
 
       surface0: '#e2e2e2',
@@ -32,7 +33,6 @@ export const themes = {
       fontFamily: 'Helvetica, Arial, sans-serif',
 
       formBorderColor: 'var(--border-color)',
-      formBorderColorAlert: 'var(--alert-color)',
       formBackgroundColor: 'var(--surface-1)',
       formDisabledBackgroundColor: 'var(--disabled-color)',
       formTextColor: 'var(--text-color)',
@@ -56,7 +56,6 @@ export const themes = {
       dttextColorInverse: 'var(--dt-form-text-color-inverse)',
       textBackgroundColor: 'var(--dt-form-background-color)',
       textBorderColor: 'var(--dt-form-border-color)',
-      textBorderColorAlert: 'var(--dt-form-border-color-alert)',
       textDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
 
       textareaBorderColor: 'var(--dt-form-border-color)',
@@ -81,16 +80,6 @@ export const themes = {
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
-
-      alertTextColorLight: '#fff',
-      alertTextColorDark: '#000',
-      alertTextColor: 'var(--text-color)',
-      alertFontFamily: 'var(--font-family)',
-      alertFontSize: '14px;',
-      alertFontWeight: '700',
-      alertBackground: 'var(--surface-1)',
-      alertBorderColor: 'var(--border-color)',
-      alertShadow: 'var(--shadow-0)',
 
       background: 'var(--surface-0)',
 
@@ -131,7 +120,6 @@ export const themes = {
       fontFamily: 'Helvetica, Arial, sans-serif',
 
       formBorderColor: 'var(--border-color)',
-      formBorderColorAlert: 'var(--alert-color)',
       formBackgroundColor: 'var(--surface-3)',
       formDisabledBackgroundColor: 'var(--disabled-color)',
       formTextColor: 'var(--text-color)',
@@ -155,7 +143,6 @@ export const themes = {
       dttextColorInverse: 'var(--dt-form-text-color-inverse)',
       textBackgroundColor: 'var(--dt-form-background-color)',
       textBorderColor: 'var(--dt-form-border-color)',
-      textBorderColorAlert: 'var(--dt-form-border-color-alert)',
       textDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
 
       textareaBorderColor: 'var(--dt-form-border-color)',
@@ -179,16 +166,6 @@ export const themes = {
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
-
-      alertTextColorLight: '#fff',
-      alertTextColorDark: '#000',
-      alertTextColor: 'var(--text-color)',
-      alertFontFamily: 'var(--font-family)',
-      alertFontSize: '14px;',
-      alertFontWeight: '700',
-      alertBackground: 'var(--surface-1)',
-      alertBorderColor:'var(--border-color)',
-      alertShadow: 'var(--shadow-0)',
 
       background: 'var(--surface-0)',
     },
@@ -228,7 +205,6 @@ export const themes = {
       fontFamily: 'Helvetica, Arial, sans-serif',
 
       formBorderColor: 'var(--border-color)',
-      formBorderColorAlert: 'var(--alert-color)',
       formBackgroundColor: 'var(--surface-3)',
       formDisabledBackgroundColor: 'var(--disabled-color)',
       formTextColor: 'var(--text-color)',
@@ -252,7 +228,6 @@ export const themes = {
       dttextColorInverse: 'var(--dt-form-text-color-inverse)',
       textBackgroundColor: 'var(--dt-form-background-color)',
       textBorderColor: 'var(--dt-form-border-color)',
-      textBorderColorAlert: 'var(--dt-form-border-color-alert)',
       textDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
 
       textareaBorderColor: 'var(--dt-form-border-color)',
@@ -277,22 +252,10 @@ export const themes = {
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
 
-      alertTextColorLight: '#fff',
-      alertTextColorDark: '#000',
-      alertTextColor: 'var(--text-color)',
-      alertFontFamily: 'var(--font-family)',
-      alertFontSize: '14px;',
-      alertFontWeight: '700',
-      alertBackground: 'var(--surface-1)',
-      alertBorderColor: 'var(--border-color)',
-      alertShadow: 'var(--shadow-0)',
-
       background: 'var(--surface-0)',
     },
   },
 };
-
-export const contexts = ['primary', 'alert', 'caution', 'success', 'inactive', 'disabled'];
 
 export const argTypes = {
   theme: { control: 'select', options: Object.keys(themes), defaultValue: ['default'] },
@@ -325,7 +288,6 @@ export const argTypes = {
   fontFamily: { control: 'text' },
 
   formBorderColor: { control: 'color' },
-  formBorderColorAlert: { control: 'color' },
   formBackgroundColor: { control: 'color' },
   formDisabledBackgroundColor: { control: 'color' },
   formTextColor: { control: 'color' },
@@ -349,7 +311,6 @@ export const argTypes = {
   dttextColorInverse: { control: 'color' },
   textBackgroundColor: { control: 'color' },
   textBorderColor: { control: 'color' },
-  textBorderColorAlert: { control: 'color' },
   textDisabledBackgroundColor: { control: 'color' },
 
   textareaBorderColor: { control: 'color' },
@@ -373,120 +334,97 @@ export const argTypes = {
   tileBorderColor: { control: 'color' },
   tileShadow: { control: 'color' },
   tileHeaderColor: { control: 'color' },
-
-  alertTextColorLight: '#fff',
-  alertTextColorDark: '#000',
-  alertTextColor: { control: 'color' },
-  alertFontFamily: { control: 'color' },
-  alertFontSize: { control: 'text' },
-  alertFontWeight: { control: 'text' },
-  alertBackground: { control: 'color' },
-  alertBorderColor: { control: 'color' },
-  alertShadow: { control: 'color' },
 };
 
-function getArg(storyArgs, argName) {
-  if (storyArgs[argName]) {
-    return storyArgs[argName];
+function getArg(theme, argName) {
+  if (theme.theme) {
+    return themes[theme.theme].args[argName]
   }
-
-  if (storyArgs.theme) {
-    return themes[storyArgs.theme].args[argName]
-  }
-  storyArgs.theme = 'default';
+  theme.theme = 'default';
   return themes.default.args[argName];
 }
 
-export function themeCss(storyArgs) {
+export function themeCss(theme) {
   return `
   html {
-    --primary-color: ${getArg(storyArgs, 'primaryColor')};
-    --primary-color-light-1: ${getArg(storyArgs, 'primaryColorLight1')};
-    --primary-color-light-0: ${getArg(storyArgs, 'primaryColorLight0')};
-    --gray-0: ${getArg(storyArgs, 'gray0')};
-    --gray-1: ${getArg(storyArgs, 'gray1')};
-    --black: ${getArg(storyArgs, 'black')};
+    --primary-color: ${theme.primaryColor ? theme.primaryColor : getArg(theme, 'primaryColor')};
+    --primary-color-light-1: ${theme.primaryColorLight1 ? theme.primaryColorLight1 : getArg(theme, 'primaryColorLight1')};
+    --primary-color-light-0: ${theme.primaryColorLight0 ? theme.primaryColorLight0 : getArg(theme, 'primaryColorLight0')};
+    --gray-0: ${theme.gray0 ? theme.gray0 : getArg(theme, 'gray0')};
+    --gray-1: ${theme.gray1 ? theme.gray1 : getArg(theme, 'gray1')};
+    --black: ${theme.black ? theme.black : getArg(theme, 'black')};
 
-    --text-color: ${getArg(storyArgs, 'textColor')};
-    --text-color-inverse: ${getArg(storyArgs, 'textColorInverse')};
+    --text-color: ${theme.textColor ? theme.textColor : getArg(theme, 'textColor')};
+    --text-color-inverse: ${theme.textColorInverse ? theme.textColorInverse : getArg(theme, 'textColorInverse')};
+    --text-color-mid: ${theme.textColorMid ? theme.textColorMid : getArg(theme, 'textColorMid')};
 
-    --surface-0: ${getArg(storyArgs, 'surface0')};
-    --surface-1: ${getArg(storyArgs, 'surface1')};
-    --surface-2: ${getArg(storyArgs, 'surface2')};
-    --surface-3: ${getArg(storyArgs, 'surface3')};
+    --surface-0: ${theme.surface0 ? theme.surface0 : getArg(theme, 'surface0')};
+    --surface-1: ${theme.surface1 ? theme.surface1 : getArg(theme, 'surface1')};
+    --surface-2: ${theme.surface2 ? theme.surface2 : getArg(theme, 'surface2')};
+    --surface-3: ${theme.surface3 ? theme.surface3 : getArg(theme, 'surface3')};
 
-    --border-color: ${getArg(storyArgs, 'borderColor')};
+    --border-color: ${theme.borderColor ? theme.borderColor : getArg(theme, 'borderColor')};
 
-    --shadow-0: ${getArg(storyArgs, 'shadow0')};
-    --shadow-1: ${getArg(storyArgs, 'shadow1')};
+    --shadow-0: ${theme.shadow0 ? theme.shadow0 : getArg(theme, 'shadow0')};
+    --shadow-1: ${theme.shadow1 ? theme.shadow1 : getArg(theme, 'shadow1')};
 
 
-    --alert-color: ${getArg(storyArgs, 'alertColor')};
-    --caution-color: ${getArg(storyArgs, 'cautionColor')};
-    --success-color: ${getArg(storyArgs, 'successColor')};
-    --inactive-color: ${getArg(storyArgs, 'inactiveColor')};
-    --disabled-color: ${getArg(storyArgs, 'disabledColor')};
+    --alert-color: ${theme.alertColor ? theme.alertColor : getArg(theme, 'alertColor')};
+    --caution-color: ${theme.cautionColor ? theme.cautionColor : getArg(theme, 'cautionColor')};
+    --success-color: ${theme.successColor ? theme.successColor : getArg(theme, 'successColor')};
+    --inactive-color: ${theme.inactiveColor ? theme.inactiveColor : getArg(theme, 'inactiveColor')};
+    --disabled-color: ${theme.disabledColor ? theme.disabledColor : getArg(theme, 'disabledColor')};
 
-    --font-family: ${getArg(storyArgs, 'fontFamily')};
+    --font-family: ${theme.fontFamily ? theme.fontFamily : getArg(theme, 'fontFamily')};
 
-    --dt-form-border-color: ${getArg(storyArgs, 'formBorderColor')};
-    --dt-form-border-color-alert: ${getArg(storyArgs, 'formBorderColorAlert')};
-    --dt-form-background-color: ${getArg(storyArgs, 'formBackgroundColor')};
-    --dt-form-disabled-background-color: ${getArg(storyArgs, 'formDisabledBackgroundColor')};
-    --dt-form-text-color: ${getArg(storyArgs, 'formTextColor')};
-    --dt-form-text-color-inverse: ${getArg(storyArgs, 'formTextColorInverse')};
-    --dt-form-text-border-color: ${getArg(storyArgs, 'formBorderColor')};
+    --dt-form-border-color: ${theme.formBorderColor ? theme.formBorderColor : getArg(theme, 'formBorderColor')};
+    --dt-form-background-color: ${theme.formBackgroundColor ? theme.formBackgroundColor : getArg(theme, 'formBackgroundColor')};
+    --dt-form-disabled-background-color: ${theme.formDisabledBackgroundColor ? theme.formDisabledBackgroundColor : getArg(theme, 'formDisabledBackgroundColor')};
+    --dt-form-text-color: ${theme.formTextColor ? theme.formTextColor : getArg(theme, 'formTextColor')};
+    --dt-form-text-color-inverse: ${theme.formTextColorInverse ? theme.formTextColorInverse : getArg(theme, 'formTextColorInverse')};
+    --dt-form-text-border-color: ${theme.formBorderColor ? theme.formBorderColor : getArg(theme, 'formBorderColor')};
 
-    --dt-checkmark-width: ${getArg(storyArgs, 'checkmarkWidth')};
-    --dt-checkmark-color: ${getArg(storyArgs, 'checkmarkColor')};
+    --dt-checkmark-width: ${theme.checkmarkWidth ? theme.checkmarkWidth : getArg(theme, 'checkmarkWidth')};
+    --dt-checkmark-color: ${theme.checkmarkColor ? theme.checkmarkColor : getArg(theme, 'checkmarkColor')};
 
-    --dt-connection-icon-fill: ${getArg(storyArgs, 'connectionIconFill')};
-    --dt-multi-select-text-color: ${getArg(storyArgs, 'multiSelectTextColor')};
-    --dt-multi-select-background-color: ${getArg(storyArgs, 'multiSelectBackgroundColor')};
-    --dt-multi-select-tag-border-color: ${getArg(storyArgs, 'multiSelectTagBorderColor')};
-    --dt-multi-select-tag-background-color: ${getArg(storyArgs, 'multiSelectTagBackgroundColor')};
-    --dt-multi-select-option-hover-background: ${getArg(storyArgs, 'multiSelectOptionHoverBackground')};
+    --dt-connection-icon-fill: ${theme.connectionIconFill ? theme.connectionIconFill : getArg(theme, 'connectionIconFill')};
+    --dt-multi-select-text-color: ${theme.multiSelectTextColor ? theme.multiSelectTextColor : getArg(theme, 'multiSelectTextColor')};
+    --dt-multi-select-background-color: ${theme.multiSelectBackgroundColor ? theme.multiSelectBackgroundColor : getArg(theme, 'multiSelectBackgroundColor')};
+    --dt-multi-select-tag-border-color: ${theme.multiSelectTagBorderColor ? theme.multiSelectTagBorderColor : getArg(theme, 'multiSelectTagBorderColor')};
+    --dt-multi-select-tag-background-color: ${theme.multiSelectTagBackgroundColor ? theme.multiSelectTagBackgroundColor : getArg(theme, 'multiSelectTagBackgroundColor')};
+    --dt-multi-select-option-hover-background: ${theme.multiSelectOptionHoverBackground ? theme.multiSelectOptionHoverBackground : getArg(theme, 'multiSelectOptionHoverBackground')};
 
-    --dt-single-select-text-color: ${getArg(storyArgs, 'singleSelectTextColor')};
-    --dt-single-select-text-color-inverse: ${getArg(storyArgs, 'singleSelectTextColorInverse')};
+    --dt-single-select-text-color: ${theme.singleSelectTextColor ? theme.singleSelectTextColor : getArg(theme, 'singleSelectTextColor')};
+    --dt-single-select-text-color-inverse: ${theme.singleSelectTextColorInverse ? theme.singleSelectTextColorInverse : getArg(theme, 'singleSelectTextColorInverse')};
 
-    --dt-text-color: ${getArg(storyArgs, 'dttextColor')};
-    --dt-text-color-inverse: ${getArg(storyArgs, 'dttextColorInverse')};
-    --dt-text-background-color: ${getArg(storyArgs, 'textBackgroundColor')};
-    --dt-text-border-color: ${getArg(storyArgs, 'textBorderColor')};
-    --dt-text-border-color-alert: ${getArg(storyArgs, 'textBorderColorAlert')};
-    --dt-text-disabled-background-color: ${getArg(storyArgs, 'textDisabledBackgroundColor')};
-    --dt-textarea-border-color: ${getArg(storyArgs, 'textareaBorderColor')};
-    --dt-textarea-background-color: ${getArg(storyArgs, 'textareaBackgroundColor')};
-    --dt-textarea-disabled-background-color: ${getArg(storyArgs, 'textareaDisabledBackgroundColor')};
-    --dt-textarea-text-color: ${getArg(storyArgs, 'textareaTextColor')};
-    --dt-textarea-text-color-inverse: ${getArg(storyArgs, 'textareaTextcolorInverse')};
-    --dt-label-font-size: ${getArg(storyArgs, 'labelFontSize')};
-    --dt-label-font-weight: ${getArg(storyArgs, 'labelFontWeight')};
-    --dt-label-color: ${getArg(storyArgs, 'labelTextColor')};
-    --dt-label-tooltip-color: ${getArg(storyArgs, 'labelTooltipColor')};
-    --dt-label-tooltip-background: ${getArg(storyArgs, 'labelTooltipBackground')};
-    --dt-spinner-color-1: ${getArg(storyArgs, 'spinnerColor1')};
-    --dt-spinner-color-2: ${getArg(storyArgs, 'spinnerColor2')};
-    --dt-tile-font-family: ${getArg(storyArgs, 'tileFontFamily')};
-    --dt-tile-font-size: ${getArg(storyArgs, 'tileFontSize')};
-    --dt-tile-font-weight: ${getArg(storyArgs, 'tileFontWeight')};
-    --dt-tile-background-color: ${getArg(storyArgs, 'tileBackground')};
-    --dt-tile-border-color: ${getArg(storyArgs, 'tileBorderColor')};
-    --dt-tile-shadow: ${getArg(storyArgs, 'tileShadow')};
-    --dt-alert-text-color-light: ${getArg(storyArgs, 'alertTextColorLight')};
-    --dt-alert-text-color-dark: ${getArg(storyArgs, 'alertTextColorDark')};
-    --dt-alert-text-color: ${getArg(storyArgs, 'alertTextColor')};
-    --dt-alert-font-family: ${getArg(storyArgs, 'alertFontFamily')};
-    --dt-alert-font-size: ${getArg(storyArgs, 'alertFontSize')};
-    --dt-alert-font-weight: ${getArg(storyArgs, 'alertFontWeight')};
-    --dt-alert-background-color: ${getArg(storyArgs, 'alertBackground')};
-    --dt-alert-border-color: ${getArg(storyArgs, 'alertBorderColor')};
-    --dt-alert-shadow: ${getArg(storyArgs, 'alertShadow')};
-    background: ${getArg(storyArgs, 'surface0')};
-    color-scheme: ${getArg(storyArgs, 'colorScheme')};
+    --dt-text-color: ${theme.dttextColor ? theme.dttextColor : getArg(theme, 'dttextColor')};
+    --dt-text-color-inverse: ${theme.dttextColorInverse ? theme.dttextColorInverse : getArg(theme, 'dttextColorInverse')};
+    --dt-text-background-color: ${theme.textBackgroundColor ? theme.textBackgroundColor : getArg(theme, 'textBackgroundColor')};
+    --dt-text-border-color: ${theme.textBorderColor ? theme.textBorderColor : getArg(theme, 'textBorderColor')};
+    --dt-text-disabled-background-color: ${theme.textDisabledBackgroundColor ? theme.textDisabledBackgroundColor : getArg(theme, 'textDisabledBackgroundColor')};
+    --dt-textarea-border-color: ${theme.textareaBorderColor ? theme.textareaBorderColor : getArg(theme, 'textareaBorderColor')};
+    --dt-textarea-background-color: ${theme.textareaBackgroundColor ? theme.textareaBackgroundColor : getArg(theme, 'textareaBackgroundColor')};
+    --dt-textarea-disabled-background-color: ${theme.textareaDisabledBackgroundColor ? theme.textareaDisabledBackgroundColor : getArg(theme, 'textareaDisabledBackgroundColor')};
+    --dt-textarea-text-color: ${theme.textareaTextColor ? theme.textareaTextColor : getArg(theme, 'textareaTextColor')};
+    --dt-textarea-text-color-inverse: ${theme.textareaTextcolorInverse ? theme.textareaTextcolorInverse : getArg(theme, 'textareaTextcolorInverse')};
+    --dt-label-font-size: ${theme.labelFontSize ? theme.labelFontSize : getArg(theme, 'labelFontSize')};
+    --dt-label-font-weight: ${theme.labelFontWeight ? theme.labelFontWeight : getArg(theme, 'labelFontWeight')};
+    --dt-label-color: ${theme.labelTextColor ? theme.labelTextColor : getArg(theme, 'labelTextColor')};
+    --dt-label-tooltip-color: ${theme.labelTooltipColor ? theme.labelTooltipColor : getArg(theme, 'labelTooltipColor')};
+    --dt-label-tooltip-background: ${theme.labelTooltipBackground ? theme.labelTooltipBackground : getArg(theme, 'labelTooltipBackground')};
+    --dt-spinner-color-1: ${theme.spinnerColor1 ? theme.spinnerColor1 : getArg(theme, 'spinnerColor1')};
+    --dt-spinner-color-2: ${theme.spinnerColor2 ? theme.spinnerColor2 : getArg(theme, 'spinnerColor2')};
+    --dt-tile-font-family: ${theme.tileFontFamily ? theme.tileFontFamily : getArg(theme, 'tileFontFamily')};
+    --dt-tile-font-size: ${theme.tileFontSize ? theme.tileFontSize : getArg(theme, 'tileFontSize')};
+    --dt-tile-font-weight: ${theme.tileFontWeight ? theme.tileFontWeight : getArg(theme, 'tileFontWeight')};
+    --dt-tile-background-color: ${theme.tileBackground ? theme.tileBackground : getArg(theme, 'tileBackground')};
+    --dt-tile-border-color: ${theme.tileBorderColor ? theme.tileBorderColor : getArg(theme, 'tileBorderColor')};
+    --dt-tile-shadow: ${theme.tileShadow ? theme.tileShadow : getArg(theme, 'tileShadow')};
+    --dt-tile-header-color: ${theme.tileHeaderColor ? theme.tileHeaderColor : getArg(theme, 'tileHeaderColor')};
+    background: ${theme.surface0 ? theme.surface0 : getArg(theme, 'surface0')};
+    color-scheme: ${theme.colorScheme ? theme.colorScheme : getArg(theme, 'colorScheme')};
 
-    ${storyArgs.RTL ? 'direction: rtl;' : 'direction: ltr;'}
+    ${theme.RTL ? 'direction: rtl;' : 'direction: ltr;'}
   }
   `;
 }
