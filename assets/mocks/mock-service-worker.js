@@ -5,7 +5,7 @@ self.addEventListener('install', function(event) {
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   const url = (new URL(request.url));
-  const defaultPosts = [
+  const defaultPostsList = [
     {
         "ID": "1",
         "post_title": "test",
@@ -21,7 +21,7 @@ self.addEventListener('fetch', (event) => {
                 "post_date_gmt": "2022-08-10 13:14:40",
                 "post_date": "2022-08-10 13:14:40",
                 "post_title": "Group 1",
-                "permalink": "https://rsdt.local/groups/5/",
+                "permalink": "https://DT.local/groups/5/",
                 "status": {
                     "key": "active",
                     "label": "Active",
@@ -54,7 +54,7 @@ self.addEventListener('fetch', (event) => {
             "display": "johndoe",
             "assigned-to": "user-1"
         },
-        "permalink": "https://rsdt.local/contacts/16",
+        "permalink": "https://DT.local/contacts/16",
         "name": "test"
     },
     {
@@ -84,7 +84,7 @@ self.addEventListener('fetch', (event) => {
             "display": "micahmills",
             "assigned-to": "user-1"
         },
-        "permalink": "https://rsdt.local/contacts/17",
+        "permalink": "https://DT.local/contacts/17",
         "name": "archived"
     },
     {
@@ -108,13 +108,197 @@ self.addEventListener('fetch', (event) => {
         "name": "johndoe"
     },
   ]
-
+  const singlePost = {
+    "ID": "1",
+    "post_title": "test",
+    "post_type": "contacts",
+    "post_date": {
+        "timestamp": 1660333623,
+        "formatted": "2022-08-12"
+    },
+    "groups": [
+        {
+            "ID": "2",
+            "post_type": "groups",
+            "post_date_gmt": "2022-08-10 13:14:40",
+            "post_date": "2022-08-10 13:14:40",
+            "post_title": "Group 1",
+            "permalink": "https://DT.local/groups/5/",
+            "status": {
+                "key": "active",
+                "label": "Active",
+                "color": "#4CAF50"
+            }
+        }
+    ],
+    "last_modified": {
+        "timestamp": 1660333623,
+        "formatted": "2022-08-12"
+    },
+    "seeker_path": {
+        "key": "none",
+        "label": "Contact Attempt Needed"
+    },
+    "overall_status": {
+        "key": "active",
+        "label": "Active"
+    },
+    "milestones": [
+        "milestone_has_bible",
+        "milestone_reading_bible",
+        "milestone_belief",
+        "milestone_can_share",
+        "milestone_baptized"
+    ],
+    "assigned_to": {
+        "id": "3",
+        "type": "user",
+        "display": "johndoe",
+        "assigned-to": "user-1"
+    },
+    "permalink": "https://DT.local/contacts/16",
+    "name": "test"
+  }
+  const createdSinglePost = {
+    "ID": "3",
+    "post_title": "Created From API",
+    "post_type": "contacts",
+    "post_date": {
+        "timestamp": 1660336623,
+        "formatted": "2022-08-26"
+    },
+    "groups": [
+        {
+            "ID": "2",
+            "post_type": "groups",
+            "post_date_gmt": "2022-08-10 13:14:40",
+            "post_date": "2022-08-10 13:14:40",
+            "post_title": "Group 1",
+            "permalink": "https://DT.local/groups/5/",
+            "status": {
+                "key": "active",
+                "label": "Active",
+                "color": "#4CAF50"
+            }
+        }
+    ],
+    "last_modified": {
+        "timestamp": 1660333623,
+        "formatted": "2022-08-12"
+    },
+    "seeker_path": {
+        "key": "none",
+        "label": "Contact Attempt Needed"
+    },
+    "overall_status": {
+        "key": "active",
+        "label": "Active"
+    },
+    "milestones": [
+        "milestone_has_bible",
+        "milestone_reading_bible",
+        "milestone_belief",
+        "milestone_can_share",
+        "milestone_baptized"
+    ],
+    "assigned_to": {
+        "id": "3",
+        "type": "user",
+        "display": "johndoe",
+        "assigned-to": "user-1"
+    },
+    "permalink": "https://DT.local/contacts/16",
+    "name": "test"
+  }
+  const UpdatedSinglePost = {
+    "ID": "1",
+    "post_title": "test updated",
+    "post_type": "contacts",
+    "post_date": {
+        "timestamp": 1660333623,
+        "formatted": "2022-08-12"
+    },
+    "groups": [
+        {
+            "ID": "2",
+            "post_type": "groups",
+            "post_date_gmt": "2022-08-10 13:14:40",
+            "post_date": "2022-08-10 13:14:40",
+            "post_title": "Group 1",
+            "permalink": "https://DT.local/groups/5/",
+            "status": {
+                "key": "active",
+                "label": "Active",
+                "color": "#4CAF50"
+            }
+        }
+    ],
+    "last_modified": {
+        "timestamp": 1660333623,
+        "formatted": "2022-08-12"
+    },
+    "seeker_path": {
+        "key": "none",
+        "label": "Contact Attempt Needed"
+    },
+    "overall_status": {
+        "key": "active",
+        "label": "Active"
+    },
+    "milestones": [
+        "milestone_has_bible",
+        "milestone_reading_bible",
+        "milestone_belief",
+        "milestone_can_share",
+        "milestone_baptized"
+    ],
+    "assigned_to": {
+        "id": "3",
+        "type": "user",
+        "display": "johndoe",
+        "assigned-to": "user-1"
+    },
+    "permalink": "https://DT.local/contacts/16",
+    "name": "test"
+  }
   // API Call Mocks
   // We will need to make a custom response for each api url.
-  if (url.pathname === "/dt-posts/v2/contacts") {
+  // Contact List API Call
+  if (url.pathname === "/dt-posts/v2/contacts" && event.request.method === "GET") {
+    console.log('Getting lists of posts');
     event.respondWith(new Response(
-      JSON.stringify(defaultPosts), {
+      JSON.stringify(defaultPostsList), {
+      headers: { 'Content-Type': 'text/JSON' }
+    }));
+  }
+
+  // Single Post GET API Call
+  if (url.pathname === "/dt-posts/v2/contacts/1" && event.request.method === "GET") {
+    console.log('Getting single post');
+
+    event.respondWith(new Response(
+      JSON.stringify(singlePost), {
+      headers: { 'Content-Type': 'text/JSON' }
+    }));
+  }
+
+  // Single create_post POST API Call
+  if (url.pathname === "/dt-posts/v2/contacts" && event.request.method === "POST") {
+    console.log('Creating new post');
+    event.respondWith(new Response(
+      JSON.stringify(createdSinglePost), {
+      headers: { 'Content-Type': 'text/JSON' }
+    }));
+  }
+
+  // Single update_post POST API Call
+  if (url.pathname === "/dt-posts/v2/contacts/1" && event.request.method === "POST") {
+    console.log('Updating single post');
+
+    event.respondWith(new Response(
+      JSON.stringify(UpdatedSinglePost), {
       headers: { 'Content-Type': 'text/JSON' }
     }));
   }
 });
+
