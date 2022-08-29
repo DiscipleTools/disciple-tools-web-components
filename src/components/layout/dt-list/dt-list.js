@@ -68,15 +68,36 @@ export class DtList extends LitElement {
         display: none
       }
 
-      th.all::after {
-        content: "";
+      .column-name {
+        pointer-events: none;
+      }
+      #sort-arrows {
         grid-template-columns: 4fr 1fr;
-        border-color: var(--dt-list-sort-arrow-color, #808080) transparent transparent;
+        display: flex;
+        flex-direction: column;
+        height: 1.5em;
+        justify-content: space-evenly;
+      }
+      th.all span.sort-arrow-up {
+        border-color: transparent transparent var(--dt-list-sort-arrow-color, #808080) transparent;
         border-style: solid;
-        border-width: 6px 6px 0;
-        content: "";
+        border-width: 0 .5em .5em .5em;
       }
 
+      th.all span.sort-arrow-down {
+        content: "";
+        border-color: var(--dt-list-sort-arrow-color, #808080) transparent transparent;
+        border-style: solid;
+        border-width: .5em .5em 0;
+      }
+
+      th.all span.sort-arrow-up.sortedBy {
+        border-color: transparent transparent var(--dt-list-sort-arrow-color-highlight, #999999) transparent;
+      }
+
+      th.all span.sort-arrow-down.sortedBy {
+        border-color: var(--dt-list-sort-arrow-color-highlight, #999999) transparent transparent;
+      }
 
       td {
         border: 0;
@@ -181,6 +202,7 @@ export class DtList extends LitElement {
       posts: { type: Array },
       total: { type: Number },
       columns: { type: Array },
+      sortedBy: { type: String },
       loading: { type: Boolean, default: true },
       offset: { type: Number },
       showArchived: { type: Boolean, default: false },
@@ -188,7 +210,12 @@ export class DtList extends LitElement {
     };
   }
 
-  async _getPosts(offset = 0, sortBy = null, sortOrder = "desc") {
+  constructor() {
+    super();
+    this.sortedBy = "name";
+  }
+
+  async _getPosts(offset = 0, sortBy = 'name', sortOrder = "desc") {
       this.loading = true;
       this.filteredOptions = [];
       let URLParams = encodeURI(`?offset=${offset}&sortBy=${sortBy ? sortBy : ''}&offset=${offset}${this.columns.map(column => `&fields_to_return=${column}`).join('')}`);
@@ -202,6 +229,7 @@ export class DtList extends LitElement {
     const column = e.target.dataset.id;
     this._getPosts(this.offset ? this.offset : 0, column).then(response => {
       this.posts = response;
+      this.sortedBy = column;
     })
   }
 
@@ -209,7 +237,21 @@ export class DtList extends LitElement {
     this.showArchived = !this.showArchived;
   }
 
+  _sortArrowsClass(column) {
+    return this.sortedBy === column ? "sortedBy" : "";
+  }
+
+  _sortArrowsToggle(column) {
+    if (this.sortedBy !== `-${column}`) {
+      return `-${column}`;
+    }
+    return column;
+  }
+
   _headerTemplate() {
+    const classes = {
+      sortedBy: this.sortedBy,
+    };
     return html`
       <thead>
         <tr>
@@ -221,7 +263,13 @@ export class DtList extends LitElement {
           </th>
 
           ${map(this.columns, (column) =>
-            html`<th class="all" data-id="${column}" @click=${this._headerClick}>${this.postTypeSettings[column].name}</th>`)}
+            html`<th class="all" data-id="${this._sortArrowsToggle(column)}" @click=${this._headerClick}>
+            <span class="column-name">${this.postTypeSettings[column].name}</span>
+            <span id="sort-arrows">
+              <span class="sort-arrow-up ${this._sortArrowsClass(`-${column}`)}" data-id="-${column}"></span>
+              <span class="sort-arrow-down ${this._sortArrowsClass(column)}" data-id="${column}"></span>
+            </span>
+          </th>`)}
         </tr>
       </thead>
       `;

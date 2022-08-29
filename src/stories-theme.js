@@ -87,6 +87,7 @@ export const themes = {
       listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
       listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
       listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
+      listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
 
 
@@ -460,28 +461,34 @@ export function themeCss(storyArgs) {
 
     --dt-text-color: ${getArg(storyArgs, 'dttextColor')};
     --dt-text-color-inverse: ${getArg(storyArgs, 'dttextColorInverse')};
+    --dt-text-color-mid: ${getArg(storyArgs, 'dttextColorMid')};
     --dt-text-background-color: ${getArg(storyArgs, 'textBackgroundColor')};
     --dt-text-border-color: ${getArg(storyArgs, 'textBorderColor')};
     --dt-text-border-color-alert: ${getArg(storyArgs, 'textBorderColorAlert')};
     --dt-text-disabled-background-color: ${getArg(storyArgs, 'textDisabledBackgroundColor')};
+
     --dt-textarea-border-color: ${getArg(storyArgs, 'textareaBorderColor')};
     --dt-textarea-background-color: ${getArg(storyArgs, 'textareaBackgroundColor')};
     --dt-textarea-disabled-background-color: ${getArg(storyArgs, 'textareaDisabledBackgroundColor')};
     --dt-textarea-text-color: ${getArg(storyArgs, 'textareaTextColor')};
     --dt-textarea-text-color-inverse: ${getArg(storyArgs, 'textareaTextcolorInverse')};
+
     --dt-label-font-size: ${getArg(storyArgs, 'labelFontSize')};
     --dt-label-font-weight: ${getArg(storyArgs, 'labelFontWeight')};
     --dt-label-color: ${getArg(storyArgs, 'labelTextColor')};
     --dt-label-tooltip-color: ${getArg(storyArgs, 'labelTooltipColor')};
     --dt-label-tooltip-background: ${getArg(storyArgs, 'labelTooltipBackground')};
+
     --dt-spinner-color-1: ${getArg(storyArgs, 'spinnerColor1')};
     --dt-spinner-color-2: ${getArg(storyArgs, 'spinnerColor2')};
     --dt-tile-font-family: ${getArg(storyArgs, 'tileFontFamily')};
+
     --dt-tile-font-size: ${getArg(storyArgs, 'tileFontSize')};
     --dt-tile-font-weight: ${getArg(storyArgs, 'tileFontWeight')};
     --dt-tile-background-color: ${getArg(storyArgs, 'tileBackground')};
     --dt-tile-border-color: ${getArg(storyArgs, 'tileBorderColor')};
     --dt-tile-shadow: ${getArg(storyArgs, 'tileShadow')};
+
     --dt-alert-text-color-light: ${getArg(storyArgs, 'alertTextColorLight')};
     --dt-alert-text-color-dark: ${getArg(storyArgs, 'alertTextColorDark')};
     --dt-alert-text-color: ${getArg(storyArgs, 'alertTextColor')};
@@ -493,6 +500,12 @@ export function themeCss(storyArgs) {
     --dt-alert-shadow: ${getArg(storyArgs, 'alertShadow')};
     background: ${getArg(storyArgs, 'surface0')};
     color-scheme: ${getArg(storyArgs, 'colorScheme')};
+
+    --dt-list-background-color: ${getArg(storyArgs, 'listheaderBackground')};
+    --dt-list-hover-background-color: ${getArg(storyArgs, 'listheaderHoverBackground')};
+    --dt-list-sort-arrow-color: ${getArg(storyArgs, 'listSortArrowColor')};
+    --dt-list-sort-arrow-color-highlight: ${getArg(storyArgs, 'listSortArrowColorHighlight')};
+    --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
 
     ${storyArgs.RTL ? 'direction: rtl;' : 'direction: ltr;'}
   }

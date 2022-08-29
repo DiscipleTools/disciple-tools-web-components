@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-restricted-globals */
 self.addEventListener('install', function(event) {
   event.waitUntil(self.skipWaiting());
@@ -270,15 +271,75 @@ self.addEventListener('fetch', async (event) => {
 
     let params = new URLSearchParams(event.request.url);
     let sortBy = params.get("sortBy");
+
     let offset = params.get("offset");
     let fields_to_return = params.getAll("fields_to_return");
 
+    let sortedPostsList;
+
     if (sortBy === "name") {
-      sortBy = "post_title";
+      sortedPostsList = defaultPostsList.sort((a,b) => (a.post_title > b.post_title) ? 1 : ((b.post_title > a.post_title) ? -1 : 0))
+    }
+    if (sortBy === "-name") {
+      sortedPostsList = defaultPostsList.sort((a,b) => (a.post_title < b.post_title) ? 1 : ((b.post_title < a.post_title) ? -1 : 0))
+    }
+    if (sortBy === "last_modified") {
+      sortedPostsList = defaultPostsList.sort((a,b) => (a.last_modified.timestamp > b.last_modified.timestamp) ? 1 : ((b.last_modified.timestamp > a.last_modified.timestamp) ? -1 : 0))
+    }
+    if (sortBy === "-last_modified") {
+      sortedPostsList = defaultPostsList.sort((a,b) => (a.last_modified.timestamp < b.last_modified.timestamp) ? 1 : ((b.last_modified.timestamp < a.last_modified.timestamp) ? -1 : 0))
+    }
+    if (sortBy === "seeker_path") {
+      sortedPostsList = defaultPostsList.sort((a,b) => {
+      if (!a.seeker_path?.label) {
+        a.seeker_path = {label: ""};
+      }
+      if (!b.seeker_path?.label) {
+        b.seeker_path = {label: ""};
+      }
+      return (a.seeker_path.label > b.seeker_path.label) ? 1 : ((b.seeker_path.label > a.seeker_path.label) ? -1 : 0)})
+    }
+    if (sortBy === "-seeker_path") {
+      sortedPostsList = defaultPostsList.sort((a,b) => {
+      if (!a.seeker_path?.label) {
+        a.seeker_path = {label: ""};
+      }
+      if (!b.seeker_path?.label) {
+        b.seeker_path = {label: ""};
+      }
+      return (a.seeker_path.label < b.seeker_path.label) ? 1 : ((b.seeker_path.label < a.seeker_path.label) ? -1 : 0)});
+    }
+    if (sortBy === "overall_status") {
+      sortedPostsList = defaultPostsList.sort((a,b) => (a.overall_status.label > b.overall_status.label) ? 1 : ((b.overall_status.label > a.overall_status.label) ? -1 : 0))
+    }
+    if (sortBy === "-overall_status") {
+      sortedPostsList = defaultPostsList.sort((a,b) => (a.overall_status.label < b.overall_status.label) ? 1 : ((b.overall_status.label < a.overall_status.label) ? -1 : 0))
+    }
+    if (sortBy === "assigned_to") {
+      sortedPostsList = defaultPostsList.sort((a,b) => {
+        if (!a.assigned_to && !a.assigned_to?.display) {
+          a.assigned_to = {display: ""};
+        }
+        if (!b.seeker_path && b.seeker_path?.display) {
+          b.assigned_to = {display: ""};
+        }
+
+        return (a.assigned_to.display > b.assigned_to.display) ? 1 : ((b.assigned_to.display > a.assigned_to.display) ? -1 : 0)})
+    }
+    if (sortBy === "-assigned_to") {
+      sortedPostsList = defaultPostsList.sort((a,b) => {
+        if (!a.assigned_to && !a.assigned_to?.display) {
+          console.log(a.assigned_to, "a.assigned_to");
+          a.assigned_to = {display: ""};
+        }
+        if (!b.seeker_path && b.seeker_path?.display) {
+          console.log(b.assigned_to, "b.assigned_to");
+          b.assigned_to = {display: ""};
+        }
+        return (a.assigned_to.display < b.assigned_to.display) ? 1 : ((b.assigned_to.display < a.assigned_to.display) ? -1 : 0)})
     }
 
-    const sortedPostsList = defaultPostsList.sort((a,b) => (a[sortBy] > b[sortBy]) ? 1 : ((b[sortBy] > a[sortBy]) ? -1 : 0))
-
+console.log(sortBy,sortedPostsList);
     event.respondWith(new Response(
       JSON.stringify(sortedPostsList), {
       headers: { 'Content-Type': 'text/JSON' }
