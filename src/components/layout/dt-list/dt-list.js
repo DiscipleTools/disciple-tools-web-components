@@ -191,10 +191,8 @@ export class DtList extends LitElement {
   async _getPosts(offset = 0, sortBy = null, sortOrder = "desc") {
       this.loading = true;
       this.filteredOptions = [];
-      const response = await DtAPI.makeRequestOnPosts('GET', this.postType, {
-        "sort": sortBy,
-        "fields_to_return": this.columns,
-    }, '/', this.nonce );
+      let URLParams = encodeURI(`?offset=${offset}&sortBy=${sortBy ? sortBy : ''}&offset=${offset}${this.columns.map(column => `&fields_to_return=${column}`).join('')}`);
+      const response = await DtAPI.makeRequestOnPosts('GET', `${this.postType}${URLParams}`, {}, '/', this.nonce );
 
     return response;
 
@@ -202,7 +200,9 @@ export class DtList extends LitElement {
 
   _headerClick(e) {
     const column = e.target.dataset.id;
-    this._getPosts(this.offset ? this.offset : 0, column)
+    this._getPosts(this.offset ? this.offset : 0, column).then(response => {
+      this.posts = response;
+    })
   }
 
   _toggleShowArchived() {
@@ -322,58 +322,6 @@ export class DtList extends LitElement {
   }
 
   render() {
-    const createdSinglePost = {
-      "ID": "3",
-      "post_title": "Created From API",
-      "post_type": "contacts",
-      "post_date": {
-          "timestamp": 1660336623,
-          "formatted": "2022-08-26"
-      },
-      "groups": [
-          {
-              "ID": "2",
-              "post_type": "groups",
-              "post_date_gmt": "2022-08-10 13:14:40",
-              "post_date": "2022-08-10 13:14:40",
-              "post_title": "Group 1",
-              "permalink": "https://DT.local/groups/5/",
-              "status": {
-                  "key": "active",
-                  "label": "Active",
-                  "color": "#4CAF50"
-              }
-          }
-      ],
-      "last_modified": {
-          "timestamp": 1660333623,
-          "formatted": "2022-08-12"
-      },
-      "seeker_path": {
-          "key": "none",
-          "label": "Contact Attempt Needed"
-      },
-      "overall_status": {
-          "key": "active",
-          "label": "Active"
-      },
-      "milestones": [
-          "milestone_has_bible",
-          "milestone_reading_bible",
-          "milestone_belief",
-          "milestone_can_share",
-          "milestone_baptized"
-      ],
-      "assigned_to": {
-          "id": "3",
-          "type": "user",
-          "display": "johndoe",
-          "assigned-to": "user-1"
-      },
-      "permalink": "https://DT.local/contacts/16",
-      "name": "test"
-    }
-    DtAPI.create_post('contacts', this.createdSinglePost ).then(post => { console.log(post) });
     return html`
       <div class="section">
         <div>

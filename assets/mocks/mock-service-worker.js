@@ -1,8 +1,9 @@
+/* eslint-disable no-restricted-globals */
 self.addEventListener('install', function(event) {
   event.waitUntil(self.skipWaiting());
 });
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', async (event) => {
   const request = event.request;
   const url = (new URL(request.url));
   const defaultPostsList = [
@@ -266,8 +267,20 @@ self.addEventListener('fetch', (event) => {
   // Contact List API Call
   if (url.pathname === "/dt-posts/v2/contacts" && event.request.method === "GET") {
     console.log('Getting lists of posts');
+
+    let params = new URLSearchParams(event.request.url);
+    let sortBy = params.get("sortBy");
+    let offset = params.get("offset");
+    let fields_to_return = params.getAll("fields_to_return");
+
+    if (sortBy === "name") {
+      sortBy = "post_title";
+    }
+
+    const sortedPostsList = defaultPostsList.sort((a,b) => (a[sortBy] > b[sortBy]) ? 1 : ((b[sortBy] > a[sortBy]) ? -1 : 0))
+
     event.respondWith(new Response(
-      JSON.stringify(defaultPostsList), {
+      JSON.stringify(sortedPostsList), {
       headers: { 'Content-Type': 'text/JSON' }
     }));
   }
