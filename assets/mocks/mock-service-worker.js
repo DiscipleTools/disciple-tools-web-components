@@ -16,6 +16,7 @@ self.addEventListener('fetch', async (event) => {
             "timestamp": 1660333623,
             "formatted": "2022-08-12"
         },
+        "favorite": true,
         "groups": [
             {
                 "ID": "2",
@@ -276,7 +277,26 @@ self.addEventListener('fetch', async (event) => {
     let fields_to_return = params.getAll("fields_to_return");
 
     let sortedPostsList;
-
+    if (sortBy === "favorite") {
+      sortedPostsList = defaultPostsList.sort((a,b) => {
+        if (!a.favorite) {
+          a.favorite = false;
+        }
+        if (!b.favorite) {
+          b.favorite = false;
+        }
+        return (a.favorite > b.favorite) ? 1 : ((b.favorite > a.favorite) ? -1 : 0)})
+    }
+    if (sortBy === "-favorite") {
+      sortedPostsList = defaultPostsList.sort((a,b) => {
+        if (!a.favorite) {
+          a.favorite = false;
+        }
+        if (!b.favorite) {
+          b.favorite = false;
+        }
+        return (a.favorite < b.favorite) ? 1 : ((b.favorite < a.favorite) ? -1 : 0)})
+    }
     if (sortBy === "name") {
       sortedPostsList = defaultPostsList.sort((a,b) => (a.post_title > b.post_title) ? 1 : ((b.post_title > a.post_title) ? -1 : 0))
     }
@@ -329,17 +349,33 @@ self.addEventListener('fetch', async (event) => {
     if (sortBy === "-assigned_to") {
       sortedPostsList = defaultPostsList.sort((a,b) => {
         if (!a.assigned_to && !a.assigned_to?.display) {
-          console.log(a.assigned_to, "a.assigned_to");
           a.assigned_to = {display: ""};
         }
         if (!b.seeker_path && b.seeker_path?.display) {
-          console.log(b.assigned_to, "b.assigned_to");
           b.assigned_to = {display: ""};
         }
         return (a.assigned_to.display < b.assigned_to.display) ? 1 : ((b.assigned_to.display < a.assigned_to.display) ? -1 : 0)})
     }
-
-console.log(sortBy,sortedPostsList);
+    if (sortBy === "milestones") {
+      sortedPostsList = defaultPostsList.sort((a,b) => {
+        if (!a.milestones) {
+          a.milestones = "";
+        }
+        if (!b.milestones) {
+          b.milestones = "";
+        }
+        return (a.milestones.toString() > b.milestones.toString()) ? 1 : ((b.milestones.toString() > a.milestones.toString()) ? -1 : 0)})
+    }
+    if (sortBy === "-milestones") {
+      sortedPostsList = defaultPostsList.sort((a,b) => {
+        if (!a.milestones) {
+          a.milestones = "";
+        }
+        if (!b.milestones) {
+          b.milestones = "";
+        }
+        return (a.milestones.toString() < b.milestones.toString()) ? 1 : ((b.milestones.toString() < a.milestones.toString()) ? -1 : 0)})
+    }
     event.respondWith(new Response(
       JSON.stringify(sortedPostsList), {
       headers: { 'Content-Type': 'text/JSON' }
