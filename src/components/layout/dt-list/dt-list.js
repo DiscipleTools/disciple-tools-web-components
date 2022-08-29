@@ -71,7 +71,7 @@ export class DtList extends LitElement {
       th.all::after {
         content: "";
         grid-template-columns: 4fr 1fr;
-        border-color: var(--text-color-mid) transparent transparent;
+        border-color: var(--dt-list-sort-arrow-color, #808080) transparent transparent;
         border-style: solid;
         border-width: 6px 6px 0;
         content: "";

@@ -54,6 +54,7 @@ export const themes = {
       singleSelectTextColorInverse: 'var(--dt-form-text-color-inverse)',
 
       dttextColor: 'var(--dt-form-text-color)',
+      dttextColorMid: 'var(--dt-form-text-color-mid)',
       dttextColorInverse: 'var(--dt-form-text-color-inverse)',
       textBackgroundColor: 'var(--dt-form-background-color)',
       textBorderColor: 'var(--dt-form-border-color)',
@@ -82,6 +83,12 @@ export const themes = {
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
+
+      listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
+      listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
+      listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
+      listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
