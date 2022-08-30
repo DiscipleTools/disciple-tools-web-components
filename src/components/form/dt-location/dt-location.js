@@ -1,4 +1,5 @@
 import { css, html } from 'lit';
+import {styleMap} from 'lit/directives/style-map.js';
 import {map} from 'lit/directives/map.js';
 import { DtTags } from '../dt-tags/dt-tags.js';
 
@@ -74,6 +75,10 @@ export class DtLocation extends DtTags {
   }
 
   render() {
+    const optionListStyles = {
+      display: this.open ? 'block' : 'none',
+      top: this.containerHeight + 'px',
+    };
     return html`
     ${this.labelTemplate()}
 
@@ -99,8 +104,7 @@ export class DtLocation extends DtTags {
       </select>
       <ul
         class="option-list"
-        style="display:${this.open ? 'block' : 'none'};top:${this
-      .containerHeight}px;"
+        style=${styleMap(optionListStyles)}
       >
         ${this._renderOptions()}
       </ul>
