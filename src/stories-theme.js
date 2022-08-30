@@ -18,6 +18,7 @@ export const themes = {
       surface0: '#e2e2e2',
       surface1: '#fefefe',
       surface2: '#f5f5f5',
+      surface3: '#ffffff',
 
       borderColor: '#cecece',
 
@@ -72,6 +73,11 @@ export const themes = {
       labelTextColor: 'var(--dt-form-text-color)',
       labelTooltipColor: 'var(--gray-0)',
       labelTooltipBackground: 'var(--surface-2)',
+
+      toggleBackgroundColorOn: 'var(--primary-color)',
+      toggleBackgroundColorOff: 'var(--surface-3)',
+      toggleIconSuccess: 'var(--success-color)',
+      toggleIconAlert: 'var(--alert-color)',
 
       spinnerColor1: 'var(--gray-1)',
       spinnerColor2: 'var(--black)',
@@ -178,6 +184,11 @@ export const themes = {
       labelTooltipColor: 'var(--gray-0)',
       labelTooltipBackground: 'var(--surface-2)',
 
+      toggleBackgroundColorOn: 'var(--primary-color)',
+      toggleBackgroundColorOff: 'var(--surface-3)',
+      toggleIconSuccess: 'var(--success-color)',
+      toggleIconAlert: 'var(--alert-color)',
+
       spinnerColor1: 'var(--gray-1)',
       spinnerColor2: 'var(--black)',
 
@@ -274,6 +285,11 @@ export const themes = {
       labelFontWeight: '700',
       labelTooltipColor: 'var(--gray-0)',
       labelTooltipBackground: 'var(--surface-2)',
+
+      toggleBackgroundColorOn: 'var(--primary-color)',
+      toggleBackgroundColorOff: 'var(--surface-3)',
+      toggleIconSuccess: 'var(--success-color)',
+      toggleIconAlert: 'var(--alert-color)',
 
       spinnerColor1: 'var(--gray-1)',
       spinnerColor2: 'var(--black)',
@@ -374,6 +390,11 @@ export const argTypes = {
 
   spinnerColor1: { control: 'color' },
   spinnerColor2: { control: 'color' },
+
+  toggleBackgroundColorOn: { control: 'color' },
+  toggleBackgroundColorOff: { control: 'color' },
+  toggleIconSuccess: { control: 'color' },
+  toggleIconAlert: { control: 'color' },
 
   tileFontFamily: { control: 'color' },
   tileFontSize: { control: 'text' },
@@ -482,6 +503,13 @@ export function themeCss(storyArgs) {
     --dt-spinner-color-1: ${getArg(storyArgs, 'spinnerColor1')};
     --dt-spinner-color-2: ${getArg(storyArgs, 'spinnerColor2')};
     --dt-tile-font-family: ${getArg(storyArgs, 'tileFontFamily')};
+
+    --dt-toggle-background-color-on: ${getArg(storyArgs, 'toggleBackgroundColorOn')};
+    --dt-toggle-background-color-off: ${getArg(storyArgs, 'toggleBackgroundColorOff')};
+    --dt-toggle-border-color: ${getArg(storyArgs, 'toggleBorderColor')};
+    --dt-toggle-icon-success: ${getArg(storyArgs, 'toggleIconSuccess')};
+    --dt-toggle-icon-alert: ${getArg(storyArgs, 'toggleIconAlert')};
+
 
     --dt-tile-font-size: ${getArg(storyArgs, 'tileFontSize')};
     --dt-tile-font-weight: ${getArg(storyArgs, 'tileFontWeight')};
