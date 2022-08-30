@@ -12,11 +12,13 @@ export const themes = {
       black: '#0a0a0a',
 
       textColor: '#0a0a0a',
+      textColorMid: '#808080',
       textColorInverse: '#fefefe',
 
       surface0: '#e2e2e2',
       surface1: '#fefefe',
       surface2: '#f5f5f5',
+      surface3: '#ffffff',
 
       borderColor: '#cecece',
 
@@ -53,6 +55,7 @@ export const themes = {
       singleSelectTextColorInverse: 'var(--dt-form-text-color-inverse)',
 
       dttextColor: 'var(--dt-form-text-color)',
+      dttextColorMid: 'var(--dt-form-text-color-mid)',
       dttextColorInverse: 'var(--dt-form-text-color-inverse)',
       textBackgroundColor: 'var(--dt-form-background-color)',
       textBorderColor: 'var(--dt-form-border-color)',
@@ -71,6 +74,11 @@ export const themes = {
       labelTooltipColor: 'var(--gray-0)',
       labelTooltipBackground: 'var(--surface-2)',
 
+      toggleBackgroundColorOn: 'var(--primary-color)',
+      toggleBackgroundColorOff: 'var(--surface-3)',
+      toggleIconSuccess: 'var(--success-color)',
+      toggleIconAlert: 'var(--alert-color)',
+
       spinnerColor1: 'var(--gray-1)',
       spinnerColor2: 'var(--black)',
 
@@ -81,6 +89,13 @@ export const themes = {
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
+
+      listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
+      listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
+      listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
+      listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
+      listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
@@ -168,6 +183,11 @@ export const themes = {
       labelFontWeight: '700',
       labelTooltipColor: 'var(--gray-0)',
       labelTooltipBackground: 'var(--surface-2)',
+
+      toggleBackgroundColorOn: 'var(--primary-color)',
+      toggleBackgroundColorOff: 'var(--surface-3)',
+      toggleIconSuccess: 'var(--success-color)',
+      toggleIconAlert: 'var(--alert-color)',
 
       spinnerColor1: 'var(--gray-1)',
       spinnerColor2: 'var(--black)',
@@ -265,6 +285,11 @@ export const themes = {
       labelFontWeight: '700',
       labelTooltipColor: 'var(--gray-0)',
       labelTooltipBackground: 'var(--surface-2)',
+
+      toggleBackgroundColorOn: 'var(--primary-color)',
+      toggleBackgroundColorOff: 'var(--surface-3)',
+      toggleIconSuccess: 'var(--success-color)',
+      toggleIconAlert: 'var(--alert-color)',
 
       spinnerColor1: 'var(--gray-1)',
       spinnerColor2: 'var(--black)',
@@ -366,6 +391,11 @@ export const argTypes = {
   spinnerColor1: { control: 'color' },
   spinnerColor2: { control: 'color' },
 
+  toggleBackgroundColorOn: { control: 'color' },
+  toggleBackgroundColorOff: { control: 'color' },
+  toggleIconSuccess: { control: 'color' },
+  toggleIconAlert: { control: 'color' },
+
   tileFontFamily: { control: 'color' },
   tileFontSize: { control: 'text' },
   tileFontWeight: { control: 'text' },
@@ -452,28 +482,41 @@ export function themeCss(storyArgs) {
 
     --dt-text-color: ${getArg(storyArgs, 'dttextColor')};
     --dt-text-color-inverse: ${getArg(storyArgs, 'dttextColorInverse')};
+    --dt-text-color-mid: ${getArg(storyArgs, 'dttextColorMid')};
     --dt-text-background-color: ${getArg(storyArgs, 'textBackgroundColor')};
     --dt-text-border-color: ${getArg(storyArgs, 'textBorderColor')};
     --dt-text-border-color-alert: ${getArg(storyArgs, 'textBorderColorAlert')};
     --dt-text-disabled-background-color: ${getArg(storyArgs, 'textDisabledBackgroundColor')};
+
     --dt-textarea-border-color: ${getArg(storyArgs, 'textareaBorderColor')};
     --dt-textarea-background-color: ${getArg(storyArgs, 'textareaBackgroundColor')};
     --dt-textarea-disabled-background-color: ${getArg(storyArgs, 'textareaDisabledBackgroundColor')};
     --dt-textarea-text-color: ${getArg(storyArgs, 'textareaTextColor')};
     --dt-textarea-text-color-inverse: ${getArg(storyArgs, 'textareaTextcolorInverse')};
+
     --dt-label-font-size: ${getArg(storyArgs, 'labelFontSize')};
     --dt-label-font-weight: ${getArg(storyArgs, 'labelFontWeight')};
     --dt-label-color: ${getArg(storyArgs, 'labelTextColor')};
     --dt-label-tooltip-color: ${getArg(storyArgs, 'labelTooltipColor')};
     --dt-label-tooltip-background: ${getArg(storyArgs, 'labelTooltipBackground')};
+
     --dt-spinner-color-1: ${getArg(storyArgs, 'spinnerColor1')};
     --dt-spinner-color-2: ${getArg(storyArgs, 'spinnerColor2')};
     --dt-tile-font-family: ${getArg(storyArgs, 'tileFontFamily')};
+
+    --dt-toggle-background-color-on: ${getArg(storyArgs, 'toggleBackgroundColorOn')};
+    --dt-toggle-background-color-off: ${getArg(storyArgs, 'toggleBackgroundColorOff')};
+    --dt-toggle-border-color: ${getArg(storyArgs, 'toggleBorderColor')};
+    --dt-toggle-icon-success: ${getArg(storyArgs, 'toggleIconSuccess')};
+    --dt-toggle-icon-alert: ${getArg(storyArgs, 'toggleIconAlert')};
+
+
     --dt-tile-font-size: ${getArg(storyArgs, 'tileFontSize')};
     --dt-tile-font-weight: ${getArg(storyArgs, 'tileFontWeight')};
     --dt-tile-background-color: ${getArg(storyArgs, 'tileBackground')};
     --dt-tile-border-color: ${getArg(storyArgs, 'tileBorderColor')};
     --dt-tile-shadow: ${getArg(storyArgs, 'tileShadow')};
+
     --dt-alert-text-color-light: ${getArg(storyArgs, 'alertTextColorLight')};
     --dt-alert-text-color-dark: ${getArg(storyArgs, 'alertTextColorDark')};
     --dt-alert-text-color: ${getArg(storyArgs, 'alertTextColor')};
@@ -485,6 +528,12 @@ export function themeCss(storyArgs) {
     --dt-alert-shadow: ${getArg(storyArgs, 'alertShadow')};
     background: ${getArg(storyArgs, 'surface0')};
     color-scheme: ${getArg(storyArgs, 'colorScheme')};
+
+    --dt-list-background-color: ${getArg(storyArgs, 'listheaderBackground')};
+    --dt-list-hover-background-color: ${getArg(storyArgs, 'listheaderHoverBackground')};
+    --dt-list-sort-arrow-color: ${getArg(storyArgs, 'listSortArrowColor')};
+    --dt-list-sort-arrow-color-highlight: ${getArg(storyArgs, 'listSortArrowColorHighlight')};
+    --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
 
     ${storyArgs.RTL ? 'direction: rtl;' : 'direction: ltr;'}
   }
