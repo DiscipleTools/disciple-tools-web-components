@@ -6,6 +6,10 @@ export class DtToggle extends DtFormBase {
     return [
       ...super.styles,
       css`
+        :host {
+          display: inline-block;
+        }
+
         .Toggle {
           display: flex;
           flex-wrap: wrap;

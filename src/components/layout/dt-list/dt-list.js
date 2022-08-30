@@ -378,7 +378,13 @@ export class DtList extends LitElement {
             <span class="section-header posts-header" style="display: inline-block">${this.postType} List</span>
           </div>
             <span class="filter-result-text">Showing 1 of ${this.total}</span>
-            <button @click=${this._toggleShowArchived}>Show Archived</button>
+            <dt-toggle
+              name= "showArchived"
+              label="Show Archived"
+              ?checked=${this.showArchived}
+              onchange=${this._toggleShowArchived}
+              @click=${this._toggleShowArchived}
+            ></dt-toggle>
         </div>
         <table>
           ${this._headerTemplate()}
