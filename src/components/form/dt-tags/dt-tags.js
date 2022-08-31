@@ -22,10 +22,6 @@ export class DtTags extends DtMultiSelect {
     `];
   }
 
-  firstUpdated() {
-    this._filterOptions();
-  }
-
   _clickOption(e) {
     if (e.target && e.target.value) {
       const id = e.target.value;
@@ -36,8 +32,6 @@ export class DtTags extends DtMultiSelect {
         return result;
       }, null);
       this._select(option);
-
-      this._filterOptions();
     }
   }
 
@@ -63,9 +57,6 @@ export class DtTags extends DtMultiSelect {
         return val;
       });
 
-      // re-filter available options once option is de-selected
-      this._filterOptions();
-
       // If option was de-selected while list was open, re-focus input
       if (this.open) {
         this.shadowRoot.querySelector('input').focus();
@@ -84,8 +75,6 @@ export class DtTags extends DtMultiSelect {
       } else {
         this._select(this.filteredOptions[this.activeIndex]);
       }
-
-      this._filterOptions();
     }
   }
 

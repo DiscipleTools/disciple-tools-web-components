@@ -53,7 +53,7 @@ describe('dt-single-select', () => {
     expect(el.value).to.equal('opt1');
   });
 
-  it.skip('triggers change event', async () => {
+  it('triggers change event', async () => {
     const el = await fixture(html`<dt-single-select name="custom-name" options="${JSON.stringify(options)}"></dt-single-select>`);
     const select = el.shadowRoot.querySelector('select');
 
