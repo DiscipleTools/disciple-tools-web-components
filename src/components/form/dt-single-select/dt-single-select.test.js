@@ -83,7 +83,6 @@ describe('dt-single-select', () => {
     const el = await fixture(html`<dt-single-select value="opt1" options="${JSON.stringify(colorOptions)}"></dt-single-select>`);
     const select = el.shadowRoot.querySelector('select');
 
-
-    expect(select).to.have.style('backgroundColor', 'rgb(0, 0, 0)');
+    expect(select.style.backgroundColor).to.eql('rgb(0, 0, 0)');
   });
 });
