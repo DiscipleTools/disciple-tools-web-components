@@ -71,6 +71,16 @@ ToggledOn.args = {
   checked: true,
 };
 
+export const DisabledOff = Template.bind({});
+DisabledOff.args = {
+  disabled: true,
+};
+export const DisabledOn = Template.bind({});
+DisabledOn.args = {
+  checked: true,
+  disabled: true,
+};
+
 export const RTL = Template.bind({});
 RTL.args = {
   RTL: true,

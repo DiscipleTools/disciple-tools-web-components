@@ -60,6 +60,7 @@ function Template(args) {
     placeholder,
     value,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    disabled,
     isPrivate,
     privateLabel,
     onChange,
@@ -96,6 +97,7 @@ function Template(args) {
       options="${JSON.stringify(options)}"
       value="${value}"
       icon="${icon}"
+      ?disabled=${disabled}
       ?private=${isPrivate}
       privateLabel="${privateLabel}"
       onchange="${onChange}"
@@ -142,6 +144,13 @@ export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
   onChange: 'onChange(event)',
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  value: 'opt2',
+  options: basicOptions,
+  disabled: true,
 };
 
 export const Loading = Template.bind({});

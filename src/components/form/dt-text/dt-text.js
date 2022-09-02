@@ -50,7 +50,6 @@ export class DtTextField extends DtFormBase {
         type: String,
         reflect: true,
       },
-      disabled: { type: Boolean },
       onchange: { type: String },
     };
   }

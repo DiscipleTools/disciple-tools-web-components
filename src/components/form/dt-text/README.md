@@ -21,5 +21,5 @@ Basic single line text input
 - [ ] placeholder
 - [ ] loading
 - [ ] saved
-- [ ] disabled
-- [ ] required
+- [x] disabled
+- [x] required

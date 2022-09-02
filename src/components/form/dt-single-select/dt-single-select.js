@@ -134,7 +134,7 @@ export class DtSingleSelect extends DtFormBase {
           @change="${this._change}"
           class="${this.isColorSelect() ? 'color-select' : ''}"
           style="background-color: ${this.color};"
-          ?disabled="${this.loading}"
+          ?disabled="${this.disabled}"
         >
           <option disabled selected hidden value="">${this.placeholder}</option>
 

@@ -4,7 +4,9 @@ import DtFormBase from '../dt-form-base.js';
 
 export class DtNumberField extends DtFormBase {
   static get styles() {
-    return css`
+    return [
+      ...super.styles,
+      css`
       input {
         color: var(--dt-form-text-color, #000);
         appearance: none;
@@ -28,7 +30,7 @@ export class DtNumberField extends DtFormBase {
         background-color: var(--dt-form-disabled-background-color, #e6e6e6);
         cursor: not-allowed;
       }
-    `;
+    `];
   }
 
   static get properties() {
@@ -42,7 +44,6 @@ export class DtNumberField extends DtFormBase {
       },
       min: { type: Number },
       max: { type: Number },
-      disabled: { type: Boolean },
       loading: { type: Boolean },
       saved: { type: Boolean },
       onchange: { type: String },

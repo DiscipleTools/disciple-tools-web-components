@@ -137,7 +137,6 @@ export class DtToggle extends DtFormBase {
         type: Boolean,
         reflect: true,
       },
-      disabled: { type: Boolean },
       onchange: { type: String },
       rtl: { type: Boolean },
     };

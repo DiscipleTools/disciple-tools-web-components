@@ -21,5 +21,5 @@ Multi-line text input
 - [ ] placeholder
 - [ ] loading
 - [ ] saved
-- [ ] disabled
+- [x] disabled
 - [ ] required

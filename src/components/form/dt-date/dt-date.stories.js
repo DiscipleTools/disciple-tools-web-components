@@ -85,6 +85,12 @@ EnteredJSTimestamp.args = {
   timestamp: 1658361600000,
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+  value: '2020-01-01',
+  disabled: true,
+};
+
 export const RTL = Template.bind({});
 RTL.args = {
   RTL: true,

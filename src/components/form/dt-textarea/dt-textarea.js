@@ -3,7 +3,9 @@ import DtFormBase from '../dt-form-base.js';
 
 export class DtTextArea extends DtFormBase {
   static get styles() {
-    return css`
+    return [
+      ...super.styles,
+      css`
       textarea {
         color: var(--dt-textarea-text-color, #0a0a0a);
         appearance: none;
@@ -31,7 +33,7 @@ export class DtTextArea extends DtFormBase {
         background-color: var(--dt-textarea-disabled-background-color, #e6e6e6);
         cursor: not-allowed;
       }
-    `;
+    `];
   }
 
   static get properties() {
@@ -43,7 +45,6 @@ export class DtTextArea extends DtFormBase {
         type: String,
         reflect: true,
       },
-      disabled: { type: Boolean },
       loading: { type: Boolean },
       saved: { type: Boolean },
       onchange: { type: String },
