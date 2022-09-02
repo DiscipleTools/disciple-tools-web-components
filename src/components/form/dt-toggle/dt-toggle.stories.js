@@ -37,6 +37,7 @@ function Template(args) {
     saved = false,
     onchange,
     slot,
+    RTL,
   } = args;
   return html`
     <style>
@@ -55,6 +56,7 @@ function Template(args) {
       privateLabel="${privateLabel}"
       ?loading=${loading}
       ?saved=${saved}
+      ?rtl="${RTL}"
       onchange=${onchange}
     >
     ${slot}
