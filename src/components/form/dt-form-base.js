@@ -59,7 +59,7 @@ export default class DtFormBase extends LitElement {
   }
 
   msg(str) {
-    return this.i18n[str] || str;
+    return (this.i18n && this.i18n[str]) || str;
   }
   constructor() {
     super();
