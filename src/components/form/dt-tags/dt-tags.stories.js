@@ -164,7 +164,7 @@ function Template(args) {
     slot,
     onload,
     allowAdd,
-    i18n,
+    locale,
   } = args;
   return html`
     <style>
@@ -222,7 +222,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
-      i18n="${JSON.stringify(i18n)}"
+      locale="${locale}"
     >
       ${slot}
     </dt-tags>
@@ -308,14 +308,11 @@ Saved.args = {
 export const RTL = Template.bind({});
 RTL.args = {
   RTL: true,
+  locale: 'ar',
   label: 'اسم الإدخال',
   placeholder: 'حدد العلامات',
   allowAdd: true,
   loading: true,
-  i18n: {
-    'No options available': 'لا توجد خيارات متاحة',
-    'Add': 'أضف',
-  },
   value: [{
     id: 'opt1',
     label: 'تنكر هؤلاء الرجال المفتونون',

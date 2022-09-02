@@ -1,5 +1,6 @@
 import { html, css } from 'lit';
 import {styleMap} from 'lit/directives/style-map.js';
+import {msg} from '@lit/localize';
 import DtFormBase from '../dt-form-base.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
@@ -421,6 +422,8 @@ export class DtMultiSelect extends DtFormBase {
   }
 
   willUpdate(props) {
+    super.willUpdate(props);
+
     if (props) {
 
       const valueChanged = props.has('value');
@@ -479,7 +482,7 @@ export class DtMultiSelect extends DtFormBase {
 
   _renderOptions() {
     if (!this.filteredOptions.length) {
-      return html`<li><div>${this.msg('No options available')}</div></li>`;
+      return html`<li><div>${msg('No options available')}</div></li>`;
     }
 
     return this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx));

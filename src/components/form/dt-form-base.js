@@ -1,4 +1,6 @@
 import { css, html, LitElement } from 'lit';
+import {updateWhenLocaleChanges} from '@lit/localize';
+import { setLocale } from '../../i18n/localization.js';
 import 'element-internals-polyfill';
 import './dt-label/dt-label.js';
 
@@ -55,14 +57,17 @@ export default class DtFormBase extends LitElement {
       loading: { type: Boolean },
       saved: { type: Boolean },
       i18n: { type: Object },
+      locale: { type: String },
     };
   }
 
   msg(str) {
     return (this.i18n && this.i18n[str]) || str;
   }
+
   constructor() {
     super();
+    updateWhenLocaleChanges(this);
     this.touched = false;
     this.invalid = false;
     this.internals = this.attachInternals();
@@ -74,6 +79,13 @@ export default class DtFormBase extends LitElement {
       this.touched = true;
       this._validateRequired();
     });
+  }
+
+  willUpdate(props) {
+    if (props && props.has('locale')) {
+      // locale is changing. Update lit-localize
+      setLocale(this.locale);
+    }
   }
 
   firstUpdated(...args) {

@@ -107,6 +107,9 @@ export default {
         },
       },
     },
+    locale: {
+      control: 'text',
+    },
     ...argTypes,
   },
 };
@@ -128,6 +131,7 @@ function Template(args) {
     open,
     slot,
     i18n,
+    locale,
   } = args;
   return html`
     <style>
@@ -164,7 +168,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
-      i18n="${JSON.stringify(i18n)}"
+      locale="${locale}"
     >
       ${slot}
     </dt-multi-select>
@@ -240,11 +244,9 @@ Saved.args = {
 export const RTL = Template.bind({});
 RTL.args = {
   RTL: true,
+  locale: 'ar',
   label: 'اسم الإدخال',
   value: ['opt1'],
-  i18n: {
-    'No options available': 'لا توجد خيارات متاحة',
-  },
   options: [{
     id: 'opt1',
     label: 'تنكر هؤلاء الرجال المفتونون',

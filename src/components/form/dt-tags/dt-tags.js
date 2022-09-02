@@ -1,4 +1,5 @@
 import { css, html } from 'lit';
+import { msg } from '@lit/localize';
 import { DtMultiSelect } from '../dt-multi-select/dt-multi-select.js';
 
 export class DtTags extends DtMultiSelect {
@@ -152,7 +153,7 @@ export class DtTags extends DtMultiSelect {
             ? 'active'
             : ''}"
         >
-          ${this.msg('Add')} "${this.query}"
+          ${msg('Add')} "${this.query}"
         </button>
       </li>`);
     }

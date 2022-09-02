@@ -101,6 +101,7 @@ export class DtSingleSelect extends DtFormBase {
   }
 
   willUpdate(changedProperties) {
+    super.willUpdate(changedProperties);
     if (changedProperties.has('value')) {
       this.updateColor();
     }

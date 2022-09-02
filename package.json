@@ -29,6 +29,8 @@
   "devDependencies": {
     "@babel/eslint-plugin": "^7.6.0",
     "@custom-elements-manifest/analyzer": "^0.6.4",
+    "@lit/localize": "^0.11.4",
+    "@lit/localize-tools": "^0.6.5",
     "@open-wc/eslint-config": "^8.0.2",
     "@open-wc/testing": "^3.1.6",
     "@rollup/plugin-node-resolve": "^13.3.0",
