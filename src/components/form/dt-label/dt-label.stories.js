@@ -3,7 +3,7 @@ import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-label.js';
 
 export default {
-  title: 'dt-label',
+  title: 'Form/dt-label',
   component: 'dt-label',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
@@ -67,4 +67,12 @@ PrivateCustomTooltip.args = {
   label: 'My Field Label',
   private: true,
   privateLabel: 'Add other language content here',
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  private: true,
+  privateLabel: 'أضف محتوى لغة أخرى هنا',
 };

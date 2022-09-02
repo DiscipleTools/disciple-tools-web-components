@@ -3,7 +3,7 @@ import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-text.js';
 
 export default {
-  title: 'dt-text',
+  title: 'Form/dt-text',
   component: 'dt-text',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
@@ -140,4 +140,11 @@ requiredCustomMessage.decorators = [FormDecorator];
 requiredCustomMessage.args = {
   required: true,
   requiredMessage: 'Custom error message',
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  value: 'راد أن يشع',
 };

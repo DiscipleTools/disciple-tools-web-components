@@ -3,7 +3,7 @@ import './dt-number.js';
 import { themes, themeCss, argTypes} from '../../../stories-theme.js';
 
 export default {
-  title: 'dt-number',
+  title: 'Form/dt-number',
   component: 'dt-number',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
@@ -101,4 +101,11 @@ export const privateField = Template.bind({});
 privateField.args = {
   isPrivate: true,
   value: 77,
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  value: 'راد أن يشع',
 };

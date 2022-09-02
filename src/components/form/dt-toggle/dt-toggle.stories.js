@@ -3,7 +3,7 @@ import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-toggle.js';
 
 export default {
-  title: 'dt-toggle',
+  title: 'Form/dt-toggle',
   component: 'dt-toggle',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
@@ -67,30 +67,19 @@ export const Default = Template.bind({});
 export const ToggledOn = Template.bind({});
 ToggledOn.args = {
   checked: true,
-}
+};
 
-const FormDecorator = (story) => html`<form onsubmit="onFormSubmit(event)">
-    ${story()}
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  value: 'راد أن يشع',
+};
 
-    <button type="submit">Submit</button>
-
-    <pre><output></output></pre>
-  </form>
-  <script>
-  function onFormSubmit(event) {
-    if (event) {
-      event.preventDefault();
-    }
-
-    const output = document.querySelector('output');
-
-    const form = event.target;
-
-    /** Get all of the form data */
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key) => data[key] = value);
-    output.innerHTML = JSON.stringify(data, null, 2);
-  }
-  </script>
-`;
+export const RTLOn = Template.bind({});
+RTLOn.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  value: 'راد أن يشع',
+  checked: true,
+};

@@ -3,7 +3,7 @@ import './dt-date.js';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 
 export default {
-  title: 'dt-date',
+  title: 'Form/dt-date',
   component: 'dt-date',
   argTypes: {
     id: { control: 'text' },
@@ -83,4 +83,11 @@ EnteredDateString.args = {
 export const EnteredJSTimestamp = Template.bind({});
 EnteredJSTimestamp.args = {
   timestamp: 1658361600000,
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  value: 'راد أن يشع',
 };
