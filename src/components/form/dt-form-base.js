@@ -54,14 +54,19 @@ export default class DtFormBase extends LitElement {
       },
       loading: { type: Boolean },
       saved: { type: Boolean },
+      i18n: { type: Object },
     };
   }
 
+  msg(str) {
+    return this.i18n[str] || str;
+  }
   constructor() {
     super();
     this.touched = false;
     this.invalid = false;
     this.internals = this.attachInternals();
+    this.i18n = {};
 
     // catch oninvalid event (when validation is triggered from form submit)
     // and set touched=true so that styles are shown

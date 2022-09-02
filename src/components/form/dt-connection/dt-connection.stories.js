@@ -56,7 +56,7 @@ const basicOptions = [
   },
 ];
 export default {
-  title: 'dt-connection',
+  title: 'Form/dt-connection',
   component: 'dt-connection',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
@@ -175,6 +175,7 @@ function Template(args) {
     open,
     allowAdd,
     slot,
+    i18n,
   } = args;
   return html`
     <style>
@@ -232,6 +233,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
+      i18n="${JSON.stringify(i18n)}"
     >
       ${slot}
     </dt-connection>
@@ -316,4 +318,45 @@ Saved.args = {
   ],
   options: basicOptions,
   saved: true,
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  placeholder: 'حدد العلامات',
+  allowAdd: true,
+  loading: true,
+  i18n: {
+    'No options available': 'لا توجد خيارات متاحة',
+    'Add': 'أضف',
+  },
+  value: [{
+    id: 'opt1',
+    label: 'تنكر هؤلاء الرجال المفتونون',
+  }],
+  options: [{
+    id: '1',
+    label: 'تنكر هؤلاء الرجال المفتونون',
+    link: '/#opt1',
+    status: {
+      key: 'active',
+      label: 'نشيط',
+      color: '#4CAF50',
+    },
+  }, {
+      id: '2',
+      label: 'م فيتساوي مع هؤلاء',
+      link: '/#opt2',
+      user: true,
+      status: {
+        key: 'assigned',
+        label: 'في انتظار قبولها',
+        color: '#FF9800',
+      },
+    }, {
+    id: '3',
+    label: 'فلا أحد يرفض',
+    link: '/#opt3',
+  }]
 };

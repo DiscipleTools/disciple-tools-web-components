@@ -7,7 +7,7 @@ export class DtConnection extends DtTags {
       ...super.styles,
       css`
       .selected-option a {
-        border-left: solid 3px transparent;
+        border-inline-start: solid 3px transparent;
       }
       
       li button * {
@@ -15,7 +15,7 @@ export class DtConnection extends DtTags {
       }
       
       li {
-        border-left: solid 5px transparent;
+        border-inline-start: solid 5px transparent;
       }
       
       li button .status {
@@ -47,7 +47,7 @@ export class DtConnection extends DtTags {
       opt => html`
         <div class="selected-option">
           <a href="${opt.link}" 
-             style="border-left-color: ${opt.status ? opt.status.color : ''}"
+             style="border-inline-start-color: ${opt.status ? opt.status.color : ''}"
              ?disabled="${this.disabled}"
              title="${opt.status ? opt.status.label : opt.label}">${opt.label}</a>
           <button @click="${this._remove}" ?disabled="${this.disabled}" data-value="${opt.id}">x</button>
@@ -64,7 +64,7 @@ export class DtConnection extends DtTags {
       color: '',
     };
     return html`
-        <li tabindex="-1" style="border-left-color:${status.color}">
+        <li tabindex="-1" style="border-inline-start-color:${status.color}">
           <button
             value="${opt.id}"
             type="button"

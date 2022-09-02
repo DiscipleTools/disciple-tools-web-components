@@ -152,7 +152,7 @@ export class DtTags extends DtMultiSelect {
             ? 'active'
             : ''}"
         >
-          Add "${this.query}"
+          ${this.msg('Add')} "${this.query}"
         </button>
       </li>`);
     }

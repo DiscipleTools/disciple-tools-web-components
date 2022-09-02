@@ -184,6 +184,7 @@ export class DtMultiSelect extends DtFormBase {
         state: true,
       },
       onchange: { type: String },
+      i18n: { type: Object },
     };
   }
 
@@ -478,7 +479,7 @@ export class DtMultiSelect extends DtFormBase {
 
   _renderOptions() {
     if (!this.filteredOptions.length) {
-      return html`<li><div>No options available</div></li>`;
+      return html`<li><div>${this.msg('No options available')}</div></li>`;
     }
 
     return this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx));

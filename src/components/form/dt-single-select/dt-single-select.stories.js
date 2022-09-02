@@ -39,7 +39,7 @@ const colorOptions = [
   },
 ];
 export default {
-  title: 'dt-single-select',
+  title: 'Form/dt-single-select',
   component: 'dt-single-select',
   argTypes: {
     name: { control: 'text' },
@@ -66,6 +66,7 @@ function Template(args) {
     isLoading,
     isSaved,
     slot,
+    RTL,
   } = args;
   return html`
     <style>
@@ -100,6 +101,7 @@ function Template(args) {
       onchange="${onChange}"
       ?loading="${isLoading}"
       ?saved="${isSaved}"
+      ?rtl="${RTL}"
     >
     ${slot}
     </dt-single-select>
@@ -153,4 +155,22 @@ Saved.args = {
   value: 'opt2',
   options: basicOptions,
   isSaved: true,
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  placeholder: 'حدد العلامات',
+  value: 'opt2',
+  options: [{
+    id: 'opt1',
+    label: 'تنكر هؤلاء الرجال المفتونون',
+  }, {
+    id: 'opt2',
+    label: 'م فيتساوي مع هؤلاء',
+  }, {
+    id: 'opt3',
+    label: 'فلا أحد يرفض',
+  }]
 };

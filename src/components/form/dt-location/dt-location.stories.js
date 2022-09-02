@@ -44,7 +44,7 @@ const defaultFilters = [{
   label: 'All Locations',
 }];
 export default {
-  title: 'dt-location',
+  title: 'Form/dt-location',
   component: 'dt-location',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes) },
@@ -165,6 +165,7 @@ function Template(args) {
     slot,
     onload,
     allowAdd,
+    i18n,
   } = args;
   return html`
     <style>
@@ -223,6 +224,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
+      i18n="${JSON.stringify(i18n)}"
     >
       ${slot}
     </dt-location>
@@ -303,4 +305,38 @@ Saved.args = {
   ],
   options: basicOptions,
   saved: true,
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  placeholder: 'حدد العلامات',
+  allowAdd: true,
+  loading: true,
+  i18n: {
+    'No options available': 'لا توجد خيارات متاحة',
+    'Add': 'أضف',
+  },
+  value: [{
+    id: 'opt1',
+    label: 'تنكر هؤلاء الرجال المفتونون',
+  }],
+  options: [{
+    id: 'opt1',
+    label: 'تنكر هؤلاء الرجال المفتونون',
+  }, {
+    id: 'opt2',
+    label: 'م فيتساوي مع هؤلاء',
+  }, {
+    id: 'opt3',
+    label: 'فلا أحد يرفض',
+  }],
+  filters: [{
+    id: 'focus',
+    label: 'منطقة التركيز',
+  }, {
+    id: 'all',
+    label: 'جميع المواقع',
+  }],
 };
