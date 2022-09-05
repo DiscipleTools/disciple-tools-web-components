@@ -82,8 +82,31 @@ export default class DtFormBase extends LitElement {
   }
 
   willUpdate(props) {
-    if (props && props.has('locale')) {
-      // locale is changing. Update lit-localize
+
+    // get RTL from closest parent with [dir] attribute
+    if (this.RTL === undefined) {
+      const dirEl = this.closest('[dir]');
+      if (dirEl) {
+        const dir = dirEl.getAttribute('dir');
+        if (dir) {
+          this.RTL = dir.toLowerCase() === 'rtl';
+        }
+      }
+    }
+
+    // get locale from closest parent with [lang] attribute
+    if (!this.locale) {
+      const langEl = this.closest('[lang]');
+      if (langEl) {
+        const lang = langEl.getAttribute('lang');
+        if (lang) {
+          this.locale = lang;
+        }
+      }
+    }
+
+    // if locale is changing, update lit-localize
+    if (props && props.has('locale') && this.locale) {
       setLocale(this.locale);
     }
   }

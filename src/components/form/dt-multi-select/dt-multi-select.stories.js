@@ -258,3 +258,12 @@ RTL.args = {
     label: 'فلا أحد يرفض',
   }]
 };
+
+const LocaleDecorator = (story) => html`<div lang="ar" dir="rtl">${story()}</div>`;
+export const Localize = Template.bind({});
+Localize.decorators = [LocaleDecorator];
+Localize.args = {
+  label: RTL.args.label,
+  value: RTL.args.value,
+  options: RTL.args.options,
+};
