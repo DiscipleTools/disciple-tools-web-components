@@ -11,6 +11,7 @@ export default {
     name: { control: 'text' },
     label: { control: 'text' },
     checked: { control: 'boolean' },
+    hideIcons: { control: 'boolean' },
     disabled: { control: 'boolean' },
     icon: { control: 'text' },
     isPrivate: { control: 'boolean' },
@@ -28,6 +29,7 @@ function Template(args) {
     label = 'Field Name',
     disabled = false,
     checked = false,
+    hideIcons = false,
     required = false,
     requiredMessage = '',
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
@@ -48,6 +50,7 @@ function Template(args) {
       name=${name}
       label=${label}
       ?checked=${checked}
+      ?hideIcons=${hideIcons}
       ?disabled=${disabled}
       ?required=${required}
       requiredMessage=${requiredMessage}
@@ -70,7 +73,10 @@ export const ToggledOn = Template.bind({});
 ToggledOn.args = {
   checked: true,
 };
-
+export const iconsHidden = Template.bind({});
+iconsHidden.args = {
+  hideIcons: true,
+};
 export const DisabledOff = Template.bind({});
 DisabledOff.args = {
   disabled: true,
