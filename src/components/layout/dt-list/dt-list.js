@@ -26,10 +26,19 @@ export class DtList extends LitElement {
         padding: 1rem;
       }
 
+      .header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: baseline;
+        gap: 1.5em;
+        flex-wrap: wrap;
+      }
+
       .section-header {
         color: var(--dt-tile-header-color, #3f729b);
         font-size: 1.5rem;
         display: inline-block;
+        text-transform: capitalize;
       }
 
       table {
@@ -373,7 +382,7 @@ export class DtList extends LitElement {
   render() {
     return html`
       <div class="section">
-        <div>
+        <div class="header">
           <div class='section-header'>
             <span class="section-header posts-header" style="display: inline-block">${this.postType} List</span>
           </div>
