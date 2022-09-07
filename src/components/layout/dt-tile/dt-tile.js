@@ -44,6 +44,7 @@ export class DtTile extends LitElement {
       }
       .section-body.collapsed {
         height: 0 !important;
+        overflow: hidden;
       }
 
       button.toggle {
