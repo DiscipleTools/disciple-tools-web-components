@@ -1,5 +1,6 @@
 import { html, css, LitElement } from 'lit';
 import { map } from 'lit/directives/map.js';
+import {repeat} from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DtAPI } from '../../../services/dt-api.js';
 import '../../icons/dt-star.js';
@@ -8,6 +9,7 @@ export class DtList extends LitElement {
   static get styles() {
     return css`
       :host {
+        --number-of-columns: 7;
         font-family: var(--font-family);
         font-size: var(--dt-list-font-size, 15px);
         font-weight: var(--dt-list-font-weight, 300);
@@ -39,6 +41,44 @@ export class DtList extends LitElement {
         font-size: 1.5rem;
         display: inline-block;
         text-transform: capitalize;
+      }
+
+      .list_action_section {
+        background-color: var(--dt-list-action-section-background-color, #ecf5fc);
+        border-radius: 5px;
+        margin: 30px 0;
+        padding: 20px;
+      }
+      .list_action_section_header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      .close-button {
+        outline: none;
+        font-size: 2.5em;
+        line-height: 1;
+        color: #8a8a8a;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+      }
+      .fieldsList {
+        list-style-type: none;
+        column-count: 1;
+      }
+
+      .list-field-picker-item {
+        list-style-type: none;
+      }
+
+      .list-field-picker-item input {
+        margin: 1rem;
+      }
+
+      .list-field-picker-item .dt-icon {
+        height: 1rem;
+        width: 1rem;
       }
 
       table {
@@ -150,19 +190,16 @@ export class DtList extends LitElement {
         margin: 1rem;
       }
       @container (min-width: 650px) {
-
+        .fieldsList {
+          column-count: 2;
+        }
         table {
           grid-template-columns:
           minmax(32px, .5fr)
           minmax(32px, .5fr)
           minmax(32px, .5fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
+          repeat(var(--number-of-columns, 7), minmax(50px, 1fr))
+
         }
 
         th {
@@ -201,6 +238,16 @@ export class DtList extends LitElement {
           display: none;
         }
       }
+      @container (min-width: 950px) {
+        .fieldsList {
+          column-count: 3;
+        }
+      }
+      @container (min-width: 1500px) {
+        .fieldsList {
+          column-count: 4;
+        }
+      }
     `;
   }
 
@@ -215,6 +262,7 @@ export class DtList extends LitElement {
       loading: { type: Boolean, default: true },
       offset: { type: Number },
       showArchived: { type: Boolean, default: false },
+      showFieldsSelector: { type: Boolean, default: false },
       nonce: { type: String },
     };
   }
@@ -240,6 +288,14 @@ export class DtList extends LitElement {
       this.posts = response;
       this.sortedBy = column;
     })
+  }
+
+  _bulkEdit(e) {
+    console.log('bulk edit');
+  }
+
+  _fieldsEdit() {
+    this.showFieldsSelector = !this.showFieldsSelector;
   }
 
   _toggleShowArchived() {
@@ -321,10 +377,10 @@ export class DtList extends LitElement {
               ${ifDefined(post[column].display)}
           </td>`
       }
-      if (this.postTypeSettings[column].type === 'key_select'  && post[column] && post[column].label) {
+      if (this.postTypeSettings[column].type === 'key_select'  && post[column] && (post[column].label ||  post[column].name)) {
         return html`
         <td dir="auto" title="${this.postTypeSettings[column].name}">
-            ${ifDefined(post[column].label)}
+            ${ post[column].label || post[column].name }
         </td>`
       }
       if (this.postTypeSettings[column].type === 'multi_select' || this.postTypeSettings[column].type === 'tags' && post[column] && post[column].length > 0) {
@@ -369,6 +425,75 @@ export class DtList extends LitElement {
     });
   }
 
+  _fieldListIconTemplate(field) {
+    if (this.postTypeSettings[field].icon) {
+      return html`<img class="dt-icon" src="${this.postTypeSettings[field].icon}" alt="${this.postTypeSettings[field].name}">`
+    }
+    return null;
+  }
+
+  _fieldsListTemplate() {
+      return repeat(Object.keys(this.postTypeSettings).sort((a, b) => {
+        const nameA = this.postTypeSettings[a].name.toUpperCase(); // ignore upper and lowercase
+        const nameB = this.postTypeSettings[b].name.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        // names must be equal
+        return 0;
+      })
+      ,
+      (field) => field,
+      (field) => {
+        if (!this.postTypeSettings[field].hidden) {
+          return html`<li class="list-field-picker-item">
+            <label>
+              <input type="checkbox" id="${field}" name="${field}" .value="${field}" @change=${this._updateFields} ?checked=${this.columns.includes(field)} >
+              ${this._fieldListIconTemplate(field)}
+            ${this.postTypeSettings[field].name}</label>
+          </li>
+        `
+        }
+        return null
+      }
+    )
+  }
+
+  _fieldsSelectorTemplate() {
+    if (this.showFieldsSelector ) {
+      return html`<div id="list_column_picker" class="list_field_picker list_action_section">
+          <div class="list_action_section_header">
+            <p style="font-weight:bold">Choose which fields to display as columns in the list</p>
+            <button class="close-button list-action-close-button" data-close="list_column_picker" aria-label="Close modal" type="button" @click=${this._fieldsEdit}>
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+           <ul class="fieldsList" style="">
+              ${this._fieldsListTemplate()}
+            </ul>`}
+    return null;
+  }
+
+  _updateFields(e) {
+    const field = e.target.value;
+    let viewableColumns = this.columns;
+
+    if (!viewableColumns.includes(field)) {
+      viewableColumns.push(field);
+    } else {
+      viewableColumns.filter((column) => column !== field);
+      viewableColumns.splice(viewableColumns.indexOf(field), 1);
+    }
+
+    this.columns = viewableColumns;
+    this.style.setProperty('--number-of-columns', this.columns.length-1);
+
+    this.requestUpdate();
+  }
+
   connectedCallback() {
     super.connectedCallback()
     if (!this.posts) {
@@ -387,14 +512,20 @@ export class DtList extends LitElement {
             <span class="section-header posts-header" style="display: inline-block">${this.postType} List</span>
           </div>
             <span class="filter-result-text">Showing 1 of ${this.total}</span>
+
+            <button class="bulkToggle" id="bulk_edit_button" @click=${this._bulkEdit}>Bulk Edit</button>
+            <button class="fieldsToggle" id="fields_edit_button" @click=${this._fieldsEdit}>Fields</button>
+
             <dt-toggle
               name= "showArchived"
               label="Show Archived"
               ?checked=${this.showArchived}
+              hideIcons
               onchange=${this._toggleShowArchived}
               @click=${this._toggleShowArchived}
             ></dt-toggle>
         </div>
+        ${this._fieldsSelectorTemplate()}
         <table>
           ${this._headerTemplate()}
           ${this.posts? this._rowTemplate() : 'Loading'}
