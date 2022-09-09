@@ -2,6 +2,7 @@ import { html, css, LitElement } from 'lit';
 import { map } from 'lit/directives/map.js';
 import {repeat} from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import {classMap} from 'lit/directives/class-map.js';
 import { DtAPI } from '../../../services/dt-api.js';
 import '../../icons/dt-star.js';
 
@@ -195,6 +196,21 @@ export class DtList extends LitElement {
         padding-inline-end: .25em;
       }
 
+      th.bulk_edit_checkbox, td.bulk_edit_checkbox  {
+        grid-column: none;
+      }
+
+      .bulk_edit_checkbox input {
+        display: none;
+      }
+
+      .bulk_editing th.bulk_edit_checkbox, .bulk_editing td.bulk_edit_checkbox {
+        grid-column: 1 / auto;
+      }
+
+      .bulk_editing .bulk_edit_checkbox input {
+        display: initial;
+      }
 
       ul {
         margin: 0;
@@ -282,6 +298,7 @@ export class DtList extends LitElement {
       offset: { type: Number },
       showArchived: { type: Boolean, default: false },
       showFieldsSelector: { type: Boolean, default: false },
+      showBulkEditSelector: { type: Boolean, default: false },
       nonce: { type: String },
     };
   }
@@ -311,6 +328,8 @@ export class DtList extends LitElement {
 
   _bulkEdit(e) {
     console.log('bulk edit');
+    this.showBulkEditSelector = !this.showBulkEditSelector;
+    // this.shadowRoot.querySelector('table').classList.toggle('bulk_editing');
   }
 
   _fieldsEdit() {
@@ -498,7 +517,7 @@ export class DtList extends LitElement {
 
   _updateFields(e) {
     const field = e.target.value;
-    let viewableColumns = this.columns;
+    const viewableColumns = this.columns;
 
     if (!viewableColumns.includes(field)) {
       viewableColumns.push(field);
@@ -513,6 +532,20 @@ export class DtList extends LitElement {
     this.requestUpdate();
   }
 
+  _bulkSelectorTemplate() {
+    if (this.showBulkEditSelector) {
+      return html`<div id="bulk_edit_picker" class="list_action_section">
+          <div class="list_action_section_header">
+            <p style="font-weight:bold">Select all the ${this.postType} you want to update from the list, and update them below</p>
+            <button class="close-button list-action-close-button"  aria-label="Close modal" type="button" @click=${this._fieldsEdit}>
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+           <ul class="fieldsList" style="">
+            </ul>`}
+    return null;
+  }
+
   connectedCallback() {
     super.connectedCallback()
     if (!this.posts) {
@@ -524,6 +557,7 @@ export class DtList extends LitElement {
   }
 
   render() {
+    const bulkEditClass = { bulk_editing: this.showBulkEditSelector, hidden: false };
     return html`
       <div class="section">
         <div class="header">
@@ -556,7 +590,8 @@ export class DtList extends LitElement {
             ></dt-toggle>
         </div>
         ${this._fieldsSelectorTemplate()}
-        <table>
+        ${this._bulkSelectorTemplate()}
+        <table class=${classMap(bulkEditClass)}>
           ${this._headerTemplate()}
           ${this.posts? this._rowTemplate() : 'Loading'}
         </table>
