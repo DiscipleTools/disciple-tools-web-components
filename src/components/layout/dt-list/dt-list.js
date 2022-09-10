@@ -327,9 +327,7 @@ export class DtList extends LitElement {
   }
 
   _bulkEdit(e) {
-    console.log('bulk edit');
     this.showBulkEditSelector = !this.showBulkEditSelector;
-    // this.shadowRoot.querySelector('table').classList.toggle('bulk_editing');
   }
 
   _fieldsEdit() {
@@ -509,9 +507,10 @@ export class DtList extends LitElement {
               <span aria-hidden="true">×</span>
             </button>
           </div>
-           <ul class="fieldsList" style="">
+           <ul class="fieldsList">
               ${this._fieldsListTemplate()}
-            </ul>`}
+            </ul>
+    </div>`}
     return null;
   }
 
@@ -537,12 +536,14 @@ export class DtList extends LitElement {
       return html`<div id="bulk_edit_picker" class="list_action_section">
           <div class="list_action_section_header">
             <p style="font-weight:bold">Select all the ${this.postType} you want to update from the list, and update them below</p>
-            <button class="close-button list-action-close-button"  aria-label="Close modal" type="button" @click=${this._fieldsEdit}>
+            <button class="close-button list-action-close-button"  aria-label="Close modal" type="button" @click=${this._bulkEdit}>
               <span aria-hidden="true">×</span>
             </button>
           </div>
-           <ul class="fieldsList" style="">
-            </ul>`}
+           <ul class="fieldsList">
+             This is where the bulk edit form will go.
+            </ul>
+        </div>`}
     return null;
   }
 

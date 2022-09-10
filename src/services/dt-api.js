@@ -2,7 +2,7 @@
 export const DtAPI = (() => {
   const services = {}
 
-  services.makeRequest = async (type, url, data, apiRoot, nonce, base = "dt/v1/") => {
+  services.makeRequest = async (type, url, data, nonce, apiRoot = '', base = "dt/v1/") => {
     // make sure base has a trailing slash if url does not start with one
     if ( !base.endsWith('/') && !url.startsWith('/')){
       // eslint-disable-next-line no-param-reassign
@@ -122,7 +122,9 @@ export const DtAPI = (() => {
   services.revert_activity = async (post_type, postId, activityId) =>
       services.makeRequestOnPosts("GET", `${post_type}/${postId}/revert/${activityId}`);
 
-  services.search_users = async (query) =>this.makeRequest("GET", `users/get_users?s=${query}`);
+  services.search_users = async (query) => {
+    services.makeRequest("GET", `users/get_users?s=${query}`);
+  }
 
   services.get_filters = async () =>this.makeRequest("GET", "users/get_filters");
 
