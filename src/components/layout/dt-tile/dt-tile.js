@@ -33,6 +33,7 @@ export class DtTile extends LitElement {
         color: var(--dt-tile-header-color, #3f729b);
         font-size: 1.5rem;
         display: flex;
+        text-transform: capitalize;
       }
 
       .section-body {
@@ -44,6 +45,7 @@ export class DtTile extends LitElement {
       }
       .section-body.collapsed {
         height: 0 !important;
+        overflow: hidden;
       }
 
       button.toggle {

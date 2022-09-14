@@ -28,6 +28,6 @@ Basic date input
 - [x] placeholder
 - [ ] loading
 - [ ] saved
-- [ ] disabled
+- [x] disabled
 - [ ] required
 - [ ] i18n dates

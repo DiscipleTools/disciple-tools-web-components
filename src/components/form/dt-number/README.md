@@ -27,5 +27,5 @@ Basic number input
 - [ ] placeholder
 - [ ] loading
 - [ ] saved
-- [ ] disabled
+- [x] disabled
 - [ ] required

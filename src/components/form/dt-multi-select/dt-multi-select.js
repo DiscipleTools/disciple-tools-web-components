@@ -1,19 +1,34 @@
 import { html, css } from 'lit';
+import {styleMap} from 'lit/directives/style-map.js';
 import DtFormBase from '../dt-form-base.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
 
 export class DtMultiSelect extends DtFormBase {
   static get styles() {
-    return css`
-      :host, .container {
-        position: relative;
+    return [
+      ...super.styles,
+      css`
+      :host {
         position: relative;
         font-family: Helvetica, Arial, sans-serif;
       }
 
-      .container {
+      .input-group {
         color: var(--dt-multi-select-text-color, #0a0a0a);
+        margin-bottom: 1rem;
+      }
+      .input-group.disabled input,
+      .input-group.disabled .field-container {
+        background-color: var(--disabled-color);
+      }
+      .input-group.disabled a,
+      .input-group.disabled button {
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .input-group.disabled *:hover {
+        cursor: not-allowed;
       }
 
       .field-container {
@@ -25,15 +40,20 @@ export class DtMultiSelect extends DtFormBase {
         font-weight: 300;
         min-height: 2.5rem;
         line-height: 1.5;
-        margin: 0 0 1.0666666667rem;
-        padding-top: 0.54rem;
-        padding-bottom: 0.54rem;
-        padding-inline: 0.54rem 1.6rem;
+        margin: 0;
+        padding-top: calc(0.5rem - 0.375rem);
+        padding-bottom: 0.5rem;
+        padding-inline: 0.5rem 1.6rem;
         box-sizing: border-box;
         width: 100%;
         text-transform: none;
         display: flex;
         flex-wrap: wrap;
+      }
+      
+      .field-container input,
+      .field-container .selected-option {
+        height: 1.25rem;
       }
 
       .selected-option {
@@ -43,10 +63,20 @@ export class DtMultiSelect extends DtFormBase {
         display: flex;
         font-size: 0.875rem;
         position: relative;
-        padding-inline-start: 4px;
         border-radius: 2px;
         margin-inline-end: 4px;
-        margin-block-end: 0.375rem;
+        margin-block-start: 0.375rem;
+        box-sizing: border-box;
+      }
+      .selected-option > *:first-child {
+        padding-inline-start: 4px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        --container-padding: calc(0.5rem + 1.6rem + 2px);
+        --option-padding: 8px;
+        --option-button: 20px;
+        max-width: calc(var(--container-width) - var(--container-padding) - var(--option-padding) - var(--option-button));
       }
       .selected-option * {
         align-self: center;
@@ -69,6 +99,7 @@ export class DtMultiSelect extends DtFormBase {
         flex-grow: 1;
         min-width: 50px;
         border: 0;
+        margin-block-start: 0.375rem;
       }
       .field-container input:focus,
       .field-container input:focus-visible,
@@ -122,18 +153,7 @@ export class DtMultiSelect extends DtFormBase {
         cursor: pointer;
         background: var(--dt-multi-select-option-hover-background, #f5f5f5);
       }
-
-      /* === Inline Icons === */
-      .icon-overlay {
-        position: absolute;
-        inset-inline-end: 2rem;
-        top: 0;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    `;
+    `];
   }
 
   static get properties() {
@@ -163,9 +183,8 @@ export class DtMultiSelect extends DtFormBase {
         type: Number,
         state: true,
       },
-      loading: { type: Boolean },
-      saved: { type: Boolean },
       onchange: { type: String },
+      i18n: { type: Object },
     };
   }
 
@@ -176,15 +195,15 @@ export class DtMultiSelect extends DtFormBase {
     this.detectTap = false;
   }
 
-  firstUpdated() {
-    this._filterOptions();
-  }
-
   updated() {
-    if (this.shadowRoot.children && this.shadowRoot.children.length) {
-      this.containerHeight = this.shadowRoot.querySelector('.container').offsetHeight;
-    }
     this._scrollOptionListToActive();
+
+    // set variable with width of container for truncating selected options via CSS
+    const container = this.shadowRoot.querySelector('.input-group');
+    const currentValue = container.style.getPropertyValue('--container-width');
+    if (!currentValue) {
+      container.style.setProperty('--container-width', container.clientWidth + 'px');
+    }
   }
 
   /**
@@ -256,7 +275,27 @@ export class DtMultiSelect extends DtFormBase {
 
     // update value in this component
     if (this.value && this.value.length) {
-      this.value = [...this.value, value];
+      if (typeof this.value[0] === 'string') {
+        // If value is array of strings, check for same value prefixed with hyphen
+        this.value = [...this.value.filter(i => i !== '-' + value), value];
+      } else {
+        // If value is array of objects, check for same value with `delete` property
+        let foundPrevious = false;
+        const newVal = this.value.map(i => {
+          const val = {
+            ...i,
+          };
+          if (i.id === value.id && i.delete) {
+            delete val.delete;
+            foundPrevious = true;
+          }
+          return val;
+        });
+        if (!foundPrevious) {
+          newVal.push(value);
+        }
+        this.value = newVal;
+      }
     } else {
       this.value = [value];
     }
@@ -266,21 +305,16 @@ export class DtMultiSelect extends DtFormBase {
 
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
-
-    // check for `onchange` html attribute to trigger event from attribute
-    // todo: test across browsers, `dispatchEvent` seems to work for html `onchange` in Chrome on MacOS
-    // if (this.onchange) {
-    //   // eslint-disable-next-line no-new-func
-    //   const fn = new Function('event', this.onchange);
-    //   // eval(this.onchange + '()');
-    //   fn(event);
-    // }
-    this._filterOptions();
   }
 
   _remove(e) {
     if (e.target && e.target.dataset && e.target.dataset.value) {
-      this.value = (this.value || []).filter(i => i !== e.target.dataset.value);
+      this.value = (this.value || []).map(i => i === e.target.dataset.value ? '-' + i : i);
+
+      // If option was de-selected while list was open, re-focus input
+      if (this.open) {
+        this.shadowRoot.querySelector('input').focus();
+      }
     }
   }
 
@@ -355,10 +389,6 @@ export class DtMultiSelect extends DtFormBase {
       38, // arrow up
       40, // arrow down
     ];
-
-    if (!ignoredKeyCodes.includes(keycode)) {
-      this._filterOptions();
-    }
   }
 
   _listHighlightNext() {
@@ -390,6 +420,25 @@ export class DtMultiSelect extends DtFormBase {
     return this.filteredOptions;
   }
 
+  willUpdate(props) {
+    if (props) {
+
+      const valueChanged = props.has('value');
+      const queryChanged = props.has('query');
+      const optionsChanged = props.has('options');
+
+      // if value, query, or options change, trigger filter
+      if (valueChanged || queryChanged || optionsChanged) {
+        this._filterOptions();
+      }
+
+      // Set the containerHeight for dropdown positioning if it hasn't been set yet
+      if (!this.containerHeight && this.shadowRoot.children && this.shadowRoot.children.length) {
+        this.containerHeight = this.shadowRoot.querySelector('.input-group').offsetHeight;
+      }
+    }
+  }
+
   _renderSelectedOptions() {
     return (
       this.options &&
@@ -399,7 +448,7 @@ export class DtMultiSelect extends DtFormBase {
           opt => html`
             <div class="selected-option">
               <span>${opt.label}</span>
-              <button @click="${this._remove}" data-value="${opt.id}">x</button>
+              <button @click="${this._remove}" ?disabled="${this.disabled}" data-value="${opt.id}">x</button>
             </div>
           `
         )
@@ -430,17 +479,21 @@ export class DtMultiSelect extends DtFormBase {
 
   _renderOptions() {
     if (!this.filteredOptions.length) {
-      return html`<li><div>No options available</div></li>`;
+      return html`<li><div>${this.msg('No options available')}</div></li>`;
     }
 
     return this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx));
   }
 
   render() {
+    const optionListStyles = {
+      display: this.open ? 'block' : 'none',
+      top: this.containerHeight ? this.containerHeight + 'px' : '2.5rem',
+    };
     return html`
     ${this.labelTemplate()}
 
-    <div class="container">
+    <div class="input-group ${this.disabled ? 'disabled' : ''}">
       <div
         class="field-container"
         @click="${this._focusInput}"
@@ -454,19 +507,19 @@ export class DtMultiSelect extends DtFormBase {
           @blur="${this._inputFocusOut}"
           @keydown="${this._inputKeyDown}"
           @keyup="${this._inputKeyUp}"
+          ?disabled="${this.disabled}"
         />
       </div>
       <ul
         class="option-list"
-        style="display:${this.open ? 'block' : 'none'};top:${this
-          .containerHeight}px;"
+        style=${styleMap(optionListStyles)}
       >
         ${this._renderOptions()}
       </ul>
       ${this.loading
         ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
         : null}
-      ${this.saved ? html`<dt-checkmark class="icon-overlay"></dt-checkmark>` : null}
+      ${this.saved ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}
     </div>
     `;
   }

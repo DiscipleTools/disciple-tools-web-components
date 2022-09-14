@@ -39,7 +39,7 @@ const colorOptions = [
   },
 ];
 export default {
-  title: 'dt-single-select',
+  title: 'Form/dt-single-select',
   component: 'dt-single-select',
   argTypes: {
     name: { control: 'text' },
@@ -60,12 +60,14 @@ function Template(args) {
     placeholder,
     value,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    disabled,
     isPrivate,
     privateLabel,
     onChange,
     isLoading,
     isSaved,
     slot,
+    RTL,
   } = args;
   return html`
     <style>
@@ -95,11 +97,13 @@ function Template(args) {
       options="${JSON.stringify(options)}"
       value="${value}"
       icon="${icon}"
+      ?disabled=${disabled}
       ?private=${isPrivate}
       privateLabel="${privateLabel}"
       onchange="${onChange}"
       ?loading="${isLoading}"
       ?saved="${isSaved}"
+      ?rtl="${RTL}"
     >
     ${slot}
     </dt-single-select>
@@ -142,6 +146,13 @@ AutoSave.args = {
   onChange: 'onChange(event)',
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+  value: 'opt2',
+  options: basicOptions,
+  disabled: true,
+};
+
 export const Loading = Template.bind({});
 Loading.args = {
   value: 'opt2',
@@ -153,4 +164,22 @@ Saved.args = {
   value: 'opt2',
   options: basicOptions,
   isSaved: true,
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  placeholder: 'حدد العلامات',
+  value: 'opt2',
+  options: [{
+    id: 'opt1',
+    label: 'تنكر هؤلاء الرجال المفتونون',
+  }, {
+    id: 'opt2',
+    label: 'م فيتساوي مع هؤلاء',
+  }, {
+    id: 'opt3',
+    label: 'فلا أحد يرفض',
+  }]
 };

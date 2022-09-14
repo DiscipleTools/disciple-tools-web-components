@@ -37,7 +37,7 @@ const basicOptions = [
   },
 ];
 export default {
-  title: 'dt-multi-select',
+  title: 'Form/dt-multi-select',
   component: 'dt-multi-select',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
@@ -127,6 +127,7 @@ function Template(args) {
     onchange,
     open,
     slot,
+    i18n,
   } = args;
   return html`
     <style>
@@ -163,6 +164,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
+      i18n="${JSON.stringify(i18n)}"
     >
       ${slot}
     </dt-multi-select>
@@ -216,6 +218,12 @@ AutoSave.args = {
   onchange: 'onChange(event)',
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+  value: ['opt2'],
+  options: basicOptions,
+  disabled: true,
+};
 export const Loading = Template.bind({});
 Loading.args = {
   value: ['opt2'],
@@ -227,4 +235,24 @@ Saved.args = {
   value: ['opt2'],
   options: basicOptions,
   saved: true,
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  value: ['opt1'],
+  i18n: {
+    'No options available': 'لا توجد خيارات متاحة',
+  },
+  options: [{
+    id: 'opt1',
+    label: 'تنكر هؤلاء الرجال المفتونون',
+  }, {
+    id: 'opt2',
+    label: 'م فيتساوي مع هؤلاء',
+  }, {
+    id: 'opt3',
+    label: 'فلا أحد يرفض',
+  }]
 };

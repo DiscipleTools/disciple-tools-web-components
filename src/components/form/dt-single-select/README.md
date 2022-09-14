@@ -30,7 +30,7 @@ Dropdown list that allows selection of a single value.
 - [x] placeholder
 - [x] loading
 - [x] saved
-- [ ] disabled
+- [x] disabled
 - [ ] required
 - [x] color
 - [ ] options.hidden

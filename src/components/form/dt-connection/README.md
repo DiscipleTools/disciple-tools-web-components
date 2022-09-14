@@ -5,9 +5,9 @@ Implementation of the Tags field that customizes the options list for displaying
 | Attribute | Description | Type | Default Value | Example Value | 
 | --------- | ----------- | ---- | ------------- | ------------- |
 | `name`    | Name of the field. Passed to `change` event to identify source of event. | `string` | - | - |
-| `value`   | Selected values. Should be an array of option objects converted to JSON string. <br> **Note:** This value is updated on the component when internal value changes. | `{id:string, label:string}[]` | | `JSON.stringify([{id:'1',label:'Option 1'},{id:'2',label:'Option 2'}])` |
+| `value`   | Selected values. Should be an array of option objects converted to JSON string. If an option is removed, it will have a `delete` property. <br> **Note:** This value is updated on the component when internal value changes. | `{id:string, label:string}[]` | | `JSON.stringify([{id:'1',label:'Option 1'},{id:'2',label:'Option 2'}])` |
 | `placeholder` | Placeholder text when no selection is made | `string` | - | - |
-| `options` | Array of options to choose. If not set, `onLoad` will be triggered to fetch via API. | `{id:string, label:string}[]` | - | `JSON.stringify([{id:'1',label:'Option 1'},{id:'2',label:'Option 2'}])` |
+| `options` | Array of options to choose. If not set, `onLoad` will be triggered to fetch via API. | `{id:string, label:string, link:string, status:{key:string, label:string, color:string}}[]` | - | `JSON.stringify([{id:'1',label:'Option 1',link:'/#opt1'},{id:'2',label:'Option 2',link:'/#opt2'}])` |
 | `loading` | Show loading spinner | `boolean` | `false` | `<dt-tags loading>` |
 | `saved`   | Show saved checkmark | `boolean` | `false` | `<dt-tags saved>` |
 | `allowAdd`   | Allow new options to be added that don't exist in options list | `boolean` | `false` | `<dt-tags allowAdd>` |
@@ -33,9 +33,12 @@ Implementation of the Tags field that customizes the options list for displaying
 - [x] select option (mouse)
 - [x] select option (keyboard)
 - [x] add new option
+- [x] status indicators
+- [x] link selected option
 - [x] onchange
 - [x] placeholder
 - [x] loading
 - [x] saved
-- [ ] disabled
+- [x] disabled
+- [x] track deleted options
 

@@ -47,7 +47,7 @@ describe('dt-connection', () => {
     expect(optionList).to.contain('button[value="2"]');
     expect(optionList).to.contain('button[value="3"]');
 
-    expect(optionList).to.have.descendant('button[value="1"]').with.trimmed.text('Option 1 (#1)');
+    expect(optionList).to.have.descendant('button[value="1"]').with.contain.trimmed.text('Option 1');
     expect(optionList).to.have.descendant('button[value="2"]').and.contain('svg');
 
     expect(optionList).not.to.be.displayed;
@@ -113,6 +113,31 @@ describe('dt-connection', () => {
     expect(el).to.have.attr('value', JSON.stringify([options[0]]));
   });
 
+  it('marks removed options with `delete`', async () => {
+    const el = await fixture(html`<dt-connection value="${JSON.stringify([options[0],options[2]])}" options="${JSON.stringify(options)}"></dt-connection>`);
+
+    const optionBtn = el.shadowRoot.querySelector(`.selected-option button[data-value="1"]`);
+    optionBtn.click();
+    await wait(100);
+
+    expect(el.value).to.deep.include({id: '3', label: options[2].label});
+    expect(el.value).to.deep.include({id: '1', label: options[0].label, delete: true});
+  });
+
+  it('adds previously removed value', async () => {
+    const el = await fixture(html`<dt-connection value="${JSON.stringify([{id:options[0].id,label: 'old', delete:true}])}" options="${JSON.stringify(options)}"></dt-connection>`);
+    const input = el.shadowRoot.querySelector('input');
+    const optionBtn = el.shadowRoot.querySelector('.option-list button[value="1"]');
+
+    input.focus();
+
+    optionBtn.click();
+    await wait(100);
+
+    expect(el.value).to.deep.include({id: '1', label: 'old'});
+    expect(el.value).to.not.deep.include({id: '1', label: 'old', delete: true});
+  });
+
   it('triggers change event', async () => {
     const el = await fixture(html`<dt-connection name="custom-name" value="${JSON.stringify([options[1]])}" options="${JSON.stringify(options)}"></dt-connection>`);
 
@@ -160,7 +185,7 @@ describe('dt-connection', () => {
 
     setTimeout(() => sendKeys({type: 'o'}));
 
-    const { detail } = await oneEvent(el, 'search');
+    const { detail } = await oneEvent(el, 'load');
 
     expect(detail.field).to.equal('custom-name');
     expect(detail.query).to.equal('o');
@@ -191,5 +216,19 @@ describe('dt-connection', () => {
       label: 'new',
       isNew: true,
     }]);
+  });
+
+  it('disables inputs', async () => {
+    const el = await fixture(html`<dt-connection disabled value="${JSON.stringify([options[1]])}" options="${JSON.stringify(options)}"></dt-connection>`);
+
+    const input = el.shadowRoot.querySelector(('input'));
+    expect(input).to.have.attribute('disabled');
+
+    const inputGroup = el.shadowRoot.querySelector('.input-group');
+    expect(inputGroup).to.have.class('disabled');
+
+    const selectedOption = el.shadowRoot.querySelector('.selected-option');
+    expect(selectedOption).to.have.descendant('button').with.attribute('disabled');
+    expect(selectedOption).to.have.descendant('a').with.attribute('disabled');
   });
 });

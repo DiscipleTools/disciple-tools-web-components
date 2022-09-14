@@ -3,7 +3,9 @@ import DtFormBase from '../dt-form-base.js';
 
 export class DtDateField extends DtFormBase {
   static get styles() {
-    return css`
+    return [
+      ...super.styles,
+      css`
       input {
         color: var(--dt-form-text-color, #000);
         appearance: none;
@@ -22,7 +24,8 @@ export class DtDateField extends DtFormBase {
         transition: box-shadow .5s,border-color .25s ease-in-out;
         width: 100%;
       }
-      input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
+      input:disabled, input[readonly], textarea:disabled, textarea[readonly], 
+      .input-group button:disabled {
         background-color: var(--dt-form-disabled-background-color, #e6e6e6);
         cursor: not-allowed;
       }
@@ -53,11 +56,11 @@ export class DtDateField extends DtFormBase {
         padding: 0 1em;
         margin: 0;
       }
-      .input-group .button:hover {
+      .input-group .button:hover:not([disabled]) {
           background-color: var(--alert-color, #cc4b37);
           color: var(--text-color-inverse, #fefefe);
       }
-    `;
+    `];
   }
 
   static get properties() {
@@ -80,7 +83,6 @@ export class DtDateField extends DtFormBase {
         },
         reflect: true
       },
-      disabled: { type: Boolean },
       loading: { type: Boolean },
       saved: { type: Boolean },
       onchange: { type: String },
@@ -157,6 +159,7 @@ export class DtDateField extends DtFormBase {
               data-inputid="${this.id}"
               title="Delete Date"
               type="button"
+              ?disabled=${this.disabled}
               @click="${this.clearInput}">
               x
           </button>

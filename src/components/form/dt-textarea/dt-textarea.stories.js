@@ -3,7 +3,7 @@ import './dt-textarea.js';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 
 export default {
-  title: 'dt-textarea',
+  title: 'Form/dt-textarea',
   component: 'dt-textarea',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
@@ -78,4 +78,11 @@ export const privateField = Template.bind({});
 privateField.args = {
   isPrivate: true,
   value: 'Lorem Ipsum',
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  value: 'راد أن يشع',
 };

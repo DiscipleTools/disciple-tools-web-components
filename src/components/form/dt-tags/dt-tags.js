@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { css, html } from 'lit';
 import { DtMultiSelect } from '../dt-multi-select/dt-multi-select.js';
 
 export class DtTags extends DtMultiSelect {
@@ -9,19 +9,29 @@ export class DtTags extends DtMultiSelect {
       onload: { type: String },
     };
   }
-
-  firstUpdated() {
-    this._filterOptions();
+  static get styles() {
+    return [
+      ...super.styles,
+      css`      
+      .selected-option a,
+      .selected-option a:active,
+      .selected-option a:visited {
+        text-decoration: none;
+        color: var(--primary-color, #3f729b);
+      }
+    `];
   }
 
   _clickOption(e) {
     if (e.target && e.target.value) {
-      this._select({
-        id: e.target.value,
-        label: e.target.dataset?.label,
-      });
-
-      this._filterOptions();
+      const id = e.target.value;
+      const option = this.filteredOptions.reduce((result, option) => {
+        if (!result && option.id === id) {
+          return option;
+        }
+        return result;
+      }, null);
+      this._select(option);
     }
   }
 
@@ -37,7 +47,20 @@ export class DtTags extends DtMultiSelect {
 
   _remove(e) {
     if (e.target && e.target.dataset && e.target.dataset.value) {
-      this.value = (this.value || []).filter(i => i.id !== e.target.dataset.value);
+      this.value = (this.value || []).map(i => {
+        const val = {
+          ...i,
+        };
+        if (i.id === e.target.dataset.value) {
+          val.delete = true;
+        }
+        return val;
+      });
+
+      // If option was de-selected while list was open, re-focus input
+      if (this.open) {
+        this.shadowRoot.querySelector('input').focus();
+      }
     }
   }
 
@@ -52,8 +75,6 @@ export class DtTags extends DtMultiSelect {
       } else {
         this._select(this.filteredOptions[this.activeIndex]);
       }
-
-      this._filterOptions();
     }
   }
 
@@ -71,7 +92,7 @@ export class DtTags extends DtMultiSelect {
    * @private
    */
   _filterOptions() {
-    const selectedValues = (this.value || []).map(v => v?.id);
+    const selectedValues = (this.value || []).filter(i => !i.delete).map(v => v?.id);
 
     if (this.options?.length) {
       this.filteredOptions = (this.options || []).filter(
@@ -89,6 +110,7 @@ export class DtTags extends DtMultiSelect {
       // need to fetch data via API request
       const self = this;
       const event = new CustomEvent('load', {
+        bubbles: true,
         detail: {
           field: this.name,
           query: this.query,
@@ -130,7 +152,7 @@ export class DtTags extends DtMultiSelect {
             ? 'active'
             : ''}"
         >
-          Add "${this.query}"
+          ${this.msg('Add')} "${this.query}"
         </button>
       </li>`);
     }
@@ -138,11 +160,11 @@ export class DtTags extends DtMultiSelect {
   }
 
   _renderSelectedOptions() {
-    return (this.value || []).map(
+    return (this.value || []).filter(i => !i.delete).map(
       opt => html`
         <div class="selected-option">
-          <span>${opt.label}</span>
-          <button @click="${this._remove}" data-value="${opt.id}">x</button>
+          <a href="${opt.link}" ?disabled="${this.disabled}" alt="${opt.status ? opt.status.label : opt.label}">${opt.label}</a>
+          <button @click="${this._remove}" ?disabled="${this.disabled}" data-value="${opt.id}">x</button>
         </div>
       `
     );

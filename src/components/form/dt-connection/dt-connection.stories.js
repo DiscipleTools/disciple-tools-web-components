@@ -6,39 +6,57 @@ const basicOptions = [
   {
     id: '1',
     label: 'Option 1',
+    link: '/#opt1',
+    status: {
+      key: 'active',
+      label: 'Active',
+      color: '#4CAF50',
+    },
   },
   {
     id: '2',
     label: 'User 2',
+    link: '/#opt2',
     user: true,
+    status: {
+      key: 'assigned',
+      label: 'Waiting to be accepted',
+      color: '#FF9800',
+    },
   },
   {
     id: '3',
     label: 'Option 3',
+    link: '/#opt3',
   },
   {
     id: '4',
     label: 'Option 4',
+    link: '/#opt4',
   },
   {
     id: '5',
     label: 'Option 5',
+    link: '/#opt5',
   },
   {
     id: '6',
     label: 'Option 6',
+    link: '/#opt6',
   },
   {
     id: '7',
     label: 'Option 7',
+    link: '/#opt7',
   },
   {
     id: '8',
     label: 'Option 8',
+    link: '/#opt8',
   },
 ];
 export default {
-  title: 'dt-connection',
+  title: 'Form/dt-connection',
   component: 'dt-connection',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
@@ -157,6 +175,7 @@ function Template(args) {
     open,
     allowAdd,
     slot,
+    i18n,
   } = args;
   return html`
     <style>
@@ -214,6 +233,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
+      i18n="${JSON.stringify(i18n)}"
     >
       ${slot}
     </dt-connection>
@@ -253,6 +273,13 @@ SelectedValue.args = {
   options: basicOptions,
 };
 
+export const OptionsOpen = Template.bind({});
+OptionsOpen.args = {
+  value: [basicOptions[0]],
+  options: basicOptions,
+  open: true,
+};
+
 export const LoadOptionsFromAPI = Template.bind({});
 LoadOptionsFromAPI.args = {
   onload: 'onLoad(event)',
@@ -269,14 +296,15 @@ AutoSave.args = {
   onchange: 'onChange(event)',
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+  value: [basicOptions[1]],
+  options: basicOptions,
+  disabled: true,
+};
 export const Loading = Template.bind({});
 Loading.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
+  value: [basicOptions[1]],
   options: basicOptions,
   loading: true,
 };
@@ -290,4 +318,45 @@ Saved.args = {
   ],
   options: basicOptions,
   saved: true,
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  placeholder: 'حدد العلامات',
+  allowAdd: true,
+  loading: true,
+  i18n: {
+    'No options available': 'لا توجد خيارات متاحة',
+    'Add': 'أضف',
+  },
+  value: [{
+    id: 'opt1',
+    label: 'تنكر هؤلاء الرجال المفتونون',
+  }],
+  options: [{
+    id: '1',
+    label: 'تنكر هؤلاء الرجال المفتونون',
+    link: '/#opt1',
+    status: {
+      key: 'active',
+      label: 'نشيط',
+      color: '#4CAF50',
+    },
+  }, {
+      id: '2',
+      label: 'م فيتساوي مع هؤلاء',
+      link: '/#opt2',
+      user: true,
+      status: {
+        key: 'assigned',
+        label: 'في انتظار قبولها',
+        color: '#FF9800',
+      },
+    }, {
+    id: '3',
+    label: 'فلا أحد يرفض',
+    link: '/#opt3',
+  }]
 };

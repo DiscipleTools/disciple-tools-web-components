@@ -50,6 +50,8 @@ npm run format
 
 ## Testing with Web Test Runner
 
+![Test Status](https://github.com/DiscipleTools/disciple-tools-web-components/actions/workflows/test.yml/badge.svg?event=push)
+
 To execute a single test run:
 
 ```bash

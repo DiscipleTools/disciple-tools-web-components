@@ -6,38 +6,46 @@ const basicOptions = [
   {
     id: 'opt1',
     label: 'Option 1',
+    link: '/#opt1',
   },
   {
     id: 'opt2',
     label: 'Option 2',
+    link: '/#opt2',
   },
   {
     id: 'opt3',
     label: 'Option 3',
+    link: '/#opt3',
   },
   {
     id: 'opt4',
     label: 'Option 4',
+    link: '/#opt4',
   },
   {
     id: 'opt5',
     label: 'Option 5',
+    link: '/#opt5',
   },
   {
     id: 'opt6',
     label: 'Option 6',
+    link: '/#opt6',
   },
   {
     id: 'opt7',
     label: 'Option 7',
+    link: '/#opt7',
   },
   {
     id: 'opt8',
     label: 'Option 8',
+    link: '/#opt8',
   },
 ];
 export default {
-  title: 'dt-tags',
+  title: 'Form/dt-tags',
   component: 'dt-tags',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
@@ -156,6 +164,7 @@ function Template(args) {
     slot,
     onload,
     allowAdd,
+    i18n,
   } = args;
   return html`
     <style>
@@ -213,6 +222,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
+      i18n="${JSON.stringify(i18n)}"
     >
       ${slot}
     </dt-tags>
@@ -242,12 +252,7 @@ CustomPlaceholder.args = {
 
 export const SelectedValue = Template.bind({});
 SelectedValue.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
+  value: [basicOptions[1]],
 };
 
 export const LoadOptionsFromAPI = Template.bind({});
@@ -266,6 +271,17 @@ AutoSave.args = {
   onchange: 'onChange(event)',
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+  value: [
+    {
+      id: '2',
+      label: 'qui est esse',
+    },
+  ],
+  options: basicOptions,
+  disabled: true,
+};
 export const Loading = Template.bind({});
 Loading.args = {
   value: [
@@ -287,4 +303,31 @@ Saved.args = {
   ],
   options: basicOptions,
   saved: true,
+};
+
+export const RTL = Template.bind({});
+RTL.args = {
+  RTL: true,
+  label: 'اسم الإدخال',
+  placeholder: 'حدد العلامات',
+  allowAdd: true,
+  loading: true,
+  i18n: {
+    'No options available': 'لا توجد خيارات متاحة',
+    'Add': 'أضف',
+  },
+  value: [{
+    id: 'opt1',
+    label: 'تنكر هؤلاء الرجال المفتونون',
+  }],
+  options: [{
+    id: 'opt1',
+    label: 'تنكر هؤلاء الرجال المفتونون',
+  }, {
+    id: 'opt2',
+    label: 'م فيتساوي مع هؤلاء',
+  }, {
+    id: 'opt3',
+    label: 'فلا أحد يرفض',
+  }]
 };
