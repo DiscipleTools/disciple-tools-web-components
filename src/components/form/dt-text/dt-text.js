@@ -47,6 +47,7 @@ export class DtTextField extends DtFormBase {
       id: { type: String },
       name: { type: String },
       placeholder: { type: String },
+      type: { type: String },
       value: {
         type: String,
         reflect: true,
@@ -54,6 +55,12 @@ export class DtTextField extends DtFormBase {
       onchange: { type: String },
     };
   }
+
+  constructor(props) {
+    super(props);
+    this.type = 'text';
+  }
+
 
   onChange(e) {
     const event = new CustomEvent('change', {
@@ -103,7 +110,7 @@ export class DtTextField extends DtFormBase {
           name="${this.name}"
           aria-label="${this.label}"
           placeholder='${this.placeholder}'
-          type="text"
+          type="${this.type}"
           ?disabled=${this.disabled}
           ?required=${this.required}
           class="${classMap(this.classes)}"
