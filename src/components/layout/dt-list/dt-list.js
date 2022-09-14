@@ -133,6 +133,10 @@ export class DtList extends LitElement {
         background-color: var(--dt-list-hover-background-color, #ecf5fc);
       }
 
+      tr a {
+        color: var(--dt-list-link-color, #3f729b);
+      }
+
       th {
         display: none
       }

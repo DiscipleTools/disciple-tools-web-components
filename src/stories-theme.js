@@ -100,6 +100,7 @@ export const themes = {
       listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
       listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+      listLinkColor: 'var(--primary-color, #3f729b)',
 
 
 
@@ -204,7 +205,7 @@ export const themes = {
       tileBackground: 'var(--surface-1)',
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
-      tileHeaderColor: 'var(--primary-color)',
+      tileHeaderColor: 'var(--text-color)',
 
       listFontSize: 'var(--font-size)',
       listFontWeight: 'var(--font-weight)',
@@ -216,6 +217,7 @@ export const themes = {
       listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
       listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+      listLinkColor: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
@@ -317,7 +319,7 @@ export const themes = {
       tileBackground: 'var(--surface-1)',
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
-      tileHeaderColor: 'var(--primary-color)',
+      tileHeaderColor: 'var(--text-color)',
 
       listFontSize: 'var(--font-size)',
       listFontWeight: 'var(--font-weight)',
@@ -329,6 +331,7 @@ export const themes = {
       listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
       listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+      listLinkColor: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
@@ -442,6 +445,7 @@ export const argTypes = {
   listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
   listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
   listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+  listLinkColor: 'var(--primary-color, #3f729b))',
 
   alertTextColorLight: '#fff',
   alertTextColorDark: '#000',
@@ -555,6 +559,7 @@ export function themeCss(storyArgs) {
     --dt-tile-background-color: ${getArg(storyArgs, 'tileBackground')};
     --dt-tile-border-color: ${getArg(storyArgs, 'tileBorderColor')};
     --dt-tile-shadow: ${getArg(storyArgs, 'tileShadow')};
+    --dt-tile-header-color: ${getArg(storyArgs, 'tileHeaderColor')};
 
     --dt-alert-text-color-light: ${getArg(storyArgs, 'alertTextColorLight')};
     --dt-alert-text-color-dark: ${getArg(storyArgs, 'alertTextColorDark')};
@@ -580,6 +585,7 @@ export function themeCss(storyArgs) {
     --dt-list-sort-arrow-color: ${getArg(storyArgs, 'listSortArrowColor')};
     --dt-list-sort-arrow-color-highlight: ${getArg(storyArgs, 'listSortArrowColorHighlight')};
     --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
+    --dt-list-link-color: ${getArg(storyArgs, 'listLinkColor')};
 
     ${storyArgs.RTL ? 'direction: rtl;' : 'direction: ltr;'}
   }
