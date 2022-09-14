@@ -90,11 +90,17 @@ export const themes = {
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
 
+      listFontSize: 'var(--font-size)',
+      listFontWeight: 'var(--font-weight)',
+      listLineHeight: 'var(--line-height)',
+      listBorderColor: 'var(--border-color)',
+      listActionSectionBackgroundColor: 'var(--primary-color-light-0, #ecf5fc)',
       listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
       listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
       listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
       listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+
 
 
       alertTextColorLight: '#fff',
@@ -200,6 +206,17 @@ export const themes = {
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
 
+      listFontSize: 'var(--font-size)',
+      listFontWeight: 'var(--font-weight)',
+      listLineHeight: 'var(--line-height)',
+      listBorderColor: 'var(--border-color)',
+      listActionSectionBackgroundColor: 'var(--primary-color-light-0, #ecf5fc)',
+      listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
+      listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
+      listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
+      listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
+      listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
       alertTextColor: 'var(--text-color)',
@@ -302,6 +319,17 @@ export const themes = {
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
 
+      listFontSize: 'var(--font-size)',
+      listFontWeight: 'var(--font-weight)',
+      listLineHeight: 'var(--line-height)',
+      listBorderColor: 'var(--border-color)',
+      listActionSectionBackgroundColor: 'var(--primary-color-light-0, #ecf5fc)',
+      listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
+      listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
+      listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
+      listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
+      listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
       alertTextColor: 'var(--text-color)',
@@ -403,6 +431,17 @@ export const argTypes = {
   tileBorderColor: { control: 'color' },
   tileShadow: { control: 'color' },
   tileHeaderColor: { control: 'color' },
+
+  listFontSize: 'var(--font-size)',
+  listFontWeight: 'var(--font-weight)',
+  listLineHeight: 'var(--line-height)',
+  listBorderColor: 'var(--border-color)',
+  listActionSectionBackgroundColor: 'var(--primary-color-light-0, #ecf5fc)',
+  listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
+  listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
+  listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
+  listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
+  listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
 
   alertTextColorLight: '#fff',
   alertTextColorDark: '#000',
@@ -529,6 +568,13 @@ export function themeCss(storyArgs) {
     background: ${getArg(storyArgs, 'surface0')};
     color-scheme: ${getArg(storyArgs, 'colorScheme')};
 
+    --dt-list-font-size: ${getArg(storyArgs, 'listFontSize')};
+    --dt-list-font-weight: ${getArg(storyArgs, 'listFontWeight')};
+    --dt-list-line-height: ${getArg(storyArgs, 'listLineHeight')};
+    --dt-list-border-color: ${getArg(storyArgs, 'listBorderColor')};
+    --dt-list-action-section-background-color: ${getArg(storyArgs, 'listActionSectionBackgroundColor')};
+    --dt-list-header-background-color: ${getArg(storyArgs, 'listHeaderBackgroundColor')};
+    --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
     --dt-list-background-color: ${getArg(storyArgs, 'listheaderBackground')};
     --dt-list-hover-background-color: ${getArg(storyArgs, 'listheaderHoverBackground')};
     --dt-list-sort-arrow-color: ${getArg(storyArgs, 'listSortArrowColor')};
