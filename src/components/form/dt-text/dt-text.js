@@ -34,6 +34,9 @@ export class DtTextField extends DtFormBase {
         cursor: not-allowed;
       }
       input:focus-within, input:focus-visible { outline: none; }
+      input::placeholder {
+        color: var(--dt-text-placeholder-color, #999);
+      }
 
       input.invalid {
         border-color: var(--dt-text-border-color-alert);
