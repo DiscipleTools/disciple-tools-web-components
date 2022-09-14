@@ -34,7 +34,7 @@ export class DtTextField extends DtFormBase {
         cursor: not-allowed;
       }
       input:focus-within, input:focus-visible { outline: none; }
-      
+
       input.invalid {
         border-color: var(--dt-text-border-color-alert);
       }
@@ -46,6 +46,7 @@ export class DtTextField extends DtFormBase {
       ...super.properties,
       id: { type: String },
       name: { type: String },
+      placeholder: { type: String },
       value: {
         type: String,
         reflect: true,
@@ -101,6 +102,7 @@ export class DtTextField extends DtFormBase {
           id="${this.id}"
           name="${this.name}"
           aria-label="${this.label}"
+          placeholder='${this.placeholder}'
           type="text"
           ?disabled=${this.disabled}
           ?required=${this.required}
@@ -109,7 +111,7 @@ export class DtTextField extends DtFormBase {
           @change=${this.onChange}
           novalidate
         />
-        
+
         ${this.touched && this.invalid ? html`<dt-exclamation-circle class="icon-overlay alert"></dt-exclamation-circle>` : null}
         ${this.loading ? html`<dt-spinner class="icon-overlay"></dt-spinner>` : null}
         ${this.saved ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}
