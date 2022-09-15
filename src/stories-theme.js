@@ -61,6 +61,13 @@ export const themes = {
       textBorderColor: 'var(--dt-form-border-color)',
       textBorderColorAlert: 'var(--dt-form-border-color-alert)',
       textDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
+      textBorderRadius: '0',
+      textBoxShadow: 'var(--dt-form-box-shadow)',
+      textPlaceholderColor: 'var(--dt-text-placeholder-color)',
+      textPlaceholderTextTransform: 'none',
+      textPlaceholderFontSize: 'var(--dt-text-placeholder-font-size)',
+      textPlaceholderFontWeight: 'var(--dt-text-placeholder-font-weight)',
+      textPlaceholderLetterSpacing: 'var(--dt-text-placeholder-letter-spacing)',
 
       textareaBorderColor: 'var(--dt-form-border-color)',
       textareaBackgroundColor: 'var(--dt-form-background-color)',
@@ -179,6 +186,12 @@ export const themes = {
       textBorderColor: 'var(--dt-form-border-color)',
       textBorderColorAlert: 'var(--dt-form-border-color-alert)',
       textDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
+      textBorderRadius: '0',
+      textPlaceholderColor: 'var(--dt-text-placeholder-color)',
+      textPlaceholderTextTransform: 'none',
+      textPlaceholderFontSize: 'var(--dt-text-placeholder-font-size)',
+      textPlaceholderFontWeight: 'var(--dt-text-placeholder-font-weight)',
+      textPlaceholderLetterSpacing: 'var(--dt-text-placeholder-letter-spacing)',
 
       textareaBorderColor: 'var(--dt-form-border-color)',
       textareaBackgroundColor: 'var(--dt-form-background-color)',
@@ -293,6 +306,13 @@ export const themes = {
       textBorderColor: 'var(--dt-form-border-color)',
       textBorderColorAlert: 'var(--dt-form-border-color-alert)',
       textDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
+      textBorderRadius: '0',
+      textBoxShadow: 'var(--dt-form-box-shadow)',
+      textPlaceholderColor: 'var(--dt-text-placeholder-color)',
+      textPlaceholderTextTransform: 'none',
+      textPlaceholderFontSize: 'var(--dt-text-placeholder-font-size)',
+      textPlaceholderFontWeight: 'var(--dt-text-placeholder-font-weight)',
+      textPlaceholderLetterSpacing: 'var(--dt-text-placeholder-letter-spacing)',
 
       textareaBorderColor: 'var(--dt-form-border-color)',
       textareaBackgroundColor: 'var(--dt-form-background-color)',
@@ -407,6 +427,13 @@ export const argTypes = {
   textBorderColor: { control: 'color' },
   textBorderColorAlert: { control: 'color' },
   textDisabledBackgroundColor: { control: 'color' },
+  textBorderRadius: { control: 'text' },
+  textBoxShadow: { control: 'text' },
+  textPlaceholderColor: { control: 'color' },
+  textPlaceholderTextTransform: { control: 'text' },
+  textPlaceholderFontSize: { control: 'text' },
+  textPlaceholderFontWeight: { control: 'text' },
+  textPlaceholderLetterSpacing: { control: 'text' },
 
   textareaBorderColor: { control: 'color' },
   textareaBackgroundColor: { control: 'color' },
@@ -530,6 +557,13 @@ export function themeCss(storyArgs) {
     --dt-text-border-color: ${getArg(storyArgs, 'textBorderColor')};
     --dt-text-border-color-alert: ${getArg(storyArgs, 'textBorderColorAlert')};
     --dt-text-disabled-background-color: ${getArg(storyArgs, 'textDisabledBackgroundColor')};
+    --dt-text-border-radius: ${getArg(storyArgs, 'textBorderRadius')};
+    --dt-text-box-shadow: ${getArg(storyArgs, 'textBoxShadow')};
+    --dt-text-placeholder-color: ${getArg(storyArgs, 'textPlaceholderColor')};
+    --dt-text-placeholder-text-transform: ${getArg(storyArgs, 'textPlaceholderTextTransform')};
+    --dt-text-placeholder-font-size: ${getArg(storyArgs, 'textPlaceholderFontSize')};
+    --dt-text-placeholder-font-weight: ${getArg(storyArgs, 'textPlaceholderFontWeight')};
+    --dt-text-placeholder-letter-spacing: ${getArg(storyArgs, 'textPlaceholderLetterSpacing')};
 
     --dt-textarea-border-color: ${getArg(storyArgs, 'textareaBorderColor')};
     --dt-textarea-background-color: ${getArg(storyArgs, 'textareaBackgroundColor')};
