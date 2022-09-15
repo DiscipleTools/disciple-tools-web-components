@@ -34,7 +34,9 @@ export class DtTextField extends DtFormBase {
         cursor: not-allowed;
       }
       input:focus-within, input:focus-visible { outline: none; }
-
+      input::placeholder {
+        color: var(--dt-text-placeholder-color, #999);
+      }
       input.invalid {
         border-color: var(--dt-text-border-color-alert);
       }
@@ -47,6 +49,7 @@ export class DtTextField extends DtFormBase {
       id: { type: String },
       name: { type: String },
       type: { type: String },
+      placeholder: { type: String },
       value: {
         type: String,
         reflect: true,
@@ -104,6 +107,7 @@ export class DtTextField extends DtFormBase {
           name="${this.name}"
           aria-label="${this.label}"
           type="${this.type || 'text'}"
+          placeholder='${this.placeholder}'
           ?disabled=${this.disabled}
           ?required=${this.required}
           class="${classMap(this.classes)}"
