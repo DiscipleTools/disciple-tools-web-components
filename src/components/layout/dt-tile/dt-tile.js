@@ -15,7 +15,7 @@ export class DtTile extends LitElement {
       section {
         background-color: var(--dt-tile-background-color, #fefefe);
         border: 1px solid var(--dt-tile-border-color, #cecece);
-        border-radius: 10px;
+        border-radius: var(--dt-tile-border-radius, 10px);
         box-shadow: var(--dt-tile-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
         padding: 1rem;
       }
