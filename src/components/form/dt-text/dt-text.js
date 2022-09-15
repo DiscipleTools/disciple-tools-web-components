@@ -59,12 +59,6 @@ export class DtTextField extends DtFormBase {
     };
   }
 
-  constructor(props) {
-    super(props);
-    this.type = 'text';
-  }
-
-
   onChange(e) {
     const event = new CustomEvent('change', {
       detail: {
@@ -121,7 +115,7 @@ export class DtTextField extends DtFormBase {
           @change=${this.onChange}
           novalidate
         />
-
+        
         ${this.touched && this.invalid ? html`<dt-exclamation-circle class="icon-overlay alert"></dt-exclamation-circle>` : null}
         ${this.loading ? html`<dt-spinner class="icon-overlay"></dt-spinner>` : null}
         ${this.saved ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}
