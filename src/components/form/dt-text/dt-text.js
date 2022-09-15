@@ -55,11 +55,6 @@ export class DtTextField extends DtFormBase {
     };
   }
 
-  constructor(props) {
-    super(props);
-    this.type = 'text';
-  }
-
 
   onChange(e) {
     const event = new CustomEvent('change', {
@@ -108,7 +103,7 @@ export class DtTextField extends DtFormBase {
           id="${this.id}"
           name="${this.name}"
           aria-label="${this.label}"
-          type="${this.type}"
+          type="${this.type || 'text'}"
           ?disabled=${this.disabled}
           ?required=${this.required}
           class="${classMap(this.classes)}"
