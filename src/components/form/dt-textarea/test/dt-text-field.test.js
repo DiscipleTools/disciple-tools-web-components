@@ -35,7 +35,7 @@ describe('dt-textareaarea', () => {
   });
 
   it('Check private field', async () => {
-    const el = await fixture(html`<dt-textarea private></dt-textarea>`);
+    const el = await fixture(html`<dt-textarea label='Label Name' private></dt-textarea>`);
     const label = await fixture(el.shadowRoot.querySelector('dt-label'));
 
     expect(label.hasAttribute('private')).to.be.true;
