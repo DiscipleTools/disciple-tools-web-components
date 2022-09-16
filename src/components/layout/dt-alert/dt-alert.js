@@ -24,6 +24,7 @@ export class DtAlert extends LitElement {
         justify-content: space-between;
         align-content: center;
         align-items: center;
+        white-space: initial;
       }
 
       .dt-alert.dt-alert--outline {
