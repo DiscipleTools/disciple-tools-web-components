@@ -15,8 +15,8 @@ export class DtTextField extends DtFormBase {
         appearance: none;
         background-color: var(--dt-text-background-color, #fefefe);
         border: 1px solid var(--dt-text-border-color, #fefefe);
-        border-radius: 0;
-        box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
+        border-radius: var(--dt-text-border-radius, 0);
+        box-shadow: var(--dt-text-box-shadow, inset 0 1px 2px hsl(0deg 0% 4% / 10%));
         box-sizing: border-box;
         display: block;
         font-family: inherit;
@@ -36,6 +36,10 @@ export class DtTextField extends DtFormBase {
       input:focus-within, input:focus-visible { outline: none; }
       input::placeholder {
         color: var(--dt-text-placeholder-color, #999);
+        text-transform: var(--dt-text-placeholder-transform, none);
+        font-size: var(--dt-text-placeholder-font-size, 1rem);
+        font-weight: var(--dt-text-placeholder-font-weight, 400);
+        letter-spacing: var(--dt-text-placeholder-letter-spacing, normal);
       }
 
       input.invalid {
