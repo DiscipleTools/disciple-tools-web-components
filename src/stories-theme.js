@@ -89,6 +89,7 @@ export const themes = {
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
+      tileBorderRadius: '10px',
 
       listFontSize: 'var(--font-size)',
       listFontWeight: 'var(--font-weight)',
@@ -206,6 +207,7 @@ export const themes = {
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--text-color)',
+      tileBorderRadius: '10px',
 
       listFontSize: 'var(--font-size)',
       listFontWeight: 'var(--font-weight)',
@@ -320,6 +322,7 @@ export const themes = {
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--text-color)',
+      tileBorderRadius: '10px',
 
       listFontSize: 'var(--font-size)',
       listFontWeight: 'var(--font-weight)',
@@ -434,6 +437,7 @@ export const argTypes = {
   tileBorderColor: { control: 'color' },
   tileShadow: { control: 'color' },
   tileHeaderColor: { control: 'color' },
+  tileBorderRadius: '10px',
 
   listFontSize: 'var(--font-size)',
   listFontWeight: 'var(--font-weight)',
@@ -560,6 +564,7 @@ export function themeCss(storyArgs) {
     --dt-tile-border-color: ${getArg(storyArgs, 'tileBorderColor')};
     --dt-tile-shadow: ${getArg(storyArgs, 'tileShadow')};
     --dt-tile-header-color: ${getArg(storyArgs, 'tileHeaderColor')};
+    --dt-tile-border-radius: ${getArg(storyArgs, '10px')};
 
     --dt-alert-text-color-light: ${getArg(storyArgs, 'alertTextColorLight')};
     --dt-alert-text-color-dark: ${getArg(storyArgs, 'alertTextColorDark')};
