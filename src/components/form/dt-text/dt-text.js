@@ -41,7 +41,6 @@ export class DtTextField extends DtFormBase {
         font-weight: var(--dt-text-placeholder-font-weight, 400);
         letter-spacing: var(--dt-text-placeholder-letter-spacing, normal);
       }
-
       input.invalid {
         border-color: var(--dt-text-border-color-alert);
       }
@@ -53,6 +52,7 @@ export class DtTextField extends DtFormBase {
       ...super.properties,
       id: { type: String },
       name: { type: String },
+      type: { type: String },
       placeholder: { type: String },
       value: {
         type: String,
@@ -61,6 +61,7 @@ export class DtTextField extends DtFormBase {
       onchange: { type: String },
     };
   }
+
 
   onChange(e) {
     const event = new CustomEvent('change', {
@@ -109,8 +110,8 @@ export class DtTextField extends DtFormBase {
           id="${this.id}"
           name="${this.name}"
           aria-label="${this.label}"
+          type="${this.type || 'text'}"
           placeholder='${this.placeholder}'
-          type="text"
           ?disabled=${this.disabled}
           ?required=${this.required}
           class="${classMap(this.classes)}"
