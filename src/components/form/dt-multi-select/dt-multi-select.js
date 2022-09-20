@@ -70,7 +70,7 @@ export class DtMultiSelect extends DtFormBase {
         box-sizing: border-box;
       }
       .selected-option > *:first-child {
-        padding-inline-start: 4px;  
+        padding-inline-start: 4px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;

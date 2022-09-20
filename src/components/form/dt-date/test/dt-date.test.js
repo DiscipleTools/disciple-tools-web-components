@@ -44,7 +44,7 @@ describe('DT-Date', () => {
   });
 
   it('Check private field', async () => {
-    const el = await fixture(html`<dt-date private></dt-date>`);
+    const el = await fixture(html`<dt-date label='Label Name' private></dt-date>`);
     const label = await fixture(el.shadowRoot.querySelector('dt-label'));
 
     expect(label.hasAttribute('private')).to.be.true;

@@ -1,6 +1,8 @@
 import { html, css, LitElement } from 'lit';
 import { map } from 'lit/directives/map.js';
+import {repeat} from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import {classMap} from 'lit/directives/class-map.js';
 import { DtAPI } from '../../../services/dt-api.js';
 import '../../icons/dt-star.js';
 
@@ -8,6 +10,7 @@ export class DtList extends LitElement {
   static get styles() {
     return css`
       :host {
+        --number-of-columns: 7;
         font-family: var(--font-family);
         font-size: var(--dt-list-font-size, 15px);
         font-weight: var(--dt-list-font-weight, 300);
@@ -26,10 +29,76 @@ export class DtList extends LitElement {
         padding: 1rem;
       }
 
+      .header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: baseline;
+        gap: 1.5em;
+        flex-wrap: wrap;
+      }
+
       .section-header {
         color: var(--dt-tile-header-color, #3f729b);
         font-size: 1.5rem;
         display: inline-block;
+        text-transform: capitalize;
+      }
+
+      .toggleButton {
+        color: var(--dt-tile-header-color, #3f729b);
+        font-size: 1rem;
+        background: transparent;
+        border: 0.1em solid rgb(0 0 0 / 0.2);
+        border-radius: 0.25em;
+        padding: 0.25em 0.5em;
+        cursor: pointer;
+      }
+
+      .toggleButton svg {
+        height: 0.9rem;
+        transform: translateY(-2px);
+        vertical-align: bottom;
+        width: 1rem;
+        fill: var(--dt-tile-header-color, #3f729b);
+        stroke: var(--dt-tile-header-color, #3f729b);
+      }
+
+      .list_action_section {
+        background-color: var(--dt-list-action-section-background-color, #ecf5fc);
+        border-radius: 5px;
+        margin: 30px 0;
+        padding: 20px;
+      }
+      .list_action_section_header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      .close-button {
+        outline: none;
+        font-size: 2.5em;
+        line-height: 1;
+        color: #8a8a8a;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+      }
+      .fieldsList {
+        list-style-type: none;
+        column-count: 1;
+      }
+
+      .list-field-picker-item {
+        list-style-type: none;
+      }
+
+      .list-field-picker-item input {
+        margin: 1rem;
+      }
+
+      .list-field-picker-item .dt-icon {
+        height: 1rem;
+        width: 1rem;
       }
 
       table {
@@ -62,6 +131,10 @@ export class DtList extends LitElement {
 
       tr:hover {
         background-color: var(--dt-list-hover-background-color, #ecf5fc);
+      }
+
+      tr a {
+        color: var(--dt-list-link-color, #3f729b);
       }
 
       th {
@@ -127,6 +200,21 @@ export class DtList extends LitElement {
         padding-inline-end: .25em;
       }
 
+      th.bulk_edit_checkbox, td.bulk_edit_checkbox  {
+        grid-column: none;
+      }
+
+      .bulk_edit_checkbox input {
+        display: none;
+      }
+
+      .bulk_editing th.bulk_edit_checkbox, .bulk_editing td.bulk_edit_checkbox {
+        grid-column: 1 / auto;
+      }
+
+      .bulk_editing .bulk_edit_checkbox input {
+        display: initial;
+      }
 
       ul {
         margin: 0;
@@ -141,19 +229,16 @@ export class DtList extends LitElement {
         margin: 1rem;
       }
       @container (min-width: 650px) {
-
+        .fieldsList {
+          column-count: 2;
+        }
         table {
           grid-template-columns:
           minmax(32px, .5fr)
           minmax(32px, .5fr)
           minmax(32px, .5fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
-          minmax(50px, 1fr)
+          repeat(var(--number-of-columns, 7), minmax(50px, 1fr))
+
         }
 
         th {
@@ -192,6 +277,16 @@ export class DtList extends LitElement {
           display: none;
         }
       }
+      @container (min-width: 950px) {
+        .fieldsList {
+          column-count: 3;
+        }
+      }
+      @container (min-width: 1500px) {
+        .fieldsList {
+          column-count: 4;
+        }
+      }
     `;
   }
 
@@ -206,6 +301,8 @@ export class DtList extends LitElement {
       loading: { type: Boolean, default: true },
       offset: { type: Number },
       showArchived: { type: Boolean, default: false },
+      showFieldsSelector: { type: Boolean, default: false },
+      showBulkEditSelector: { type: Boolean, default: false },
       nonce: { type: String },
     };
   }
@@ -231,6 +328,14 @@ export class DtList extends LitElement {
       this.posts = response;
       this.sortedBy = column;
     })
+  }
+
+  _bulkEdit(e) {
+    this.showBulkEditSelector = !this.showBulkEditSelector;
+  }
+
+  _fieldsEdit() {
+    this.showFieldsSelector = !this.showFieldsSelector;
   }
 
   _toggleShowArchived() {
@@ -312,10 +417,10 @@ export class DtList extends LitElement {
               ${ifDefined(post[column].display)}
           </td>`
       }
-      if (this.postTypeSettings[column].type === 'key_select'  && post[column] && post[column].label) {
+      if (this.postTypeSettings[column].type === 'key_select'  && post[column] && (post[column].label ||  post[column].name)) {
         return html`
         <td dir="auto" title="${this.postTypeSettings[column].name}">
-            ${ifDefined(post[column].label)}
+            ${ post[column].label || post[column].name }
         </td>`
       }
       if (this.postTypeSettings[column].type === 'multi_select' || this.postTypeSettings[column].type === 'tags' && post[column] && post[column].length > 0) {
@@ -360,6 +465,92 @@ export class DtList extends LitElement {
     });
   }
 
+  _fieldListIconTemplate(field) {
+    if (this.postTypeSettings[field].icon) {
+      return html`<img class="dt-icon" src="${this.postTypeSettings[field].icon}" alt="${this.postTypeSettings[field].name}">`
+    }
+    return null;
+  }
+
+  _fieldsListTemplate() {
+      return repeat(Object.keys(this.postTypeSettings).sort((a, b) => {
+        const nameA = this.postTypeSettings[a].name.toUpperCase(); // ignore upper and lowercase
+        const nameB = this.postTypeSettings[b].name.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        // names must be equal
+        return 0;
+      })
+      ,
+      (field) => field,
+      (field) => {
+        if (!this.postTypeSettings[field].hidden) {
+          return html`<li class="list-field-picker-item">
+            <label>
+              <input type="checkbox" id="${field}" name="${field}" .value="${field}" @change=${this._updateFields} ?checked=${this.columns.includes(field)} >
+              ${this._fieldListIconTemplate(field)}
+            ${this.postTypeSettings[field].name}</label>
+          </li>
+        `
+        }
+        return null
+      }
+    )
+  }
+
+  _fieldsSelectorTemplate() {
+    if (this.showFieldsSelector ) {
+      return html`<div id="list_column_picker" class="list_field_picker list_action_section">
+          <div class="list_action_section_header">
+            <p style="font-weight:bold">Choose which fields to display as columns in the list</p>
+            <button class="close-button list-action-close-button" data-close="list_column_picker" aria-label="Close modal" type="button" @click=${this._fieldsEdit}>
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+           <ul class="fieldsList">
+              ${this._fieldsListTemplate()}
+            </ul>
+    </div>`}
+    return null;
+  }
+
+  _updateFields(e) {
+    const field = e.target.value;
+    const viewableColumns = this.columns;
+
+    if (!viewableColumns.includes(field)) {
+      viewableColumns.push(field);
+    } else {
+      viewableColumns.filter((column) => column !== field);
+      viewableColumns.splice(viewableColumns.indexOf(field), 1);
+    }
+
+    this.columns = viewableColumns;
+    this.style.setProperty('--number-of-columns', this.columns.length-1);
+
+    this.requestUpdate();
+  }
+
+  _bulkSelectorTemplate() {
+    if (this.showBulkEditSelector) {
+      return html`<div id="bulk_edit_picker" class="list_action_section">
+          <div class="list_action_section_header">
+            <p style="font-weight:bold">Select all the ${this.postType} you want to update from the list, and update them below</p>
+            <button class="close-button list-action-close-button"  aria-label="Close modal" type="button" @click=${this._bulkEdit}>
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+           <ul class="fieldsList">
+             This is where the bulk edit form will go.
+            </ul>
+        </div>`}
+    return null;
+  }
+
   connectedCallback() {
     super.connectedCallback()
     if (!this.posts) {
@@ -371,22 +562,41 @@ export class DtList extends LitElement {
   }
 
   render() {
+    const bulkEditClass = { bulk_editing: this.showBulkEditSelector, hidden: false };
     return html`
       <div class="section">
-        <div>
+        <div class="header">
           <div class='section-header'>
             <span class="section-header posts-header" style="display: inline-block">${this.postType} List</span>
           </div>
             <span class="filter-result-text">Showing 1 of ${this.total}</span>
+
+            <button class="bulkToggle toggleButton" id="bulk_edit_button" @click=${this._bulkEdit}>
+              <svg viewBox="0 0 100 100" fill="#000000" style="enable-background:new 0 0 100 100;" xmlns="http://www.w3.org/2000/svg">
+                <line style="stroke-linecap: round; paint-order: fill; fill: none; stroke-width: 15px;" x1="7.97" y1="50.199" x2="76.069" y2="50.128" transform="matrix(0.999999, 0.001017, -0.001017, 0.999999, 0.051038, -0.042708)"/>
+                <line style="stroke-linecap: round; stroke-width: 15px;" x1="7.97" y1="17.751" x2="92.058" y2="17.751"/>
+                <line style="stroke-linecap: round; stroke-width: 15px;" x1="7.97" y1="82.853" x2="42.343" y2="82.853"/>
+                <polygon style="stroke-linecap: round; stroke-miterlimit: 1; stroke-linejoin: round; fill: rgb(255, 255, 255); paint-order: stroke; stroke-width: 9px;" points="22.982 64.982 33.592 53.186 50.916 70.608 82.902 21.308 95 30.85 52.256 95"/>
+              </svg>
+              Bulk Edit
+            </button>
+            <button class="fieldsToggle toggleButton" id="fields_edit_button" @click=${this._fieldsEdit}>
+              <svg height='100px' width='100px'  fill="#000000" xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve"><g><g i:extraneous="self"><g><path d="M94.4,63c0-5.7-3.6-10.5-8.6-12.5V7.3c0-2.7-2.2-4.8-4.8-4.8c-2.7,0-4.8,2.2-4.8,4.8v43.2c-5,1.9-8.6,6.8-8.6,12.5     s3.6,10.5,8.6,12.5v17.2c0,2.7,2.2,4.8,4.8,4.8c2.7,0,4.8-2.2,4.8-4.8V75.5C90.9,73.6,94.4,68.7,94.4,63z M81,66.7     c-2,0-3.7-1.7-3.7-3.7c0-2,1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7C84.7,65.1,83.1,66.7,81,66.7z"></path><path d="M54.8,24.5V7.3c0-2.7-2.2-4.8-4.8-4.8c-2.7,0-4.8,2.2-4.8,4.8v17.2c-5,1.9-8.6,6.8-8.6,12.5s3.6,10.5,8.6,12.5v43.2     c0,2.7,2.2,4.8,4.8,4.8c2.7,0,4.8-2.2,4.8-4.8V49.5c5-1.9,8.6-6.8,8.6-12.5S59.8,26.5,54.8,24.5z M50,40.7c-2,0-3.7-1.7-3.7-3.7     c0-2,1.7-3.7,3.7-3.7c2,0,3.7,1.7,3.7,3.7C53.7,39.1,52,40.7,50,40.7z"></path><path d="M23.8,50.5V7.3c0-2.7-2.2-4.8-4.8-4.8c-2.7,0-4.8,2.2-4.8,4.8v43.2c-5,1.9-8.6,6.8-8.6,12.5s3.6,10.5,8.6,12.5v17.2     c0,2.7,2.2,4.8,4.8,4.8c2.7,0,4.8-2.2,4.8-4.8V75.5c5-1.9,8.6-6.8,8.6-12.5S28.8,52.5,23.8,50.5z M19,66.7c-2,0-3.7-1.7-3.7-3.7     c0-2,1.7-3.7,3.7-3.7c2,0,3.7,1.7,3.7,3.7C22.7,65.1,21,66.7,19,66.7z"></path></g></g></g></svg>
+              Fields
+            </button>
+
             <dt-toggle
               name= "showArchived"
               label="Show Archived"
               ?checked=${this.showArchived}
+              hideIcons
               onchange=${this._toggleShowArchived}
               @click=${this._toggleShowArchived}
             ></dt-toggle>
         </div>
-        <table>
+        ${this._fieldsSelectorTemplate()}
+        ${this._bulkSelectorTemplate()}
+        <table class=${classMap(bulkEditClass)}>
           ${this._headerTemplate()}
           ${this.posts? this._rowTemplate() : 'Loading'}
         </table>

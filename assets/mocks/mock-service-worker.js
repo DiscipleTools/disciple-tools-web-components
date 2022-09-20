@@ -264,6 +264,36 @@ self.addEventListener('fetch', async (event) => {
     "permalink": "https://DT.local/contacts/16",
     "name": "test"
   }
+  const UserList = [
+    {
+      "name": "User 1",
+      "ID": 1,
+      "avatar": "",
+      "contact_id": 1,
+      "update_needed": 0
+    },
+    {
+      "name": "User 2",
+      "ID": 2,
+      "avatar": "",
+      "contact_id": 2,
+      "update_needed": 0
+    },
+    {
+      "name": "User 3",
+      "ID": 3,
+      "avatar": "",
+      "contact_id": 3,
+      "update_needed": 0
+    },
+    {
+      "name": "User 4",
+      "ID": 4,
+      "avatar": "",
+      "contact_id": 4,
+      "update_needed": 0
+    },
+  ]
   // API Call Mocks
   // We will need to make a custom response for each api url.
   // Contact List API Call
@@ -410,5 +440,15 @@ self.addEventListener('fetch', async (event) => {
       headers: { 'Content-Type': 'text/JSON' }
     }));
   }
+
+  if (url.pathname === "/dt/v1/users/get_users" && event.request.method === "GET") {
+    console.log('Getting users');
+
+    event.respondWith(new Response(
+      JSON.stringify(UserList), {
+      headers: { 'Content-Type': 'text/JSON' }
+    }));
+  }
+
 });
 

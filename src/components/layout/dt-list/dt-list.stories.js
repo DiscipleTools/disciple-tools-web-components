@@ -924,7 +924,11 @@ const defaultPosts = [
           "assigned-to": "user-1"
       },
       "permalink": "https://rsdt.local/contacts/16",
-      "name": "test"
+      "name": "test",
+      "age": {
+        "key": "<19",
+        "label": "Under 18 years old"
+      },
   },
   {
       "ID": "17",
@@ -954,7 +958,11 @@ const defaultPosts = [
           "assigned-to": "user-1"
       },
       "permalink": "https://rsdt.local/contacts/17",
-      "name": "archived"
+      "name": "archived",
+      "age": {
+        "key": "<19",
+        "label": "Under 18 years old"
+      },
   },
   {
       "ID": "4",
@@ -974,7 +982,11 @@ const defaultPosts = [
         "label": "Active"
       },
       "permalink": "https://dt.local/contacts/15",
-      "name": "johndoe"
+      "name": "johndoe",
+      "age": {
+        "key": "<19",
+        "label": "Under 18 years old"
+      }
   },
 ]
 

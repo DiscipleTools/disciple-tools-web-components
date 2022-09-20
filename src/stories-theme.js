@@ -61,6 +61,13 @@ export const themes = {
       textBorderColor: 'var(--dt-form-border-color)',
       textBorderColorAlert: 'var(--dt-form-border-color-alert)',
       textDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
+      textBorderRadius: '0',
+      textBoxShadow: 'var(--dt-form-box-shadow)',
+      textPlaceholderColor: 'var(--dt-text-placeholder-color)',
+      textPlaceholderTextTransform: 'none',
+      textPlaceholderFontSize: 'var(--dt-text-placeholder-font-size)',
+      textPlaceholderFontWeight: 'var(--dt-text-placeholder-font-weight)',
+      textPlaceholderLetterSpacing: 'var(--dt-text-placeholder-letter-spacing)',
 
       textareaBorderColor: 'var(--dt-form-border-color)',
       textareaBackgroundColor: 'var(--dt-form-background-color)',
@@ -89,12 +96,20 @@ export const themes = {
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
       tileHeaderColor: 'var(--primary-color)',
+      tileBorderRadius: '10px',
 
+      listFontSize: 'var(--font-size)',
+      listFontWeight: 'var(--font-weight)',
+      listLineHeight: 'var(--line-height)',
+      listBorderColor: 'var(--border-color)',
+      listActionSectionBackgroundColor: 'var(--primary-color-light-0, #ecf5fc)',
       listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
       listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
       listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
       listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+      listLinkColor: 'var(--primary-color, #3f729b)',
+
 
 
       alertTextColorLight: '#fff',
@@ -172,6 +187,12 @@ export const themes = {
       textBorderColor: 'var(--dt-form-border-color)',
       textBorderColorAlert: 'var(--dt-form-border-color-alert)',
       textDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
+      textBorderRadius: '0',
+      textPlaceholderColor: 'var(--dt-text-placeholder-color)',
+      textPlaceholderTextTransform: 'none',
+      textPlaceholderFontSize: 'var(--dt-text-placeholder-font-size)',
+      textPlaceholderFontWeight: 'var(--dt-text-placeholder-font-weight)',
+      textPlaceholderLetterSpacing: 'var(--dt-text-placeholder-letter-spacing)',
 
       textareaBorderColor: 'var(--dt-form-border-color)',
       textareaBackgroundColor: 'var(--dt-form-background-color)',
@@ -198,7 +219,20 @@ export const themes = {
       tileBackground: 'var(--surface-1)',
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
-      tileHeaderColor: 'var(--primary-color)',
+      tileHeaderColor: 'var(--text-color)',
+      tileBorderRadius: '10px',
+
+      listFontSize: 'var(--font-size)',
+      listFontWeight: 'var(--font-weight)',
+      listLineHeight: 'var(--line-height)',
+      listBorderColor: 'var(--border-color)',
+      listActionSectionBackgroundColor: 'var(--primary-color-light-0, #ecf5fc)',
+      listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
+      listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
+      listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
+      listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
+      listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+      listLinkColor: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
@@ -274,6 +308,13 @@ export const themes = {
       textBorderColor: 'var(--dt-form-border-color)',
       textBorderColorAlert: 'var(--dt-form-border-color-alert)',
       textDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
+      textBorderRadius: '0',
+      textBoxShadow: 'var(--dt-form-box-shadow)',
+      textPlaceholderColor: 'var(--dt-text-placeholder-color)',
+      textPlaceholderTextTransform: 'none',
+      textPlaceholderFontSize: 'var(--dt-text-placeholder-font-size)',
+      textPlaceholderFontWeight: 'var(--dt-text-placeholder-font-weight)',
+      textPlaceholderLetterSpacing: 'var(--dt-text-placeholder-letter-spacing)',
 
       textareaBorderColor: 'var(--dt-form-border-color)',
       textareaBackgroundColor: 'var(--dt-form-background-color)',
@@ -300,7 +341,20 @@ export const themes = {
       tileBackground: 'var(--surface-1)',
       tileBorderColor: 'var(--border-color)',
       tileShadow: 'var(--shadow-0)',
-      tileHeaderColor: 'var(--primary-color)',
+      tileHeaderColor: 'var(--text-color)',
+      tileBorderRadius: '10px',
+
+      listFontSize: 'var(--font-size)',
+      listFontWeight: 'var(--font-weight)',
+      listLineHeight: 'var(--line-height)',
+      listBorderColor: 'var(--border-color)',
+      listActionSectionBackgroundColor: 'var(--primary-color-light-0, #ecf5fc)',
+      listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
+      listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
+      listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
+      listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
+      listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+      listLinkColor: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
@@ -376,6 +430,13 @@ export const argTypes = {
   textBorderColor: { control: 'color' },
   textBorderColorAlert: { control: 'color' },
   textDisabledBackgroundColor: { control: 'color' },
+  textBorderRadius: { control: 'text' },
+  textBoxShadow: { control: 'text' },
+  textPlaceholderColor: { control: 'color' },
+  textPlaceholderTextTransform: { control: 'text' },
+  textPlaceholderFontSize: { control: 'text' },
+  textPlaceholderFontWeight: { control: 'text' },
+  textPlaceholderLetterSpacing: { control: 'text' },
 
   textareaBorderColor: { control: 'color' },
   textareaBackgroundColor: { control: 'color' },
@@ -403,6 +464,19 @@ export const argTypes = {
   tileBorderColor: { control: 'color' },
   tileShadow: { control: 'color' },
   tileHeaderColor: { control: 'color' },
+  tileBorderRadius: '10px',
+
+  listFontSize: 'var(--font-size)',
+  listFontWeight: 'var(--font-weight)',
+  listLineHeight: 'var(--line-height)',
+  listBorderColor: 'var(--border-color)',
+  listActionSectionBackgroundColor: 'var(--primary-color-light-0, #ecf5fc)',
+  listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
+  listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
+  listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
+  listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
+  listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
+  listLinkColor: 'var(--primary-color, #3f729b))',
 
   alertTextColorLight: '#fff',
   alertTextColorDark: '#000',
@@ -487,6 +561,13 @@ export function themeCss(storyArgs) {
     --dt-text-border-color: ${getArg(storyArgs, 'textBorderColor')};
     --dt-text-border-color-alert: ${getArg(storyArgs, 'textBorderColorAlert')};
     --dt-text-disabled-background-color: ${getArg(storyArgs, 'textDisabledBackgroundColor')};
+    --dt-text-border-radius: ${getArg(storyArgs, 'textBorderRadius')};
+    --dt-text-box-shadow: ${getArg(storyArgs, 'textBoxShadow')};
+    --dt-text-placeholder-color: ${getArg(storyArgs, 'textPlaceholderColor')};
+    --dt-text-placeholder-text-transform: ${getArg(storyArgs, 'textPlaceholderTextTransform')};
+    --dt-text-placeholder-font-size: ${getArg(storyArgs, 'textPlaceholderFontSize')};
+    --dt-text-placeholder-font-weight: ${getArg(storyArgs, 'textPlaceholderFontWeight')};
+    --dt-text-placeholder-letter-spacing: ${getArg(storyArgs, 'textPlaceholderLetterSpacing')};
 
     --dt-textarea-border-color: ${getArg(storyArgs, 'textareaBorderColor')};
     --dt-textarea-background-color: ${getArg(storyArgs, 'textareaBackgroundColor')};
@@ -516,6 +597,8 @@ export function themeCss(storyArgs) {
     --dt-tile-background-color: ${getArg(storyArgs, 'tileBackground')};
     --dt-tile-border-color: ${getArg(storyArgs, 'tileBorderColor')};
     --dt-tile-shadow: ${getArg(storyArgs, 'tileShadow')};
+    --dt-tile-header-color: ${getArg(storyArgs, 'tileHeaderColor')};
+    --dt-tile-border-radius: ${getArg(storyArgs, '10px')};
 
     --dt-alert-text-color-light: ${getArg(storyArgs, 'alertTextColorLight')};
     --dt-alert-text-color-dark: ${getArg(storyArgs, 'alertTextColorDark')};
@@ -529,11 +612,19 @@ export function themeCss(storyArgs) {
     background: ${getArg(storyArgs, 'surface0')};
     color-scheme: ${getArg(storyArgs, 'colorScheme')};
 
+    --dt-list-font-size: ${getArg(storyArgs, 'listFontSize')};
+    --dt-list-font-weight: ${getArg(storyArgs, 'listFontWeight')};
+    --dt-list-line-height: ${getArg(storyArgs, 'listLineHeight')};
+    --dt-list-border-color: ${getArg(storyArgs, 'listBorderColor')};
+    --dt-list-action-section-background-color: ${getArg(storyArgs, 'listActionSectionBackgroundColor')};
+    --dt-list-header-background-color: ${getArg(storyArgs, 'listHeaderBackgroundColor')};
+    --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
     --dt-list-background-color: ${getArg(storyArgs, 'listheaderBackground')};
     --dt-list-hover-background-color: ${getArg(storyArgs, 'listheaderHoverBackground')};
     --dt-list-sort-arrow-color: ${getArg(storyArgs, 'listSortArrowColor')};
     --dt-list-sort-arrow-color-highlight: ${getArg(storyArgs, 'listSortArrowColorHighlight')};
     --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
+    --dt-list-link-color: ${getArg(storyArgs, 'listLinkColor')};
 
     ${storyArgs.RTL ? 'direction: rtl;' : 'direction: ltr;'}
   }
