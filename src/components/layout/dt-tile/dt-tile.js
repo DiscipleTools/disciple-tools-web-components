@@ -18,6 +18,7 @@ export class DtTile extends DtBase {
         border-radius: var(--dt-tile-border-radius, 10px);
         box-shadow: var(--dt-tile-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
         padding: 1rem;
+        margin: var(--dt-tile-margin, 0); 
       }
 
       h3 {
@@ -27,7 +28,7 @@ export class DtTile extends DtBase {
         text-rendering: optimizeLegibility;
         font-family: var(--dt-tile-font-family, var(--font-family));
         font-style: normal;
-        font-weight: 300;
+        font-weight: var(--dt-tile-header-font-weight, 300);
       }
       .section-header {
         color: var(--dt-tile-header-color, #3f729b);
