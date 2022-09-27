@@ -55,8 +55,9 @@ export class DtModal extends LitElement {
         font-size: 1rem;
         border: 0.1em solid rgba(0, 0, 0, 0.2);
         border-radius: 0.25em;
-        padding: 0.25em 0.5em;
+        padding: 0.25rem 0.5rem;
         cursor: pointer;
+        text-decoration: none;
       }
       button.toggle {
         margin-inline-end: 0;
@@ -67,6 +68,20 @@ export class DtModal extends LitElement {
         cursor: pointer;
         display: flex;
         align-items: flex-start;
+      }
+
+      footer {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .help-more h5{
+        font-size: .75rem;
+        display: block;
+      }
+      .help-more .button {
+        font-size: .75rem;
+        display: block;
       }
     `;
   }

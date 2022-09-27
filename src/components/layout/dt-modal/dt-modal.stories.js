@@ -48,7 +48,7 @@ const Template = (args) => html`
     ?isopen="${args.isOpen}"
   >
     <span slot="content">
-      <h2>Mauris Cursus<span style="font-size: 10px; padding-inline-start: 1em"><a href="#" target="_blank">Edit</a></span></h2>
+      <h2>Mauris Cursus<span style="font-size: 10px; padding-inline-start: 1em"></span></h2>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
       <ul>
         <li><strong>feugiat vivamus at</strong></li>
@@ -66,3 +66,9 @@ Default.args = {
   context: 'default',
 };
 
+export const HelpModal = Template.bind({});
+Default.args = {
+  title: 'Help Modal Title',
+  context: 'default',
+  isHelp: true,
+};
