@@ -108,6 +108,16 @@ export class DtModal extends LitElement {
     this.open = false;
   }
 
+  _helpMore() {
+    return this.isHelp ? html`
+    <div class="help-more">
+        <h5>Need more help?</h5>
+        <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank">Read the documentation</a>
+    </div>
+  `: null
+  }
+
+
   render() {
     return html`
       <dialog id="" class="dt-modal">
@@ -137,14 +147,7 @@ export class DtModal extends LitElement {
                   <button class="button small" data-close="" aria-label="Close reveal" type="button" onclick="this.closest('dialog').close('close')">
                     <slot name="close-button">Close</slot>
                   </button>
-                  ${
-                    this.isHelp? html`
-                      <div class="help-more">
-                          <h5>Need more help?</h5>
-                          <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank">Read the documentation</a>
-                      </div>
-                    `: null
-                  }
+                  ${this._helpMore()}
               </footer>
           </form>
       </dialog>

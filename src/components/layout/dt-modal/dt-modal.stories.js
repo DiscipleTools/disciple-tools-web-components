@@ -16,6 +16,11 @@ export default {
       options: ['none', ...contexts],
       defaultValue: 'default'
     },
+    isHelp: {
+      control: 'boolean',
+      defaultValue: false
+    },
+
     ...argTypes,
   }
 };
@@ -44,7 +49,7 @@ const Template = (args) => html`
   <dt-modal
     title="${args.title}"
     context="${args.context}"
-    ?ishelp="${args.isHelp}"
+    ?isHelp="${!args.isHelp}"
     ?isopen="${args.isOpen}"
   >
     <span slot="content">
@@ -64,6 +69,7 @@ export const Default = Template.bind({});
 Default.args = {
   title: 'Modal Title',
   context: 'default',
+  isHelp: false,
 };
 
 export const HelpModal = Template.bind({});
