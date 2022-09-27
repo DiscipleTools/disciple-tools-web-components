@@ -12,6 +12,7 @@ export default {
     label: { control: 'text' },
     value: { control: 'text' },
     disabled: { control: 'boolean' },
+    type: { control: 'select', options: ['text', 'password', 'email', 'number', 'tel', 'url'], defaultValue: 'text' },
     icon: { control: 'text' },
     isPrivate: { control: 'boolean' },
     loading: { control: 'boolean' },
@@ -37,6 +38,7 @@ function Template(args) {
     saved = false,
     onchange,
     slot,
+    type
   } = args;
   return html`
     <style>
@@ -47,6 +49,7 @@ function Template(args) {
       name=${name}
       label=${label}
       value=${value}
+      type=${type}
       ?disabled=${disabled}
       ?required=${required}
       requiredMessage=${requiredMessage}
@@ -89,10 +92,10 @@ privateField.args = {
 };
 
 const FormDecorator = (story) => html`<form onsubmit="onFormSubmit(event)">
-    ${story()}  
-      
+    ${story()}
+
     <button type="submit">Submit</button>
-    
+
     <pre><output></output></pre>
   </form>
   <script>
@@ -100,11 +103,11 @@ const FormDecorator = (story) => html`<form onsubmit="onFormSubmit(event)">
     if (event) {
       event.preventDefault();
     }
-    
+
     const output = document.querySelector('output');
-        
+
     const form = event.target;
-  
+
     /** Get all of the form data */
     const formData = new FormData(form);
     const data = {};
@@ -133,6 +136,12 @@ export const required = Template.bind({});
 required.decorators = [FormDecorator];
 required.args = {
   required: true,
+};
+
+export const password = Template.bind({});
+password.decorators = [FormDecorator];
+password.args = {
+  type: 'password',
 };
 
 export const requiredCustomMessage = Template.bind({});

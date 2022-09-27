@@ -15,8 +15,8 @@ export class DtTextField extends DtFormBase {
         appearance: none;
         background-color: var(--dt-text-background-color, #fefefe);
         border: 1px solid var(--dt-text-border-color, #fefefe);
-        border-radius: 0;
-        box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
+        border-radius: var(--dt-text-border-radius, 0);
+        box-shadow: var(--dt-text-box-shadow, inset 0 1px 2px hsl(0deg 0% 4% / 10%));
         box-sizing: border-box;
         display: block;
         font-family: inherit;
@@ -34,7 +34,13 @@ export class DtTextField extends DtFormBase {
         cursor: not-allowed;
       }
       input:focus-within, input:focus-visible { outline: none; }
-      
+      input::placeholder {
+        color: var(--dt-text-placeholder-color, #999);
+        text-transform: var(--dt-text-placeholder-transform, none);
+        font-size: var(--dt-text-placeholder-font-size, 1rem);
+        font-weight: var(--dt-text-placeholder-font-weight, 400);
+        letter-spacing: var(--dt-text-placeholder-letter-spacing, normal);
+      }
       input.invalid {
         border-color: var(--dt-text-border-color-alert);
       }
@@ -46,6 +52,8 @@ export class DtTextField extends DtFormBase {
       ...super.properties,
       id: { type: String },
       name: { type: String },
+      type: { type: String },
+      placeholder: { type: String },
       value: {
         type: String,
         reflect: true,
@@ -53,6 +61,7 @@ export class DtTextField extends DtFormBase {
       onchange: { type: String },
     };
   }
+
 
   onChange(e) {
     const event = new CustomEvent('change', {
@@ -68,6 +77,18 @@ export class DtTextField extends DtFormBase {
     this._setFormValue(this.value);
 
     this.dispatchEvent(event);
+  }
+
+  implicitFormSubmit(e) {
+    const keycode = e.keyCode || e.which;
+    // If the Enter key is pressed, find the first button in the form and click it.
+    // This replicates normal browser handling of input elements when pressing Enter
+    if (keycode === 13 && this.internals.form) {
+      const button = this.internals.form.querySelector('button');
+      if (button) {
+        button.click();
+      }
+    }
   }
 
   _validateRequired() {
@@ -101,15 +122,17 @@ export class DtTextField extends DtFormBase {
           id="${this.id}"
           name="${this.name}"
           aria-label="${this.label}"
-          type="text"
+          type="${this.type || 'text'}"
+          placeholder='${this.placeholder}'
           ?disabled=${this.disabled}
           ?required=${this.required}
           class="${classMap(this.classes)}"
           .value="${this.value}"
           @change=${this.onChange}
           novalidate
+          @keyup="${this.implicitFormSubmit}"
         />
-        
+
         ${this.touched && this.invalid ? html`<dt-exclamation-circle class="icon-overlay alert"></dt-exclamation-circle>` : null}
         ${this.loading ? html`<dt-spinner class="icon-overlay"></dt-spinner>` : null}
         ${this.saved ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}

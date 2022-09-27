@@ -140,7 +140,7 @@ describe('DT-Number', () => {
   });
 
   it('sets private field', async () => {
-    const el = await fixture(html`<dt-number private></dt-number>`);
+    const el = await fixture(html`<dt-number label='Label Name' private></dt-number>`);
     const label = await fixture(el.shadowRoot.querySelector('dt-label'));
 
     expect(label.hasAttribute('private')).to.be.true;

@@ -15,7 +15,7 @@ export default class DtFormBase extends LitElement {
     .input-group.disabled {
       background-color: var(--disabled-color);
     }
-    
+
     /* === Inline Icons === */
       .icon-overlay {
         position: absolute;
@@ -26,7 +26,7 @@ export default class DtFormBase extends LitElement {
         justify-content: center;
         align-items: center;
       }
-      
+
       .icon-overlay.alert {
         color: var(--alert-color);
       }
@@ -109,6 +109,10 @@ export default class DtFormBase extends LitElement {
   }
 
   labelTemplate() {
+    if (!this.label) {
+      return '';
+    }
+
     return html`
       <dt-label
         ?private=${this.private}
