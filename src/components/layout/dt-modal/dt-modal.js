@@ -53,7 +53,7 @@ export class DtModal extends LitElement {
         color: var(--dt-modal-button-color, #fff);
         background: var(--dt-modal-button-background, #000);
         font-size: 1rem;
-        border: 0.1em solid rgba(0, 0, 0, 0.2);
+        border: 0.1em solid var(--dt-modal-button-background, #000);
         border-radius: 0.25em;
         padding: 0.25rem 0.5rem;
         cursor: pointer;
