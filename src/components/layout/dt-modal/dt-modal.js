@@ -5,6 +5,7 @@ export class DtModal extends LitElement {
     return css`
       :host {
         display: block;
+        font-family: var(--font-family);
       }
       :host:has(dialog[open]) {
         overflow: hidden;
@@ -18,10 +19,11 @@ export class DtModal extends LitElement {
         max-block-size: min(80vh, 100%);
         max-block-size: min(80dvb, 100%);
         margin: auto;
-        padding: 0;
+        padding: 1em;
         position: fixed;
         inset: 0;
         border-radius: 5%;
+        border: none;
         box-shadow: var(--shadow-6);
         z-index: 1000;
         overflow: hidden;
@@ -31,6 +33,40 @@ export class DtModal extends LitElement {
       dialog:not([open]) {
         pointer-events: none;
         opacity: 0;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        line-height: 1.4;
+        text-rendering: optimizeLegibility;
+        color: inherit;
+        font-style: normal;
+        font-weight: 300;
+        margin: 0;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .button {
+        color: var(--dt-modal-button-color, #fff);
+        background: var(--dt-modal-button-background, #000);
+        font-size: 1rem;
+        border: 0.1em solid rgba(0, 0, 0, 0.2);
+        border-radius: 0.25em;
+        padding: 0.25em 0.5em;
+        cursor: pointer;
+      }
+      button.toggle {
+        margin-inline-end: 0;
+        margin-inline-start: auto;
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        display: flex;
+        align-items: flex-start;
       }
     `;
   }

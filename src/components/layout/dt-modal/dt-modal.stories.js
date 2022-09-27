@@ -23,6 +23,23 @@ export default {
 const Template = (args) => html`
   <style>
     ${themeCss(args)}
+    ul {
+        margin-left: 1.25rem;
+        padding: 0;
+        line-height: 1.6;
+        list-style-type: disc;
+        list-style-position: outside;
+        margin-bottom: 1rem;
+      }
+      li {
+        font-size: inherit;
+      }
+      a {
+        color: #3f729b;
+        cursor: pointer;
+        line-height: inherit;
+        text-decoration: none;
+      }
   </style>
   <dt-modal
     title="${args.title}"
@@ -30,8 +47,16 @@ const Template = (args) => html`
     ?ishelp="${args.isHelp}"
     ?isopen="${args.isOpen}"
   >
-    <span slot="content">This is the content of the modal</span>
-    <span slot="close-button">Cancel</span>
+    <span slot="content">
+      <h2>Mauris Cursus<span style="font-size: 10px; padding-inline-start: 1em"><a href="#" target="_blank">Edit</a></span></h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <ul>
+        <li><strong>feugiat vivamus at</strong></li>
+        <li><strong>quis enim lobortis</strong></li>
+        <li><strong>tincidunt arcu</strong></li>
+        <li><strong>rhoncus mattis</strong></li>
+      </ul>
+    </span>
   </dt-modal>
 `;
 
