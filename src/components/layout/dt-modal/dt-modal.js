@@ -26,13 +26,26 @@ export class DtModal extends LitElement {
         border: none;
         box-shadow: var(--shadow-6);
         z-index: 1000;
-        overflow: hidden;
         transition: opacity .1s ease-in-out
       }
 
       dialog:not([open]) {
         pointer-events: none;
         opacity: 0;
+      }
+
+      dialog::backdrop {
+        background: rgba(0, 0, 0, 0.25);
+        animation: fade-in .75s;
+      }
+
+      @keyframes fade-in {
+          from {
+              opacity: 0;
+          }
+          to {
+              opacity: 1;
+          }
       }
 
       h1, h2, h3, h4, h5, h6 {
@@ -44,7 +57,19 @@ export class DtModal extends LitElement {
         margin: 0;
       }
 
+      form {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 100px auto 100px;
+        grid-template-areas:
+          'header'
+          'main'
+          'footer';
+          position: relative;
+      }
+
       header {
+        grid-area: header;
         display: flex;
         justify-content: space-between;
       }
@@ -70,7 +95,13 @@ export class DtModal extends LitElement {
         align-items: flex-start;
       }
 
+      article {
+        grid-area: main;
+        overflow: scroll;
+      }
+
       footer {
+        grid-area: footer;
         display: flex;
         justify-content: space-between;
       }
@@ -101,11 +132,40 @@ export class DtModal extends LitElement {
   }
 
   _openModal() {
+    this.isOpen = true;
     this.shadowRoot.querySelector('dialog').showModal();
   }
 
-  _dismiss() {
-    this.open = false;
+  _closeModal() {
+    this.isOpen = false;
+    this.shadowRoot.querySelector('dialog').close();
+  }
+
+  _dialogClick(e) {
+    if (e.target.tagName !== 'DIALOG') {
+      // This prevents issues with forms
+      return;
+    }
+
+    // Close the modal if the user clicks outside of the modal
+    const rect = e.target.getBoundingClientRect();
+
+    const clickedInDialog = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.top + rect.height &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.left + rect.width
+    );
+
+    if (clickedInDialog === false) {
+      this._closeModal();
+    }
+  }
+
+  _dialogKeypress(e) {
+    if (e.key === 'Escape') {
+      this._closeModal();
+    }
   }
 
   _helpMore() {
@@ -117,16 +177,21 @@ export class DtModal extends LitElement {
   `: null
   }
 
+  firstUpdated() {
+    if (this.isOpen) {
+      this._openModal();
+    }
+  }
 
   render() {
     return html`
-      <dialog id="" class="dt-modal">
+      <dialog id="" class="dt-modal" @click=${this._dialogClick} @keypress=${this._dialogKeypress}>
           <form method="dialog">
               <header>
                   <h1 id="modal-field-title">
                       ${this.title}
                   </h1>
-                  <button @click="${this._dismiss}" class='toggle'>
+                  <button @click="${this._closeModal}" class='toggle'>
                     <svg viewPort="0 0 12 12" version="1.1" width='12' height='12'>
                         xmlns="http://www.w3.org/2000/svg">
                       <line x1="1" y1="11"
@@ -144,7 +209,7 @@ export class DtModal extends LitElement {
                 <slot name="content"></slot>
               </article>
               <footer>
-                  <button class="button small" data-close="" aria-label="Close reveal" type="button" onclick="this.closest('dialog').close('close')">
+                  <button class="button small" data-close="" aria-label="Close reveal" type="button" @click=${this._closeModal}>
                     <slot name="close-button">Close</slot>
                   </button>
                   ${this._helpMore()}
