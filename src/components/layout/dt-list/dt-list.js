@@ -189,6 +189,7 @@ export class DtList extends LitElement {
 
       td.line-count {
         padding-block-start: .8em;
+        padding-inline-start: 1em;
       }
 
       td.bulk_edit_checkbox {

@@ -110,7 +110,10 @@ export const themes = {
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
       listLinkColor: 'var(--primary-color, #3f729b)',
 
-
+      modalBackgroundColor: 'var(--dt-modal-background-color, #fff)',
+      modalColor: 'var(--dt-modal-color, #000)',
+      modalButtonColor:'var(--text-color-inverse, #fff)',
+      modalButtonBackground: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
@@ -234,6 +237,11 @@ export const themes = {
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
       listLinkColor: 'var(--primary-color, #3f729b)',
 
+      modalBackgroundColor: 'var(--dt-modal-background-color, #fff)',
+      modalColor: 'var(--dt-modal-color, #000)',
+      modalButtonColor:'var(--text-color-inverse, #fff)',
+      modalButtonBackground: 'var(--primary-color, #3f729b)',
+
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
       alertTextColor: 'var(--text-color)',
@@ -355,6 +363,11 @@ export const themes = {
       listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
       listLinkColor: 'var(--primary-color, #3f729b)',
+
+      modalBackgroundColor: 'var(--dt-modal-background-color, #fff)',
+      modalColor: 'var(--dt-modal-color, #000)',
+      modalButtonColor:'var(--text-color-inverse, #fff)',
+      modalButtonBackground: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
@@ -487,6 +500,11 @@ export const argTypes = {
   alertBackground: { control: 'color' },
   alertBorderColor: { control: 'color' },
   alertShadow: { control: 'color' },
+
+  modalBackgroundColor: { control: 'color' },
+  modalColor: { control: 'color' },
+  modalButtonColor: { control: 'color' },
+  modalButtonBackground: { control: 'color' },
 };
 
 function getArg(storyArgs, argName) {
@@ -625,6 +643,12 @@ export function themeCss(storyArgs) {
     --dt-list-sort-arrow-color-highlight: ${getArg(storyArgs, 'listSortArrowColorHighlight')};
     --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
     --dt-list-link-color: ${getArg(storyArgs, 'listLinkColor')};
+
+    --dt-modal-background-color: ${getArg(storyArgs, 'modalBackgroundColor')};
+    --dt-modal-color: ${getArg(storyArgs, 'modalColor')};
+    --dt-modal-button-color: ${getArg(storyArgs, 'modalButtonColor')};
+    --dt-modal-button-background: ${getArg(storyArgs, 'modalButtonBackground')};
+
 
     ${storyArgs.RTL ? 'direction: rtl;' : 'direction: ltr;'}
   }

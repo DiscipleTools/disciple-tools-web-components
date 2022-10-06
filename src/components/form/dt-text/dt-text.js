@@ -79,6 +79,18 @@ export class DtTextField extends DtFormBase {
     this.dispatchEvent(event);
   }
 
+  implicitFormSubmit(e) {
+    const keycode = e.keyCode || e.which;
+    // If the Enter key is pressed, find the first button in the form and click it.
+    // This replicates normal browser handling of input elements when pressing Enter
+    if (keycode === 13 && this.internals.form) {
+      const button = this.internals.form.querySelector('button');
+      if (button) {
+        button.click();
+      }
+    }
+  }
+
   _validateRequired() {
     const { value } = this;
     const input = this.shadowRoot.querySelector('input');
@@ -118,6 +130,7 @@ export class DtTextField extends DtFormBase {
           .value="${this.value}"
           @change=${this.onChange}
           novalidate
+          @keyup="${this.implicitFormSubmit}"
         />
 
         ${this.touched && this.invalid ? html`<dt-exclamation-circle class="icon-overlay alert"></dt-exclamation-circle>` : null}
