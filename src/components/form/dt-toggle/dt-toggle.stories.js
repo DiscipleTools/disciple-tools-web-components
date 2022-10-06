@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-toggle.js';
 
 export default {
@@ -39,7 +40,6 @@ function Template(args) {
     saved = false,
     onchange,
     slot,
-    RTL,
   } = args;
   return html`
     <style>
@@ -59,7 +59,6 @@ function Template(args) {
       privateLabel="${privateLabel}"
       ?loading=${loading}
       ?saved=${saved}
-      ?rtl="${RTL}"
       onchange=${onchange}
     >
     ${slot}
@@ -87,16 +86,20 @@ DisabledOn.args = {
   disabled: true,
 };
 
-export const RTL = Template.bind({});
-RTL.args = {
-  RTL: true,
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
   value: 'راد أن يشع',
 };
 
-export const RTLOn = Template.bind({});
-RTLOn.args = {
-  RTL: true,
+export const LocalizeRTLOn = Template.bind({});
+LocalizeRTLOn.decorators = [LocaleDecorator];
+LocalizeRTLOn.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
   value: 'راد أن يشع',
   checked: true,

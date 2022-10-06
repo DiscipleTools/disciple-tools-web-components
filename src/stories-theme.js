@@ -649,8 +649,6 @@ export function themeCss(storyArgs) {
     --dt-modal-button-color: ${getArg(storyArgs, 'modalButtonColor')};
     --dt-modal-button-background: ${getArg(storyArgs, 'modalButtonBackground')};
 
-
-    ${storyArgs.RTL ? 'direction: rtl;' : 'direction: ltr;'}
   }
   `;
 }

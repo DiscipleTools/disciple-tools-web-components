@@ -80,7 +80,6 @@ export class DtSingleSelect extends DtFormBase {
         state: true,
       },
       onchange: { type: String },
-      rtl: { type: Boolean },
     };
   }
 
@@ -128,7 +127,7 @@ export class DtSingleSelect extends DtFormBase {
     return html`
       ${this.labelTemplate()}
 
-      <div class="container" dir="${this.rtl ? 'rtl' : 'ltr'}">
+      <div class="container" dir="${this.RTL ? 'rtl' : 'ltr'}">
         <select
           name="${this.name}"
           aria-label="${this.name}"

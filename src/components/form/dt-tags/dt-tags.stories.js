@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-tags.js';
 
 const basicOptions = [
@@ -305,10 +306,11 @@ Saved.args = {
   saved: true,
 };
 
-export const RTL = Template.bind({});
-RTL.args = {
-  RTL: true,
-  locale: 'ar',
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
   placeholder: 'حدد العلامات',
   allowAdd: true,

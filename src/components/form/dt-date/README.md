@@ -30,4 +30,4 @@ Basic date input
 - [ ] saved
 - [x] disabled
 - [ ] required
-- [ ] i18n dates
+- [x] i18n dates (Firefox uses browser language for datepicker. Tested 2022/10/06)

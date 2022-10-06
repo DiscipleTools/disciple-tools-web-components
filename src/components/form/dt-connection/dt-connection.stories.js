@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-connection.js';
 
 const basicOptions = [
@@ -175,7 +176,6 @@ function Template(args) {
     open,
     allowAdd,
     slot,
-    i18n,
   } = args;
   return html`
     <style>
@@ -233,7 +233,6 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
-      i18n="${JSON.stringify(i18n)}"
     >
       ${slot}
     </dt-connection>
@@ -320,17 +319,15 @@ Saved.args = {
   saved: true,
 };
 
-export const RTL = Template.bind({});
-RTL.args = {
-  RTL: true,
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
   placeholder: 'حدد العلامات',
   allowAdd: true,
   loading: true,
-  i18n: {
-    'No options available': 'لا توجد خيارات متاحة',
-    'Add': 'أضف',
-  },
   value: [{
     id: 'opt1',
     label: 'تنكر هؤلاء الرجال المفتونون',
@@ -345,16 +342,16 @@ RTL.args = {
       color: '#4CAF50',
     },
   }, {
-      id: '2',
-      label: 'م فيتساوي مع هؤلاء',
-      link: '/#opt2',
-      user: true,
-      status: {
-        key: 'assigned',
-        label: 'في انتظار قبولها',
-        color: '#FF9800',
-      },
-    }, {
+    id: '2',
+    label: 'م فيتساوي مع هؤلاء',
+    link: '/#opt2',
+    user: true,
+    status: {
+      key: 'assigned',
+      label: 'في انتظار قبولها',
+      color: '#FF9800',
+    },
+  }, {
     id: '3',
     label: 'فلا أحد يرفض',
     link: '/#opt3',

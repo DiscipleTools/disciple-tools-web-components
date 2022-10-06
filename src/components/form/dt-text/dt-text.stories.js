@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { FormDecorator, LocaleDecorator } from '../../../stories-utils.js';
 import './dt-text.js';
 
 export default {
@@ -91,32 +92,6 @@ privateField.args = {
   privateLabel: 'This is a custom tooltip',
 };
 
-const FormDecorator = (story) => html`<form onsubmit="onFormSubmit(event)">
-    ${story()}
-
-    <button type="submit">Submit</button>
-
-    <pre><output></output></pre>
-  </form>
-  <script>
-  function onFormSubmit(event) {
-    if (event) {
-      event.preventDefault();
-    }
-
-    const output = document.querySelector('output');
-
-    const form = event.target;
-
-    /** Get all of the form data */
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key) => data[key] = value);
-    output.innerHTML = JSON.stringify(data, null, 2);
-  }
-  </script>
-`;
-
 export const Loading = Template.bind({});
 Loading.args = {
   loading: true,
@@ -151,9 +126,11 @@ requiredCustomMessage.args = {
   requiredMessage: 'Custom error message',
 };
 
-export const RTL = Template.bind({});
-RTL.args = {
-  RTL: true,
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
   value: 'راد أن يشع',
 };

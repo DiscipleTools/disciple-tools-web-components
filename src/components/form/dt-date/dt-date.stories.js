@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import './dt-date.js';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { LocaleDecorator } from '../../../stories-utils';
 
 export default {
   title: 'Form/dt-date',
@@ -91,9 +92,10 @@ Disabled.args = {
   disabled: true,
 };
 
-export const RTL = Template.bind({});
-RTL.args = {
-  RTL: true,
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
-  value: 'راد أن يشع',
 };

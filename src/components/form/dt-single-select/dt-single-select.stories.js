@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-single-select.js';
 
 const basicOptions = [
@@ -166,11 +167,14 @@ Saved.args = {
   isSaved: true,
 };
 
-export const RTL = Template.bind({});
-RTL.args = {
-  RTL: true,
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
   placeholder: 'حدد العلامات',
+  isSaved: true,
   value: 'opt2',
   options: [{
     id: 'opt1',

@@ -1,10 +1,9 @@
 import { css, html, LitElement } from 'lit';
-import {updateWhenLocaleChanges} from '@lit/localize';
-import { setLocale } from '../../i18n/localization.js';
+import DtBase from '../dt-base.js';
 import 'element-internals-polyfill';
 import './dt-label/dt-label.js';
 
-export default class DtFormBase extends LitElement {
+export default class DtFormBase extends DtBase {
   static get formAssociated() {
     return true;
   }
@@ -39,6 +38,7 @@ export default class DtFormBase extends LitElement {
   }
   static get properties() {
     return {
+      ...super.properties,
       label: { type: String },
       icon: { type: String },
       private: { type: Boolean },
@@ -56,22 +56,14 @@ export default class DtFormBase extends LitElement {
       },
       loading: { type: Boolean },
       saved: { type: Boolean },
-      i18n: { type: Object },
-      locale: { type: String },
     };
-  }
-
-  msg(str) {
-    return (this.i18n && this.i18n[str]) || str;
   }
 
   constructor() {
     super();
-    updateWhenLocaleChanges(this);
     this.touched = false;
     this.invalid = false;
     this.internals = this.attachInternals();
-    this.i18n = {};
 
     // catch oninvalid event (when validation is triggered from form submit)
     // and set touched=true so that styles are shown
@@ -79,36 +71,6 @@ export default class DtFormBase extends LitElement {
       this.touched = true;
       this._validateRequired();
     });
-  }
-
-  willUpdate(props) {
-
-    // get RTL from closest parent with [dir] attribute
-    if (this.RTL === undefined) {
-      const dirEl = this.closest('[dir]');
-      if (dirEl) {
-        const dir = dirEl.getAttribute('dir');
-        if (dir) {
-          this.RTL = dir.toLowerCase() === 'rtl';
-        }
-      }
-    }
-
-    // get locale from closest parent with [lang] attribute
-    if (!this.locale) {
-      const langEl = this.closest('[lang]');
-      if (langEl) {
-        const lang = langEl.getAttribute('lang');
-        if (lang) {
-          this.locale = lang;
-        }
-      }
-    }
-
-    // if locale is changing, update lit-localize
-    if (props && props.has('locale') && this.locale) {
-      setLocale(this.locale);
-    }
   }
 
   firstUpdated(...args) {

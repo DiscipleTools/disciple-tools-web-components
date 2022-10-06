@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-multi-select.js';
 
 const basicOptions = [
@@ -168,7 +169,6 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
-      locale="${locale}"
     >
       ${slot}
     </dt-multi-select>
@@ -241,10 +241,11 @@ Saved.args = {
   saved: true,
 };
 
-export const RTL = Template.bind({});
-RTL.args = {
-  RTL: true,
-  locale: 'ar',
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
   value: ['opt1'],
   options: [{
@@ -257,13 +258,4 @@ RTL.args = {
     id: 'opt3',
     label: 'فلا أحد يرفض',
   }]
-};
-
-const LocaleDecorator = (story) => html`<div lang="ar" dir="rtl">${story()}</div>`;
-export const Localize = Template.bind({});
-Localize.decorators = [LocaleDecorator];
-Localize.args = {
-  label: RTL.args.label,
-  value: RTL.args.value,
-  options: RTL.args.options,
 };
