@@ -1,12 +1,14 @@
-import { html, css, LitElement } from 'lit';
+import { html, css } from 'lit';
+import { msg } from '@lit/localize';
 import { map } from 'lit/directives/map.js';
 import {repeat} from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import {classMap} from 'lit/directives/class-map.js';
+import DtBase from '../../dt-base.js';
 import { DtAPI } from '../../../services/dt-api.js';
 import '../../icons/dt-star.js';
 
-export class DtList extends LitElement {
+export class DtList extends DtBase {
   static get styles() {
     return css`
       :host {
@@ -507,7 +509,7 @@ export class DtList extends LitElement {
     if (this.showFieldsSelector ) {
       return html`<div id="list_column_picker" class="list_field_picker list_action_section">
           <div class="list_action_section_header">
-            <p style="font-weight:bold">Choose which fields to display as columns in the list</p>
+            <p style="font-weight:bold">${ msg('Choose which fields to display as columns in the list') }</p>
             <button class="close-button list-action-close-button" data-close="list_column_picker" aria-label="Close modal" type="button" @click=${this._fieldsEdit}>
               <span aria-hidden="true">×</span>
             </button>
@@ -540,13 +542,13 @@ export class DtList extends LitElement {
     if (this.showBulkEditSelector) {
       return html`<div id="bulk_edit_picker" class="list_action_section">
           <div class="list_action_section_header">
-            <p style="font-weight:bold">Select all the ${this.postType} you want to update from the list, and update them below</p>
+            <p style="font-weight:bold">${ msg(`Select all the ${this.postType} you want to update from the list, and update them below`) }</p>
             <button class="close-button list-action-close-button"  aria-label="Close modal" type="button" @click=${this._bulkEdit}>
               <span aria-hidden="true">×</span>
             </button>
           </div>
            <ul class="fieldsList">
-             This is where the bulk edit form will go.
+             ${ msg('This is where the bulk edit form will go.' ) }
             </ul>
         </div>`}
     return null;
@@ -570,7 +572,7 @@ export class DtList extends LitElement {
           <div class='section-header'>
             <span class="section-header posts-header" style="display: inline-block">${this.postType} List</span>
           </div>
-            <span class="filter-result-text">Showing 1 of ${this.total}</span>
+            <span class="filter-result-text">${ msg(`Showing 1 of ${this.total}`)}</span>
 
             <button class="bulkToggle toggleButton" id="bulk_edit_button" @click=${this._bulkEdit}>
               <svg viewBox="0 0 100 100" fill="#000000" style="enable-background:new 0 0 100 100;" xmlns="http://www.w3.org/2000/svg">
@@ -579,11 +581,11 @@ export class DtList extends LitElement {
                 <line style="stroke-linecap: round; stroke-width: 15px;" x1="7.97" y1="82.853" x2="42.343" y2="82.853"/>
                 <polygon style="stroke-linecap: round; stroke-miterlimit: 1; stroke-linejoin: round; fill: rgb(255, 255, 255); paint-order: stroke; stroke-width: 9px;" points="22.982 64.982 33.592 53.186 50.916 70.608 82.902 21.308 95 30.85 52.256 95"/>
               </svg>
-              Bulk Edit
+              ${ msg('Bulk Edit') }
             </button>
             <button class="fieldsToggle toggleButton" id="fields_edit_button" @click=${this._fieldsEdit}>
               <svg height='100px' width='100px'  fill="#000000" xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve"><g><g i:extraneous="self"><g><path d="M94.4,63c0-5.7-3.6-10.5-8.6-12.5V7.3c0-2.7-2.2-4.8-4.8-4.8c-2.7,0-4.8,2.2-4.8,4.8v43.2c-5,1.9-8.6,6.8-8.6,12.5     s3.6,10.5,8.6,12.5v17.2c0,2.7,2.2,4.8,4.8,4.8c2.7,0,4.8-2.2,4.8-4.8V75.5C90.9,73.6,94.4,68.7,94.4,63z M81,66.7     c-2,0-3.7-1.7-3.7-3.7c0-2,1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7C84.7,65.1,83.1,66.7,81,66.7z"></path><path d="M54.8,24.5V7.3c0-2.7-2.2-4.8-4.8-4.8c-2.7,0-4.8,2.2-4.8,4.8v17.2c-5,1.9-8.6,6.8-8.6,12.5s3.6,10.5,8.6,12.5v43.2     c0,2.7,2.2,4.8,4.8,4.8c2.7,0,4.8-2.2,4.8-4.8V49.5c5-1.9,8.6-6.8,8.6-12.5S59.8,26.5,54.8,24.5z M50,40.7c-2,0-3.7-1.7-3.7-3.7     c0-2,1.7-3.7,3.7-3.7c2,0,3.7,1.7,3.7,3.7C53.7,39.1,52,40.7,50,40.7z"></path><path d="M23.8,50.5V7.3c0-2.7-2.2-4.8-4.8-4.8c-2.7,0-4.8,2.2-4.8,4.8v43.2c-5,1.9-8.6,6.8-8.6,12.5s3.6,10.5,8.6,12.5v17.2     c0,2.7,2.2,4.8,4.8,4.8c2.7,0,4.8-2.2,4.8-4.8V75.5c5-1.9,8.6-6.8,8.6-12.5S28.8,52.5,23.8,50.5z M19,66.7c-2,0-3.7-1.7-3.7-3.7     c0-2,1.7-3.7,3.7-3.7c2,0,3.7,1.7,3.7,3.7C22.7,65.1,21,66.7,19,66.7z"></path></g></g></g></svg>
-              Fields
+              ${ msg('Fields') }
             </button>
 
             <dt-toggle
@@ -599,7 +601,7 @@ export class DtList extends LitElement {
         ${this._bulkSelectorTemplate()}
         <table class=${classMap(bulkEditClass)}>
           ${this._headerTemplate()}
-          ${this.posts? this._rowTemplate() : 'Loading'}
+          ${this.posts? this._rowTemplate() : msg('Loading')}
         </table>
       </div>
       `;

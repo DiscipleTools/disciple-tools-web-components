@@ -1,6 +1,8 @@
-import { html, css, LitElement } from 'lit';
+import { html, css } from 'lit';
+import { msg } from '@lit/localize';
+import DtBase from '../../dt-base.js';
 
-export class DtModal extends LitElement {
+export class DtModal extends DtBase {
   static get styles() {
     return css`
       :host {
@@ -171,8 +173,8 @@ export class DtModal extends LitElement {
   _helpMore() {
     return this.isHelp ? html`
     <div class="help-more">
-        <h5>Need more help?</h5>
-        <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank">Read the documentation</a>
+        <h5>${ msg('Need more help?') }</h5>
+        <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank">${ msg('Read the documentation') }</a>
     </div>
   `: null
   }
@@ -210,14 +212,14 @@ export class DtModal extends LitElement {
               </article>
               <footer>
                   <button class="button small" data-close="" aria-label="Close reveal" type="button" @click=${this._closeModal}>
-                    <slot name="close-button">Close</slot>
+                    <slot name="close-button">${ msg('Close') }</slot>
                   </button>
                   ${this._helpMore()}
               </footer>
           </form>
       </dialog>
 
-      <button class="button small" data-open="" aria-label="Open reveal" type="button" @click="${this._openModal}"><slot name="openButton">Open Dialogue</slot></button>
+      <button class="button small" data-open="" aria-label="Open reveal" type="button" @click="${this._openModal}"><slot name="openButton">${ msg('Open Dialog') }</slot></button>
       `;
   }
 }

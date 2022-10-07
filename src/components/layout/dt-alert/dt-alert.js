@@ -1,7 +1,9 @@
-import { html, css, LitElement } from 'lit';
+import { html, css } from 'lit';
+import { msg } from '@lit/localize';
+ import DtBase from '../../dt-base.js';
 import {classMap} from 'lit/directives/class-map.js';
 
-export class DtAlert extends LitElement {
+export class DtAlert extends DtBase {
   static get styles() {
     return css`
       :host {
