@@ -1,5 +1,6 @@
 import { html } from 'lit-html';
 import { themes, themeCss, argTypes, contexts } from '../../../stories-theme.js';
+import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-alert.js';
 
 export default {
@@ -20,7 +21,11 @@ export default {
   }
 };
 
-const Template = (args) => html`
+const Template = (args) => {
+  const {
+    slot = 'Your message was sent successfully.',
+  } = args;
+return html`
   <style>
     ${themeCss(args)}
   </style>
@@ -31,10 +36,10 @@ const Template = (args) => html`
     timeout="${args.timeout}"
     ?outline='${args.outline}'
   >
-    Your message was sent successfully.
+    ${slot}
   </dt-alert>
 `;
-
+}
 export const Dismissable = Template.bind({});
 Dismissable.args = {
   hide: false,
@@ -95,5 +100,17 @@ Outline.args = {
   timeout: 0,
   context: 'primary',
   outline: true
+};
+
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
+  slot: 'لقد تم ارسال رسالتك بنجاح.',
+  hide: false,
+  dismissable: true,
+  timeout: 0
 };
 

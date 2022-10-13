@@ -1,5 +1,5 @@
 import { html, css } from 'lit';
-import { msg } from '@lit/localize';
+import { msg, str} from '@lit/localize';
 import { map } from 'lit/directives/map.js';
 import {repeat} from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -296,6 +296,7 @@ export class DtList extends DtBase {
   static get properties() {
     return {
       postType: { type: String },
+      postTypeLabel: { type: String },
       postTypeSettings: { type: Object, attribute: true },
       posts: { type: Array },
       total: { type: Number },
@@ -542,7 +543,7 @@ export class DtList extends DtBase {
     if (this.showBulkEditSelector) {
       return html`<div id="bulk_edit_picker" class="list_action_section">
           <div class="list_action_section_header">
-            <p style="font-weight:bold">${ msg(`Select all the ${this.postType} you want to update from the list, and update them below`) }</p>
+            <p style="font-weight:bold">${ msg(str`Select all the ${this.postType} you want to update from the list, and update them below`) }</p>
             <button class="close-button list-action-close-button"  aria-label="Close modal" type="button" @click=${this._bulkEdit}>
               <span aria-hidden="true">×</span>
             </button>
@@ -570,9 +571,9 @@ export class DtList extends DtBase {
       <div class="section">
         <div class="header">
           <div class='section-header'>
-            <span class="section-header posts-header" style="display: inline-block">${this.postType} List</span>
+            <span class="section-header posts-header" style="display: inline-block">${ msg( str`${this.postTypeLabel ? this.postTypeLabel : this.postType} List` ) }</span>
           </div>
-            <span class="filter-result-text">${ msg(`Showing 1 of ${this.total}`)}</span>
+            <span class="filter-result-text">${ msg(str`Showing 1 of ${this.total}`)}</span>
 
             <button class="bulkToggle toggleButton" id="bulk_edit_button" @click=${this._bulkEdit}>
               <svg viewBox="0 0 100 100" fill="#000000" style="enable-background:new 0 0 100 100;" xmlns="http://www.w3.org/2000/svg">
@@ -590,7 +591,7 @@ export class DtList extends DtBase {
 
             <dt-toggle
               name= "showArchived"
-              label="Show Archived"
+              label= ${msg('Show Archived')}
               ?checked=${this.showArchived}
               hideIcons
               onchange=${this._toggleShowArchived}

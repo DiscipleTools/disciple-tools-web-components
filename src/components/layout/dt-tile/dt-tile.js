@@ -1,6 +1,7 @@
-import { html, css, LitElement } from 'lit';
+import { html, css } from 'lit';
+import DtBase from '../../dt-base.js';
 
-export class DtTile extends LitElement {
+export class DtTile extends DtBase {
   static get styles() {
     return css`
       :host {

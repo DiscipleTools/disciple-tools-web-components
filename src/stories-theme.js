@@ -388,7 +388,8 @@ export const contexts = ['primary', 'alert', 'caution', 'success', 'inactive', '
 
 export const argTypes = {
   theme: { control: 'select', options: Object.keys(themes), defaultValue: ['default'] },
-  RTL: { control: 'boolean', defaultValue: false },
+  lang: { constrol: 'text' },
+  dir: { control: 'text' },
   primaryColor: { control: 'color' },
   primaryColorLight0: { control: 'color' },
   primaryColorLight1: { control: 'color' },

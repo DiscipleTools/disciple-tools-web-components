@@ -22,7 +22,9 @@
     "storybook:build": "npm run analyze -- --exclude dist && build-storybook && cp -r assets/ storybook-static/assets && cp netlify.toml storybook-static",
     "build": "rollup -c",
     "preinstall": "node checkNodeVersion.js",
-    "prestart": "node checkNodeVersion.js"
+    "prestart": "node checkNodeVersion.js",
+    "localize:extract": "lit-localize extract",
+    "localize:build": "lit-localize build"
   },
   "peerDependencies": {
     "@web/test-runner-commands": "^0.6.3",
