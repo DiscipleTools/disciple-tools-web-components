@@ -20,3 +20,6 @@ const registerServiceWorker = async () => {
 // …
 
 registerServiceWorker();
+
+document.documentElement.setAttribute('lang', 'en');
+document.documentElement.setAttribute('dir', 'ltr');
