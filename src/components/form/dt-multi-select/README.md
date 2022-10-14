@@ -21,6 +21,19 @@ Select field that allows multiple values to be selected.
 | ---- | ----------- |
 | `icon-start` | Icon to be displayed before label. Use if you want to embed an SVG directly on the page without an `img` tag |
 
+## CSS Custom Properties
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-multi-select-text-color` | `#0a0a0a`  |
+| `--dt-multi-select-background-color` | `#fefefe`  |
+| `--dt-multi-select-text-color` | `#0a0a0a`  |
+| `--dt-multi-select-tag-border-color`  | `#c2e0ff`   |
+| `--dt-multi-select-option-hover-background`  | `#f5f5f5`  |
+
+| `--dt-form-border-color`| `#cacaca`   |
+| `--dt-form-background-color`  | `#fff`  |
+| `--dt-form-text-color` | `#000`  |
+
 ## Feature Status
 - [x] label
 - [x] value

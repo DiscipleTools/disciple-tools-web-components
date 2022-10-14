@@ -25,7 +25,7 @@ export class DtTextField extends DtFormBase {
         height: 2.5rem;
         line-height: 1.5;
         margin: 0 0 1.0666666667rem;
-        padding: 0.5333333333rem;
+        padding: var(--dt-form-padding, 0.5333333333rem);
         transition: box-shadow .5s, border-color .25s ease-in-out;
         width: 100%;
       }

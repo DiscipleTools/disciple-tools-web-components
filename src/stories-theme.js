@@ -134,7 +134,7 @@ export const themes = {
     args: {
       colorScheme: 'dark',
       primaryColor: 'hsla(207, 87%, 40%, 1)',
-      primaryColorLight0: 'hsla(207, 87%, 46%, 1)',
+      primaryColorLight0: 'hsla(207, 8%, 55%, 1)',
       primaryColorLight1: 'hsla(207, 97%, 36%, 1)',
 
       gray0: '#666',
@@ -260,7 +260,7 @@ export const themes = {
     args: {
       colorScheme: 'dark',
       primaryColor: 'hsla(207, 87%, 40%, 1)',
-      primaryColorLight0: 'hsla(207, 87%, 46%, 1)',
+      primaryColorLight0: 'hsla(207, 20%, 65%, 1)',
       primaryColorLight1: 'hsla(207, 97%, 36%, 1)',
 
       gray0: '#666',

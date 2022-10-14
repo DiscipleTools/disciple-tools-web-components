@@ -79,6 +79,31 @@ List for displaying list of posts (Contacts, Groups, etc.) and their correspondi
 | Name | Description |
 | ---- | ----------- |
 
+## CSS Custom Properties
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-list-font-family` | `--font-family`  |
+| `--dt-list-font-size`   | `15px`  |
+| `--dt-list-font-weight` | `300`   |
+| `--dt-list-line-height` | `1.5`   |
+| `--dt-list-background-color`|  `#fefefe`  |
+| `--dt-list-border-color`  | `#f1f1f1` |
+| `--dt-list-border-radius` | `10px`  |
+| `--dt-list-box-shadow`  | `0 2px 4px rgb(0 0 0 / 25%)`  |
+| `--dt-list-section-padding` | `1rem` |
+| `--dt-list-header-gap`  | `1.5em`   |
+| `--dt-list-header-color` | `--primary-color` |
+| `--dt-list-header-background-color`   |`--dt-tile-background-color / #fefefe`
+| `--dt-list-toggleButton` | `0.1em solid rgb(0 0 0 / 0.2)`   |
+| `--dt-list-action-section-background-color`   | `#ecf5fc`   |
+| `--dt-list-action-section-margin`   | `30px 0`  |
+| `--dt-list-action-section-padding`   | `20px`   |
+| `--dt-list-field-picker-icon-size`   | `1rem`   |
+| `--dt-list-hover-background-color` | `#ecf5fc`  |
+| `--dt-list-link-color`  | `--primary-color`   |
+| `--dt-list-sort-arrow-color` | `#808080`  |
+| `--dt-list-sort-arrow-color-highlight`  | `#999999`   |
+
 
 ## Features
 - [x] header text

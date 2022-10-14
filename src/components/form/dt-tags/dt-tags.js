@@ -10,10 +10,11 @@ export class DtTags extends DtMultiSelect {
       onload: { type: String },
     };
   }
+
   static get styles() {
     return [
       ...super.styles,
-      css`      
+      css`
       .selected-option a,
       .selected-option a:active,
       .selected-option a:visited {

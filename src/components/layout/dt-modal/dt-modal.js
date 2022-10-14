@@ -21,10 +21,10 @@ export class DtModal extends DtBase {
         max-block-size: min(80vh, 100%);
         max-block-size: min(80dvb, 100%);
         margin: auto;
-        padding: 1em;
+        padding: var(--dt-modal-padding, 1em);
         position: fixed;
         inset: 0;
-        border-radius: 5%;
+        border-radius: 1em;
         border: none;
         box-shadow: var(--shadow-6);
         z-index: 1000;
@@ -37,8 +37,8 @@ export class DtModal extends DtBase {
       }
 
       dialog::backdrop {
-        background: rgba(0, 0, 0, 0.25);
-        animation: fade-in .75s;
+        background: var(--dt-modal-backdrop-color, rgba(0, 0, 0, 0.25));
+        animation: var(--dt-modal-animation, fade-in .75s);
       }
 
       @keyframes fade-in {

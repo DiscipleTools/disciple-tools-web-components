@@ -11,7 +11,7 @@ export class DtAlert extends DtBase {
       }
 
       .dt-alert {
-        padding: 10px;
+        padding: var(--dt-alert-padding, 10px);
         font-family: var(--dt-alert-font-family);
         font-size: var(--dt-alert-font-size, 14px);
         font-weight: var(--dt-alert-font-weight, 700);
@@ -22,7 +22,7 @@ export class DtAlert extends DtBase {
         color: var( --dt-alert-context-text-color, var(--dt-alert-text-color));
         text-rendering: optimizeLegibility;
         display: flex;
-        gap: 10px;
+        gap: var(--dt-alert-gap, 10px);
         justify-content: space-between;
         align-content: center;
         align-items: center;

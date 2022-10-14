@@ -13,7 +13,7 @@ export class DtList extends DtBase {
     return css`
       :host {
         --number-of-columns: 7;
-        font-family: var(--font-family);
+        font-family: var(--dt-list-font-family, var(--font-family));
         font-size: var(--dt-list-font-size, 15px);
         font-weight: var(--dt-list-font-weight, 300);
         line-height: var(--dt-list-line-height, 1.5);
@@ -24,33 +24,33 @@ export class DtList extends DtBase {
 
       .section {
         container-type: inline-size;
-        background-color: var(--dt-tile-background-color, #fefefe);
+        background-color: var(--dt-list-background-color, #fefefe);
         border: 1px solid var(--dt-list-border-color, #f1f1f1);
-        border-radius: 10px;
-        box-shadow: var(--dt-tile-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
-        padding: 1rem;
+        border-radius: var(--dt-list-border-radius, 10px);
+        box-shadow: var(--dt-list-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
+        padding: var(--dt-list-section-padding, 1rem);
       }
 
       .header {
         display: flex;
         justify-content: flex-start;
         align-items: baseline;
-        gap: 1.5em;
+        gap: var(--dt-list-header-gap, 1.5em);
         flex-wrap: wrap;
       }
 
       .section-header {
-        color: var(--dt-tile-header-color, #3f729b);
+        color: var(--dt-list-header-color, var(--primary-color));
         font-size: 1.5rem;
         display: inline-block;
         text-transform: capitalize;
       }
 
       .toggleButton {
-        color: var(--dt-tile-header-color, #3f729b);
+        color: var(--dt-list-header-color, var(--primary-color));
         font-size: 1rem;
         background: transparent;
-        border: 0.1em solid rgb(0 0 0 / 0.2);
+        border: var( --dt-list-toggleButton, 0.1em solid rgb(0 0 0 / 0.2) );
         border-radius: 0.25em;
         padding: 0.25em 0.5em;
         cursor: pointer;
@@ -61,15 +61,15 @@ export class DtList extends DtBase {
         transform: translateY(-2px);
         vertical-align: bottom;
         width: 1rem;
-        fill: var(--dt-tile-header-color, #3f729b);
-        stroke: var(--dt-tile-header-color, #3f729b);
+        fill: var(--dt-list-header-color, var(--primary-color));
+        stroke: var(--dt-list-header-color, var(--primary-color));
       }
 
       .list_action_section {
         background-color: var(--dt-list-action-section-background-color, #ecf5fc);
-        border-radius: 5px;
-        margin: 30px 0;
-        padding: 20px;
+        border-radius: var(--dt-list-border-radius, 10px);
+        margin: var(--dt-list-action-section-margin, 30px 0);
+        padding: var(--dt-list-action-section-padding, 20px);
       }
       .list_action_section_header {
         display: flex;
@@ -80,7 +80,7 @@ export class DtList extends DtBase {
         outline: none;
         font-size: 2.5em;
         line-height: 1;
-        color: #8a8a8a;
+        color: var(--dt-list-action-close-button, var(--inactive-color));
         background: transparent;
         border: none;
         cursor: pointer;
@@ -99,8 +99,8 @@ export class DtList extends DtBase {
       }
 
       .list-field-picker-item .dt-icon {
-        height: 1rem;
-        width: 1rem;
+        height: var(--dt-list-field-picker-icon-size, 1rem);
+        width: var(--dt-list-field-picker-icon-size, 1rem);
       }
 
       table {
@@ -136,7 +136,7 @@ export class DtList extends DtBase {
       }
 
       tr a {
-        color: var(--dt-list-link-color, #3f729b);
+        color: var(--dt-list-link-color, var(--primary-color));
       }
 
       th {

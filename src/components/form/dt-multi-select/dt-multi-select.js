@@ -51,7 +51,7 @@ export class DtMultiSelect extends DtFormBase {
         display: flex;
         flex-wrap: wrap;
       }
-      
+
       .field-container input,
       .field-container .selected-option {
         height: 1.25rem;
@@ -59,7 +59,7 @@ export class DtMultiSelect extends DtFormBase {
 
       .selected-option {
         border: 1px solid var(--dt-multi-select-tag-border-color, #c2e0ff);
-        background-color: var(--dt-multi-select-tag-background-color, #ecf5fc);
+        background-color: var(--dt-multi-select-tag-background-color, #c2e0ff);
 
         display: flex;
         font-size: 0.875rem;

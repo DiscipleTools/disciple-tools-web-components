@@ -10,16 +10,17 @@ export class DtLocation extends DtTags {
       filters: { type: Array },
     };
   }
+
   static get styles() {
     return [
       ...super.styles,
-      css`      
+      css`
       .input-group {
         display: flex;
       }
-      
+
       .field-container { position: relative; }
-      
+
       select {
         border: 1px solid var(--dt-form-border-color, #cacaca);
         outline: 0;
@@ -115,7 +116,7 @@ export class DtLocation extends DtTags {
           @keyup="${this._inputKeyUp}"
           ?disabled="${this.disabled}"
         />
-        
+
         ${this.loading ? html`<dt-spinner class="icon-overlay"></dt-spinner>` : null}
         ${this.saved ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}
       </div>

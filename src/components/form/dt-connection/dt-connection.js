@@ -9,15 +9,15 @@ export class DtConnection extends DtTags {
       .selected-option a {
         border-inline-start: solid 3px transparent;
       }
-      
+
       li button * {
         pointer-events: none;
       }
-      
+
       li {
         border-inline-start: solid 5px transparent;
       }
-      
+
       li button .status {
         font-style: italic;
         opacity: 0.6;
@@ -30,14 +30,14 @@ export class DtConnection extends DtTags {
         content: ']';
         font-style: normal;
       }
-      
+
       li button svg {
         width: 20px;
         height: auto;
         margin-bottom: -4px
       }
       li button svg use {
-        fill: var(--dt-connection-icon-fill, #3f729b);
+        fill: var(--dt-connection-icon-fill, var(--primary-color));
       }
     `];
   }
@@ -46,7 +46,7 @@ export class DtConnection extends DtTags {
     return (this.value || []).filter(i => !i.delete).map(
       opt => html`
         <div class="selected-option">
-          <a href="${opt.link}" 
+          <a href="${opt.link}"
              style="border-inline-start-color: ${opt.status ? opt.status.color : ''}"
              ?disabled="${this.disabled}"
              title="${opt.status ? opt.status.label : opt.label}">${opt.label}</a>
@@ -80,8 +80,8 @@ export class DtConnection extends DtTags {
           >
             <span class="label">${opt.label}</span>
             <span class="connection-id">(#${opt.id})</span>
-            ${status.label ? html`<span class="status">${status.label}</span>` : null} 
-            
+            ${status.label ? html`<span class="status">${status.label}</span>` : null}
+
             ${opt.user ? svg : null }
           </button>
         </li>

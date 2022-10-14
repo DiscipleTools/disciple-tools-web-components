@@ -24,6 +24,12 @@ Implementation of the Tags field that adds a filter dropdown to specify types of
 | ---- | ----------- |
 | `icon-start` | Icon to be displayed before label. Use if you want to embed an SVG directly on the page without an `img` tag |
 
+## CSS Custom Properties
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-form-border-color` | `#cacaca`   |
+
+
 ## Feature Status
 - [x] label
 - [x] value

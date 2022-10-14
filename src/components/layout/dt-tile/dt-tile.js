@@ -5,7 +5,7 @@ export class DtTile extends DtBase {
   static get styles() {
     return css`
       :host {
-        font-family: var(--dt-tile-font-family);
+        font-family: var(--dt-tile-font-family, var(--font-family));
         font-size: var(--dt-tile-font-size, 14px);
         font-weight: var(--dt-tile-font-weight, 700);
         overflow: hidden;
@@ -26,7 +26,7 @@ export class DtTile extends DtBase {
         margin-bottom: 0.5rem;
         margin-top: 0;
         text-rendering: optimizeLegibility;
-        font-family: var(--dt-tile-font-family, 'Helvetica,Arial,sans-serif');
+        font-family: var(--dt-tile-font-family, var(--font-family));
         font-style: normal;
         font-weight: 300;
       }
@@ -57,7 +57,7 @@ export class DtTile extends DtBase {
       }
 
       .chevron::before {
-        border-color: var(--dt-tile-header-color, #3f729b);
+        border-color: var(--dt-tile-header-color, var(--primary-color));
         border-style: solid;
         border-width: 2px 2px 0 0;
         content: '';
