@@ -16,7 +16,7 @@ export class DtTextField extends DtFormBase {
         background-color: var(--dt-text-background-color, #fefefe);
         border: 1px solid var(--dt-text-border-color, #fefefe);
         border-radius: var(--dt-text-border-radius, 0);
-        box-shadow: var(--dt-text-box-shadow, inset 0 1px 2px hsl(0deg 0% 4% / 10%));
+        box-shadow: var(--dt-text-box-shadow, var(--dt-form-input-box-shadow, inset 0 1px 2px hsl(0deg 0% 4% / 10%)));
         box-sizing: border-box;
         display: block;
         font-family: inherit;
@@ -26,11 +26,11 @@ export class DtTextField extends DtFormBase {
         line-height: 1.5;
         margin: 0 0 1.0666666667rem;
         padding: var(--dt-form-padding, 0.5333333333rem);
-        transition: box-shadow .5s, border-color .25s ease-in-out;
+        transition: var(--dt-form-transition, box-shadow .5s,border-color .25s ease-in-out);
         width: 100%;
       }
       input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
-        background-color: var(--dt-text-disabled-background-color, #e6e6e6);
+        background-color: var(--dt-text-disabled-background-color, var(--dt-form-disabled-background-color, #e6e6e6) );
         cursor: not-allowed;
       }
       input:focus-within, input:focus-visible { outline: none; }
@@ -42,7 +42,7 @@ export class DtTextField extends DtFormBase {
         letter-spacing: var(--dt-text-placeholder-letter-spacing, normal);
       }
       input.invalid {
-        border-color: var(--dt-text-border-color-alert);
+        border-color: var(--dt-text-border-color-alert, var(--alert-color));
       }
     `];
   }
