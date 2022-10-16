@@ -30,7 +30,7 @@ export class DtSingleSelect extends DtFormBase {
         border: 1px solid var(--dt-form-border-color, #cacaca);
         border-radius: 0;
         color: var(--dt-single-select-text-color, #0a0a0a);
-        font-family: var(--dt-font-family, sans-serif);
+        font-family: var(--font-family, sans-serif);
         font-size: 1rem;
         font-weight: 300;
         height: 2.5rem;
@@ -45,7 +45,7 @@ export class DtSingleSelect extends DtFormBase {
         text-transform: none;
       }
       [dir=rtl] select {
-        background-position: 
+        background-position:
           15px calc(1em + 2px),
           20px calc(1em + 2px),
           2.5em 0.5em
@@ -80,7 +80,6 @@ export class DtSingleSelect extends DtFormBase {
         state: true,
       },
       onchange: { type: String },
-      rtl: { type: Boolean },
     };
   }
 
@@ -101,6 +100,7 @@ export class DtSingleSelect extends DtFormBase {
   }
 
   willUpdate(changedProperties) {
+    super.willUpdate(changedProperties);
     if (changedProperties.has('value')) {
       this.updateColor();
     }
@@ -127,7 +127,7 @@ export class DtSingleSelect extends DtFormBase {
     return html`
       ${this.labelTemplate()}
 
-      <div class="container" dir="${this.rtl ? 'rtl' : 'ltr'}">
+      <div class="container" dir="${this.RTL ? 'rtl' : 'ltr'}">
         <select
           name="${this.name}"
           aria-label="${this.name}"

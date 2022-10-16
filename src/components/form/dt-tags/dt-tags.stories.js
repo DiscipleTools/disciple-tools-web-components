@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-tags.js';
 
 const basicOptions = [
@@ -164,7 +165,7 @@ function Template(args) {
     slot,
     onload,
     allowAdd,
-    i18n,
+    locale,
   } = args;
   return html`
     <style>
@@ -222,7 +223,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
-      i18n="${JSON.stringify(i18n)}"
+      locale="${locale}"
     >
       ${slot}
     </dt-tags>
@@ -305,17 +306,15 @@ Saved.args = {
   saved: true,
 };
 
-export const RTL = Template.bind({});
-RTL.args = {
-  RTL: true,
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
   placeholder: 'حدد العلامات',
   allowAdd: true,
   loading: true,
-  i18n: {
-    'No options available': 'لا توجد خيارات متاحة',
-    'Add': 'أضف',
-  },
   value: [{
     id: 'opt1',
     label: 'تنكر هؤلاء الرجال المفتونون',

@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-multi-select.js';
 
 const basicOptions = [
@@ -107,6 +108,9 @@ export default {
         },
       },
     },
+    locale: {
+      control: 'text',
+    },
     ...argTypes,
   },
 };
@@ -128,6 +132,7 @@ function Template(args) {
     open,
     slot,
     i18n,
+    locale,
   } = args;
   return html`
     <style>
@@ -164,7 +169,6 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
-      i18n="${JSON.stringify(i18n)}"
     >
       ${slot}
     </dt-multi-select>
@@ -237,14 +241,13 @@ Saved.args = {
   saved: true,
 };
 
-export const RTL = Template.bind({});
-RTL.args = {
-  RTL: true,
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
   value: ['opt1'],
-  i18n: {
-    'No options available': 'لا توجد خيارات متاحة',
-  },
   options: [{
     id: 'opt1',
     label: 'تنكر هؤلاء الرجال المفتونون',

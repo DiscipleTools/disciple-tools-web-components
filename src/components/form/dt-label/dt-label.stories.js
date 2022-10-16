@@ -1,5 +1,6 @@
 import { html } from 'lit-html';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-label.js';
 
 export default {
@@ -69,10 +70,11 @@ PrivateCustomTooltip.args = {
   privateLabel: 'Add other language content here',
 };
 
-export const RTL = Template.bind({});
-RTL.args = {
-  RTL: true,
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
   private: true,
-  privateLabel: 'أضف محتوى لغة أخرى هنا',
 };

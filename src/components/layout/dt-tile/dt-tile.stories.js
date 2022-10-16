@@ -1,6 +1,8 @@
 import { html } from 'lit-html';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-tile.js';
+import { LocaleDecorator } from '../../../stories-utils.js';
+
 import '../../form/dt-label/dt-label.js';
 import '../../form/dt-text/dt-text.js';
 
@@ -24,23 +26,55 @@ const Template = (args) => html`
   >
     <div>
       <dt-label>Field 1</dt-label>
-      <dt-text></dt-text>
+      <dt-text value="Lorem Ipsum"></dt-text>
     </div>
     <div>
       <dt-label>Field 2</dt-label>
-      <dt-text></dt-text>
+      <dt-text value="Lorem Ipsum"></dt-text>
     </div>
     <div>
       <dt-label>Field 3</dt-label>
-      <dt-text></dt-text>
+      <dt-text value="Lorem Ipsum"></dt-text>
     </div>
     <div>
       <dt-label>Field 4</dt-label>
-      <dt-text></dt-text>
+      <dt-text value="Lorem Ipsum"></dt-text>
     </div>
     <div>
       <dt-label>Field 5</dt-label>
-      <dt-text></dt-text>
+      <dt-text value="Lorem Ipsum"></dt-text>
+    </div>
+  </dt-tile>
+`;
+
+const templateArabic = (args) => html`
+  <style>
+    ${themeCss(args)}
+  </style>
+  <dt-tile
+    title="${args.title}"
+    ?expands="${args.expands}"
+    ?collapsed="${args.collapsed}"
+  >
+    <div>
+      <dt-label>مجال ١</dt-label>
+      <dt-text value="إدخال النص"></dt-text>
+    </div>
+    <div>
+      <dt-label>مجال ٢</dt-label>
+      <dt-text value="إدخال النص"></dt-text>
+    </div>
+    <div>
+      <dt-label>مجال ٣</dt-label>
+      <dt-text value="إدخال النص"></dt-text>
+    </div>
+    <div>
+      <dt-label>مجال ٤</dt-label>
+      <dt-text value="إدخال النص"></dt-text>
+    </div>
+    <div>
+      <dt-label>مجال ٥</dt-label>
+      <dt-text value="إدخال النص"></dt-text>
     </div>
   </dt-tile>
 `;
@@ -61,4 +95,14 @@ Collapsed.args = {
   title: 'My Tile',
   expands: true,
   collapsed: true,
+};
+
+export const LocalizeRTL = templateArabic.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  title: 'عربي',
+  lang: 'ar',
+  dir: 'rtl',
+  expands: true,
+  collapsed: false,
 };

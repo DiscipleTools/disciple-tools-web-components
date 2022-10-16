@@ -23,6 +23,11 @@ Implementation of the Tags field that customizes the options list for displaying
 | ---- | ----------- |
 | `icon-start` | Icon to be displayed before label. Use if you want to embed an SVG directly on the page without an `img` tag |
 
+## CSS Custom Properties
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-connection-icon-fill`   | `--primary-color`   |
+
 ## Feature Status
 - [x] label
 - [x] value

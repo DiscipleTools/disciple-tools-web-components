@@ -112,7 +112,10 @@ export const themes = {
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
       listLinkColor: 'var(--primary-color, #3f729b)',
 
-
+      modalBackgroundColor: 'var(--dt-modal-background-color, #fff)',
+      modalColor: 'var(--dt-modal-color, #000)',
+      modalButtonColor:'var(--text-color-inverse, #fff)',
+      modalButtonBackground: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
@@ -133,7 +136,7 @@ export const themes = {
     args: {
       colorScheme: 'dark',
       primaryColor: 'hsla(207, 87%, 40%, 1)',
-      primaryColorLight0: 'hsla(207, 87%, 46%, 1)',
+      primaryColorLight0: 'hsla(207, 8%, 55%, 1)',
       primaryColorLight1: 'hsla(207, 97%, 36%, 1)',
 
       gray0: '#666',
@@ -238,6 +241,11 @@ export const themes = {
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
       listLinkColor: 'var(--primary-color, #3f729b)',
 
+      modalBackgroundColor: 'var(--dt-modal-background-color, #fff)',
+      modalColor: 'var(--dt-modal-color, #000)',
+      modalButtonColor:'var(--text-color-inverse, #fff)',
+      modalButtonBackground: 'var(--primary-color, #3f729b)',
+
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
       alertTextColor: 'var(--text-color)',
@@ -256,7 +264,7 @@ export const themes = {
     args: {
       colorScheme: 'dark',
       primaryColor: 'hsla(207, 87%, 40%, 1)',
-      primaryColorLight0: 'hsla(207, 87%, 46%, 1)',
+      primaryColorLight0: 'hsla(207, 20%, 65%, 1)',
       primaryColorLight1: 'hsla(207, 97%, 36%, 1)',
 
       gray0: '#666',
@@ -362,6 +370,11 @@ export const themes = {
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
       listLinkColor: 'var(--primary-color, #3f729b)',
 
+      modalBackgroundColor: 'var(--dt-modal-background-color, #fff)',
+      modalColor: 'var(--dt-modal-color, #000)',
+      modalButtonColor:'var(--text-color-inverse, #fff)',
+      modalButtonBackground: 'var(--primary-color, #3f729b)',
+
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
       alertTextColor: 'var(--text-color)',
@@ -381,7 +394,8 @@ export const contexts = ['primary', 'alert', 'caution', 'success', 'inactive', '
 
 export const argTypes = {
   theme: { control: 'select', options: Object.keys(themes), defaultValue: ['default'] },
-  RTL: { control: 'boolean', defaultValue: false },
+  lang: { constrol: 'text' },
+  dir: { control: 'text' },
   primaryColor: { control: 'color' },
   primaryColorLight0: { control: 'color' },
   primaryColorLight1: { control: 'color' },
@@ -495,6 +509,11 @@ export const argTypes = {
   alertBackground: { control: 'color' },
   alertBorderColor: { control: 'color' },
   alertShadow: { control: 'color' },
+
+  modalBackgroundColor: { control: 'color' },
+  modalColor: { control: 'color' },
+  modalButtonColor: { control: 'color' },
+  modalButtonBackground: { control: 'color' },
 };
 
 function getArg(storyArgs, argName) {
@@ -636,7 +655,11 @@ export function themeCss(storyArgs) {
     --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
     --dt-list-link-color: ${getArg(storyArgs, 'listLinkColor')};
 
-    ${storyArgs.RTL ? 'direction: rtl;' : 'direction: ltr;'}
+    --dt-modal-background-color: ${getArg(storyArgs, 'modalBackgroundColor')};
+    --dt-modal-color: ${getArg(storyArgs, 'modalColor')};
+    --dt-modal-button-color: ${getArg(storyArgs, 'modalButtonColor')};
+    --dt-modal-button-background: ${getArg(storyArgs, 'modalButtonBackground')};
+
   }
   `;
 }

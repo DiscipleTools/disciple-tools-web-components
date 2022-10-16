@@ -1,5 +1,6 @@
 import { html, css } from 'lit';
 import {styleMap} from 'lit/directives/style-map.js';
+import {msg} from '@lit/localize';
 import DtFormBase from '../dt-form-base.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
@@ -50,7 +51,7 @@ export class DtMultiSelect extends DtFormBase {
         display: flex;
         flex-wrap: wrap;
       }
-      
+
       .field-container input,
       .field-container .selected-option {
         height: 1.25rem;
@@ -58,7 +59,7 @@ export class DtMultiSelect extends DtFormBase {
 
       .selected-option {
         border: 1px solid var(--dt-multi-select-tag-border-color, #c2e0ff);
-        background-color: var(--dt-multi-select-tag-background-color, #ecf5fc);
+        background-color: var(--dt-multi-select-tag-background-color, #c2e0ff);
 
         display: flex;
         font-size: 0.875rem;
@@ -421,6 +422,8 @@ export class DtMultiSelect extends DtFormBase {
   }
 
   willUpdate(props) {
+    super.willUpdate(props);
+
     if (props) {
 
       const valueChanged = props.has('value');
@@ -479,7 +482,7 @@ export class DtMultiSelect extends DtFormBase {
 
   _renderOptions() {
     if (!this.filteredOptions.length) {
-      return html`<li><div>${this.msg('No options available')}</div></li>`;
+      return html`<li><div>${msg('No options available')}</div></li>`;
     }
 
     return this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx));

@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import './dt-number.js';
 import { themes, themeCss, argTypes} from '../../../stories-theme.js';
+import { LocaleDecorator } from '../../../stories-utils.js';
 
 export default {
   title: 'Form/dt-number',
@@ -103,9 +104,11 @@ privateField.args = {
   value: 77,
 };
 
-export const RTL = Template.bind({});
-RTL.args = {
-  RTL: true,
+export const LocalizeRTL = Template.bind({});
+LocalizeRTL.decorators = [LocaleDecorator];
+LocalizeRTL.args = {
+  lang: 'ar',
+  dir: 'rtl',
   label: 'اسم الإدخال',
   value: 'راد أن يشع',
 };

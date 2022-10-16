@@ -17,6 +17,17 @@ A dismissable message box.
 |---------|-------------------------|
 | Default | Contents of the alert.  |
 
+## CSS Custom Properties
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-modal-background-color`   |  `#fff`   |
+| `--dt-modal-color`  | `#000`  |
+| `--dt-modal-padding` | `1em`  |
+| `--dt-modal-backdrop-color`   | `rgba(0, 0, 0, 0.25)` |
+| `--dt-modal-animation`  | `fade-in .75s` |
+| `--dt-modal-button-color`   | `#fff`  |
+| `--dt-modal-button-background`  | `#000`  |
+
 ## Features
 
 - [x] Preset color schemes.

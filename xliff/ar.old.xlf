@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<file target-language="ar" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+<body>
+<trans-unit id="sb1bd536b63e9e995">
+  <source>Private Field: Only I can see its content</source>
+  <target>المجال الخاص: أنا فقط أستطيع رؤية محتواه</target>
+</trans-unit>
+<trans-unit id="s8900c9de2dbae68b">
+  <source>No options available</source>
+  <target>لا توجد خيارات متاحة</target>
+</trans-unit>
+<trans-unit id="sf9aee319a006c9b4">
+  <source>Add</source>
+  <target>لأضف</target>
+</trans-unit>
+</body>
+</file>
+</xliff>

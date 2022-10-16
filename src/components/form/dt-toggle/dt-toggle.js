@@ -138,7 +138,6 @@ export class DtToggle extends DtFormBase {
         reflect: true,
       },
       onchange: { type: String },
-      rtl: { type: Boolean },
       hideIcons: { type: Boolean, default: true },
     };
   }
@@ -171,7 +170,7 @@ export class DtToggle extends DtFormBase {
 
   render() {
     return html`
-      <label class='Toggle' for='${this.id}' dir="${this.rtl ? 'rtl' : 'ltr'}">
+      <label class='Toggle' for='${this.id}' dir="${this.RTL ? 'rtl' : 'ltr'}">
         ${this.label}
         <input type='checkbox' name='${this.id}' id='${this.id}' class="Toggle__input" ?checked=${this.checked} @click=${this.onChange} ?disabled=${this.disabled}/>
         <span class="Toggle__display" hidden>

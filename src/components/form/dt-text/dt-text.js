@@ -16,7 +16,7 @@ export class DtTextField extends DtFormBase {
         background-color: var(--dt-text-background-color, #fefefe);
         border: 1px solid var(--dt-text-border-color, #fefefe);
         border-radius: var(--dt-text-border-radius, 0);
-        box-shadow: var(--dt-text-box-shadow, inset 0 1px 2px hsl(0deg 0% 4% / 10%));
+        box-shadow: var(--dt-text-box-shadow, var(--dt-form-input-box-shadow, inset 0 1px 2px hsl(0deg 0% 4% / 10%)));
         box-sizing: border-box;
         display: block;
         font-family: inherit;
@@ -25,12 +25,12 @@ export class DtTextField extends DtFormBase {
         height: 2.5rem;
         line-height: 1.5;
         margin: 0 0 1.0666666667rem;
-        padding: 0.5333333333rem;
-        transition: box-shadow .5s, border-color .25s ease-in-out;
+        padding: var(--dt-form-padding, 0.5333333333rem);
+        transition: var(--dt-form-transition, box-shadow .5s,border-color .25s ease-in-out);
         width: 100%;
       }
       input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
-        background-color: var(--dt-text-disabled-background-color, #e6e6e6);
+        background-color: var(--dt-text-disabled-background-color, var(--dt-form-disabled-background-color, #e6e6e6) );
         cursor: not-allowed;
       }
       input:focus-within, input:focus-visible { outline: none; }
@@ -42,7 +42,7 @@ export class DtTextField extends DtFormBase {
         letter-spacing: var(--dt-text-placeholder-letter-spacing, normal);
       }
       input.invalid {
-        border-color: var(--dt-text-border-color-alert);
+        border-color: var(--dt-text-border-color-alert, var(--alert-color));
       }
     `];
   }
@@ -77,6 +77,18 @@ export class DtTextField extends DtFormBase {
     this._setFormValue(this.value);
 
     this.dispatchEvent(event);
+  }
+
+  implicitFormSubmit(e) {
+    const keycode = e.keyCode || e.which;
+    // If the Enter key is pressed, find the first button in the form and click it.
+    // This replicates normal browser handling of input elements when pressing Enter
+    if (keycode === 13 && this.internals.form) {
+      const button = this.internals.form.querySelector('button');
+      if (button) {
+        button.click();
+      }
+    }
   }
 
   _validateRequired() {
@@ -118,6 +130,7 @@ export class DtTextField extends DtFormBase {
           .value="${this.value}"
           @change=${this.onChange}
           novalidate
+          @keyup="${this.implicitFormSubmit}"
         />
 
         ${this.touched && this.invalid ? html`<dt-exclamation-circle class="icon-overlay alert"></dt-exclamation-circle>` : null}

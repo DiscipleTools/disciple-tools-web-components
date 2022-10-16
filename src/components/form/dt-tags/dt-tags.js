@@ -1,4 +1,5 @@
 import { css, html } from 'lit';
+import { msg } from '@lit/localize';
 import { DtMultiSelect } from '../dt-multi-select/dt-multi-select.js';
 
 export class DtTags extends DtMultiSelect {
@@ -9,10 +10,11 @@ export class DtTags extends DtMultiSelect {
       onload: { type: String },
     };
   }
+
   static get styles() {
     return [
       ...super.styles,
-      css`      
+      css`
       .selected-option a,
       .selected-option a:active,
       .selected-option a:visited {
@@ -152,7 +154,7 @@ export class DtTags extends DtMultiSelect {
             ? 'active'
             : ''}"
         >
-          ${this.msg('Add')} "${this.query}"
+          ${msg('Add')} "${this.query}"
         </button>
       </li>`);
     }

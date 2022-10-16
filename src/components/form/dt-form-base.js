@@ -1,8 +1,9 @@
 import { css, html, LitElement } from 'lit';
+import DtBase from '../dt-base.js';
 import 'element-internals-polyfill';
 import './dt-label/dt-label.js';
 
-export default class DtFormBase extends LitElement {
+export default class DtFormBase extends DtBase {
   static get formAssociated() {
     return true;
   }
@@ -37,6 +38,7 @@ export default class DtFormBase extends LitElement {
   }
   static get properties() {
     return {
+      ...super.properties,
       label: { type: String },
       icon: { type: String },
       private: { type: Boolean },
@@ -54,19 +56,14 @@ export default class DtFormBase extends LitElement {
       },
       loading: { type: Boolean },
       saved: { type: Boolean },
-      i18n: { type: Object },
     };
   }
 
-  msg(str) {
-    return (this.i18n && this.i18n[str]) || str;
-  }
   constructor() {
     super();
     this.touched = false;
     this.invalid = false;
     this.internals = this.attachInternals();
-    this.i18n = {};
 
     // catch oninvalid event (when validation is triggered from form submit)
     // and set touched=true so that styles are shown

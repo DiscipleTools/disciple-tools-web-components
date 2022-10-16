@@ -12,7 +12,7 @@ export class DtDateField extends DtFormBase {
         background-color: var(--dt-form-background-color, #cecece);
         border: 1px solid var(--dt-form-border-color, #cacaca);
         border-radius: 0;
-        box-shadow: inset 0 1px 2px hsl(0deg 0% 4% / 10%);
+        box-shadow: var(--dt-form-input-box-shadow, inset 0 1px 2px hsl(0deg 0% 4% / 10%));
         box-sizing: border-box;
         display: inline-flex;
         font-family: inherit;
@@ -20,11 +20,11 @@ export class DtDateField extends DtFormBase {
         font-weight: 300;
         height: 2.5rem;
         line-height: 1.5;
-        padding: 0.5333333333rem;
-        transition: box-shadow .5s,border-color .25s ease-in-out;
+        padding: var(--dt-form-padding, 0.5333333333rem);
+        transition: var(--dt-form-transition, box-shadow .5s,border-color .25s ease-in-out);
         width: 100%;
       }
-      input:disabled, input[readonly], textarea:disabled, textarea[readonly], 
+      input:disabled, input[readonly], textarea:disabled, textarea[readonly],
       .input-group button:disabled {
         background-color: var(--dt-form-disabled-background-color, #e6e6e6);
         cursor: not-allowed;
@@ -47,8 +47,8 @@ export class DtDateField extends DtFormBase {
       }
       .input-group .button {
         display: inline-block;
-        background:  var(--dt-form-background-color, #fefefe);
-        border: 1px solid var(--dt-form-border-color, #fefefe);
+        background:  var(--dt-form-background-color, #cecece);
+        border: 1px solid var(--dt-form-border-color, #cecece);
         color: var(--alert-color, #cc4b37);
         align-self: stretch;
         font-size: 1rem;

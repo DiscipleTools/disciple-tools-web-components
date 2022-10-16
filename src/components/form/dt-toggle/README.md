@@ -10,6 +10,12 @@ Basic single line text input
 | `disabled`   | If input is disabled | `boolean` | - | - |
 | `onChange`   | Callback function when toggle is changed | `function` | - | - |
 
+## CSS Custom Properties
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-toggle-background-color-off` | `#ecf5fc`  |
+
+
 ## Features
 - [x] label
 - [x] value
