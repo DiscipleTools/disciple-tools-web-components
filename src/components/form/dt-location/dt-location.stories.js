@@ -151,6 +151,7 @@ function Template(args) {
   const {
     name = 'field-name',
     label = 'Field Name',
+    mapboxKey,
     options,
     filters = defaultFilters,
     placeholder,
@@ -211,6 +212,7 @@ function Template(args) {
     <dt-location
       name="${name}"
       label=${label}
+      mapboxKey=${mapboxKey}
       placeholder="${placeholder}"
       options="${JSON.stringify(options)}"
       filters="${JSON.stringify(filters)}"
@@ -234,6 +236,11 @@ function Template(args) {
 
 export const Empty = Template.bind({});
 Empty.args = {
+};
+
+export const withMapboxKey = Template.bind({});
+withMapboxKey.args = {
+  mapboxKey: "XXXXXXXXXXXXXXX"
 };
 
 export const SvgIcon = Template.bind({});

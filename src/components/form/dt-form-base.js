@@ -36,6 +36,7 @@ export default class DtFormBase extends DtBase {
       }
     `];
   }
+
   static get properties() {
     return {
       ...super.properties,
