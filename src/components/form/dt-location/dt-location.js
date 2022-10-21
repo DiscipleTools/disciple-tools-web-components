@@ -8,6 +8,8 @@ export class DtLocation extends DtTags {
     return {
       ...super.properties,
       filters: { type: Array },
+      mapboxKey: { type: String },
+      dtMapbox: { type: Object },
     };
   }
 
@@ -42,6 +44,7 @@ export class DtLocation extends DtTags {
       container.style.setProperty('--select-width', select.clientWidth + 'px');
     }
   }
+
   /**
    * Filter to options that:
    *   1: are not selected
@@ -97,7 +100,23 @@ export class DtLocation extends DtTags {
       display: this.open ? 'block' : 'none',
       top: this.containerHeight + 'px',
     };
-    return html`
+    return this.mapboxKey
+    ? html`
+    ${this.labelTemplate()}
+    <div id="mapbox-wrapper">
+    <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="true" data-add-address="true">
+        <input id="mapbox-search" type="text" name="mapbox_search" class="input-group-field" autocomplete="off" dir="auto" placeholder="Search Location">
+        <div class="input-group-button">
+            <button id="mapbox-spinner-button" class="button hollow" style="display:none;border-color:lightgrey;">
+                <span class="" style="border-radius: 50%;width: 24px;height: 24px;border: 0.25rem solid lightgrey;border-top-color: black;animation: spin 1s infinite linear;display: inline-block;"></span>
+            </button>
+            <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" type="button" title="Clear" style="display:none;">×</button>
+        </div>
+        <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
+    </div>
+        <div id="location-grid-meta-results"></div>
+    </div>`
+    : html`
     ${this.labelTemplate()}
 
     <div class="input-group ${this.disabled ? 'disabled' : ''}">
