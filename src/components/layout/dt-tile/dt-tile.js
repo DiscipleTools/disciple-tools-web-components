@@ -34,7 +34,7 @@ export class DtTile extends DtBase {
         color: var(--dt-tile-header-color, #3f729b);
         font-size: 1.5rem;
         display: flex;
-        text-transform: capitalize;
+        text-transform: var(--dt-tile-header-text-transform, capitalize);
       }
 
       .section-body {
