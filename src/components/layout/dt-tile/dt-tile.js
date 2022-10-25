@@ -10,7 +10,6 @@ export class DtTile extends DtBase {
         font-weight: var(--dt-tile-font-weight, 700);
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
       }
 
       section {
@@ -34,7 +33,7 @@ export class DtTile extends DtBase {
         color: var(--dt-tile-header-color, #3f729b);
         font-size: 1.5rem;
         display: flex;
-        text-transform: capitalize;
+        text-transform: var(--dt-tile-header-text-transform, capitalize);
       }
 
       .section-body {
@@ -102,7 +101,7 @@ export class DtTile extends DtBase {
 
           ${this.expands ? html`
           <button @click="${this._toggle}" class="toggle chevron ${this.collapsed ? 'down' : 'up'}">&nbsp;</button>
-          ` : null }
+          ` : null}
         </h3>
         <div class="section-body ${this.collapsed ? 'collapsed' : null}">
           <slot></slot>
