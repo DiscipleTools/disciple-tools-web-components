@@ -1,3 +1,6 @@
+import  DTBase from './src/components/dt-base.js';
+
+export { DTBase }
 export { DtAlert } from './src/components/layout/dt-alert/dt-alert.js';
 export { DtConnection } from './src/components/form/dt-connection/dt-connection';
 export { DtDateField } from './src/components/form/dt-date/dt-date';
