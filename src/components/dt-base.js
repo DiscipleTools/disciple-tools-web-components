@@ -41,7 +41,11 @@ export default class DtBase extends LitElement {
 
     // if locale is changing, update lit-localize
     if (props && props.has('locale') && this.locale) {
-      setLocale(this.locale);
+      try {
+        setLocale(this.locale);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 }
