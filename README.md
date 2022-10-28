@@ -70,11 +70,21 @@ npm run test:watch
 - [ChaiJS](https://www.chaijs.com/api/bdd/) - Basic assertions
 - [Chai DOM](https://github.com/nathanboktae/chai-dom) - DOM assertions
 
-## Tooling configs
+## Build for use in HTML
 
-For most of the tools, the configuration is in the `package.json` to minimize the amount of files in your project.
+To build/transpile the components for use in basic HTML as a script include, run the following:
 
-If you customize the configuration a lot, you can consider moving them to individual files.
+```
+npm run build
+```
+
+This will create a `dist` directory with all of the final javascript files that can be included in any HTML page like so:
+
+```html
+<script type="module" src="/dist/form/index.js"></script>
+```
+
+You can then use any of the new elements in your HTML and they will be used from this library.
 
 ## Local Demo with `web-dev-server`
 
