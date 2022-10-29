@@ -4,13 +4,14 @@
 /**
  * The locale code that templates in this source code are written in.
  */
-export const sourceLocale = `en_US`;
+export const sourceLocale = `en`;
 
 /**
  * The other locale codes that this application is localized into. Sorted
  * lexicographically.
  */
 export const targetLocales = [
+  'en',
   'en_US',
   'am_ET',
   'ar',
@@ -58,6 +59,7 @@ export const targetLocales = [
  * All valid project locale codes. Sorted lexicographically.
  */
 export const allLocales = [
+  'en',
   'en_US',
   'am_ET',
   'ar',

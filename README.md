@@ -15,6 +15,7 @@ npm install
 
 [Use in static HTML](./samples/html) (Note: Need to [Build for use in HTML](#build-for-use-in-html), see below)
 [Use in React](./samples/react-include)
+[Use in Vue](./samples/vue-include)
 
 ### Build for use in HTML
 
