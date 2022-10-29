@@ -28,6 +28,8 @@ const Template = (args) => {
     ?private="${args.private}"
     privateLabel="${privateLabel}"
     icon="${icon}"
+    iconAltText="${iconAltText}"
+
   >
     ${label}
     ${slotContent}

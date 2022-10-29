@@ -42,6 +42,7 @@ export default class DtFormBase extends DtBase {
       ...super.properties,
       label: { type: String },
       icon: { type: String },
+      iconAltText: { type: String },
       private: { type: Boolean },
       privateLabel: { type: String },
       disabled: { type: Boolean },
@@ -115,6 +116,7 @@ export default class DtFormBase extends DtBase {
       <dt-label
         ?private=${this.private}
         privateLabel="${this.privateLabel}"
+        iconAltText="${this.iconAltText}"
         icon="${this.icon}"
       >
         ${!this.icon ? html`<slot name="icon-start" slot="icon-start"></slot>` : null}
