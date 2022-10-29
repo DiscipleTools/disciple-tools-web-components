@@ -2,14 +2,14 @@
   Form Components
 */
 export { DtConnection } from './form/dt-connection/dt-connection.js';
-export { DtDateField } from './form/dt-date/dt-date.js';
+export { DtDate } from './form/dt-date/dt-date.js';
 export { DtLabel } from './form/dt-label/dt-label.js';
 export { DtLocation } from './form/dt-location/dt-location.js';
 export { DtMultiSelect } from './form/dt-multi-select/dt-multi-select.js';
 export { DtNumberField } from './form/dt-number/dt-number.js';
 export { DtSingleSelect } from './form/dt-single-select/dt-single-select.js';
 export { DtTags } from './form/dt-tags/dt-tags.js';
-export { DtTextField } from './form/dt-text/dt-text.js';
+export { DtText } from './form/dt-text/dt-text.js';
 export { DtTextArea } from './form/dt-textarea/dt-textarea.js';
 export { DtToggle } from './form/dt-toggle/dt-toggle.js';
 

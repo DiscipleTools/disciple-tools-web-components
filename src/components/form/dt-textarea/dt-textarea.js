@@ -77,7 +77,7 @@ export class DtTextArea extends DtFormBase {
         ?disabled=${this.disabled}
         class="text-input"
         @change=${this.onChange}
-        .value="${this.value}"
+        .value="${this.value || ''}"
       ></textarea>
     `;
   }

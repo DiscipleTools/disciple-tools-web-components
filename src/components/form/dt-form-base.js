@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
 import DtBase from '../dt-base.js';
 import 'element-internals-polyfill';
 import './dt-label/dt-label.js';

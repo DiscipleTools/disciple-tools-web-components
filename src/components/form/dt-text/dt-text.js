@@ -5,7 +5,7 @@ import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
 import '../../icons/dt-exclamation-circle.js';
 
-export class DtTextField extends DtFormBase {
+export class DtText extends DtFormBase {
   static get styles() {
     return [
       ...super.styles,
@@ -127,7 +127,7 @@ export class DtTextField extends DtFormBase {
           ?disabled=${this.disabled}
           ?required=${this.required}
           class="${classMap(this.classes)}"
-          .value="${this.value}"
+          .value="${this.value || ''}"
           @change=${this.onChange}
           novalidate
           @keyup="${this.implicitFormSubmit}"
@@ -141,4 +141,4 @@ export class DtTextField extends DtFormBase {
   }
 }
 
-window.customElements.define('dt-text', DtTextField);
+window.customElements.define('dt-text', DtText);

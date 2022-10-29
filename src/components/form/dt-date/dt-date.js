@@ -1,7 +1,7 @@
 import { html, css } from 'lit';
 import DtFormBase from '../dt-form-base.js';
 
-export class DtDateField extends DtFormBase {
+export class DtDate extends DtFormBase {
   static get styles() {
     return [
       ...super.styles,
@@ -168,4 +168,4 @@ export class DtDateField extends DtFormBase {
   }
 }
 
-window.customElements.define('dt-date', DtDateField);
+window.customElements.define('dt-date', DtDate);
