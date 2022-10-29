@@ -20,6 +20,7 @@ export const targetLocales = [
   `cs`,
   `de_DE`,
   `el`,
+  `en_US`,
   `es_419`,
   `es_ES`,
   `fa_IR`,
