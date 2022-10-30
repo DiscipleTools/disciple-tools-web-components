@@ -203,7 +203,7 @@ export class DtMultiSelect extends DtFormBase {
     const container = this.shadowRoot.querySelector('.input-group');
     const currentValue = container.style.getPropertyValue('--container-width');
     if (!currentValue) {
-      container.style.setProperty('--container-width', container.clientWidth + 'px');
+      container.style.setProperty('--container-width', `${container.clientWidth  }px`);
     }
   }
 
@@ -278,7 +278,7 @@ export class DtMultiSelect extends DtFormBase {
     if (this.value && this.value.length) {
       if (typeof this.value[0] === 'string') {
         // If value is array of strings, check for same value prefixed with hyphen
-        this.value = [...this.value.filter(i => i !== '-' + value), value];
+        this.value = [...this.value.filter(i => i !== `-${  value}`), value];
       } else {
         // If value is array of objects, check for same value with `delete` property
         let foundPrevious = false;
@@ -310,7 +310,7 @@ export class DtMultiSelect extends DtFormBase {
 
   _remove(e) {
     if (e.target && e.target.dataset && e.target.dataset.value) {
-      this.value = (this.value || []).map(i => i === e.target.dataset.value ? '-' + i : i);
+      this.value = (this.value || []).map(i => i === e.target.dataset.value ? `-${  i}` : i);
 
       // If option was de-selected while list was open, re-focus input
       if (this.open) {
@@ -491,7 +491,7 @@ export class DtMultiSelect extends DtFormBase {
   render() {
     const optionListStyles = {
       display: this.open ? 'block' : 'none',
-      top: this.containerHeight ? this.containerHeight + 'px' : '2.5rem',
+      top: this.containerHeight ? `${this.containerHeight  }px` : '2.5rem',
     };
     return html`
     ${this.labelTemplate()}

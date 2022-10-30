@@ -1,7 +1,7 @@
 import { html, css } from 'lit';
 import { msg } from '@lit/localize';
- import DtBase from '../../dt-base.js';
 import {classMap} from 'lit/directives/class-map.js';
+ import DtBase from '../../dt-base.js';
 
 export class DtAlert extends DtBase {
   static get styles() {

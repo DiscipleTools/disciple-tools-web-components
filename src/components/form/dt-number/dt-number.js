@@ -85,7 +85,7 @@ export class DtNumberField extends DtFormBase {
         type="number"
         ?disabled=${this.disabled}
         class="text-input"
-        value="${this.value}"
+        .value="${this.value}"
         min="${ifDefined(this.min)}"
         max="${ifDefined(this.max)}"
         @change=${this.onChange}

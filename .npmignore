@@ -26,3 +26,19 @@ build
 storybook-static
 custom-elements.json
 .history/
+
+# NPM-specific (above copied from .gitignore
+.editorconfig
+/.github
+/.storybook
+/samples
+/xliff
+!/dist/
+
+*.test.js
+*.stories.js
+*.config.mjs
+
+checkNodeVersion.js
+netlify.toml
+rollup.config.js

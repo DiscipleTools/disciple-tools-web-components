@@ -1,11 +1,11 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-restricted-globals */
-self.addEventListener('install', function(event) {
+self.addEventListener('install', (event) => {
   event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener('fetch', async (event) => {
-  const request = event.request;
+  const {request} = event;
   const url = (new URL(request.url));
   const defaultPostsList = [
     {
@@ -300,11 +300,11 @@ self.addEventListener('fetch', async (event) => {
   if (url.pathname === "/dt-posts/v2/contacts" && event.request.method === "GET") {
     console.log('Getting lists of posts');
 
-    let params = new URLSearchParams(event.request.url);
-    let sortBy = params.get("sortBy");
+    const params = new URLSearchParams(event.request.url);
+    const sortBy = params.get("sortBy");
 
-    let offset = params.get("offset");
-    let fields_to_return = params.getAll("fields_to_return");
+    const offset = params.get("offset");
+    const fields_to_return = params.getAll("fields_to_return");
 
     let sortedPostsList;
     if (sortBy === "favorite") {

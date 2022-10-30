@@ -516,7 +516,7 @@ function getArg(storyArgs, argName) {
   if (storyArgs.theme) {
     return themes[storyArgs.theme].args[argName]
   }
-  storyArgs.theme = 'default';
+  // storyArgs.theme = 'default';
   return themes.default.args[argName];
 }
 

@@ -319,7 +319,7 @@ export class DtList extends DtBase {
   async _getPosts(offset = 0, sortBy = 'name', sortOrder = "desc") {
       this.loading = true;
       this.filteredOptions = [];
-      let URLParams = encodeURI(`?offset=${offset}&sortBy=${sortBy ? sortBy : ''}&offset=${offset}${this.columns.map(column => `&fields_to_return=${column}`).join('')}`);
+      const URLParams = encodeURI(`?offset=${offset}&sortBy=${sortBy || ''}&offset=${offset}${this.columns.map(column => `&fields_to_return=${column}`).join('')}`);
       const response = await DtAPI.makeRequestOnPosts('GET', `${this.postType}${URLParams}`, {}, '/', this.nonce );
 
     return response;

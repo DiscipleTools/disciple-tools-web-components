@@ -41,7 +41,7 @@ export class DtLocation extends DtTags {
     const currentValue = container.style.getPropertyValue('--select-width');
     if (!currentValue) {
       const select = this.shadowRoot.querySelector('select');
-      container.style.setProperty('--select-width', select.clientWidth + 'px');
+      container.style.setProperty('--select-width', `${select.clientWidth  }px`);
     }
   }
 
@@ -69,7 +69,7 @@ export class DtLocation extends DtTags {
 
       // need to fetch data via API request
       const self = this;
-      let selectEl = this.shadowRoot.querySelector('select');
+      const selectEl = this.shadowRoot.querySelector('select');
       const event = new CustomEvent('load', {
         bubbles: true,
         detail: {
@@ -98,7 +98,7 @@ export class DtLocation extends DtTags {
   render() {
     const optionListStyles = {
       display: this.open ? 'block' : 'none',
-      top: this.containerHeight + 'px',
+      top: `${this.containerHeight  }px`,
     };
     return this.mapboxKey
     ? html`
