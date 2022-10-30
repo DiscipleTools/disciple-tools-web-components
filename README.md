@@ -13,9 +13,10 @@ npm install
 
 ### Samples
 
-[Use in static HTML](./samples/html) (Note: Need to [Build for use in HTML](#build-for-use-in-html), see below)
-[Use in React](./samples/react-include)
-[Use in Vue](./samples/vue-include)
+- [Use in static HTML](./samples/html) (Note: Need to [Build for use in HTML](#build-for-use-in-html), see below)
+- [Use in React](./samples/react-include)
+- [Use in Vue](./samples/vue-include)
+- [Extend your own Lit Components](./samples/lit-extend)
 
 ### Build for use in HTML
 
