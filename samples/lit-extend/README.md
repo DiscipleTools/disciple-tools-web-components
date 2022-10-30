@@ -14,12 +14,12 @@ Runs the demo for your component.
 
 ## How Components Are Included
 
-1. Add `dt-web-components` package to your project (`npm install [tbd]`)
+1. Add `@disciple.tools/web-components` package to your project (`npm install @disciple.tools/web-components`)
 
 2. Include the individual web components classes in the Lit component where you want to use them:
 
     ```
-    import { DtBase, DtFormBase, DtText } from 'dt-web-components';
+    import { DtBase, DtFormBase, DtText } from '@disciple.tools/web-components';
     ```
     
 3. Use the component class as the base class for your new Lit component:

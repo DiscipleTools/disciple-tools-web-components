@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import 'dt-web-components';
+import '@disciple.tools/web-components';
 import { wrapWc } from 'wc-react';
 
 const DtTile = wrapWc('dt-tile');

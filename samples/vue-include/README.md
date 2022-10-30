@@ -14,12 +14,12 @@ Runs the app in the development mode.
 
 ## How Components Are Included
 
-1. Add `dt-web-components` package to your project (`npm install [tbd]`)
+1. Add `@disciple.tools/web-components` package to your project (`npm install @disciple.tools/web-components`)
 
 2. Include the web components package in the Vue component where you want to use them:
 
     ```
-    import 'dt-web-components';
+    import '@disciple.tools/web-components';
     ```
     
 3. Follow [Vue Instructions](https://vuejs.org/guide/extras/web-components.html#using-custom-elements-in-vue) to configure custom component resolution. There is a code snippet that needs to be added to `vite.config.js` or `vue.config.js`.

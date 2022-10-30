@@ -18,12 +18,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 1. Add `wc-react` package to your project (`npm install wc-react`)
 This is needed in order to wrap the basic web components for how React interacts with components. See [WC React](https://github.com/nmetulev/wc-react) for details.
 
-2. Add `dt-web-components` package to your project (`npm install [tbd]`)
+2. Add `@disciple.tools/web-components` package to your project (`npm install @disciple.tools/web-components`)
 
 3. Include above packages in the React component where you want to use them:
 
     ```
-    import 'dt-web-components';
+    import '@disciple.tools/web-components';
     import { wrapWc } from 'wc-react';
     ```
 

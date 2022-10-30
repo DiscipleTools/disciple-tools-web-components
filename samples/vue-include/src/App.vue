@@ -1,5 +1,5 @@
 <script setup>
-  import 'dt-web-components'
+  import '@disciple.tools/web-components'
 </script>
 
 <script>
