@@ -61,6 +61,7 @@ function Template(args) {
     placeholder,
     value,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText = 'Icon Alt Text',
     disabled,
     isPrivate,
     privateLabel,
@@ -98,6 +99,7 @@ function Template(args) {
       options="${JSON.stringify(options)}"
       value="${value}"
       icon="${icon}"
+      iconAltText="${iconAltText}"
       ?disabled=${disabled}
       ?private=${isPrivate}
       privateLabel="${privateLabel}"

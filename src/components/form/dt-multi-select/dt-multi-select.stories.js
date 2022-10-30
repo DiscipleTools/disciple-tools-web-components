@@ -124,6 +124,7 @@ function Template(args) {
     value,
     disabled = false,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText = 'Icon Alt Text',
     isPrivate,
     privateLabel,
     loading = false,
@@ -164,6 +165,7 @@ function Template(args) {
       onchange="${onchange}"
       ?disabled=${disabled}
       icon="${icon}"
+      iconAltText="${iconAltText}"
       ?private=${isPrivate}
       privateLabel="${privateLabel}"
       ?loading="${loading}"

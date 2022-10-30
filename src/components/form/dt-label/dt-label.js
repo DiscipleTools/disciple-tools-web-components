@@ -55,7 +55,7 @@ export class DtLabel extends DtBase {
   static get properties() {
     return {
       icon: { type: String },
-      altText: { type: String },
+      iconAltText: { type: String },
       private: { type: Boolean },
       privateLabel: { type: String },
     };
@@ -83,7 +83,7 @@ export class DtLabel extends DtBase {
       >
         <span class="icon">
           <slot name="icon-start">
-            ${this.icon ? html`<img src="${this.icon}" alt="${this.altText}" />` : null}
+            ${this.icon ? html`<img src="${this.icon}" alt="${this.iconAltText}" />` : null}
           </slot>
         </span>
         <slot></slot>
