@@ -18,7 +18,7 @@
     "format": "eslint --ext .js,.html . --fix --ignore-path .gitignore && prettier \"**/*.js\" --write --ignore-path .gitignore",
     "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
-    "storybook": "npm run analyze -- --exclude dist && web-dev-server -c .storybook/server.mjs",
+    "storybook": "npm run analyze -- --exclude dist --exclude samples && web-dev-server -c .storybook/server.mjs",
     "storybook:build": "npm run analyze -- --exclude dist && build-storybook && cp -r assets/ storybook-static/assets && cp netlify.toml storybook-static",
     "build": "rollup -c && cp -R ./dist ./samples/html/js",
     "preinstall": "node checkNodeVersion.js",

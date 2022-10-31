@@ -5,7 +5,7 @@ import {repeat} from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import {classMap} from 'lit/directives/class-map.js';
 import DtBase from '../../dt-base.js';
-import { DtAPI } from '../../../services/dt-api.js';
+import ApiService from '../../../services/apiService.js';
 import '../../icons/dt-star.js';
 
 export class DtList extends DtBase {
@@ -316,11 +316,17 @@ export class DtList extends DtBase {
     this.sortedBy = "name";
   }
 
+  firstUpdated() {
+    if (this.nonce && !this.api) {
+      this.api = new ApiService(this.nonce);
+    }
+  }
+
   async _getPosts(offset = 0, sortBy = 'name', sortOrder = "desc") {
-      this.loading = true;
-      this.filteredOptions = [];
-      const URLParams = encodeURI(`?offset=${offset}&sortBy=${sortBy || ''}&offset=${offset}${this.columns.map(column => `&fields_to_return=${column}`).join('')}`);
-      const response = await DtAPI.makeRequestOnPosts('GET', `${this.postType}${URLParams}`, {}, '/', this.nonce );
+    this.loading = true;
+    this.filteredOptions = [];
+    const URLParams = encodeURI(`?offset=${offset}&sortBy=${sortBy || ''}&offset=${offset}${this.columns.map(column => `&fields_to_return=${column}`).join('')}`);
+    const response = await this.api.makeRequestOnPosts('GET', `${this.postType}${URLParams}`);
 
     return response;
 
