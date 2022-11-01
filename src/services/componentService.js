@@ -33,17 +33,28 @@ export default class ComponentService {
     }
   }
 
-  handleChangeEvent(event) {
+  async handleChangeEvent(event) {
     const details = event.detail;
     if (details) {
       const { field, newValue } = details;
       const component = event.target.tagName.toLowerCase();
       const apiValue = ComponentService.convertValue(component, newValue);
 
+      event.target.setAttribute('loading', true);
+
       // Update post via API
-      this.api.updatePost(this.postType, this.postId, {
-        [field]: apiValue,
-      })
+      try {
+        await this.api.updatePost(this.postType, this.postId, {
+          [field]: apiValue,
+        });
+
+        event.target.removeAttribute('loading');
+        event.target.setAttribute('saved', true);
+      } catch (ex) {
+
+        event.target.removeAttribute('loading');
+        event.target.setAttribute('invalid', true); // this isn't hooked up yet
+      }
     }
   }
 
