@@ -75,23 +75,6 @@ function Template(args) {
     <style>
     ${themeCss(args)}
     </style>
-    <script>
-      function onChange(event) {
-        if (event?.target) {
-          event.target.setAttribute('loading', true);
-          console.log(
-            'Value changed from ' +
-              JSON.stringify(event.detail.oldValue) +
-              ' to ' +
-              JSON.stringify(event.detail.newValue)
-          );
-          setTimeout(function () {
-            event.target.removeAttribute('loading');
-            event.target.setAttribute('saved', true);
-          }, 1000);
-        }
-      }
-    </script>
     <dt-single-select
       name="${name}"
       label="${label}"
@@ -146,12 +129,12 @@ ColorChange.args = {
 export const ColorChangeNotSelected = Template.bind({});
 ColorChangeNotSelected.args = {
   options: colorOptions,
-}
+};
 
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
-  onChange: 'onChange(event)',
+  onChange: 'onAutoSave(event)',
 };
 
 export const Disabled = Template.bind({});

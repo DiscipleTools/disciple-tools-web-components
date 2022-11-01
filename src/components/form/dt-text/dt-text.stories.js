@@ -38,7 +38,7 @@ function Template(args) {
     privateLabel,
     loading = false,
     saved = false,
-    onchange,
+    onChange,
     slot,
     type
   } = args;
@@ -61,7 +61,7 @@ function Template(args) {
       privateLabel="${privateLabel}"
       ?loading=${loading}
       ?saved=${saved}
-      onchange=${onchange}
+      onchange=${onChange}
     >
     ${slot}
     </dt-text>
@@ -82,6 +82,11 @@ export const EnteredValue = Template.bind({});
 EnteredValue.decorators = [LocaleDecorator, FormDecorator];
 EnteredValue.args = {
   value: 'Lorem Ipsum',
+};
+
+export const AutoSave = Template.bind({});
+AutoSave.args = {
+  onChange: 'onAutoSave(event)',
 };
 
 export const Disabled = Template.bind({});

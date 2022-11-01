@@ -38,7 +38,7 @@ function Template(args) {
     isPrivate,
     loading,
     saved,
-    onchange,
+    onChange,
     slot,
   } = args;
   return html`
@@ -56,7 +56,7 @@ function Template(args) {
       ?private=${isPrivate}
       ?loading=${loading}
       ?saved=${saved}
-      onchange=${onchange}
+      onchange=${onChange}
     >
       ${slot}
     </dt-date>
@@ -90,6 +90,22 @@ export const Disabled = Template.bind({});
 Disabled.args = {
   value: '2020-01-01',
   disabled: true,
+};
+
+export const AutoSave = Template.bind({});
+AutoSave.args = {
+  onChange: 'onAutoSave(event)',
+};
+
+export const Loading = Template.bind({});
+Loading.decorators = [LocaleDecorator];
+Loading.args = {
+  loading: true,
+};
+export const Saved = Template.bind({});
+Saved.decorators = [LocaleDecorator];
+Saved.args = {
+  saved: true,
 };
 
 export const LocalizeRTL = Template.bind({});
