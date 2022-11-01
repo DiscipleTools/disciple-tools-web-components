@@ -49,6 +49,12 @@ export class DtTags extends DtMultiSelect {
 
   _remove(e) {
     if (e.target && e.target.dataset && e.target.dataset.value) {
+      const event = new CustomEvent('change', {
+        detail: {
+          field: this.name,
+          oldValue: this.value,
+        },
+      });
       this.value = (this.value || []).map(i => {
         const val = {
           ...i,
@@ -58,6 +64,10 @@ export class DtTags extends DtMultiSelect {
         }
         return val;
       });
+      event.detail.newValue = this.value;
+
+      // dispatch event for use with addEventListener from javascript
+      this.dispatchEvent(event);
 
       // If option was de-selected while list was open, re-focus input
       if (this.open) {

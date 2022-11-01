@@ -151,7 +151,7 @@ describe('dt-location', () => {
     expect(el.value).to.not.deep.include({id: 'opt1', label: 'old', delete: true});
   });
 
-  it('triggers change event', async () => {
+  it('triggers change event - item added', async () => {
     const el = await fixture(html`<dt-location name="custom-name" value="${JSON.stringify([options[1]])}" options="${JSON.stringify(options)}"></dt-location>`);
 
     setTimeout(() => clickOption(el, 'opt1'));
@@ -161,6 +161,24 @@ describe('dt-location', () => {
     expect(detail.field).to.equal('custom-name');
     expect(detail.oldValue).to.eql([options[1]]);
     expect(detail.newValue).to.eql([options[1], options[0]]);
+  });
+
+  it('triggers change event - item removed', async () => {
+    const el = await fixture(html`<dt-location name="custom-name" value="${JSON.stringify([options[0]])}" options="${JSON.stringify(options)}"></dt-location>`);
+
+    setTimeout(() => {
+      const optionBtn = el.shadowRoot.querySelector(`.selected-option button[data-value=opt1]`);
+      optionBtn.click();
+    });
+
+    const { detail } = await oneEvent(el, 'change');
+
+    expect(detail.field).to.equal('custom-name');
+    expect(detail.oldValue).to.eql([options[0]]);
+    expect(detail.newValue).to.eql([{
+      ...options[0],
+      delete: true,
+    }]);
   });
 
   it('filters options on text input', async () => {
