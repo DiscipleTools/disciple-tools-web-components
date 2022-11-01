@@ -141,7 +141,7 @@ describe('dt-multi-select', () => {
     expect(el.value).to.not.contain('-opt1');
   });
 
-  it('triggers change event', async () => {
+  it('triggers change event - item added', async () => {
     const el = await fixture(html`<dt-multi-select name="custom-name" value="${JSON.stringify(['opt2'])}" options="${JSON.stringify(options)}"></dt-multi-select>`);
 
     setTimeout(() => clickOption(el, 'opt1'));
@@ -151,6 +151,21 @@ describe('dt-multi-select', () => {
     expect(detail.field).to.equal('custom-name');
     expect(detail.oldValue).to.eql(['opt2']);
     expect(detail.newValue).to.eql(['opt2','opt1']);
+  });
+
+  it('triggers change event - item removed', async () => {
+    const el = await fixture(html`<dt-multi-select name="custom-name" value="${JSON.stringify(['opt1'])}" options="${JSON.stringify(options)}"></dt-multi-select>`);
+
+    setTimeout(() => {
+      const optionBtn = el.shadowRoot.querySelector(`.selected-option button[data-value=opt1]`);
+      optionBtn.click();
+    });
+
+    const { detail } = await oneEvent(el, 'change');
+
+    expect(detail.field).to.equal('custom-name');
+    expect(detail.oldValue).to.eql(['opt1']);
+    expect(detail.newValue).to.eql(['-opt1']);
   });
 
   it('filters options on text input', async () => {

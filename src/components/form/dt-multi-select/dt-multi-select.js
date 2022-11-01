@@ -310,7 +310,17 @@ export class DtMultiSelect extends DtFormBase {
 
   _remove(e) {
     if (e.target && e.target.dataset && e.target.dataset.value) {
+      const event = new CustomEvent('change', {
+        detail: {
+          field: this.name,
+          oldValue: this.value,
+        },
+      });
       this.value = (this.value || []).map(i => i === e.target.dataset.value ? `-${  i}` : i);
+      event.detail.newValue = this.value;
+
+      // dispatch event for use with addEventListener from javascript
+      this.dispatchEvent(event);
 
       // If option was de-selected while list was open, re-focus input
       if (this.open) {
