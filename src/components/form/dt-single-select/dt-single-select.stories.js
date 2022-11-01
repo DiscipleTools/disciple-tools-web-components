@@ -143,6 +143,11 @@ ColorChange.args = {
   options: colorOptions,
 };
 
+export const ColorChangeNotSelected = Template.bind({});
+ColorChangeNotSelected.args = {
+  options: colorOptions,
+}
+
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
