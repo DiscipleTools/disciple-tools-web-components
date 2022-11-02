@@ -5,7 +5,7 @@ export default class ComponentService {
     this.postType = postType;
     this.postId = postId;
     this.nonce = nonce;
-    this.apiRoot = `${apiRoot.trimEnd('/')}/`; // ensure it ends with /
+    this.apiRoot = `${apiRoot}/`.replace('//', '/'); // ensure it ends with /
 
     this.api = new ApiService(this.nonce, this.apiRoot);
 
@@ -65,29 +65,60 @@ export default class ComponentService {
    * @returns {mixed}
    */
   static convertValue(component, value) {
-    // todo: write tests for this
     let returnValue = value;
 
     // Convert component value format into what the API expects
-    switch (component) {
-      case 'dt-tags':
-        returnValue = {
-          values: value.map(item => {
-            const ret = {
-              value: item.id,
-            }
-            if (item.delete) {
-              ret.delete = item.delete;
-            }
-            return item;
-          }),
-          force_values: false,
-        }
-        break;
+    if (value) {
+      switch (component) {
+        case 'dt-toggle':
+          if (typeof value === 'string') {
+            returnValue = (value.toLowerCase() === 'true');
+          }
+          break;
 
-      // todo: other fields
-      default:
-        break;
+        case 'dt-multi-select':
+          if (typeof value === 'string') {
+            returnValue = [value];
+          }
+          returnValue = {
+            values: returnValue.map(itemId => {
+              const ret = {
+                value: itemId.replace('-', ''),
+              }
+              if (itemId.startsWith('-')) {
+                ret.delete = true;
+              }
+              return ret;
+            }),
+            force_values: false,
+          }
+          break;
+
+        case 'dt-connection':
+        case 'dt-location':
+        case 'dt-tags':
+          if (typeof value === 'string') {
+            returnValue = [{
+              id: value
+            }];
+          }
+          returnValue = {
+            values: returnValue.map(item => {
+              const ret = {
+                value: item.id,
+              }
+              if (item.delete) {
+                ret.delete = item.delete;
+              }
+              return ret;
+            }),
+            force_values: false,
+          }
+          break;
+
+        default:
+          break;
+      }
     }
 
     return returnValue;
