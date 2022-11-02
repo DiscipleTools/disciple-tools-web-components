@@ -38,6 +38,7 @@ function Template(args) {
     isPrivate,
     loading,
     saved,
+    error,
     onChange,
     slot,
   } = args;
@@ -56,6 +57,7 @@ function Template(args) {
       ?private=${isPrivate}
       ?loading=${loading}
       ?saved=${saved}
+      ?error=${error}
       onchange=${onChange}
     >
       ${slot}
@@ -98,14 +100,16 @@ AutoSave.args = {
 };
 
 export const Loading = Template.bind({});
-Loading.decorators = [LocaleDecorator];
 Loading.args = {
   loading: true,
 };
 export const Saved = Template.bind({});
-Saved.decorators = [LocaleDecorator];
 Saved.args = {
   saved: true,
+};
+export const Error = Template.bind({});
+Error.args = {
+  error: true,
 };
 
 export const LocalizeRTL = Template.bind({});

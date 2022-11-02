@@ -56,6 +56,7 @@ export default class DtFormBase extends DtBase {
         type: Boolean,
         state: true,
       },
+      error: {type: Boolean },
       loading: { type: Boolean },
       saved: { type: Boolean },
     };

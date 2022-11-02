@@ -87,8 +87,6 @@ export class DtDate extends DtFormBase {
         },
         reflect: true
       },
-      loading: { type: Boolean },
-      saved: { type: Boolean },
       onchange: { type: String },
     };
   }
@@ -164,7 +162,7 @@ export class DtDate extends DtFormBase {
               x
           </button>
           
-          ${this.touched && this.invalid ? html`<dt-exclamation-circle class="icon-overlay alert"></dt-exclamation-circle>` : null}
+          ${(this.touched && this.invalid) || this.error ? html`<dt-exclamation-circle class="icon-overlay alert"></dt-exclamation-circle>` : null}
           ${this.loading ? html`<dt-spinner class="icon-overlay"></dt-spinner>` : null}
           ${this.saved ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}
       </div>
