@@ -1,6 +1,6 @@
 import { css, html } from 'lit';
 import DtBase from '../dt-base.js';
-import 'element-internals-polyfill';
+import 'element-internals-polyfill'; // eslint-disable-line import/no-extraneous-dependencies
 import './dt-label/dt-label.js';
 
 export default class DtFormBase extends DtBase {
@@ -9,32 +9,34 @@ export default class DtFormBase extends DtBase {
   }
 
   static get styles() {
-    return [css`
-    .input-group {
-      position: relative;
-    }
-    .input-group.disabled {
-      background-color: var(--disabled-color);
-    }
+    return [
+      css`
+        .input-group {
+          position: relative;
+        }
+        .input-group.disabled {
+          background-color: var(--disabled-color);
+        }
 
-    /* === Inline Icons === */
-      .icon-overlay {
-        position: absolute;
-        inset-inline-end: 1rem;
-        top: 0;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+        /* === Inline Icons === */
+        .icon-overlay {
+          position: absolute;
+          inset-inline-end: 1rem;
+          top: 0;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
 
-      .icon-overlay.alert {
-        color: var(--alert-color);
-      }
-      .icon-overlay.success {
-        color: var(--success-color);
-      }
-    `];
+        .icon-overlay.alert {
+          color: var(--alert-color);
+        }
+        .icon-overlay.success {
+          color: var(--success-color);
+        }
+      `,
+    ];
   }
 
   static get properties() {
@@ -69,7 +71,7 @@ export default class DtFormBase extends DtBase {
 
     // catch oninvalid event (when validation is triggered from form submit)
     // and set touched=true so that styles are shown
-    this.addEventListener('invalid', (e) => {
+    this.addEventListener('invalid', () => {
       this.touched = true;
       this._validateRequired();
     });
@@ -89,6 +91,7 @@ export default class DtFormBase extends DtBase {
     this.touched = true;
   }
 
+  /* eslint-disable class-methods-use-this */
   /**
    * Can/should be overriden by each component to implement logic for checking if a value is entered/selected
    * @private
@@ -106,6 +109,7 @@ export default class DtFormBase extends DtBase {
     //   this.internals.setValidity({});
     // }
   }
+  /* eslint-enable class-methods-use-this */
 
   labelTemplate() {
     if (!this.label) {
@@ -119,7 +123,9 @@ export default class DtFormBase extends DtBase {
         iconAltText="${this.iconAltText}"
         icon="${this.icon}"
       >
-        ${!this.icon ? html`<slot name="icon-start" slot="icon-start"></slot>` : null}
+        ${!this.icon
+          ? html`<slot name="icon-start" slot="icon-start"></slot>`
+          : null}
         ${this.label}
       </dt-label>
     `;

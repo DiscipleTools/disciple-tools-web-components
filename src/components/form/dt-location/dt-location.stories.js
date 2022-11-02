@@ -37,13 +37,16 @@ const basicOptions = [
     label: 'Option 8',
   },
 ];
-const defaultFilters = [{
-  id: 'focus',
-  label: 'Region of Focus',
-}, {
-  id: 'all',
-  label: 'All Locations',
-}];
+const defaultFilters = [
+  {
+    id: 'focus',
+    label: 'Region of Focus',
+  },
+  {
+    id: 'all',
+    label: 'All Locations',
+  },
+];
 export default {
   title: 'Form/dt-location',
   component: 'dt-location',
@@ -237,17 +240,17 @@ function Template(args) {
 }
 
 export const Empty = Template.bind({});
-Empty.args = {
-};
+Empty.args = {};
 
 export const withMapboxKey = Template.bind({});
 withMapboxKey.args = {
-  mapboxKey: "XXXXXXXXXXXXXXX"
+  mapboxKey: 'XXXXXXXXXXXXXXX',
 };
 
 export const SvgIcon = Template.bind({});
 SvgIcon.args = {
   icon: null,
+  // prettier-ignore
   slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
 };
 
@@ -326,25 +329,34 @@ LocalizeRTL.args = {
   placeholder: 'حدد العلامات',
   allowAdd: true,
   loading: true,
-  value: [{
-    id: 'opt1',
-    label: 'تنكر هؤلاء الرجال المفتونون',
-  }],
-  options: [{
-    id: 'opt1',
-    label: 'تنكر هؤلاء الرجال المفتونون',
-  }, {
-    id: 'opt2',
-    label: 'م فيتساوي مع هؤلاء',
-  }, {
-    id: 'opt3',
-    label: 'فلا أحد يرفض',
-  }],
-  filters: [{
-    id: 'focus',
-    label: 'منطقة التركيز',
-  }, {
-    id: 'all',
-    label: 'جميع المواقع',
-  }],
+  value: [
+    {
+      id: 'opt1',
+      label: 'تنكر هؤلاء الرجال المفتونون',
+    },
+  ],
+  options: [
+    {
+      id: 'opt1',
+      label: 'تنكر هؤلاء الرجال المفتونون',
+    },
+    {
+      id: 'opt2',
+      label: 'م فيتساوي مع هؤلاء',
+    },
+    {
+      id: 'opt3',
+      label: 'فلا أحد يرفض',
+    },
+  ],
+  filters: [
+    {
+      id: 'focus',
+      label: 'منطقة التركيز',
+    },
+    {
+      id: 'all',
+      label: 'جميع المواقع',
+    },
+  ],
 };

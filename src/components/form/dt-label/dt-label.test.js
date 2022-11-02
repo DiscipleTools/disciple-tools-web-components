@@ -12,18 +12,31 @@ describe('DT-Label', () => {
 
   it('input private', async () => {
     const el = await fixture(html`<dt-label private>Private Label</dt-label>`);
-    expect(el.shadowRoot.querySelector("div > span.icon.private")).to.exist
-    expect(el.shadowRoot.querySelector("div > span.icon.private > span")).to.exist
+    expect(el.shadowRoot.querySelector('div > span.icon.private')).to.exist;
+    expect(el.shadowRoot.querySelector('div > span.icon.private > span')).to
+      .exist;
   });
 
   it('input private with custom tooltip', async () => {
-    const el = await fixture(html`<dt-label private privateLabel="This is a custom tooltip">Private Label</dt-label>`);
-    expect(el.shadowRoot.querySelector("div > span.icon.private > span")).to.have.text("This is a custom tooltip");
+    const el = await fixture(
+      html`<dt-label private privateLabel="This is a custom tooltip"
+        >Private Label</dt-label
+      >`
+    );
+    expect(
+      el.shadowRoot.querySelector('div > span.icon.private > span')
+    ).to.have.text('This is a custom tooltip');
   });
 
-
   it('passes the a11y audit', async () => {
-    const el = await fixture(html`<dt-label id='name' name='Name' label='Label Name' value='John Doe'></dt-label>`);
+    const el = await fixture(
+      html`<dt-label
+        id="name"
+        name="Name"
+        label="Label Name"
+        value="John Doe"
+      ></dt-label>`
+    );
 
     await expect(el).shadowDom.to.be.accessible();
   });

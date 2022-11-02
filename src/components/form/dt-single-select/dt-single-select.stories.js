@@ -44,7 +44,11 @@ export default {
   component: 'dt-single-select',
   argTypes: {
     name: { control: 'text' },
-    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
+    theme: {
+      control: 'select',
+      options: Object.keys(themes),
+      defaultValue: 'default',
+    },
     placeholder: { control: 'text' },
     value: { control: 'text' },
     isLoading: { control: 'boolean' },
@@ -73,7 +77,7 @@ function Template(args) {
   } = args;
   return html`
     <style>
-    ${themeCss(args)}
+      ${themeCss(args)}
     </style>
     <script>
       function onChange(event) {
@@ -108,7 +112,7 @@ function Template(args) {
       ?saved="${isSaved}"
       ?rtl="${RTL}"
     >
-    ${slot}
+      ${slot}
     </dt-single-select>
   `;
 }
@@ -118,6 +122,7 @@ export const Empty = Template.bind({});
 export const SvgIcon = Template.bind({});
 SvgIcon.args = {
   icon: null,
+  // prettier-ignore
   slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
 };
 
@@ -146,7 +151,7 @@ ColorChange.args = {
 export const ColorChangeNotSelected = Template.bind({});
 ColorChangeNotSelected.args = {
   options: colorOptions,
-}
+};
 
 export const AutoSave = Template.bind({});
 AutoSave.args = {
@@ -183,14 +188,18 @@ LocalizeRTL.args = {
   placeholder: 'حدد العلامات',
   isSaved: true,
   value: 'opt2',
-  options: [{
-    id: 'opt1',
-    label: 'تنكر هؤلاء الرجال المفتونون',
-  }, {
-    id: 'opt2',
-    label: 'م فيتساوي مع هؤلاء',
-  }, {
-    id: 'opt3',
-    label: 'فلا أحد يرفض',
-  }]
+  options: [
+    {
+      id: 'opt1',
+      label: 'تنكر هؤلاء الرجال المفتونون',
+    },
+    {
+      id: 'opt2',
+      label: 'م فيتساوي مع هؤلاء',
+    },
+    {
+      id: 'opt3',
+      label: 'فلا أحد يرفض',
+    },
+  ],
 };
