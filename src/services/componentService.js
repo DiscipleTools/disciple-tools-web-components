@@ -25,9 +25,10 @@ export default class ComponentService {
 
   /**
    * Enable auto-save feature for all components on the current page
+   * @param {string} [selector] (Optional) Override default selector
    */
-  enableAutoSave() {
-    const allElements = document.querySelectorAll(this.autoSaveComponents.join(','));
+  enableAutoSave(selector) {
+    const allElements = document.querySelectorAll(selector || this.autoSaveComponents.join(','));
     if (allElements) {
       allElements.forEach(el => el.addEventListener('change', this.handleChangeEvent));
     }
