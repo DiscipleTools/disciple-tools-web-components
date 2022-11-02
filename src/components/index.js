@@ -21,7 +21,6 @@ export { DtExclamationCircle } from './icons/dt-exclamation-circle.js';
 export { DtStar } from './icons/dt-star.js';
 export { DtSpinner } from './icons/dt-spinner.js';
 
-
 /*
   Layout Components
 */

@@ -8,62 +8,63 @@ export class DtSingleSelect extends DtFormBase {
     return [
       ...super.styles,
       css`
-      :host {
-        position: relative;
-      }
+        :host {
+          position: relative;
+        }
 
-      select {
-        appearance: none;
-        background-color: var(--dt-form-background-color, #fefefe);
-        background-image:
-          linear-gradient(45deg, transparent 50%, var(--dt-single-select-text-color) 50%),
-          linear-gradient(135deg, var(--dt-single-select-text-color) 50%, transparent 50%);
-        background-position:
-          calc(100% - 20px) calc(1em + 2px),
-          calc(100% - 15px) calc(1em + 2px),
-          calc(100% - 2.5em) 0.5em;
-        background-size:
-          5px 5px,
-          5px 5px,
-          1px 1.5em;
-        background-repeat: no-repeat;
-        border: 1px solid var(--dt-form-border-color, #cacaca);
-        border-radius: 0;
-        color: var(--dt-single-select-text-color, #0a0a0a);
-        font-family: var(--font-family, sans-serif);
-        font-size: 1rem;
-        font-weight: 300;
-        height: 2.5rem;
-        line-height: 1.5;
-        margin: 0 0 1rem;
-        padding: 0.53rem;
-        padding-inline-end: 1.6rem;
-        transition: border-color 0.25s ease-in-out;
-        transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-        box-sizing: border-box;
-        width: 100%;
-        text-transform: none;
-      }
-      [dir=rtl] select {
-        background-position:
-          15px calc(1em + 2px),
-          20px calc(1em + 2px),
-          2.5em 0.5em
-      }
-      select.color-select {
-        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: white'></polygon></svg>");
-        background-color: var(--dt-form-border-color, #cacaca);
-        border: none;
-        border-radius: 10px;
-        color: var(--dt-single-select-text-color-inverse, #fff);
-        font-weight: 700;
-        text-shadow: rgb(0 0 0 / 45%) 0 0 6px;
-      }
+        select {
+          appearance: none;
+          background-color: var(--dt-form-background-color, #fefefe);
+          background-image: linear-gradient(
+              45deg,
+              transparent 50%,
+              var(--dt-single-select-text-color) 50%
+            ),
+            linear-gradient(
+              135deg,
+              var(--dt-single-select-text-color) 50%,
+              transparent 50%
+            );
+          background-position: calc(100% - 20px) calc(1em + 2px),
+            calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
+          background-size: 5px 5px, 5px 5px, 1px 1.5em;
+          background-repeat: no-repeat;
+          border: 1px solid var(--dt-form-border-color, #cacaca);
+          border-radius: 0;
+          color: var(--dt-single-select-text-color, #0a0a0a);
+          font-family: var(--font-family, sans-serif);
+          font-size: 1rem;
+          font-weight: 300;
+          height: 2.5rem;
+          line-height: 1.5;
+          margin: 0 0 1rem;
+          padding: 0.53rem;
+          padding-inline-end: 1.6rem;
+          transition: border-color 0.25s ease-in-out;
+          transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+          box-sizing: border-box;
+          width: 100%;
+          text-transform: none;
+        }
+        [dir='rtl'] select {
+          background-position: 15px calc(1em + 2px), 20px calc(1em + 2px),
+            2.5em 0.5em;
+        }
+        select.color-select {
+          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: white'></polygon></svg>");
+          background-color: var(--dt-form-border-color, #cacaca);
+          border: none;
+          border-radius: 10px;
+          color: var(--dt-single-select-text-color-inverse, #fff);
+          font-weight: 700;
+          text-shadow: rgb(0 0 0 / 45%) 0 0 6px;
+        }
 
-      .icon-overlay {
-        inset-inline-end: 2.5rem;
-      }
-    `];
+        .icon-overlay {
+          inset-inline-end: 2.5rem;
+        }
+      `,
+    ];
   }
 
   static get properties() {
@@ -97,7 +98,10 @@ export class DtSingleSelect extends DtFormBase {
   }
 
   isColorSelect() {
-    return (this.options || []).reduce((isColor, option) => isColor || option.color, false);
+    return (this.options || []).reduce(
+      (isColor, option) => isColor || option.color,
+      false
+    );
   }
 
   willUpdate(changedProperties) {
@@ -151,7 +155,9 @@ export class DtSingleSelect extends DtFormBase {
         ${this.loading
           ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
           : null}
-        ${this.saved ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}
+        ${this.saved
+          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
+          : null}
       </div>
     `;
   }

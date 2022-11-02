@@ -28,7 +28,7 @@ export class DtModal extends DtBase {
         border: none;
         box-shadow: var(--shadow-6);
         z-index: 1000;
-        transition: opacity .1s ease-in-out
+        transition: opacity 0.1s ease-in-out;
       }
 
       dialog:not([open]) {
@@ -38,19 +38,24 @@ export class DtModal extends DtBase {
 
       dialog::backdrop {
         background: var(--dt-modal-backdrop-color, rgba(0, 0, 0, 0.25));
-        animation: var(--dt-modal-animation, fade-in .75s);
+        animation: var(--dt-modal-animation, fade-in 0.75s);
       }
 
       @keyframes fade-in {
-          from {
-              opacity: 0;
-          }
-          to {
-              opacity: 1;
-          }
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
 
-      h1, h2, h3, h4, h5, h6 {
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
         line-height: 1.4;
         text-rendering: optimizeLegibility;
         color: inherit;
@@ -67,7 +72,7 @@ export class DtModal extends DtBase {
           'header'
           'main'
           'footer';
-          position: relative;
+        position: relative;
       }
 
       header {
@@ -108,12 +113,12 @@ export class DtModal extends DtBase {
         justify-content: space-between;
       }
 
-      .help-more h5{
-        font-size: .75rem;
+      .help-more h5 {
+        font-size: 0.75rem;
         display: block;
       }
       .help-more .button {
-        font-size: .75rem;
+        font-size: 0.75rem;
         display: block;
       }
     `;
@@ -152,12 +157,11 @@ export class DtModal extends DtBase {
     // Close the modal if the user clicks outside of the modal
     const rect = e.target.getBoundingClientRect();
 
-    const clickedInDialog = (
-        rect.top <= e.clientY &&
-        e.clientY <= rect.top + rect.height &&
-        rect.left <= e.clientX &&
-        e.clientX <= rect.left + rect.width
-    );
+    const clickedInDialog =
+      rect.top <= e.clientY &&
+      e.clientY <= rect.top + rect.height &&
+      rect.left <= e.clientX &&
+      e.clientX <= rect.left + rect.width;
 
     if (clickedInDialog === false) {
       this._closeModal();
@@ -171,12 +175,20 @@ export class DtModal extends DtBase {
   }
 
   _helpMore() {
-    return this.isHelp ? html`
-    <div class="help-more">
-        <h5>${ msg('Need more help?') }</h5>
-        <a class="button small" id="docslink" href="https://disciple.tools/user-docs" target="_blank">${ msg('Read the documentation') }</a>
-    </div>
-  `: null
+    return this.isHelp
+      ? html`
+          <div class="help-more">
+            <h5>${msg('Need more help?')}</h5>
+            <a
+              class="button small"
+              id="docslink"
+              href="https://disciple.tools/user-docs"
+              target="_blank"
+              >${msg('Read the documentation')}</a
+            >
+          </div>
+        `
+      : null;
   }
 
   firstUpdated() {
@@ -186,41 +198,60 @@ export class DtModal extends DtBase {
   }
 
   render() {
+    // prettier-ignore
+    const svg = html`
+      <svg viewPort="0 0 12 12" version="1.1" width='12' height='12'>
+          xmlns="http://www.w3.org/2000/svg">
+        <line x1="1" y1="11"
+              x2="11" y2="1"
+              stroke="currentColor"
+              stroke-width="2"/>
+        <line x1="1" y1="1"
+              x2="11" y2="11"
+              stroke="currentColor"
+              stroke-width="2"/>
+      </svg>
+    `;
     return html`
-      <dialog id="" class="dt-modal" @click=${this._dialogClick} @keypress=${this._dialogKeypress}>
-          <form method="dialog">
-              <header>
-                  <h1 id="modal-field-title">
-                      ${this.title}
-                  </h1>
-                  <button @click="${this._closeModal}" class='toggle'>
-                    <svg viewPort="0 0 12 12" version="1.1" width='12' height='12'>
-                        xmlns="http://www.w3.org/2000/svg">
-                      <line x1="1" y1="11"
-                            x2="11" y2="1"
-                            stroke="currentColor"
-                            stroke-width="2"/>
-                      <line x1="1" y1="1"
-                            x2="11" y2="11"
-                            stroke="currentColor"
-                            stroke-width="2"/>
-                    </svg>
-                  </button>
-              </header>
-              <article>
-                <slot name="content"></slot>
-              </article>
-              <footer>
-                  <button class="button small" data-close="" aria-label="Close reveal" type="button" @click=${this._closeModal}>
-                    <slot name="close-button">${ msg('Close') }</slot>
-                  </button>
-                  ${this._helpMore()}
-              </footer>
-          </form>
+      <dialog
+        id=""
+        class="dt-modal"
+        @click=${this._dialogClick}
+        @keypress=${this._dialogKeypress}
+      >
+        <form method="dialog">
+          <header>
+            <h1 id="modal-field-title">${this.title}</h1>
+            <button @click="${this._closeModal}" class="toggle">${svg}</button>
+          </header>
+          <article>
+            <slot name="content"></slot>
+          </article>
+          <footer>
+            <button
+              class="button small"
+              data-close=""
+              aria-label="Close reveal"
+              type="button"
+              @click=${this._closeModal}
+            >
+              <slot name="close-button">${msg('Close')}</slot>
+            </button>
+            ${this._helpMore()}
+          </footer>
+        </form>
       </dialog>
 
-      <button class="button small" data-open="" aria-label="Open reveal" type="button" @click="${this._openModal}"><slot name="openButton">${ msg('Open Dialog') }</slot></button>
-      `;
+      <button
+        class="button small"
+        data-open=""
+        aria-label="Open reveal"
+        type="button"
+        @click="${this._openModal}"
+      >
+        <slot name="openButton">${msg('Open Dialog')}</slot>
+      </button>
+    `;
   }
 }
 

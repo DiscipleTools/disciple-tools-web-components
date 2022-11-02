@@ -2,12 +2,19 @@ import { html } from 'lit';
 import { fixture, expect, oneEvent } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
-
 import './dt-date.js';
 
 describe('DT-Date', () => {
   it('displays id, name, label, and value attributes correctly', async () => {
-    const el = await fixture(html`<dt-date id='name' name='Field Name' label='Label Name' value='' timestamp='1577836800000' ></dt-date>`);
+    const el = await fixture(
+      html`<dt-date
+        id="name"
+        name="Field Name"
+        label="Label Name"
+        value=""
+        timestamp="1577836800000"
+      ></dt-date>`
+    );
 
     expect(el.id).to.equal('name');
     expect(el.name).to.equal('Field Name');
@@ -17,7 +24,7 @@ describe('DT-Date', () => {
   });
 
   it('updates the text', async () => {
-    const el = await fixture(html`<dt-date value='2020-01-01'></dt-date>`);
+    const el = await fixture(html`<dt-date value="2020-01-01"></dt-date>`);
 
     el.shadowRoot.querySelector('input').value = '';
     el.shadowRoot.querySelector('input').focus();
@@ -44,7 +51,7 @@ describe('DT-Date', () => {
       type: '01-01-199',
     });
 
-    setTimeout(() => sendKeys({press: '9' }));
+    setTimeout(() => sendKeys({ press: '9' }));
 
     const { detail } = await oneEvent(el, 'change');
 
@@ -53,24 +60,36 @@ describe('DT-Date', () => {
   });
 
   it('accepts PHP timestamp', async () => {
-    const el = await fixture(html`<dt-date timestamp='1577836800'></dt-date>`);
+    const el = await fixture(html`<dt-date timestamp="1577836800"></dt-date>`);
     expect(el.shadowRoot.querySelector('input').value).to.equal('2020-01-01');
   });
 
   it('accepts JS timestamp', async () => {
-    const el = await fixture(html`<dt-date timestamp='1577836800000'></dt-date>`);
+    const el = await fixture(
+      html`<dt-date timestamp="1577836800000"></dt-date>`
+    );
     expect(el.shadowRoot.querySelector('input').value).to.equal('2020-01-01');
   });
 
   it('displays as private field', async () => {
-    const el = await fixture(html`<dt-date label='Label Name' private></dt-date>`);
+    const el = await fixture(
+      html`<dt-date label="Label Name" private></dt-date>`
+    );
     const label = await fixture(el.shadowRoot.querySelector('dt-label'));
 
     expect(label.hasAttribute('private')).to.be.true;
   });
 
   it('passes the a11y audit', async () => {
-    const el = await fixture(html`<dt-date id='name' name='Name' label='Label Name' value='John Doe' timestamp='1577836800000'></dt-date>`);
+    const el = await fixture(
+      html`<dt-date
+        id="name"
+        name="Name"
+        label="Label Name"
+        value="John Doe"
+        timestamp="1577836800000"
+      ></dt-date>`
+    );
 
     await expect(el).shadowDom.to.be.accessible();
   });

@@ -28,9 +28,13 @@ export default class ComponentService {
    * @param {string} [selector] (Optional) Override default selector
    */
   enableAutoSave(selector) {
-    const allElements = document.querySelectorAll(selector || this.autoSaveComponents.join(','));
+    const allElements = document.querySelectorAll(
+      selector || this.autoSaveComponents.join(',')
+    );
     if (allElements) {
-      allElements.forEach(el => el.addEventListener('change', this.handleChangeEvent));
+      allElements.forEach(el =>
+        el.addEventListener('change', this.handleChangeEvent)
+      );
     }
   }
 
@@ -52,7 +56,6 @@ export default class ComponentService {
         event.target.removeAttribute('loading');
         event.target.setAttribute('saved', true);
       } catch (ex) {
-
         event.target.removeAttribute('loading');
         event.target.setAttribute('invalid', true); // this isn't hooked up yet
       }
@@ -73,7 +76,7 @@ export default class ComponentService {
       switch (component) {
         case 'dt-toggle':
           if (typeof value === 'string') {
-            returnValue = (value.toLowerCase() === 'true');
+            returnValue = value.toLowerCase() === 'true';
           }
           break;
 
@@ -85,36 +88,38 @@ export default class ComponentService {
             values: returnValue.map(itemId => {
               const ret = {
                 value: itemId.replace('-', ''),
-              }
+              };
               if (itemId.startsWith('-')) {
                 ret.delete = true;
               }
               return ret;
             }),
             force_values: false,
-          }
+          };
           break;
 
         case 'dt-connection':
         case 'dt-location':
         case 'dt-tags':
           if (typeof value === 'string') {
-            returnValue = [{
-              id: value
-            }];
+            returnValue = [
+              {
+                id: value,
+              },
+            ];
           }
           returnValue = {
             values: returnValue.map(item => {
               const ret = {
                 value: item.id,
-              }
+              };
               if (item.delete) {
                 ret.delete = item.delete;
               }
               return ret;
             }),
             force_values: false,
-          }
+          };
           break;
 
         default:

@@ -12,24 +12,26 @@ export default class ApiService {
    * @param {string} base Base of URL endpoint. Defaults to "dt/v1/"
    * @returns {Promise<any>}
    */
-  async makeRequest(type, url, data, base = "dt/v1/") {
+  async makeRequest(type, url, data, base = 'dt/v1/') {
     // make sure base has a trailing slash if url does not start with one
     let urlBase = base;
     if (!urlBase.endsWith('/') && !url.startsWith('/')) {
-      urlBase += '/'
+      urlBase += '/';
     }
-    const fullURL = url.startsWith("http") ? url : `${this.apiRoot}${urlBase}${url}`;
+    const fullURL = url.startsWith('http')
+      ? url
+      : `${this.apiRoot}${urlBase}${url}`;
 
     const options = {
       method: type,
       credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/json',
-        'X-WP-Nonce' : this.nonce
+        'X-WP-Nonce': this.nonce,
       },
     };
 
-    if ( type !== "GET" ) {
+    if (type !== 'GET') {
       options.body = JSON.stringify(data);
     }
 
@@ -48,7 +50,7 @@ export default class ApiService {
    * @returns {Promise<any>}
    */
   async makeRequestOnPosts(type, url, data = {}) {
-    return this.makeRequest(type, url, data, "dt-posts/v2/");
+    return this.makeRequest(type, url, data, 'dt-posts/v2/');
   }
 
   // region Posts
@@ -101,7 +103,11 @@ export default class ApiService {
    * @returns {Promise<any>}
    */
   async getPostDuplicates(postType, postId, args) {
-    return this.makeRequestOnPosts('GET', `${postType}/${postId}/all_duplicates`, args);
+    return this.makeRequestOnPosts(
+      'GET',
+      `${postType}/${postId}/all_duplicates`,
+      args
+    );
   }
 
   /**
@@ -124,10 +130,14 @@ export default class ApiService {
    * @returns {Promise<any>}
    */
   async transferContactSummaryUpdate(contactId, update) {
-    return this.makeRequestOnPosts('POST', 'contacts/transfer/summary/send-update', {
-      contact_id: contactId,
-      update,
-    });
+    return this.makeRequestOnPosts(
+      'POST',
+      'contacts/transfer/summary/send-update',
+      {
+        contact_id: contactId,
+        update,
+      }
+    );
   }
 
   /**
@@ -138,9 +148,13 @@ export default class ApiService {
    * @returns {Promise<any>}
    */
   async requestRecordAccess(postType, postId, userId) {
-    return this.makeRequestOnPosts('POST', `${postType}/${postId}/request_record_access`, {
-      user_id: userId,
-    });
+    return this.makeRequestOnPosts(
+      'POST',
+      `${postType}/${postId}/request_record_access`,
+      {
+        user_id: userId,
+      }
+    );
   }
   // endregion
 
@@ -169,7 +183,13 @@ export default class ApiService {
    * @param {string} commentType
    * @returns {Promise<any>}
    */
-  async updateComment(postType, postId, commentId, commentContent, commentType = 'comment') {
+  async updateComment(
+    postType,
+    postId,
+    commentId,
+    commentContent,
+    commentType = 'comment'
+  ) {
     return this.makeRequestOnPosts(
       'POST',
       `${postType}/${postId}/comments/${commentId}`,
@@ -188,7 +208,10 @@ export default class ApiService {
    * @returns {Promise<any>}
    */
   async deleteComment(postType, postId, commentId) {
-    return this.makeRequestOnPosts('DELETE', `${postType}/${postId}/comments/${commentId}`);
+    return this.makeRequestOnPosts(
+      'DELETE',
+      `${postType}/${postId}/comments/${commentId}`
+    );
   }
 
   /**
@@ -218,10 +241,10 @@ export default class ApiService {
         user_id: userId,
         reaction,
       }
-    )
-  };
+    );
+  }
   // endregion
-  
+
   // region Activity
   /**
    * Get all activity for a post
@@ -241,7 +264,10 @@ export default class ApiService {
    * @returns {Promise<any>}
    */
   async getSingleActivity(postType, postId, activityId) {
-    return this.makeRequestOnPosts('GET', `${postType}/${postId}/activity/${activityId}`);
+    return this.makeRequestOnPosts(
+      'GET',
+      `${postType}/${postId}/activity/${activityId}`
+    );
   }
 
   /**
@@ -252,7 +278,10 @@ export default class ApiService {
    * @returns {Promise<any>}
    */
   async revertActivity(postType, postId, activityId) {
-    return this.makeRequestOnPosts('GET', `${postType}/${postId}/revert/${activityId}`);
+    return this.makeRequestOnPosts(
+      'GET',
+      `${postType}/${postId}/revert/${activityId}`
+    );
   }
 
   // endregion
@@ -358,14 +387,19 @@ export default class ApiService {
    * @returns {Promise<any>}
    */
   async advanced_search(query, postType, offset, filters) {
-    return this.makeRequest('GET', 'advanced_search', {
-      query,
-      postType,
-      offset,
-      post: filters.post,
-      comment: filters.comment,
-      meta: filters.meta,
-      status: filters.status
-    }, 'dt-posts/v2/posts/search/')
+    return this.makeRequest(
+      'GET',
+      'advanced_search',
+      {
+        query,
+        postType,
+        offset,
+        post: filters.post,
+        comment: filters.comment,
+        meta: filters.meta,
+        status: filters.status,
+      },
+      'dt-posts/v2/posts/search/'
+    );
   }
 }

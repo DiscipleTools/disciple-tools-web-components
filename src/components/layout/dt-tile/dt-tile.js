@@ -98,10 +98,16 @@ export class DtTile extends DtBase {
       <section>
         <h3 class="section-header">
           ${this.title}
-
-          ${this.expands ? html`
-          <button @click="${this._toggle}" class="toggle chevron ${this.collapsed ? 'down' : 'up'}">&nbsp;</button>
-          ` : null}
+          ${this.expands
+            ? html`
+                <button
+                  @click="${this._toggle}"
+                  class="toggle chevron ${this.collapsed ? 'down' : 'up'}"
+                >
+                  &nbsp;
+                </button>
+              `
+            : null}
         </h3>
         <div class="section-body ${this.collapsed ? 'collapsed' : null}">
           <slot></slot>

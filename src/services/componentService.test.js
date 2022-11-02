@@ -3,7 +3,6 @@ import ComponentService from './componentService.js';
 
 describe('ComponentService', () => {
   describe('convertValue', () => {
-
     describe('dt-connection', () => {
       it('handles null', async () => {
         const result = ComponentService.convertValue('dt-connection', null);
@@ -12,45 +11,59 @@ describe('ComponentService', () => {
       it('handles unexpected: string', () => {
         const result = ComponentService.convertValue('dt-connection', 'opt1');
         expect(result).to.eql({
-          values:[{
-            value: 'opt1',
-          }],
+          values: [
+            {
+              value: 'opt1',
+            },
+          ],
           force_values: false,
-        })
-      })
+        });
+      });
       it('handles expected: array of tags', async () => {
-        const result = ComponentService.convertValue('dt-connection', [{
-          id: 'opt1',
-          label: 'Option 1'
-        }, {
-          id: 'opt2',
-          label: 'Option 2',
-        }]);
+        const result = ComponentService.convertValue('dt-connection', [
+          {
+            id: 'opt1',
+            label: 'Option 1',
+          },
+          {
+            id: 'opt2',
+            label: 'Option 2',
+          },
+        ]);
         expect(result).to.eql({
-          values: [{
-            value: 'opt1',
-          }, {
-            value: 'opt2',
-          }],
+          values: [
+            {
+              value: 'opt1',
+            },
+            {
+              value: 'opt2',
+            },
+          ],
           force_values: false,
         });
       });
       it('handles expected: deleted items', () => {
-        const result = ComponentService.convertValue('dt-connection', [{
-          id: 'opt1',
-          label: 'Option 1'
-        }, {
-          id: 'opt2',
-          label: 'Option 2',
-          delete: true,
-        }]);
-        expect(result).to.eql({
-          values: [{
-            value: 'opt1',
-          }, {
-            value: 'opt2',
+        const result = ComponentService.convertValue('dt-connection', [
+          {
+            id: 'opt1',
+            label: 'Option 1',
+          },
+          {
+            id: 'opt2',
+            label: 'Option 2',
             delete: true,
-          }],
+          },
+        ]);
+        expect(result).to.eql({
+          values: [
+            {
+              value: 'opt1',
+            },
+            {
+              value: 'opt2',
+              delete: true,
+            },
+          ],
           force_values: false,
         });
       });
@@ -79,45 +92,59 @@ describe('ComponentService', () => {
       it('handles unexpected: string', () => {
         const result = ComponentService.convertValue('dt-location', 'opt1');
         expect(result).to.eql({
-          values:[{
-            value: 'opt1',
-          }],
+          values: [
+            {
+              value: 'opt1',
+            },
+          ],
           force_values: false,
-        })
-      })
+        });
+      });
       it('handles expected: array of tags', async () => {
-        const result = ComponentService.convertValue('dt-location', [{
-          id: 'opt1',
-          label: 'Option 1'
-        }, {
-          id: 'opt2',
-          label: 'Option 2',
-        }]);
+        const result = ComponentService.convertValue('dt-location', [
+          {
+            id: 'opt1',
+            label: 'Option 1',
+          },
+          {
+            id: 'opt2',
+            label: 'Option 2',
+          },
+        ]);
         expect(result).to.eql({
-          values: [{
-            value: 'opt1',
-          }, {
-            value: 'opt2',
-          }],
+          values: [
+            {
+              value: 'opt1',
+            },
+            {
+              value: 'opt2',
+            },
+          ],
           force_values: false,
         });
       });
       it('handles expected: deleted items', () => {
-        const result = ComponentService.convertValue('dt-location', [{
-          id: 'opt1',
-          label: 'Option 1'
-        }, {
-          id: 'opt2',
-          label: 'Option 2',
-          delete: true,
-        }]);
-        expect(result).to.eql({
-          values: [{
-            value: 'opt1',
-          }, {
-            value: 'opt2',
+        const result = ComponentService.convertValue('dt-location', [
+          {
+            id: 'opt1',
+            label: 'Option 1',
+          },
+          {
+            id: 'opt2',
+            label: 'Option 2',
             delete: true,
-          }],
+          },
+        ]);
+        expect(result).to.eql({
+          values: [
+            {
+              value: 'opt1',
+            },
+            {
+              value: 'opt2',
+              delete: true,
+            },
+          ],
           force_values: false,
         });
       });
@@ -131,32 +158,46 @@ describe('ComponentService', () => {
       it('handles unexpected: string', () => {
         const result = ComponentService.convertValue('dt-multi-select', 'opt1');
         expect(result).to.eql({
-          values:[{
-            value: 'opt1',
-          }],
+          values: [
+            {
+              value: 'opt1',
+            },
+          ],
           force_values: false,
-        })
-      })
+        });
+      });
       it('handles expected: array of IDs', async () => {
-        const result = ComponentService.convertValue('dt-multi-select', ['opt1', 'opt2']);
+        const result = ComponentService.convertValue('dt-multi-select', [
+          'opt1',
+          'opt2',
+        ]);
         expect(result).to.eql({
-          values: [{
-            value: 'opt1',
-          }, {
-            value: 'opt2',
-          }],
+          values: [
+            {
+              value: 'opt1',
+            },
+            {
+              value: 'opt2',
+            },
+          ],
           force_values: false,
         });
       });
       it('handles expected: deleted items', () => {
-        const result = ComponentService.convertValue('dt-multi-select', ['opt1', '-opt2']);
+        const result = ComponentService.convertValue('dt-multi-select', [
+          'opt1',
+          '-opt2',
+        ]);
         expect(result).to.eql({
-          values: [{
-            value: 'opt1',
-          }, {
-            value: 'opt2',
-            delete: true,
-          }],
+          values: [
+            {
+              value: 'opt1',
+            },
+            {
+              value: 'opt2',
+              delete: true,
+            },
+          ],
           force_values: false,
         });
       });
@@ -179,7 +220,10 @@ describe('ComponentService', () => {
         expect(result).to.be.null;
       });
       it('handles expected: string', async () => {
-        const result = ComponentService.convertValue('dt-single-select', 'test');
+        const result = ComponentService.convertValue(
+          'dt-single-select',
+          'test'
+        );
         expect(result).to.equal('test');
       });
     });
@@ -192,45 +236,59 @@ describe('ComponentService', () => {
       it('handles unexpected: string', () => {
         const result = ComponentService.convertValue('dt-tags', 'opt1');
         expect(result).to.eql({
-          values:[{
-            value: 'opt1',
-          }],
+          values: [
+            {
+              value: 'opt1',
+            },
+          ],
           force_values: false,
-        })
-      })
+        });
+      });
       it('handles expected: array of tags', async () => {
-        const result = ComponentService.convertValue('dt-tags', [{
-          id: 'opt1',
-          label: 'Option 1'
-        }, {
-          id: 'opt2',
-          label: 'Option 2',
-        }]);
+        const result = ComponentService.convertValue('dt-tags', [
+          {
+            id: 'opt1',
+            label: 'Option 1',
+          },
+          {
+            id: 'opt2',
+            label: 'Option 2',
+          },
+        ]);
         expect(result).to.eql({
-          values: [{
-            value: 'opt1',
-          }, {
-            value: 'opt2',
-          }],
+          values: [
+            {
+              value: 'opt1',
+            },
+            {
+              value: 'opt2',
+            },
+          ],
           force_values: false,
         });
       });
       it('handles expected: deleted items', () => {
-        const result = ComponentService.convertValue('dt-tags', [{
-          id: 'opt1',
-          label: 'Option 1'
-        }, {
-          id: 'opt2',
-          label: 'Option 2',
-          delete: true,
-        }]);
-        expect(result).to.eql({
-          values: [{
-            value: 'opt1',
-          }, {
-            value: 'opt2',
+        const result = ComponentService.convertValue('dt-tags', [
+          {
+            id: 'opt1',
+            label: 'Option 1',
+          },
+          {
+            id: 'opt2',
+            label: 'Option 2',
             delete: true,
-          }],
+          },
+        ]);
+        expect(result).to.eql({
+          values: [
+            {
+              value: 'opt1',
+            },
+            {
+              value: 'opt2',
+              delete: true,
+            },
+          ],
           force_values: false,
         });
       });
