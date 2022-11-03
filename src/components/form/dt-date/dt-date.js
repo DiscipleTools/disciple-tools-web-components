@@ -72,6 +72,10 @@ export class DtDate extends DtFormBase {
           background-color: var(--alert-color, #cc4b37);
           color: var(--text-color-inverse, #fefefe);
         }
+
+        .icon-overlay {
+          inset-inline-end: 5rem;
+        }
       `,
     ];
   }
@@ -96,8 +100,6 @@ export class DtDate extends DtFormBase {
         },
         reflect: true,
       },
-      loading: { type: Boolean },
-      saved: { type: Boolean },
       onchange: { type: String },
     };
   }
@@ -110,13 +112,9 @@ export class DtDate extends DtFormBase {
   //     });
   // }
 
-  updateTimestamp(timestamp) {
-    let timestampSecond = '';
-    let timestampMilliseconds = '';
-    if (typeof timestamp === 'number') {
-      timestampMilliseconds = new Date(timestamp).getTime();
-      timestampSecond = timestampMilliseconds / 1000;
-    }
+  updateTimestamp(value) {
+    const timestampMilliseconds = new Date(value).getTime();
+    const timestampSecond = timestampMilliseconds / 1000;
     const event = new CustomEvent('change', {
       detail: {
         field: this.name,
@@ -127,10 +125,10 @@ export class DtDate extends DtFormBase {
 
     this.dispatchEvent(event);
     this.timestamp = timestampMilliseconds;
-    this.value = timestamp;
+    this.value = value;
   }
 
-  onChange(e) {
+  _change(e) {
     this.updateTimestamp(e.target.value);
   }
 
@@ -163,7 +161,7 @@ export class DtDate extends DtFormBase {
           .value="${this.value}"
           .timestamp="${this.date}"
           ?disabled=${this.disabled}
-          @change="${this.onChange}"
+          @change="${this._change}"
           @click="${this.showDatePicker}"
         />
         <button
@@ -177,6 +175,18 @@ export class DtDate extends DtFormBase {
         >
           x
         </button>
+
+        ${(this.touched && this.invalid) || this.error
+          ? html`<dt-exclamation-circle
+              class="icon-overlay alert"
+            ></dt-exclamation-circle>`
+          : null}
+        ${this.loading
+          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
+          : null}
+        ${this.saved
+          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
+          : null}
       </div>
     `;
   }

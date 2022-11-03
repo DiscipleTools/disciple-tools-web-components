@@ -7,6 +7,7 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   files: [
     'src/components/**/test/*.test.js',
     'src/components/**/*.test.js',
+    'src/services/**/*.test.js',
   ],
 
   /** Resolve bare module imports */

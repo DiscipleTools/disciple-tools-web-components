@@ -82,7 +82,7 @@ export class DtText extends DtFormBase {
     };
   }
 
-  onChange(e) {
+  _change(e) {
     const event = new CustomEvent('change', {
       detail: {
         field: this.name,
@@ -151,7 +151,7 @@ export class DtText extends DtFormBase {
           ?required=${this.required}
           class="${classMap(this.classes)}"
           .value="${this.value || ''}"
-          @change=${this.onChange}
+          @change=${this._change}
           novalidate
           @keyup="${this.implicitFormSubmit}"
         />

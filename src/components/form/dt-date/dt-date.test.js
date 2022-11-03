@@ -1,11 +1,11 @@
 import { html } from 'lit';
-import { fixture, expect } from '@open-wc/testing';
+import { fixture, expect, oneEvent } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
-import '../dt-date.js';
+import './dt-date.js';
 
 describe('DT-Date', () => {
-  it('Check id, name, label, and value attributes display correctly', async () => {
+  it('displays id, name, label, and value attributes correctly', async () => {
     const el = await fixture(
       html`<dt-date
         id="name"
@@ -23,7 +23,7 @@ describe('DT-Date', () => {
     expect(el.timestamp).to.equal(1577836800000);
   });
 
-  it('update the text', async () => {
+  it('updates the text', async () => {
     const el = await fixture(html`<dt-date value="2020-01-01"></dt-date>`);
 
     el.shadowRoot.querySelector('input').value = '';
@@ -40,19 +40,38 @@ describe('DT-Date', () => {
     expect(el.value).to.equal('1999-01-01');
   });
 
-  it('check PHP timestamp', async () => {
+  it('triggers change event', async () => {
+    const el = await fixture(html`<dt-date name="custom-name"></dt-date>`);
+
+    el.shadowRoot.querySelector('input').value = '';
+    el.shadowRoot.querySelector('input').focus();
+
+    // The date input shows in the local and expects a MM-DD-YYYY format format but converts it to YYYY-MM-DD
+    await sendKeys({
+      type: '01-01-199',
+    });
+
+    setTimeout(() => sendKeys({ press: '9' }));
+
+    const { detail } = await oneEvent(el, 'change');
+
+    expect(detail.field).to.equal('custom-name');
+    expect(detail.newValue).to.eql(915148800);
+  });
+
+  it('accepts PHP timestamp', async () => {
     const el = await fixture(html`<dt-date timestamp="1577836800"></dt-date>`);
     expect(el.shadowRoot.querySelector('input').value).to.equal('2020-01-01');
   });
 
-  it('check JS timestamp', async () => {
+  it('accepts JS timestamp', async () => {
     const el = await fixture(
       html`<dt-date timestamp="1577836800000"></dt-date>`
     );
     expect(el.shadowRoot.querySelector('input').value).to.equal('2020-01-01');
   });
 
-  it('Check private field', async () => {
+  it('displays as private field', async () => {
     const el = await fixture(
       html`<dt-date label="Label Name" private></dt-date>`
     );
