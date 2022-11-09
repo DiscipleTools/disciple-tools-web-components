@@ -1,0 +1,44 @@
+## editors
+/.idea
+/.vscode
+
+## system files
+.DS_Store
+
+## npm
+/node_modules/
+/npm-debug.log
+*.tgz
+
+## testing
+/coverage/
+
+## temp folders
+/.tmp/
+
+# build
+/_site/
+/dist/
+/out-tsc/
+build
+/samples/html/js
+
+storybook-static
+custom-elements.json
+.history/
+
+# NPM-specific (above copied from .gitignore
+.editorconfig
+/.github
+/.storybook
+/samples
+/xliff
+!/dist/
+
+*.test.js
+*.stories.js
+*.config.mjs
+
+checkNodeVersion.js
+netlify.toml
+rollup.config.js

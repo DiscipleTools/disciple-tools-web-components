@@ -9,6 +9,31 @@ Clone the Repo then run
 npm install
 ```
 
+## Usage
+
+### Samples
+
+- [Use in static HTML](./samples/html) (Note: Need to [Build for use in HTML](#build-for-use-in-html), see below)
+- [Use in React](./samples/react-include)
+- [Use in Vue](./samples/vue-include)
+- [Extend your own Lit Components](./samples/lit-extend)
+
+### Build for use in HTML
+
+To build/transpile the components for use in basic HTML as a script include, run the following:
+
+```
+npm run build
+```
+
+This will create a `dist` directory with all of the final javascript files that can be included in any HTML page like so:
+
+```html
+<script type="module" src="/dist/form/index.js"></script>
+```
+
+You can then use any of the new elements in your HTML and they will be used from this library.
+
 ## Demoing with Storybook
 See the current Storybook [here](https://jade-chebakia-17493f.netlify.app/).
 
@@ -69,12 +94,6 @@ npm run test:watch
 - [@web/test-runner-commands](https://modern-web.dev/docs/test-runner/commands/) - simulating keyboard/mouse input
 - [ChaiJS](https://www.chaijs.com/api/bdd/) - Basic assertions
 - [Chai DOM](https://github.com/nathanboktae/chai-dom) - DOM assertions
-
-## Tooling configs
-
-For most of the tools, the configuration is in the `package.json` to minimize the amount of files in your project.
-
-If you customize the configuration a lot, you can consider moving them to individual files.
 
 ## Local Demo with `web-dev-server`
 

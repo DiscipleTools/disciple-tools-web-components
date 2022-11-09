@@ -18,33 +18,62 @@ export default {
   theme: 'default',
 };
 
-const options = [{
-  id: 'opt1', label: 'Option 1',
-}, {
-  id: 'opt2', label: 'Option 2',
-}, {
-  id: 'opt3', label: 'Option 3',
-}, {
-  id: 'opt4', label: 'Option 4',
-}, {
-  id: 'opt5', label: 'Option 5',
-}];
-const tags = [{
-  id: 'personal', label: 'Personal',
-}, {
-  id: 'web', label: 'Web',
-}, {
-  id: 'facebook', label: 'Facebook',
-}];
-const posts = [{
-  id: '1', label: 'John Doe',
-}, {
-  id: '2', label: 'Jane Smith', user: true,
-}, {
-  id: '3', label: 'Trevor Virtue', user: true,
-}, {
-  id: '4', label: 'Jane Meldrum',
-}]
+const options = [
+  {
+    id: 'opt1',
+    label: 'Option 1',
+  },
+  {
+    id: 'opt2',
+    label: 'Option 2',
+  },
+  {
+    id: 'opt3',
+    label: 'Option 3',
+  },
+  {
+    id: 'opt4',
+    label: 'Option 4',
+  },
+  {
+    id: 'opt5',
+    label: 'Option 5',
+  },
+];
+const tags = [
+  {
+    id: 'personal',
+    label: 'Personal',
+  },
+  {
+    id: 'web',
+    label: 'Web',
+  },
+  {
+    id: 'facebook',
+    label: 'Facebook',
+  },
+];
+const posts = [
+  {
+    id: '1',
+    label: 'John Doe',
+  },
+  {
+    id: '2',
+    label: 'Jane Smith',
+    user: true,
+  },
+  {
+    id: '3',
+    label: 'Trevor Virtue',
+    user: true,
+  },
+  {
+    id: '4',
+    label: 'Jane Meldrum',
+  },
+];
 function Template(theme) {
   return html`
     <style>
@@ -78,7 +107,7 @@ function Template(theme) {
 
       <dt-tags
         label="Tags Field"
-        value="${JSON.stringify([{id:'personal',label:'Personal'}])}"
+        value="${JSON.stringify([{ id: 'personal', label: 'Personal' }])}"
         options="${JSON.stringify(tags)}"
       ></dt-tags>
 

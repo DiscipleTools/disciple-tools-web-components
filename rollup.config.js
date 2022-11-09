@@ -1,14 +1,12 @@
 import resolve from '@rollup/plugin-node-resolve';
-import {copy} from '@web/rollup-plugin-copy';
+import { copy } from '@web/rollup-plugin-copy';
 import { terser } from 'rollup-plugin-terser';
 import minifyHTML from 'rollup-plugin-minify-html-literals';
 import summary from 'rollup-plugin-summary';
 import multiInput from 'rollup-plugin-multi-input';
 
 const copyConfig = {
-  targets: [
-    { src: 'node_modules/@webcomponents', dest: 'build/node_modules' },
-  ]
+  targets: [{ src: 'node_modules/@webcomponents', dest: 'build/node_modules' }],
 };
 
 const config = {
@@ -19,7 +17,7 @@ const config = {
   ],
   output: {
     dir: 'dist',
-    format: 'es'
+    format: 'es',
   },
   plugins: [
     multiInput({
@@ -39,7 +37,7 @@ const config = {
     summary(),
     copy(copyConfig),
   ],
-  preserveEntrySignatures: false
+  preserveEntrySignatures: false,
 };
 
 export default config;

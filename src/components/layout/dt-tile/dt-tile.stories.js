@@ -10,12 +10,16 @@ export default {
   title: 'dt-tile',
   component: 'dt-tile',
   argTypes: {
-    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
+    theme: {
+      control: 'select',
+      options: Object.keys(themes),
+      defaultValue: 'default',
+    },
     ...argTypes,
-  }
+  },
 };
 
-const Template = (args) => html`
+const Template = args => html`
   <style>
     ${themeCss(args)}
   </style>
@@ -47,7 +51,7 @@ const Template = (args) => html`
   </dt-tile>
 `;
 
-const templateArabic = (args) => html`
+const templateArabic = args => html`
   <style>
     ${themeCss(args)}
   </style>

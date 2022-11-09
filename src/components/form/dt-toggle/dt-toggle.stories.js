@@ -7,7 +7,11 @@ export default {
   title: 'Form/dt-toggle',
   component: 'dt-toggle',
   argTypes: {
-    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
+    theme: {
+      control: 'select',
+      options: Object.keys(themes),
+      defaultValue: 'default',
+    },
     id: { control: 'text' },
     name: { control: 'text' },
     label: { control: 'text' },
@@ -34,6 +38,7 @@ function Template(args) {
     required = false,
     requiredMessage = '',
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText = 'Icon Alt Text',
     isPrivate,
     privateLabel,
     loading = false,
@@ -43,7 +48,7 @@ function Template(args) {
   } = args;
   return html`
     <style>
-    ${themeCss(args)}
+      ${themeCss(args)}
     </style>
     <dt-toggle
       id=${id}
@@ -55,13 +60,14 @@ function Template(args) {
       ?required=${required}
       requiredMessage=${requiredMessage}
       icon="${icon}"
+      iconAltText="${iconAltText}"
       ?private=${isPrivate}
       privateLabel="${privateLabel}"
       ?loading=${loading}
       ?saved=${saved}
       onchange=${onchange}
     >
-    ${slot}
+      ${slot}
     </dt-toggle>
   `;
 }

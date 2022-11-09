@@ -41,7 +41,11 @@ export default {
   title: 'Form/dt-multi-select',
   component: 'dt-multi-select',
   argTypes: {
-    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
+    theme: {
+      control: 'select',
+      options: Object.keys(themes),
+      defaultValue: 'default',
+    },
     name: {
       control: 'text',
       type: { name: 'string', required: true },
@@ -124,6 +128,7 @@ function Template(args) {
     value,
     disabled = false,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText = 'Icon Alt Text',
     isPrivate,
     privateLabel,
     loading = false,
@@ -131,30 +136,11 @@ function Template(args) {
     onchange,
     open,
     slot,
-    i18n,
-    locale,
   } = args;
   return html`
     <style>
       ${themeCss(args)}
     </style>
-    <script>
-      function onChange(event) {
-        if (event?.target) {
-          event.target.setAttribute('loading', true);
-          console.log(
-            'Value changed from ' +
-              JSON.stringify(event.detail.oldValue) +
-              ' to ' +
-              JSON.stringify(event.detail.newValue)
-          );
-          setTimeout(function () {
-            event.target.removeAttribute('loading');
-            event.target.setAttribute('saved', true);
-          }, 1000);
-        }
-      }
-    </script>
     <dt-multi-select
       name="${name}"
       label=${label}
@@ -164,6 +150,7 @@ function Template(args) {
       onchange="${onchange}"
       ?disabled=${disabled}
       icon="${icon}"
+      iconAltText="${iconAltText}"
       ?private=${isPrivate}
       privateLabel="${privateLabel}"
       ?loading="${loading}"
@@ -180,6 +167,7 @@ export const Empty = Template.bind({});
 export const SvgIcon = Template.bind({});
 SvgIcon.args = {
   icon: null,
+  // prettier-ignore
   slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
 };
 
@@ -219,7 +207,7 @@ NoOptionsAvailable.args = {
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
-  onchange: 'onChange(event)',
+  onchange: 'onAutoSave(event)',
 };
 
 export const Disabled = Template.bind({});
@@ -248,14 +236,18 @@ LocalizeRTL.args = {
   dir: 'rtl',
   label: 'اسم الإدخال',
   value: ['opt1'],
-  options: [{
-    id: 'opt1',
-    label: 'تنكر هؤلاء الرجال المفتونون',
-  }, {
-    id: 'opt2',
-    label: 'م فيتساوي مع هؤلاء',
-  }, {
-    id: 'opt3',
-    label: 'فلا أحد يرفض',
-  }]
+  options: [
+    {
+      id: 'opt1',
+      label: 'تنكر هؤلاء الرجال المفتونون',
+    },
+    {
+      id: 'opt2',
+      label: 'م فيتساوي مع هؤلاء',
+    },
+    {
+      id: 'opt3',
+      label: 'فلا أحد يرفض',
+    },
+  ],
 };

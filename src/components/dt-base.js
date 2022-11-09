@@ -1,7 +1,7 @@
 import { LitElement } from 'lit';
-import {updateWhenLocaleChanges} from '@lit/localize';
+import { updateWhenLocaleChanges } from '@lit/localize';
 import { setLocale } from '../i18n/localization.js';
-import 'element-internals-polyfill';
+import 'element-internals-polyfill'; // eslint-disable-line import/no-extraneous-dependencies
 
 export default class DtBase extends LitElement {
   static get properties() {
@@ -16,7 +16,6 @@ export default class DtBase extends LitElement {
   }
 
   willUpdate(props) {
-
     // get RTL from closest parent with [dir] attribute
     if (this.RTL === undefined) {
       const dirEl = this.closest('[dir]');

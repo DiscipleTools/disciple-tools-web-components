@@ -21,7 +21,7 @@ export class DtTile extends DtBase {
         border-radius: var(--dt-tile-border-radius, 10px);
         box-shadow: var(--dt-tile-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
         padding: 1rem;
-        margin: var(--dt-tile-margin, 0); 
+        margin: var(--dt-tile-margin, 0);
       }
 
       h3 {
@@ -110,10 +110,16 @@ export class DtTile extends DtBase {
     return html`
         <h3 class="section-header">
           ${this.title}
-
-          ${this.expands ? html`
-          <button @click="${this._toggle}" class="toggle chevron ${this.collapsed ? 'down' : 'up'}">&nbsp;</button>
-          ` : null}
+          ${this.expands
+            ? html`
+                <button
+                  @click="${this._toggle}"
+                  class="toggle chevron ${this.collapsed ? 'down' : 'up'}"
+                >
+                  &nbsp;
+                </button>
+              `
+            : null}
         </h3>
     `
   }

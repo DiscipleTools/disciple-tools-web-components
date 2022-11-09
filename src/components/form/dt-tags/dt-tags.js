@@ -15,21 +15,22 @@ export class DtTags extends DtMultiSelect {
     return [
       ...super.styles,
       css`
-      .selected-option a,
-      .selected-option a:active,
-      .selected-option a:visited {
-        text-decoration: none;
-        color: var(--primary-color, #3f729b);
-      }
-    `];
+        .selected-option a,
+        .selected-option a:active,
+        .selected-option a:visited {
+          text-decoration: none;
+          color: var(--primary-color, #3f729b);
+        }
+      `,
+    ];
   }
 
   _clickOption(e) {
     if (e.target && e.target.value) {
       const id = e.target.value;
-      const option = this.filteredOptions.reduce((result, option) => {
-        if (!result && option.id === id) {
-          return option;
+      const option = this.filteredOptions.reduce((result, opt) => {
+        if (!result && opt.id === id) {
+          return opt;
         }
         return result;
       }, null);
@@ -49,6 +50,12 @@ export class DtTags extends DtMultiSelect {
 
   _remove(e) {
     if (e.target && e.target.dataset && e.target.dataset.value) {
+      const event = new CustomEvent('change', {
+        detail: {
+          field: this.name,
+          oldValue: this.value,
+        },
+      });
       this.value = (this.value || []).map(i => {
         const val = {
           ...i,
@@ -58,6 +65,10 @@ export class DtTags extends DtMultiSelect {
         }
         return val;
       });
+      event.detail.newValue = this.value;
+
+      // dispatch event for use with addEventListener from javascript
+      this.dispatchEvent(event);
 
       // If option was de-selected while list was open, re-focus input
       if (this.open) {
@@ -94,7 +105,9 @@ export class DtTags extends DtMultiSelect {
    * @private
    */
   _filterOptions() {
-    const selectedValues = (this.value || []).filter(i => !i.delete).map(v => v?.id);
+    const selectedValues = (this.value || [])
+      .filter(i => !i.delete)
+      .map(v => v?.id);
 
     if (this.options?.length) {
       this.filteredOptions = (this.options || []).filter(
@@ -162,14 +175,27 @@ export class DtTags extends DtMultiSelect {
   }
 
   _renderSelectedOptions() {
-    return (this.value || []).filter(i => !i.delete).map(
-      opt => html`
-        <div class="selected-option">
-          <a href="${opt.link}" ?disabled="${this.disabled}" alt="${opt.status ? opt.status.label : opt.label}">${opt.label}</a>
-          <button @click="${this._remove}" ?disabled="${this.disabled}" data-value="${opt.id}">x</button>
-        </div>
-      `
-    );
+    return (this.value || [])
+      .filter(i => !i.delete)
+      .map(
+        opt => html`
+          <div class="selected-option">
+            <a
+              href="${opt.link}"
+              ?disabled="${this.disabled}"
+              alt="${opt.status ? opt.status.label : opt.label}"
+              >${opt.label}</a
+            >
+            <button
+              @click="${this._remove}"
+              ?disabled="${this.disabled}"
+              data-value="${opt.id}"
+            >
+              x
+            </button>
+          </div>
+        `
+      );
   }
 }
 

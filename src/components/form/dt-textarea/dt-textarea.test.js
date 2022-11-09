@@ -2,12 +2,18 @@ import { html } from 'lit';
 import { fixture, expect } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
+import './dt-textarea.js';
 
-import '../dt-textarea.js';
-
-describe('dt-textareaarea', () => {
+describe('dt-textarea', () => {
   it('Check id, name, label, and value attributes display correctly', async () => {
-    const el = await fixture(html`<dt-textarea id='name' name='Name' label='Label Name' value='John Doe'></dt-textarea>`);
+    const el = await fixture(
+      html`<dt-textarea
+        id="name"
+        name="Name"
+        label="Label Name"
+        value="John Doe"
+      ></dt-textarea>`
+    );
 
     expect(el.id).to.equal('name');
     expect(el.name).to.equal('Name');
@@ -16,7 +22,14 @@ describe('dt-textareaarea', () => {
   });
 
   it('update the text', async () => {
-    const el = await fixture(html`<dt-textarea id='name' name='Name' label='Label Name' value='John Doe'></dt-textarea>`);
+    const el = await fixture(
+      html`<dt-textarea
+        id="name"
+        name="Name"
+        label="Label Name"
+        value="John Doe"
+      ></dt-textarea>`
+    );
     el.shadowRoot.querySelector('textarea').value = '';
     el.shadowRoot.querySelector('textarea').focus();
 
@@ -30,19 +43,28 @@ describe('dt-textareaarea', () => {
   });
 
   it('textarea disabled', async () => {
-    const el = await fixture(html`<dt-textarea disabled ></dt-textarea>`);
-    expect(el.shadowRoot.querySelector('textarea').disabled).to.be.true
+    const el = await fixture(html`<dt-textarea disabled></dt-textarea>`);
+    expect(el.shadowRoot.querySelector('textarea').disabled).to.be.true;
   });
 
   it('Check private field', async () => {
-    const el = await fixture(html`<dt-textarea label='Label Name' private></dt-textarea>`);
+    const el = await fixture(
+      html`<dt-textarea label="Label Name" private></dt-textarea>`
+    );
     const label = await fixture(el.shadowRoot.querySelector('dt-label'));
 
     expect(label.hasAttribute('private')).to.be.true;
   });
 
   it('passes the a11y audit', async () => {
-    const el = await fixture(html`<dt-textarea id='name' name='Name' label='Label Name' value='John Doe'></dt-textarea>`);
+    const el = await fixture(
+      html`<dt-textarea
+        id="name"
+        name="Name"
+        label="Label Name"
+        value="John Doe"
+      ></dt-textarea>`
+    );
 
     await expect(el).shadowDom.to.be.accessible();
   });

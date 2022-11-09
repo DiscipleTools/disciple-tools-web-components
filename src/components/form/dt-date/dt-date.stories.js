@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import './dt-date.js';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils';
+import { LocaleDecorator } from '../../../stories-utils.js';
 
 export default {
   title: 'Form/dt-date',
@@ -9,7 +9,11 @@ export default {
   argTypes: {
     id: { control: 'text' },
     name: { control: 'text' },
-    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
+    theme: {
+      control: 'select',
+      options: Object.keys(themes),
+      defaultValue: 'default',
+    },
     label: { control: 'text' },
     value: { control: 'number' },
     date: { control: 'text' },
@@ -22,8 +26,8 @@ export default {
     ...argTypes,
   },
   args: {
-    theme: 'default'
-  }
+    theme: 'default',
+  },
 };
 
 function Template(args) {
@@ -34,16 +38,17 @@ function Template(args) {
     value = '',
     timestamp = 0,
     disabled,
-    icon='https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     isPrivate,
     loading,
     saved,
-    onchange,
+    error,
+    onChange,
     slot,
   } = args;
   return html`
     <style>
-    ${themeCss(args)}
+      ${themeCss(args)}
     </style>
     <dt-date
       id=${id}
@@ -56,7 +61,8 @@ function Template(args) {
       ?private=${isPrivate}
       ?loading=${loading}
       ?saved=${saved}
-      onchange=${onchange}
+      ?error=${error}
+      onchange=${onChange}
     >
       ${slot}
     </dt-date>
@@ -68,6 +74,7 @@ export const Empty = Template.bind({});
 export const SvgIcon = Template.bind({});
 SvgIcon.args = {
   icon: null,
+  // prettier-ignore
   slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
 };
 
@@ -90,6 +97,24 @@ export const Disabled = Template.bind({});
 Disabled.args = {
   value: '2020-01-01',
   disabled: true,
+};
+
+export const AutoSave = Template.bind({});
+AutoSave.args = {
+  onChange: 'onAutoSave(event)',
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+  loading: true,
+};
+export const Saved = Template.bind({});
+Saved.args = {
+  saved: true,
+};
+export const Error = Template.bind({});
+Error.args = {
+  error: true,
 };
 
 export const LocalizeRTL = Template.bind({});

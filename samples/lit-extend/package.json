@@ -1,0 +1,24 @@
+{
+  "name": "lit-extend",
+  "description": "Webcomponent lit-extend following open-wc recommendations",
+  "license": "MIT",
+  "author": "lit-extend",
+  "version": "0.0.0",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "analyze": "cem analyze --litelement",
+    "start": "web-dev-server",
+    "storybook": "npm run analyze -- --exclude dist && web-dev-server -c .storybook/server.mjs",
+    "storybook:build": "npm run analyze -- --exclude dist && build-storybook"
+  },
+  "dependencies": {
+    "lit": "^2.0.2"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.4.17",
+    "@web/dev-server": "^0.1.34",
+    "@web/dev-server-storybook": "^0.5.4"
+  },
+  "customElements": "custom-elements.json"
+}

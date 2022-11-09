@@ -44,7 +44,11 @@ export default {
   component: 'dt-single-select',
   argTypes: {
     name: { control: 'text' },
-    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
+    theme: {
+      control: 'select',
+      options: Object.keys(themes),
+      defaultValue: 'default',
+    },
     placeholder: { control: 'text' },
     value: { control: 'text' },
     isLoading: { control: 'boolean' },
@@ -61,6 +65,7 @@ function Template(args) {
     placeholder,
     value,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText = 'Icon Alt Text',
     disabled,
     isPrivate,
     privateLabel,
@@ -72,25 +77,8 @@ function Template(args) {
   } = args;
   return html`
     <style>
-    ${themeCss(args)}
+      ${themeCss(args)}
     </style>
-    <script>
-      function onChange(event) {
-        if (event?.target) {
-          event.target.setAttribute('loading', true);
-          console.log(
-            'Value changed from ' +
-              JSON.stringify(event.detail.oldValue) +
-              ' to ' +
-              JSON.stringify(event.detail.newValue)
-          );
-          setTimeout(function () {
-            event.target.removeAttribute('loading');
-            event.target.setAttribute('saved', true);
-          }, 1000);
-        }
-      }
-    </script>
     <dt-single-select
       name="${name}"
       label="${label}"
@@ -98,6 +86,7 @@ function Template(args) {
       options="${JSON.stringify(options)}"
       value="${value}"
       icon="${icon}"
+      iconAltText="${iconAltText}"
       ?disabled=${disabled}
       ?private=${isPrivate}
       privateLabel="${privateLabel}"
@@ -106,7 +95,7 @@ function Template(args) {
       ?saved="${isSaved}"
       ?rtl="${RTL}"
     >
-    ${slot}
+      ${slot}
     </dt-single-select>
   `;
 }
@@ -116,6 +105,7 @@ export const Empty = Template.bind({});
 export const SvgIcon = Template.bind({});
 SvgIcon.args = {
   icon: null,
+  // prettier-ignore
   slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
 };
 
@@ -141,10 +131,15 @@ ColorChange.args = {
   options: colorOptions,
 };
 
+export const ColorChangeNotSelected = Template.bind({});
+ColorChangeNotSelected.args = {
+  options: colorOptions,
+};
+
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
-  onChange: 'onChange(event)',
+  onChange: 'onAutoSave(event)',
 };
 
 export const Disabled = Template.bind({});
@@ -176,14 +171,18 @@ LocalizeRTL.args = {
   placeholder: 'حدد العلامات',
   isSaved: true,
   value: 'opt2',
-  options: [{
-    id: 'opt1',
-    label: 'تنكر هؤلاء الرجال المفتونون',
-  }, {
-    id: 'opt2',
-    label: 'م فيتساوي مع هؤلاء',
-  }, {
-    id: 'opt3',
-    label: 'فلا أحد يرفض',
-  }]
+  options: [
+    {
+      id: 'opt1',
+      label: 'تنكر هؤلاء الرجال المفتونون',
+    },
+    {
+      id: 'opt2',
+      label: 'م فيتساوي مع هؤلاء',
+    },
+    {
+      id: 'opt3',
+      label: 'فلا أحد يرفض',
+    },
+  ],
 };

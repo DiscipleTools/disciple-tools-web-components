@@ -71,7 +71,8 @@ export const themes = {
 
       textareaBorderColor: 'var(--dt-form-border-color)',
       textareaBackgroundColor: 'var(--dt-form-background-color)',
-      textareaDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
+      textareaDisabledBackgroundColor:
+        'var(--dt-form-disabled-background-color)',
       textareaTextColor: 'var(--dt-form-text-color)',
       textareaTextcolorInverse: 'var(--dt-form-text-color-inverse)',
 
@@ -106,7 +107,8 @@ export const themes = {
       listBorderColor: 'var(--border-color)',
       listActionSectionBackgroundColor: 'var(--primary-color-light-0, #ecf5fc)',
       listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
-      listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
+      listheaderBackgroundHover:
+        'var(--dt-list-hover-background-color, #ecf5fc)',
       listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
       listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
@@ -114,7 +116,7 @@ export const themes = {
 
       modalBackgroundColor: 'var(--dt-modal-background-color, #fff)',
       modalColor: 'var(--dt-modal-color, #000)',
-      modalButtonColor:'var(--text-color-inverse, #fff)',
+      modalButtonColor: 'var(--text-color-inverse, #fff)',
       modalButtonBackground: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
@@ -128,7 +130,6 @@ export const themes = {
       alertShadow: 'var(--shadow-0)',
 
       background: 'var(--surface-0)',
-
     },
   },
   dark: {
@@ -149,7 +150,7 @@ export const themes = {
       surface0: '#212529',
       surface1: '#343a40',
       surface2: '#495057',
-      surface3:'#868e96',
+      surface3: '#868e96',
 
       borderColor: '#868e96v',
 
@@ -201,7 +202,8 @@ export const themes = {
 
       textareaBorderColor: 'var(--dt-form-border-color)',
       textareaBackgroundColor: 'var(--dt-form-background-color)',
-      textareaDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
+      textareaDisabledBackgroundColor:
+        'var(--dt-form-disabled-background-color)',
       textareaTextColor: 'var(--dt-form-text-color)',
       textareaTextcolorInverse: 'var(--dt-form-text-color-inverse)',
 
@@ -235,7 +237,8 @@ export const themes = {
       listBorderColor: 'var(--border-color)',
       listActionSectionBackgroundColor: 'var(--primary-color-light-0, #ecf5fc)',
       listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
-      listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
+      listheaderBackgroundHover:
+        'var(--dt-list-hover-background-color, #ecf5fc)',
       listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
       listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
@@ -243,7 +246,7 @@ export const themes = {
 
       modalBackgroundColor: 'var(--dt-modal-background-color, #fff)',
       modalColor: 'var(--dt-modal-color, #000)',
-      modalButtonColor:'var(--text-color-inverse, #fff)',
+      modalButtonColor: 'var(--text-color-inverse, #fff)',
       modalButtonBackground: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
@@ -253,7 +256,7 @@ export const themes = {
       alertFontSize: '14px;',
       alertFontWeight: '700',
       alertBackground: 'var(--surface-1)',
-      alertBorderColor:'var(--border-color)',
+      alertBorderColor: 'var(--border-color)',
       alertShadow: 'var(--shadow-0)',
 
       background: 'var(--surface-0)',
@@ -277,7 +280,7 @@ export const themes = {
       surface0: 'hsla(207, 9%, 31%, 1)',
       surface1: 'hsla(207, 7%, 56%, 1)',
       surface2: 'hsla(207, 7%, 60%, 1)',
-      surface3:'hsla(207, 4%, 70%, 1)',
+      surface3: 'hsla(207, 4%, 70%, 1)',
 
       borderColor: '#868e96v',
 
@@ -330,7 +333,8 @@ export const themes = {
 
       textareaBorderColor: 'var(--dt-form-border-color)',
       textareaBackgroundColor: 'var(--dt-form-background-color)',
-      textareaDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
+      textareaDisabledBackgroundColor:
+        'var(--dt-form-disabled-background-color)',
       textareaTextColor: 'var(--dt-form-text-color)',
       textareaTextcolorInverse: 'var(--dt-form-text-color-inverse)',
 
@@ -364,7 +368,8 @@ export const themes = {
       listBorderColor: 'var(--border-color)',
       listActionSectionBackgroundColor: 'var(--primary-color-light-0, #ecf5fc)',
       listheaderBackground: 'var(--dt-tile-background-color, #fefefe)',
-      listheaderBackgroundHover: 'var(--dt-list-hover-background-color, #ecf5fc)',
+      listheaderBackgroundHover:
+        'var(--dt-list-hover-background-color, #ecf5fc)',
       listSortArrowColor: 'var(--dt-list-sort-arrow-color, #808080)',
       listSortArrowColorHighlight: 'var(--primary-color, #3f729b)',
       listHeaderColor: 'var(--dt-list-header-color, #0a0a0a)',
@@ -372,7 +377,7 @@ export const themes = {
 
       modalBackgroundColor: 'var(--dt-modal-background-color, #fff)',
       modalColor: 'var(--dt-modal-color, #000)',
-      modalButtonColor:'var(--text-color-inverse, #fff)',
+      modalButtonColor: 'var(--text-color-inverse, #fff)',
       modalButtonBackground: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
@@ -390,10 +395,21 @@ export const themes = {
   },
 };
 
-export const contexts = ['primary', 'alert', 'caution', 'success', 'inactive', 'disabled'];
+export const contexts = [
+  'primary',
+  'alert',
+  'caution',
+  'success',
+  'inactive',
+  'disabled',
+];
 
 export const argTypes = {
-  theme: { control: 'select', options: Object.keys(themes), defaultValue: ['default'] },
+  theme: {
+    control: 'select',
+    options: Object.keys(themes),
+    defaultValue: ['default'],
+  },
   lang: { constrol: 'text' },
   dir: { control: 'text' },
   primaryColor: { control: 'color' },
@@ -522,9 +538,9 @@ function getArg(storyArgs, argName) {
   }
 
   if (storyArgs.theme) {
-    return themes[storyArgs.theme].args[argName]
+    return themes[storyArgs.theme].args[argName];
   }
-  storyArgs.theme = 'default';
+  // storyArgs.theme = 'default';
   return themes.default.args[argName];
 }
 
@@ -563,7 +579,10 @@ export function themeCss(storyArgs) {
     --dt-form-border-color: ${getArg(storyArgs, 'formBorderColor')};
     --dt-form-border-color-alert: ${getArg(storyArgs, 'formBorderColorAlert')};
     --dt-form-background-color: ${getArg(storyArgs, 'formBackgroundColor')};
-    --dt-form-disabled-background-color: ${getArg(storyArgs, 'formDisabledBackgroundColor')};
+    --dt-form-disabled-background-color: ${getArg(
+      storyArgs,
+      'formDisabledBackgroundColor'
+    )};
     --dt-form-text-color: ${getArg(storyArgs, 'formTextColor')};
     --dt-form-text-color-inverse: ${getArg(storyArgs, 'formTextColorInverse')};
     --dt-form-text-border-color: ${getArg(storyArgs, 'formBorderColor')};
@@ -573,13 +592,31 @@ export function themeCss(storyArgs) {
 
     --dt-connection-icon-fill: ${getArg(storyArgs, 'connectionIconFill')};
     --dt-multi-select-text-color: ${getArg(storyArgs, 'multiSelectTextColor')};
-    --dt-multi-select-background-color: ${getArg(storyArgs, 'multiSelectBackgroundColor')};
-    --dt-multi-select-tag-border-color: ${getArg(storyArgs, 'multiSelectTagBorderColor')};
-    --dt-multi-select-tag-background-color: ${getArg(storyArgs, 'multiSelectTagBackgroundColor')};
-    --dt-multi-select-option-hover-background: ${getArg(storyArgs, 'multiSelectOptionHoverBackground')};
+    --dt-multi-select-background-color: ${getArg(
+      storyArgs,
+      'multiSelectBackgroundColor'
+    )};
+    --dt-multi-select-tag-border-color: ${getArg(
+      storyArgs,
+      'multiSelectTagBorderColor'
+    )};
+    --dt-multi-select-tag-background-color: ${getArg(
+      storyArgs,
+      'multiSelectTagBackgroundColor'
+    )};
+    --dt-multi-select-option-hover-background: ${getArg(
+      storyArgs,
+      'multiSelectOptionHoverBackground'
+    )};
 
-    --dt-single-select-text-color: ${getArg(storyArgs, 'singleSelectTextColor')};
-    --dt-single-select-text-color-inverse: ${getArg(storyArgs, 'singleSelectTextColorInverse')};
+    --dt-single-select-text-color: ${getArg(
+      storyArgs,
+      'singleSelectTextColor'
+    )};
+    --dt-single-select-text-color-inverse: ${getArg(
+      storyArgs,
+      'singleSelectTextColorInverse'
+    )};
 
     --dt-text-color: ${getArg(storyArgs, 'dttextColor')};
     --dt-text-color-inverse: ${getArg(storyArgs, 'dttextColorInverse')};
@@ -587,33 +624,66 @@ export function themeCss(storyArgs) {
     --dt-text-background-color: ${getArg(storyArgs, 'textBackgroundColor')};
     --dt-text-border-color: ${getArg(storyArgs, 'textBorderColor')};
     --dt-text-border-color-alert: ${getArg(storyArgs, 'textBorderColorAlert')};
-    --dt-text-disabled-background-color: ${getArg(storyArgs, 'textDisabledBackgroundColor')};
+    --dt-text-disabled-background-color: ${getArg(
+      storyArgs,
+      'textDisabledBackgroundColor'
+    )};
     --dt-text-border-radius: ${getArg(storyArgs, 'textBorderRadius')};
     --dt-text-box-shadow: ${getArg(storyArgs, 'textBoxShadow')};
     --dt-text-placeholder-color: ${getArg(storyArgs, 'textPlaceholderColor')};
-    --dt-text-placeholder-text-transform: ${getArg(storyArgs, 'textPlaceholderTextTransform')};
-    --dt-text-placeholder-font-size: ${getArg(storyArgs, 'textPlaceholderFontSize')};
-    --dt-text-placeholder-font-weight: ${getArg(storyArgs, 'textPlaceholderFontWeight')};
-    --dt-text-placeholder-letter-spacing: ${getArg(storyArgs, 'textPlaceholderLetterSpacing')};
+    --dt-text-placeholder-text-transform: ${getArg(
+      storyArgs,
+      'textPlaceholderTextTransform'
+    )};
+    --dt-text-placeholder-font-size: ${getArg(
+      storyArgs,
+      'textPlaceholderFontSize'
+    )};
+    --dt-text-placeholder-font-weight: ${getArg(
+      storyArgs,
+      'textPlaceholderFontWeight'
+    )};
+    --dt-text-placeholder-letter-spacing: ${getArg(
+      storyArgs,
+      'textPlaceholderLetterSpacing'
+    )};
 
     --dt-textarea-border-color: ${getArg(storyArgs, 'textareaBorderColor')};
-    --dt-textarea-background-color: ${getArg(storyArgs, 'textareaBackgroundColor')};
-    --dt-textarea-disabled-background-color: ${getArg(storyArgs, 'textareaDisabledBackgroundColor')};
+    --dt-textarea-background-color: ${getArg(
+      storyArgs,
+      'textareaBackgroundColor'
+    )};
+    --dt-textarea-disabled-background-color: ${getArg(
+      storyArgs,
+      'textareaDisabledBackgroundColor'
+    )};
     --dt-textarea-text-color: ${getArg(storyArgs, 'textareaTextColor')};
-    --dt-textarea-text-color-inverse: ${getArg(storyArgs, 'textareaTextcolorInverse')};
+    --dt-textarea-text-color-inverse: ${getArg(
+      storyArgs,
+      'textareaTextcolorInverse'
+    )};
 
     --dt-label-font-size: ${getArg(storyArgs, 'labelFontSize')};
     --dt-label-font-weight: ${getArg(storyArgs, 'labelFontWeight')};
     --dt-label-color: ${getArg(storyArgs, 'labelTextColor')};
     --dt-label-tooltip-color: ${getArg(storyArgs, 'labelTooltipColor')};
-    --dt-label-tooltip-background: ${getArg(storyArgs, 'labelTooltipBackground')};
+    --dt-label-tooltip-background: ${getArg(
+      storyArgs,
+      'labelTooltipBackground'
+    )};
 
     --dt-spinner-color-1: ${getArg(storyArgs, 'spinnerColor1')};
     --dt-spinner-color-2: ${getArg(storyArgs, 'spinnerColor2')};
     --dt-tile-font-family: ${getArg(storyArgs, 'tileFontFamily')};
 
-    --dt-toggle-background-color-on: ${getArg(storyArgs, 'toggleBackgroundColorOn')};
-    --dt-toggle-background-color-off: ${getArg(storyArgs, 'toggleBackgroundColorOff')};
+    --dt-toggle-background-color-on: ${getArg(
+      storyArgs,
+      'toggleBackgroundColorOn'
+    )};
+    --dt-toggle-background-color-off: ${getArg(
+      storyArgs,
+      'toggleBackgroundColorOff'
+    )};
     --dt-toggle-border-color: ${getArg(storyArgs, 'toggleBorderColor')};
     --dt-toggle-icon-success: ${getArg(storyArgs, 'toggleIconSuccess')};
     --dt-toggle-icon-alert: ${getArg(storyArgs, 'toggleIconAlert')};
@@ -645,13 +715,25 @@ export function themeCss(storyArgs) {
     --dt-list-font-weight: ${getArg(storyArgs, 'listFontWeight')};
     --dt-list-line-height: ${getArg(storyArgs, 'listLineHeight')};
     --dt-list-border-color: ${getArg(storyArgs, 'listBorderColor')};
-    --dt-list-action-section-background-color: ${getArg(storyArgs, 'listActionSectionBackgroundColor')};
-    --dt-list-header-background-color: ${getArg(storyArgs, 'listHeaderBackgroundColor')};
+    --dt-list-action-section-background-color: ${getArg(
+      storyArgs,
+      'listActionSectionBackgroundColor'
+    )};
+    --dt-list-header-background-color: ${getArg(
+      storyArgs,
+      'listHeaderBackgroundColor'
+    )};
     --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
     --dt-list-background-color: ${getArg(storyArgs, 'listheaderBackground')};
-    --dt-list-hover-background-color: ${getArg(storyArgs, 'listheaderHoverBackground')};
+    --dt-list-hover-background-color: ${getArg(
+      storyArgs,
+      'listheaderHoverBackground'
+    )};
     --dt-list-sort-arrow-color: ${getArg(storyArgs, 'listSortArrowColor')};
-    --dt-list-sort-arrow-color-highlight: ${getArg(storyArgs, 'listSortArrowColorHighlight')};
+    --dt-list-sort-arrow-color-highlight: ${getArg(
+      storyArgs,
+      'listSortArrowColorHighlight'
+    )};
     --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
     --dt-list-link-color: ${getArg(storyArgs, 'listLinkColor')};
 

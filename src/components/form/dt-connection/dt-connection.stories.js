@@ -60,7 +60,11 @@ export default {
   title: 'Form/dt-connection',
   component: 'dt-connection',
   argTypes: {
-    theme: { control: 'select', options: Object.keys(themes), defaultValue: 'default' },
+    theme: {
+      control: 'select',
+      options: Object.keys(themes),
+      defaultValue: 'default',
+    },
     name: {
       control: 'text',
       type: { name: 'string', required: true },
@@ -167,6 +171,7 @@ function Template(args) {
     value,
     disabled = false,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText = 'Icon Alt Text',
     isPrivate,
     privateLabel,
     loading = false,
@@ -182,21 +187,6 @@ function Template(args) {
       ${themeCss(args)}
     </style>
     <script>
-      function onChange(event) {
-        if (event?.target) {
-          event.target.setAttribute('loading', true);
-          console.log(
-            'Value changed from ' +
-              JSON.stringify(event.detail.oldValue) +
-              ' to ' +
-              JSON.stringify(event.detail.newValue)
-          );
-          setTimeout(function () {
-            event.target.removeAttribute('loading');
-            event.target.setAttribute('saved', true);
-          }, 1000);
-        }
-      }
       function onLoad(event) {
         console.log('fetching data', event);
         const { field, query, onSuccess, onError } = event.detail;
@@ -227,6 +217,7 @@ function Template(args) {
       onload="${onload}"
       ?disabled=${disabled}
       icon="${icon}"
+      iconAltText="${iconAltText}"
       ?private=${isPrivate}
       privateLabel="${privateLabel}"
       ?allowAdd="${allowAdd}"
@@ -247,6 +238,7 @@ Empty.args = {
 export const SvgIcon = Template.bind({});
 SvgIcon.args = {
   icon: null,
+  // prettier-ignore
   slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
 };
 
@@ -292,7 +284,7 @@ AddNewOption.args = {
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
-  onchange: 'onChange(event)',
+  onchange: 'onAutoSave(event)',
 };
 
 export const Disabled = Template.bind({});
@@ -328,32 +320,38 @@ LocalizeRTL.args = {
   placeholder: 'حدد العلامات',
   allowAdd: true,
   loading: true,
-  value: [{
-    id: 'opt1',
-    label: 'تنكر هؤلاء الرجال المفتونون',
-  }],
-  options: [{
-    id: '1',
-    label: 'تنكر هؤلاء الرجال المفتونون',
-    link: '/#opt1',
-    status: {
-      key: 'active',
-      label: 'نشيط',
-      color: '#4CAF50',
+  value: [
+    {
+      id: 'opt1',
+      label: 'تنكر هؤلاء الرجال المفتونون',
     },
-  }, {
-    id: '2',
-    label: 'م فيتساوي مع هؤلاء',
-    link: '/#opt2',
-    user: true,
-    status: {
-      key: 'assigned',
-      label: 'في انتظار قبولها',
-      color: '#FF9800',
+  ],
+  options: [
+    {
+      id: '1',
+      label: 'تنكر هؤلاء الرجال المفتونون',
+      link: '/#opt1',
+      status: {
+        key: 'active',
+        label: 'نشيط',
+        color: '#4CAF50',
+      },
     },
-  }, {
-    id: '3',
-    label: 'فلا أحد يرفض',
-    link: '/#opt3',
-  }]
+    {
+      id: '2',
+      label: 'م فيتساوي مع هؤلاء',
+      link: '/#opt2',
+      user: true,
+      status: {
+        key: 'assigned',
+        label: 'في انتظار قبولها',
+        color: '#FF9800',
+      },
+    },
+    {
+      id: '3',
+      label: 'فلا أحد يرفض',
+      link: '/#opt3',
+    },
+  ],
 };

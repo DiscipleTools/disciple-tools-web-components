@@ -3,29 +3,41 @@ import { fixture, expect, oneEvent } from '@open-wc/testing';
 
 import './dt-single-select.js';
 
-const options = [{
-  id: 'opt1',
-  label: 'Option 1',
-}, {
-  id: 'opt2',
-  label: 'Second Option',
-}, {
-  id: 'opt3',
-  label: 'Option Three',
-}];
+const options = [
+  {
+    id: 'opt1',
+    label: 'Option 1',
+  },
+  {
+    id: 'opt2',
+    label: 'Second Option',
+  },
+  {
+    id: 'opt3',
+    label: 'Option Three',
+  },
+];
 
 describe('dt-single-select', () => {
-
   it('sets placeholder', async () => {
-    const el = await fixture(html`<dt-single-select placeholder="Custom Placeholder"></dt-single-select>`);
+    const el = await fixture(
+      html`<dt-single-select
+        placeholder="Custom Placeholder"
+      ></dt-single-select>`
+    );
     const select = el.shadowRoot.querySelector('select');
 
-    expect(select).to.have.descendant('option[value=""]').text('Custom Placeholder');
-
+    expect(select)
+      .to.have.descendant('option[value=""]')
+      .text('Custom Placeholder');
   });
 
   it('sets options', async () => {
-    const el = await fixture(html`<dt-single-select options="${JSON.stringify(options)}"></dt-single-select>`);
+    const el = await fixture(
+      html`<dt-single-select
+        options="${JSON.stringify(options)}"
+      ></dt-single-select>`
+    );
     const select = el.shadowRoot.querySelector('select');
 
     expect(select).to.contain('option[value=opt1]');
@@ -34,17 +46,27 @@ describe('dt-single-select', () => {
   });
 
   it('sets selection from attribute', async () => {
-    const el = await fixture(html`<dt-single-select value="opt1" options="${JSON.stringify(options)}"></dt-single-select>`);
+    const el = await fixture(
+      html`<dt-single-select
+        value="opt1"
+        options="${JSON.stringify(options)}"
+      ></dt-single-select>`
+    );
     const select = el.shadowRoot.querySelector('select');
 
     expect(select).to.have.value('opt1');
   });
 
   it('updates value attribute', async () => {
-    const el = await fixture(html`<dt-single-select value="" options="${JSON.stringify(options)}"></dt-single-select>`);
+    const el = await fixture(
+      html`<dt-single-select
+        value=""
+        options="${JSON.stringify(options)}"
+      ></dt-single-select>`
+    );
     const select = el.shadowRoot.querySelector('select');
 
-    select.value = "opt1";
+    select.value = 'opt1';
     const event = document.createEvent('HTMLEvents');
     event.initEvent('change', true, false);
     select.dispatchEvent(event);
@@ -54,10 +76,15 @@ describe('dt-single-select', () => {
   });
 
   it('triggers change event', async () => {
-    const el = await fixture(html`<dt-single-select name="custom-name" options="${JSON.stringify(options)}"></dt-single-select>`);
+    const el = await fixture(
+      html`<dt-single-select
+        name="custom-name"
+        options="${JSON.stringify(options)}"
+      ></dt-single-select>`
+    );
     const select = el.shadowRoot.querySelector('select');
 
-    select.value = "opt1";
+    select.value = 'opt1';
     const event = document.createEvent('HTMLEvents');
     event.initEvent('change', true, false);
     setTimeout(() => select.dispatchEvent(event));
@@ -70,7 +97,12 @@ describe('dt-single-select', () => {
   });
 
   it('passes the a11y audit', async () => {
-    const el = await fixture(html`<dt-single-select name="custom-name" options="${JSON.stringify(options)}"></dt-single-select>`);
+    const el = await fixture(
+      html`<dt-single-select
+        name="custom-name"
+        options="${JSON.stringify(options)}"
+      ></dt-single-select>`
+    );
 
     await expect(el).shadowDom.to.be.accessible();
   });
@@ -80,7 +112,12 @@ describe('dt-single-select', () => {
       ...o,
       color: `#${idx}${idx}${idx}`,
     }));
-    const el = await fixture(html`<dt-single-select value="opt1" options="${JSON.stringify(colorOptions)}"></dt-single-select>`);
+    const el = await fixture(
+      html`<dt-single-select
+        value="opt1"
+        options="${JSON.stringify(colorOptions)}"
+      ></dt-single-select>`
+    );
     const select = el.shadowRoot.querySelector('select');
 
     expect(select.style.backgroundColor).to.eql('rgb(0, 0, 0)');
