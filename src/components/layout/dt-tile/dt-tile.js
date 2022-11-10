@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html, css, nothing } from 'lit';
 import DtBase from '../../dt-base.js';
 
 export class DtTile extends DtBase {
@@ -86,6 +86,10 @@ export class DtTile extends DtBase {
     };
   }
 
+  get hasHeading() {
+    return this.title || this.expands;
+  }
+
   _toggle() {
     // const body = this.renderRoot.querySelector('.section-body');
     // if (!this.collapsed && body && body.clientHeight) {
@@ -94,9 +98,12 @@ export class DtTile extends DtBase {
     this.collapsed = !this.collapsed;
   }
 
-  render() {
+  renderHeading() {
+    if (!this.hasHeading) {
+      return nothing
+    }
+
     return html`
-      <section>
         <h3 class="section-header">
           ${this.title}
           ${this.expands
@@ -110,6 +117,13 @@ export class DtTile extends DtBase {
               `
             : null}
         </h3>
+    `
+  }
+
+  render() {
+    return html`
+      <section>
+        ${this.renderHeading()}
         <div class="section-body ${this.collapsed ? 'collapsed' : null}">
           <slot></slot>
         </div>
