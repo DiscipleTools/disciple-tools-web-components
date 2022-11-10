@@ -14,7 +14,10 @@ export class DtTile extends DtBase {
 
       section {
         background-color: var(--dt-tile-background-color, #fefefe);
-        border: 1px solid var(--dt-tile-border-color, #cecece);
+        border-top: var(--dt-tile-border-top, 1px solid #cecece);
+        border-bottom: var(--dt-tile-border-bottom, 1px solid #cecece);
+        border-right: var(--dt-tile-border-right, 1px solid #cecece);
+        border-left: var(--dt-tile-border-left, 1px solid #cecece);
         border-radius: var(--dt-tile-border-radius, 10px);
         box-shadow: var(--dt-tile-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
         padding: 1rem;
@@ -22,18 +25,19 @@ export class DtTile extends DtBase {
 
       h3 {
         line-height: 1.4;
-        margin-bottom: 0.5rem;
-        margin-top: 0;
+        margin: var(--dt-tile-header-margin, 0 0 0.5rem 0);
         text-rendering: optimizeLegibility;
         font-family: var(--dt-tile-font-family, var(--font-family));
         font-style: normal;
         font-weight: 300;
       }
+
       .section-header {
         color: var(--dt-tile-header-color, #3f729b);
         font-size: 1.5rem;
         display: flex;
         text-transform: var(--dt-tile-header-text-transform, capitalize);
+        justify-content: var(--dt-tile-header-justify-content);
       }
 
       .section-body {
