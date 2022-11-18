@@ -76,7 +76,7 @@ export class DtModal extends DtBase {
       }
 
       form.no-header {
-        grid-template-rows: auto 100px;
+        grid-template-rows: auto auto;
         grid-template-areas:
           'main'
           'footer';
