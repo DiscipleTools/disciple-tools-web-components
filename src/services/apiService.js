@@ -1,7 +1,7 @@
 export default class ApiService {
   constructor(nonce, apiRoot = '') {
     this.nonce = nonce;
-    this.apiRoot = `${apiRoot.trimEnd('/')}/`; // ensure it ends with /
+    this.apiRoot = apiRoot.endsWith("/")? `${apiRoot}`: `${apiRoot} + "/"`;// ensure it ends with /
   }
 
   /**
