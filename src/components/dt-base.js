@@ -1,18 +1,24 @@
 import { LitElement } from 'lit';
 import { updateWhenLocaleChanges } from '@lit/localize';
 import { setLocale } from '../i18n/localization.js';
+import ApiService from '../services/apiService.js';
+
 import 'element-internals-polyfill'; // eslint-disable-line import/no-extraneous-dependencies
 
 export default class DtBase extends LitElement {
   static get properties() {
     return {
       locale: { type: String },
+      apiRoot: {type: String, reflect: false},
     };
   }
 
   constructor() {
     super();
     updateWhenLocaleChanges(this);
+    this.apiRoot = `${this.apiRoot}/`.replace('//', '/'); // ensure it ends with /
+    this.api = new ApiService(this.nonce, this.apiRoot);
+
   }
 
   willUpdate(props) {

@@ -75,6 +75,13 @@ export class DtModal extends DtBase {
         position: relative;
       }
 
+      form.no-header {
+        grid-template-rows: auto 100px;
+        grid-template-areas:
+          'main'
+          'footer';
+      }
+
       header {
         grid-area: header;
         display: flex;
@@ -90,6 +97,11 @@ export class DtModal extends DtBase {
         padding: 0.25rem 0.5rem;
         cursor: pointer;
         text-decoration: none;
+      }
+      .button.opener {
+        color: var(--dt-modal-button-opener-color,var(--dt-modal-button-color, #fff) );
+        background: var(--dt-modal-button-opener-background, var(--dt-modal-button-background, #000) );
+        border: 0.1em solid var(--dt-modal-button-opener-background, #000);
       }
       button.toggle {
         margin-inline-end: 0;
@@ -130,6 +142,7 @@ export class DtModal extends DtBase {
       context: { type: String },
       isHelp: { type: Boolean },
       isOpen: { type: Boolean },
+      hideHeader: { type: Boolean },
     };
   }
 
@@ -141,6 +154,18 @@ export class DtModal extends DtBase {
   _openModal() {
     this.isOpen = true;
     this.shadowRoot.querySelector('dialog').showModal();
+  }
+
+  _dialogHeader(svg) {
+    if (!this.hideHeader) {
+      return html`
+      <header>
+            <h1 id="modal-field-title">${this.title}</h1>
+            <button @click="${this._closeModal}" class="toggle">${svg}</button>
+          </header>
+      `;
+    }
+    return html``;
   }
 
   _closeModal() {
@@ -197,6 +222,7 @@ export class DtModal extends DtBase {
     }
   }
 
+
   render() {
     // prettier-ignore
     const svg = html`
@@ -219,11 +245,8 @@ export class DtModal extends DtBase {
         @click=${this._dialogClick}
         @keypress=${this._dialogKeypress}
       >
-        <form method="dialog">
-          <header>
-            <h1 id="modal-field-title">${this.title}</h1>
-            <button @click="${this._closeModal}" class="toggle">${svg}</button>
-          </header>
+      ${this._dialogHeader(svg)}
+        <form method="dialog" class=${this.hideHeader ? "no-header" : ""}>
           <article>
             <slot name="content"></slot>
           </article>
@@ -243,7 +266,7 @@ export class DtModal extends DtBase {
       </dialog>
 
       <button
-        class="button small"
+        class="button small opener"
         data-open=""
         aria-label="Open reveal"
         type="button"

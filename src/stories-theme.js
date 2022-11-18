@@ -118,6 +118,8 @@ export const themes = {
       modalColor: 'var(--dt-modal-color, #000)',
       modalButtonColor: 'var(--text-color-inverse, #fff)',
       modalButtonBackground: 'var(--primary-color, #3f729b)',
+      modalButtonOpenerColor: 'var(--text-color-inverse, #fff)',
+      modalButtonOpenerBackground: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
@@ -248,6 +250,8 @@ export const themes = {
       modalColor: 'var(--dt-modal-color, #000)',
       modalButtonColor: 'var(--text-color-inverse, #fff)',
       modalButtonBackground: 'var(--primary-color, #3f729b)',
+      modalButtonOpenerColor: 'var(--text-color-inverse, #fff)',
+      modalButtonOpenerBackground: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
@@ -379,6 +383,8 @@ export const themes = {
       modalColor: 'var(--dt-modal-color, #000)',
       modalButtonColor: 'var(--text-color-inverse, #fff)',
       modalButtonBackground: 'var(--primary-color, #3f729b)',
+      modalButtonOpenerColor: 'var(--text-color-inverse, #fff)',
+      modalButtonOpenerBackground: 'var(--primary-color, #3f729b)',
 
       alertTextColorLight: '#fff',
       alertTextColorDark: '#000',
@@ -530,6 +536,8 @@ export const argTypes = {
   modalColor: { control: 'color' },
   modalButtonColor: { control: 'color' },
   modalButtonBackground: { control: 'color' },
+  modalButtonOpenerColor: { control: 'color' },
+  modalButtonOpenerBackground: { control: 'color' },
 };
 
 function getArg(storyArgs, argName) {
@@ -741,7 +749,8 @@ export function themeCss(storyArgs) {
     --dt-modal-color: ${getArg(storyArgs, 'modalColor')};
     --dt-modal-button-color: ${getArg(storyArgs, 'modalButtonColor')};
     --dt-modal-button-background: ${getArg(storyArgs, 'modalButtonBackground')};
-
+    --dt-modal-button-opener-color: ${getArg(storyArgs, 'modalButtonOpenerColor')};
+    --dt-modal-button-opener-background: ${getArg(storyArgs, 'modalButtonOpenerBackground')};
   }
   `;
 }
