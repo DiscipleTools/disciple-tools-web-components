@@ -24,6 +24,7 @@ export default {
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
     onchange: { control: 'text' },
+    postType: { control: 'text' },
     ...argTypes,
   },
 };
@@ -43,6 +44,9 @@ function Template(args) {
     saved,
     onchange,
     slot,
+    apiRoot,
+    nonce,
+    postType
   } = args;
   return html`
     <style>
@@ -61,6 +65,9 @@ function Template(args) {
       ?loading=${loading}
       ?saved=${saved}
       onchange=${onchange}
+      apiRoot=${apiRoot}
+      nonce=${nonce}
+      postType=${postType}
     >
       ${slot}
     </dt-number>

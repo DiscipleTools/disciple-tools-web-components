@@ -1,6 +1,7 @@
 import { html, css } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import DtFormBase from '../dt-form-base.js';
+import ApiService from '../../../services/apiService.js';
 
 export class DtNumberField extends DtFormBase {
   static get styles() {
@@ -68,7 +69,7 @@ export class DtNumberField extends DtFormBase {
     return true;
   }
 
-  onChange(e) {
+  async onChange(e) {
     if (this._checkValue(e.target.value)) {
       const event = new CustomEvent('change', {
         detail: {
@@ -76,10 +77,24 @@ export class DtNumberField extends DtFormBase {
           oldValue: this.value,
           newValue: e.target.value,
         },
+        bubbles: true,
+        composed: true
       });
 
       this.value = e.target.value;
       this.dispatchEvent(event);
+
+      this.api = new ApiService(this.nonce, this.apiRoot);
+
+
+      const response = await this.api.updatePost(this.postType, this.postID, {
+        [this.name]: e.target.value,
+      });
+
+      console.log(response);
+
+      this.saved = true;
+
     } else {
       e.currentTarget.value = '';
     }

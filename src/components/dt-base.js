@@ -10,6 +10,8 @@ export default class DtBase extends LitElement {
     return {
       locale: { type: String },
       apiRoot: {type: String, reflect: false},
+      postType: {type: String, reflect: false},
+      postID: {type: String, reflect: false},
     };
   }
 
