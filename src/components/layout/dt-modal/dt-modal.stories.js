@@ -31,6 +31,10 @@ export default {
       control: 'boolean',
       defaultValue: false,
     },
+    hideHeader: {
+      control: 'boolean',
+      defaultValue: false,
+    },
 
     ...argTypes,
   },
@@ -132,6 +136,7 @@ const Template = args => {
       context="${args.context}"
       ?isHelp="${args.isHelp}"
       ?isopen="${args.isOpen}"
+      ?hideHeader="${args.hideHeader}"
     >
       <span slot="content"> ${slot} </span>
     </dt-modal>
@@ -150,6 +155,15 @@ HelpModal.args = {
   title: 'Help Modal Title',
   context: 'default',
   isHelp: true,
+};
+
+export const HiddenHeaderModal = Template.bind({});
+HiddenHeaderModal.args = {
+  title: 'Hidden Header Modal Title',
+  context: 'default',
+  isHelp: true,
+  isOpen: true,
+  hideHeader: true,
 };
 
 export const OpenedModal = Template.bind({});
