@@ -98,6 +98,11 @@ export class DtModal extends DtBase {
         cursor: pointer;
         text-decoration: none;
       }
+      .button.opener {
+        color: var(--dt-modal-button-opener-color,var(--dt-modal-button-color, #fff) );
+        background: var(--dt-modal-button-opener-background, var(--dt-modal-button-background, #000) );
+        border: 0.1em solid var(--dt-modal-button-opener-background, #000);
+      }
       button.toggle {
         margin-inline-end: 0;
         margin-inline-start: auto;
@@ -261,7 +266,7 @@ export class DtModal extends DtBase {
       </dialog>
 
       <button
-        class="button small"
+        class="button small opener"
         data-open=""
         aria-label="Open reveal"
         type="button"
