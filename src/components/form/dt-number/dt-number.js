@@ -91,8 +91,6 @@ export class DtNumberField extends DtFormBase {
         [this.name]: e.target.value,
       });
 
-      console.log(response);
-
       this.saved = true;
 
     } else {
