@@ -154,6 +154,8 @@ export class DtModal extends DtBase {
   _openModal() {
     this.isOpen = true;
     this.shadowRoot.querySelector('dialog').showModal();
+
+    document.querySelector('body').style.overflow = "hidden"
   }
 
   _dialogHeader(svg) {
@@ -171,6 +173,7 @@ export class DtModal extends DtBase {
   _closeModal() {
     this.isOpen = false;
     this.shadowRoot.querySelector('dialog').close();
+    document.querySelector('body').style.overflow = "initial"
   }
 
   _dialogClick(e) {
