@@ -4,7 +4,7 @@
   "author": "disciple.tools",
   "license": "GPL-2.0-or-later",
   "homepage": "https://github.com/DiscipleTools/disciple-tools-web-components",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "index.js",
   "module": "index.js",
   "engines": {
@@ -21,8 +21,6 @@
     "storybook": "npm run analyze -- --exclude dist --exclude samples && web-dev-server -c .storybook/server.mjs",
     "storybook:build": "npm run analyze -- --exclude dist --exclude samples && build-storybook && cp -r assets/ storybook-static/assets && cp netlify.toml storybook-static",
     "build": "rollup -c && cp -R ./dist ./samples/html/js",
-    "preinstall": "node checkNodeVersion.js",
-    "prestart": "node checkNodeVersion.js",
     "localize:extract": "lit-localize extract",
     "localize:build": "lit-localize build"
   },
