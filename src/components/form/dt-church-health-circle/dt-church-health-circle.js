@@ -7,10 +7,12 @@ export class DtChurchHealthCircle extends DtBase {
   static get styles() {
     return css`
       .health-circle {
+        container-type: inline-size;
+
         display: block;
         margin: 3rem auto;
         height: auto;
-        width: 100%;
+        max-width: 100%;
         aspect-ratio: 1/1;
         border-radius: 100%;
         border: 3px darkgray dashed;
@@ -23,9 +25,10 @@ export class DtChurchHealthCircle extends DtBase {
         margin-left: auto;
         margin-right: auto;
 
-        --d: 3.5em; /* image size */
+        --d: 2.5em; /* image size */
         --rel: 0.5; /* how much extra space we want between images, 1 = one image size */
-        --r: calc(0.7 * var(--d) / var(--tan)); /* circle radius */
+        //--r: calc(0.7 * var(--d) / var(--tan)); /* circle radius */
+        --r: calc( (var(--diameter) - (var(--d) * 2) ) / 2);
         --s: calc(2.75 * var(--r));
         position: relative;
         width: 100%;
@@ -33,16 +36,22 @@ export class DtChurchHealthCircle extends DtBase {
         height: auto;
         aspect-ratio: 1 / 1;
       }
-
-      @media (min-width: 420px) {
+      @container (min-width: 350px) {
         .health-circle__grid {
-          --r: calc(0.85 * var(--d) / var(--tan)); /* circle radius */
+          --d: 3.5em; /* image size */
+        }
+      }
+
+      @container (max-width: 250px) {
+        .health-circle__grid {
+          --d: 1.5em; /* image size */
         }
       }
 
       .health-circle--committed {
         border: 3px #4caf50 solid !important;
       }
+
       dt-church-health-icon {
         margin: auto;
         position: absolute;
@@ -99,6 +108,7 @@ export class DtChurchHealthCircle extends DtBase {
   connectedCallback() {
     super.connectedCallback();
     this.fetch();
+    window.addEventListener('resize', () => {this.distributeItems(); });
   }
 
   adoptedCallback() {
@@ -230,8 +240,12 @@ export class DtChurchHealthCircle extends DtBase {
     const m = nItems; /* how many are ON the circle */
     const tan = Math.tan(Math.PI / m); /* tangent of half the base angle */
 
+    const containerWidth = container.clientWidth + "px";
+
+
     container.style.setProperty("--m", m);
     container.style.setProperty("--tan", +tan.toFixed(2));
+    container.style.setProperty("--diameter", containerWidth);
   }
 }
 
