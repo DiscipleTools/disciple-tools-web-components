@@ -16,6 +16,7 @@ export { DtToggle } from './form/dt-toggle/dt-toggle.js';
 /*
   Icon Components
 */
+export { DtIcon } from './icons/dt-icon.js';
 export { DtCheckmark } from './icons/dt-checkmark.js';
 export { DtExclamationCircle } from './icons/dt-exclamation-circle.js';
 export { DtStar } from './icons/dt-star.js';

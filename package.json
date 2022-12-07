@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@lit/localize": "^0.11.4",
+    "iconify-icon": "^1.0.2",
     "lit": "^2.3.2"
   },
   "devDependencies": {
