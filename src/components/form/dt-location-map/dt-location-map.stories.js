@@ -171,12 +171,12 @@ SvgIcon.args = {
 
 export const CustomPlaceholder = Template.bind({});
 CustomPlaceholder.args = {
-  placeholder: 'Search Options',
+  placeholder: 'Search Locations',
 };
 
 export const SelectedValue = Template.bind({});
 SelectedValue.args = {
-  value: [basicOptions[1]],
+  value: [basicOptions[1], basicOptions[2]],
 };
 
 export const AutoSave = Template.bind({});

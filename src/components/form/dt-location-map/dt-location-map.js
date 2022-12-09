@@ -6,6 +6,7 @@ export class DtLocationMap extends DtFormBase {
   static get properties() {
     return {
       ...super.properties,
+      placeholder: { type: String },
       value: {
         type: Array,
         reflect: true,
@@ -40,16 +41,17 @@ export class DtLocationMap extends DtFormBase {
   renderItem(opt, idx) {
     return html`
       <dt-location-map-item 
+        placeholder="${this.placeholder}"
         .metadata=${opt}      
       />
     `;
   }
   renderItems() {
     if (!this.value || !this.value.length) {
-      return html`<dt-location-map-item />`;
+      return html`<dt-location-map-item placeholder="${this.placeholder}"/>`;
     }
 
-    return this.value.map((val, idx) => this.renderItem(opt, idx));
+    return this.value.map((val, idx) => this.renderItem(val, idx));
   }
 
   render() {

@@ -150,6 +150,15 @@ export const themes = {
       dtButtonHeight: 'auto',
       dtButtonAspectRatio: 'auto',
 
+      locationMapBackgroundColor: 'var(--dt-form-background-color)',
+      locationMapBorderColor: 'var(--dt-form-border-color)',
+      locationMapBorderColorAlert: 'var(--dt-form-border-color-alert)',
+      locationMapDisabledBackgroundColor: 'var(--dt-form-disabled-background-color)',
+      locationMapBorderRadius: '0',
+      locationMapBoxShadow: 'var(--dt-form-box-shadow)',
+      locationMapButtonColor: 'var(--alert-color)',
+      locationMapButtonHoverBackgroundColor: 'var(--alert-color)',
+      locationMapButtonHoverColor: 'var(--text-color-inverse)',
 
       background: 'var(--surface-0)',
     },
@@ -819,6 +828,15 @@ export function themeCss(storyArgs) {
     --dt-modal-button-background: ${getArg(storyArgs, 'modalButtonBackground')};
     --dt-modal-button-opener-color: ${getArg(storyArgs, 'modalButtonOpenerColor')};
     --dt-modal-button-opener-background: ${getArg(storyArgs, 'modalButtonOpenerBackground')};
+    
+    --dt-location-map-background-color: ${getArg(storyArgs, 'locationMapBackgroundColor')};
+    --dt-location-map-border-color: ${getArg(storyArgs, 'locationMapBorderColor')};
+    --dt-location-map-border-color-alert: ${getArg(storyArgs, 'locationMapBorderColorAlert')};
+    --dt-location-map-border-radius: ${getArg(storyArgs, 'locationMapBorderRadius')};
+    --dt-location-map-box-shadow: ${getArg(storyArgs, 'locationMapBoxShadow')};
+    --dt-location-map-button-color: ${getArg(storyArgs, 'locationMapButtonColor')};
+    --dt-location-map-button-hover-background-color: ${getArg(storyArgs, 'locationMapButtonHoverBackgroundColor')};
+    --dt-location-map-button-hover-color: ${getArg(storyArgs, 'locationMapButtonHoverColor')};
   }
   `;
 }

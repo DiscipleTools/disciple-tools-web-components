@@ -30,13 +30,13 @@ Location field using Mapbox to search and geocode locations
 
 ## Feature Status
 - [x] label
-- [ ] value
-- [ ] placeholder
+- [x] value
+- [x] placeholder
 - [ ] onchange
 - [ ] loading
 - [ ] saved
 - [ ] disabled
-- [ ] empty box if no value
+- [x] empty box if no value
 - [ ] button to add new value
 - [ ] open location in map dialog
 - [ ] clear/delete location
