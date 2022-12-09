@@ -18,9 +18,13 @@ export default class DtBase extends LitElement {
   constructor() {
     super();
     updateWhenLocaleChanges(this);
-    this.apiRoot = `${this.apiRoot}/`.replace('//', '/'); // ensure it ends with /
-    this.api = new ApiService(this.nonce, this.apiRoot);
+  }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    this.apiRoot = this.apiRoot ? `${this.apiRoot}/`.replace('//', '/') : '/'; // ensure it ends with /
+    this.api = new ApiService(this.nonce, this.apiRoot);
   }
 
   willUpdate(props) {

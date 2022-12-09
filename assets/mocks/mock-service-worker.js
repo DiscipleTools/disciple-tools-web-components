@@ -687,92 +687,83 @@ self.addEventListener('fetch', async event => {
     );
   }
 
-  // Single Post GET API Call
-  if (
-    url.pathname === '/dt-posts/v2/contacts/1' &&
-    event.request.method === 'GET'
-  ) {
-    // console.log('Getting single post');
+  const methodAndPath = `${event.request.method} ${url.pathname}`;
+  switch (methodAndPath) {
+    // Single Post GET API Call
+    case 'GET /dt-posts/v2/contacts/1':
+      // console.log('Getting single post');
+      event.respondWith(
+        new Response(JSON.stringify(singlePost), {
+          headers: { 'Content-Type': 'text/JSON' },
+        })
+      );
+      break;
 
-    event.respondWith(
-      new Response(JSON.stringify(singlePost), {
-        headers: { 'Content-Type': 'text/JSON' },
-      })
-    );
-  }
+    // Single create_post POST API Call
+    case 'POST /dt-posts/v2/contacts':
+      // console.log('Creating new post');
+      event.respondWith(
+        new Response(JSON.stringify(createdSinglePost), {
+          headers: { 'Content-Type': 'text/JSON' },
+        })
+      );
+      break;
 
-  // Single create_post POST API Call
-  if (
-    url.pathname === '/dt-posts/v2/contacts' &&
-    event.request.method === 'POST'
-  ) {
-    // console.log('Creating new post');
-    event.respondWith(
-      new Response(JSON.stringify(createdSinglePost), {
-        headers: { 'Content-Type': 'text/JSON' },
-      })
-    );
-  }
+    // Single update_post POST API Call
+    case 'POST /dt-posts/v2/contacts/1':
+      // console.log('Updating single post');
+      event.respondWith(
+        new Response(JSON.stringify(UpdatedSinglePost), {
+          headers: { 'Content-Type': 'text/JSON' },
+        })
+      );
+      break;
 
-  // Single update_post POST API Call
-  if (
-    url.pathname === '/dt-posts/v2/contacts/1' &&
-    event.request.method === 'POST'
-  ) {
-    // console.log('Updating single post');
+    case 'GET /dt/v1/users/get_users':
+      // console.log('Getting users');
+      event.respondWith(
+        new Response(JSON.stringify(UserList), {
+          headers: { 'Content-Type': 'text/JSON' },
+        })
+      );
+      break;
 
-    event.respondWith(
-      new Response(JSON.stringify(UpdatedSinglePost), {
-        headers: { 'Content-Type': 'text/JSON' },
-      })
-    );
-  }
-
-  if (
-    url.pathname === '/dt/v1/users/get_users' &&
-    event.request.method === 'GET'
-  ) {
-    // console.log('Getting users');
-
-    event.respondWith(
-      new Response(JSON.stringify(UserList), {
-        headers: { 'Content-Type': 'text/JSON' },
-      })
-    );
-  }
-
-  if(
-    url.pathname === '/wp-json/dt-posts/v2/groups/1') {
+    case 'GET /wp-json/dt-posts/v2/groups/1':
       event.respondWith(
         new Response(JSON.stringify(ChurchHealthEmptyGroup), {
           headers: { 'Content-Type': 'text/JSON' },
         })
       );
-    }
+      break;
 
-  if(
-    url.pathname === '/wp-json/dt-posts/v2/groups/2') {
+    case 'GET /wp-json/dt-posts/v2/groups/2':
       event.respondWith(
         new Response(JSON.stringify(ChurchHealthCompleteGroup), {
           headers: { 'Content-Type': 'text/JSON' },
         })
       );
-    }
+      break;
 
-    if(
-      url.pathname === '/wp-json/dt-posts/v2/groups/3') {
-        event.respondWith(
-          new Response(JSON.stringify(ChurchHealthIncompleteGroup), {
-            headers: { 'Content-Type': 'text/JSON' },
-          })
-        );
-      }
-  if(
-    url.pathname === '/wp-json/dt-posts/v2/groups/settings') {
+    case 'GET /wp-json/dt-posts/v2/groups/3':
+      event.respondWith(
+        new Response(JSON.stringify(ChurchHealthIncompleteGroup), {
+          headers: { 'Content-Type': 'text/JSON' },
+        })
+      );
+      break;
+
+    case 'GET /wp-json/dt-posts/v2/groups/settings':
       event.respondWith(
         new Response(JSON.stringify(ChurchHealthMetrics), {
           headers: { 'Content-Type': 'text/JSON' },
         })
       );
-    }
+      break;
+
+    case 'GET /dt-assets/images/groups/missing.svg':
+      url.pathname = '/assets/groups/missing.svg';
+      break;
+  }
+
+
 });

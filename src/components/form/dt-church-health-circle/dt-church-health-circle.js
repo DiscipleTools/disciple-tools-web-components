@@ -130,7 +130,7 @@ export class DtChurchHealthCircle extends DtBase {
       const promises = [this.fetchSettings(), this.fetchGroup()];
       const [settings, group] = await Promise.all(promises);
       this.settings = settings;
-      this.post = group;
+      this.group = group;
       if (!settings) {
         this.errorMessage = "Error loading settings";
       }
@@ -150,9 +150,7 @@ export class DtChurchHealthCircle extends DtBase {
     if (this.group) {
       return Promise.resolve(this.group);
     }
-    fetch(`/wp-json/dt-posts/v2/groups/${this.groupId}`).then((response) =>
-      response.json()
-    );
+    return this.api.getPost('groups', this.groupId);
   }
 
   /**
@@ -163,9 +161,7 @@ export class DtChurchHealthCircle extends DtBase {
     if (this.settings) {
       return Promise.resolve(this.settings);
     }
-    return fetch("/wp-json/dt-posts/v2/groups/settings").then((response) =>
-      response.json()
-    );
+    return this.api.getPost('groups', 'settings');
   }
 
   /**
@@ -234,18 +230,20 @@ export class DtChurchHealthCircle extends DtBase {
    */
   distributeItems() {
     const container = this.renderRoot.querySelector(".health-circle__grid");
-    const items = container.querySelectorAll("dt-church-health-icon");
+    if (container) {
+      const items = container.querySelectorAll("dt-church-health-icon");
 
-    const nItems = items.length;
-    const m = nItems; /* how many are ON the circle */
-    const tan = Math.tan(Math.PI / m); /* tangent of half the base angle */
+      const nItems = items.length;
+      const m = nItems; /* how many are ON the circle */
+      const tan = Math.tan(Math.PI / m); /* tangent of half the base angle */
 
-    const containerWidth = container.clientWidth + "px";
+      const containerWidth = container.clientWidth + "px";
 
 
-    container.style.setProperty("--m", m);
-    container.style.setProperty("--tan", +tan.toFixed(2));
-    container.style.setProperty("--diameter", containerWidth);
+      container.style.setProperty("--m", m);
+      container.style.setProperty("--tan", +tan.toFixed(2));
+      container.style.setProperty("--diameter", containerWidth);
+    }
   }
 }
 

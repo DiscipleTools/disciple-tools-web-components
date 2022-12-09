@@ -189,51 +189,51 @@ const healthMetrics = {
   "church_baptism":{
       "label":"Baptism",
       "description":"The group is baptising.",
-      "icon":"https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/groups/baptism-2.svg"},
+      "icon":"/assets/groups/baptism-2.svg"},
   "church_bible":{
       "label":"Bible Study",
       "description":"The group is studying the bible.",
-      "icon":"https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/groups/word-2.svg"
+      "icon":"/assets/groups/word-2.svg"
   },
   "church_communion":{
       "label":"Communion",
       "description":"The group is practicing communion.",
-      "icon":"https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/groups/communion-2.svg"
+      "icon":"/assets/groups/communion-2.svg"
   },
   "church_fellowship":{
       "label":"Fellowship",
       "description":"The group is fellowshiping.",
-      "icon":"https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/groups/heart-2.svg"
+      "icon":"/assets/groups/heart-2.svg"
   },
   "church_giving":{
       "label":"Giving",
       "description":"The group is giving.",
-      "icon":"https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/groups/giving-2.svg"
+      "icon":"/assets/groups/giving-2.svg"
   },
   "church_prayer":{
       "label":"Prayer",
       "description":"The group is praying.",
-      "icon":"https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/groups/prayer-2.svg"
+      "icon":"/assets/groups/prayer-2.svg"
   },
   "church_praise":{
       "label":"Praise",
       "description":"The group is praising.",
-      "icon":"https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/groups/praise-2.svg"
+      "icon":"/assets/groups/praise-2.svg"
   },
   "church_sharing":{
       "label":"Sharing the Gospel",
       "description":"The group is sharing the gospel.",
-      "icon":"https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/groups/evangelism-2.svg"
+      "icon":"/assets/groups/evangelism-2.svg"
   },
   "church_leaders":{
       "label":"Leaders",
       "description":"The group has leaders.",
-      "icon":"https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/groups/leadership-2.svg"
+      "icon":"/assets/groups/leadership-2.svg"
   },
   "church_commitment":{
       "label":"Church Commitment",
       "description":"The group has committed to be church.",
-      "icon":"https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/groups/covenant.svg"
+      "icon":"/assets/groups/covenant.svg"
   }
 }
 
@@ -263,7 +263,10 @@ function Template(args) {
     </style>
     <dt-church-health-circle
       .group=${args.group}
-      .settings=${args.healthMetrics}
+      .settings=${args.settings}
+      groupId="${args.groupId}"
+      apiRoot="/wp-json"
+      missingIcon="/assets/groups/missing.svg"
     ></dt-church-health-circle>
   `;
 }
@@ -280,3 +283,15 @@ export const Filled = Template.bind({});
 Filled.args = {
   group: ChurchHealthCompleteGroup,
 }
+
+export const ApiSettings = Template.bind({});
+ApiSettings.args = {
+  group: ChurchHealthIncompleteGroup,
+  settings: null,
+};
+
+export const ApiGroup = Template.bind({});
+ApiGroup.args = {
+  groupId: 3,
+  group: null,
+};
