@@ -39,11 +39,11 @@ Location field using Mapbox to search and geocode locations
 - [x] empty box if no value
 - [ ] button to add new value
 - [ ] open location in map dialog
-- [ ] clear/delete location
+- [x] clear/delete location
 - [ ] add multiple locations
 - [ ] search mapbox locations
 - [ ] select option (mouse)
 - [ ] select option (keyboard)
 - [ ] select existing location
 - [ ] add custom (non-geocoded) location
-- [ ] select from pin on map
+- [ ] select from pin on map (new)

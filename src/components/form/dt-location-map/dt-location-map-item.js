@@ -103,6 +103,15 @@ export default class DtLocationMapItem extends LitElement {
   _change() {
 
   }
+  _delete() {
+    const options = {
+      detail: {
+        metadata: this.metadata,
+      },
+      bubbles: false,
+    };
+    this.dispatchEvent(new CustomEvent('delete', options));
+  }
   render() {
     const existingValue = !!this.metadata?.label;
     return html`
@@ -114,12 +123,15 @@ export default class DtLocationMapItem extends LitElement {
           .disabled=${existingValue}
           @change=${this._change}
         />
+        
+        ${existingValue ? html`
         <button class="input-addon">
           <dt-icon icon="mdi:map" />
         </button>
-        <button class="input-addon">
+        <button class="input-addon" @click=${this._delete}>
           <dt-icon icon="mdi:trash-can-outline" />
         </button>
+        ` : null }
       </div>
 `;
   }

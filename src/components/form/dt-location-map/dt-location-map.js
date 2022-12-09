@@ -38,17 +38,41 @@ export class DtLocationMap extends DtFormBase {
     ];
   }
 
+  deleteItem(evt) {
+    const gridMetaId = evt.detail?.metadata?.grid_meta_id;
+    if (gridMetaId) {
+      const event = new CustomEvent('change', {
+        detail: {
+          field: this.name,
+          oldValue: this.value,
+        },
+      });
+
+      // remove this item from the value
+      this.value = (this.value || []).filter(m => m.grid_meta_id !== gridMetaId);
+      event.detail.newValue = this.value;
+
+      // dispatch event for use with addEventListener from javascript
+      this.dispatchEvent(event);
+    }
+  }
+
   renderItem(opt, idx) {
     return html`
       <dt-location-map-item 
         placeholder="${this.placeholder}"
-        .metadata=${opt}      
+        .metadata=${opt}
+        @delete=${this.deleteItem}
       />
     `;
   }
   renderItems() {
     if (!this.value || !this.value.length) {
-      return html`<dt-location-map-item placeholder="${this.placeholder}"/>`;
+      return html`
+        <dt-location-map-item 
+          placeholder="${this.placeholder}"
+          @delete=${this.deleteItem}
+          />`;
     }
 
     return this.value.map((val, idx) => this.renderItem(val, idx));
