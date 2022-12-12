@@ -1,3 +1,4 @@
+import env from '../../../../environment.js';
 import { html } from 'lit-html';
 import {
   themes,
@@ -7,8 +8,6 @@ import {
 import { LocaleDecorator } from '../../../stories-utils.js';
 
 import './dt-map-modal.js';
-
-const MAPBOX_TOKEN = 'XXXXXXXX';
 
 export default {
   title: 'Form/dt-location-map/dt-map-modal',
@@ -30,7 +29,7 @@ export default {
 
 const Template = args => {
   const {
-    mapboxToken = MAPBOX_TOKEN
+    mapboxToken = env.mapboxToken
   } = args;
   return html`
     <style>

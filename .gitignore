@@ -17,6 +17,7 @@
 /.tmp/
 
 # build
+.env
 /_site/
 /dist/
 /out-tsc/

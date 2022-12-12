@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 // import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
 
 /** Use Hot Module replacement by adding --hmr to the start command */
@@ -26,6 +28,18 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
       transform(context) {
         if (context.path === '/assets/mocks/mock-service-worker.js') {
           context.set('Service-Worker-Allowed', '/');
+        }
+      },
+    },
+    {
+      name: 'env-vars',
+      serve(context) {
+        if (context.path === '/environment.js') {
+          let mapboxToken = 'XXXXXXXX';
+          if (process && process.env && process.env.STORYBOOK_MAPBOX_TOKEN) {
+            mapboxToken = process.env.STORYBOOK_MAPBOX_TOKEN;
+          }
+          return `export default { mapboxToken: "${mapboxToken}" }`;
         }
       },
     },

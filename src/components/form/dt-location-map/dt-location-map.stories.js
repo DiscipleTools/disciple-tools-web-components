@@ -1,3 +1,4 @@
+import env from '../../../../environment.js';
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
@@ -159,7 +160,7 @@ Empty.args = {};
 
 export const withMapboxToken = Template.bind({});
 withMapboxToken.args = {
-  mapboxToken: 'pk.eyJ1Ijoiand5bnZlZW4iLCJhIjoiY2w1aTVvczF0MDNmdzNjb2IyZTFwdnNoZyJ9.7jtAwuy3qbyP2G0-5y3vvw',
+  mapboxToken: env.mapboxToken,
 };
 
 export const SvgIcon = Template.bind({});
