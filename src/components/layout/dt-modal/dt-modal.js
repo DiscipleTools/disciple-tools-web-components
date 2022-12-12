@@ -116,7 +116,7 @@ export class DtModal extends DtBase {
 
       article {
         grid-area: main;
-        overflow: scroll;
+        overflow: auto;
       }
 
       footer {
@@ -248,8 +248,8 @@ export class DtModal extends DtBase {
         @click=${this._dialogClick}
         @keypress=${this._dialogKeypress}
       >
-      ${this._dialogHeader(svg)}
         <form method="dialog" class=${this.hideHeader ? "no-header" : ""}>
+      ${this._dialogHeader(svg)}
           <article>
             <slot name="content"></slot>
           </article>
