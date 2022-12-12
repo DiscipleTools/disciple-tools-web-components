@@ -1,4 +1,3 @@
-import env from '../../../../environment.js';
 import { html } from 'lit-html';
 import {
   themes,
@@ -8,6 +7,8 @@ import {
 import { LocaleDecorator } from '../../../stories-utils.js';
 
 import './dt-map-modal.js';
+
+const MAPBOX_TOKEN = process.env.STORYBOOK_MAPBOX_TOKEN;
 
 export default {
   title: 'Form/dt-location-map/dt-map-modal',
@@ -29,7 +30,7 @@ export default {
 
 const Template = args => {
   const {
-    mapboxToken = env.mapboxToken
+    mapboxToken = MAPBOX_TOKEN,
   } = args;
   return html`
     <style>

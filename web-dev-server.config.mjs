@@ -1,5 +1,8 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
+import rollupReplace from '@rollup/plugin-replace';
+import { fromRollup } from '@web/dev-server-rollup';
+const replace = fromRollup(rollupReplace);
 // import { hmrPlugin, presets } from '@open-wc/dev-server-hmr';
 
 /** Use Hot Module replacement by adding --hmr to the start command */
@@ -31,18 +34,10 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
         }
       },
     },
-    {
-      name: 'env-vars',
-      serve(context) {
-        if (context.path === '/environment.js') {
-          let mapboxToken = 'XXXXXXXX';
-          if (process && process.env && process.env.STORYBOOK_MAPBOX_TOKEN) {
-            mapboxToken = process.env.STORYBOOK_MAPBOX_TOKEN;
-          }
-          return `export default { mapboxToken: "${mapboxToken}" }`;
-        }
-      },
-    },
+    replace({
+      include: ['src/**/*.stories.js'],
+      'process.env.STORYBOOK_MAPBOX_TOKEN': '"development"'
+    }),
   ],
 
   // See documentation for all available options

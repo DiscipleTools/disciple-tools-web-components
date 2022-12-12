@@ -1,8 +1,9 @@
-import env from '../../../../environment.js';
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-location-map.js';
+
+const MAPBOX_TOKEN = process.env.STORYBOOK_MAPBOX_TOKEN;
 
 const basicOptions = [
   {
@@ -160,7 +161,7 @@ Empty.args = {};
 
 export const withMapboxToken = Template.bind({});
 withMapboxToken.args = {
-  mapboxToken: env.mapboxToken,
+  mapboxToken: MAPBOX_TOKEN,
 };
 
 export const SvgIcon = Template.bind({});
