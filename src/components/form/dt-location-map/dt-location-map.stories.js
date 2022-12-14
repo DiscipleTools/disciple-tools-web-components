@@ -159,11 +159,6 @@ function Template(args) {
 export const Empty = Template.bind({});
 Empty.args = {};
 
-export const withMapboxToken = Template.bind({});
-withMapboxToken.args = {
-  mapboxToken: MAPBOX_TOKEN,
-};
-
 export const SvgIcon = Template.bind({});
 SvgIcon.args = {
   icon: null,
@@ -173,7 +168,7 @@ SvgIcon.args = {
 
 export const CustomPlaceholder = Template.bind({});
 CustomPlaceholder.args = {
-  placeholder: 'Search Locations',
+  placeholder: 'Custom Placeholder',
 };
 
 export const SelectedValue = Template.bind({});

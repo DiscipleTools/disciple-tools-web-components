@@ -64,19 +64,25 @@ export class DtLocationMap extends DtFormBase {
         .metadata=${opt}
         mapbox-token="${this.mapboxToken}"
         @delete=${this.deleteItem}
+        ?disabled=${this.disabled}
       />
     `;
   }
   renderItems() {
-    if (!this.value || !this.value.length) {
-      return html`
-        <dt-location-map-item 
-          placeholder="${this.placeholder}"
-          @delete=${this.deleteItem}
-          />`;
+    let items = [];
+
+    if (this.value && this.value.length) {
+      items.push(this.value.map((val, idx) => this.renderItem(val, idx)));
     }
 
-    return this.value.map((val, idx) => this.renderItem(val, idx));
+    items.push(html`
+      <dt-location-map-item 
+        placeholder="${this.placeholder}"
+        @delete=${this.deleteItem}
+        ?disabled=${this.disabled}
+      />`);
+
+    return items;
   }
 
   render() {

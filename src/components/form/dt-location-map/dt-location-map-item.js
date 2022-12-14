@@ -7,7 +7,8 @@ export default class DtLocationMapItem extends LitElement {
     return {
       placeholder: { type: String },
       mapboxToken: { type: String, attribute: 'mapbox-token' },
-      metadata: { type: Object, reflect: true }
+      metadata: { type: Object, reflect: true },
+      disabled: { type: Boolean },
     };
   }
 
@@ -50,6 +51,9 @@ export default class DtLocationMapItem extends LitElement {
             var(--dt-form-disabled-background-color, #e6e6e6)
           );
           cursor: not-allowed;
+        }
+        input.disabled {
+          color: var(--dt-text-placeholder-color, #999);        
         }
         input:focus-within,
         input:focus-visible {
@@ -98,6 +102,16 @@ export default class DtLocationMapItem extends LitElement {
           background-color: var(--dt-location-map-button-hover-background-color, #cc4b37);
           color: var(--dt-location-map-button-hover-color, #ffffff);
         }
+        
+        .input-addon:disabled {
+          background-color: var(--dt-form-disabled-background-color);
+          color: var(--dt-text-placeholder-color, #999);
+        }
+        .input-addon:disabled:hover {
+          background-color: var(--dt-form-disabled-background-color);
+          color: var(--dt-text-placeholder-color, #999);
+          cursor: not-allowed;          
+        }
       `,
     ];
   }
@@ -124,26 +138,37 @@ export default class DtLocationMapItem extends LitElement {
       <div class="location-item">
         <input 
           type="text"
+          class="${this.disabled ? 'disabled' : null}"
           placeholder="${this.placeholder}"
           value="${this.metadata?.label}"
-          .disabled=${existingValue}
+          .disabled=${existingValue || this.disabled}
           @change=${this._change}
         />
         
         ${existingValue ? html`
-        <button class="input-addon" @click=${this._openMapModal}>
+        <button 
+          class="input-addon" 
+          @click=${this._openMapModal}
+          ?disabled=${this.disabled}
+        >
           <dt-icon icon="mdi:map" />
         </button>
-        <button class="input-addon" @click=${this._delete}>
+        <button 
+          class="input-addon" 
+          @click=${this._delete}
+          ?disabled=${this.disabled}
+        >
           <dt-icon icon="mdi:trash-can-outline" />
         </button>
         ` : null }
       </div>
       
+      ${this.metadata ? html`
       <dt-map-modal 
         .metadata=${this.metadata} 
         mapbox-token="${this.mapboxToken}" 
       />
+      ` : null}
       
 `;
   }
