@@ -1,5 +1,7 @@
 import { html, css } from 'lit';
 import { msg } from '@lit/localize';
+import { classMap } from 'lit/directives/class-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import DtBase from '../../dt-base.js';
 
 export class DtModal extends DtBase {
@@ -143,12 +145,17 @@ export class DtModal extends DtBase {
       isHelp: { type: Boolean },
       isOpen: { type: Boolean },
       hideHeader: { type: Boolean },
+      hideButton: { type: Boolean },
+      buttonClass: { type: Object },
+      buttonStyle: { type: Object },
     };
   }
 
   constructor() {
     super();
     this.context = 'default';
+    this.addEventListener('open', (e) => this._openModal());
+    this.addEventListener('close', (e) => this._closeModal());
   }
 
   _openModal() {
@@ -268,15 +275,19 @@ export class DtModal extends DtBase {
         </form>
       </dialog>
 
+      ${!this.hideButton
+      ? html`
       <button
-        class="button small opener"
+        class="button small opener ${classMap(this.buttonClass || {})}"
         data-open=""
         aria-label="Open reveal"
         type="button"
         @click="${this._openModal}"
+        style=${styleMap(this.buttonStyle || {})}
       >
         <slot name="openButton">${msg('Open Dialog')}</slot>
       </button>
+      ` : null}
     `;
   }
 }

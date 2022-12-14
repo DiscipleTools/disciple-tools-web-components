@@ -115,7 +115,7 @@ function Template(args) {
   const {
     name = 'field-name',
     label = 'Field Name',
-    mapboxToken,
+    mapboxToken = MAPBOX_TOKEN,
     placeholder,
     value,
     disabled = false,

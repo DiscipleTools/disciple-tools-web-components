@@ -137,6 +137,8 @@ const Template = args => {
       ?isHelp="${args.isHelp}"
       ?isopen="${args.isOpen}"
       ?hideHeader="${args.hideHeader}"
+      buttonclass="${JSON.stringify(args.buttonClass)}"
+      buttonstyle="${JSON.stringify(args.buttonStyle)}"
     >
       <span slot="content"> ${slot} </span>
     </dt-modal>
@@ -172,6 +174,16 @@ OpenedModal.args = {
   context: 'default',
   isHelp: true,
   isOpen: true,
+};
+
+export const CustomButtonStyle = Template.bind({});
+CustomButtonStyle.args = {
+  buttonClass: {
+    alert: true,
+  },
+  buttonStyle: {
+    padding: '40px',
+  },
 };
 
 export const LocalizeRTL = Template.bind({});

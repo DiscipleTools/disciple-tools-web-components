@@ -36,7 +36,7 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
     },
     replace({
       include: ['src/**/*.stories.js'],
-      'process.env.STORYBOOK_MAPBOX_TOKEN': '"development"'
+      'process.env.STORYBOOK_MAPBOX_TOKEN': `"${process?.env?.STORYBOOK_MAPBOX_TOKEN || 'dummytoken'}"`
     }),
   ],
 

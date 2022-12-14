@@ -62,6 +62,7 @@ export class DtLocationMap extends DtFormBase {
       <dt-location-map-item 
         placeholder="${this.placeholder}"
         .metadata=${opt}
+        mapbox-token="${this.mapboxToken}"
         @delete=${this.deleteItem}
       />
     `;

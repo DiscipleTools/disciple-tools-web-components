@@ -1,10 +1,12 @@
 import { css, html, LitElement } from 'lit';
 import '../../icons/dt-icon.js';
+import './dt-map-modal.js';
 
 export default class DtLocationMapItem extends LitElement {
   static get properties() {
     return {
       placeholder: { type: String },
+      mapboxToken: { type: String, attribute: 'mapbox-token' },
       metadata: { type: Object, reflect: true }
     };
   }
@@ -112,6 +114,10 @@ export default class DtLocationMapItem extends LitElement {
     };
     this.dispatchEvent(new CustomEvent('delete', options));
   }
+  _openMapModal() {
+    this.shadowRoot.querySelector('dt-map-modal').dispatchEvent(new Event('open'));
+  }
+
   render() {
     const existingValue = !!this.metadata?.label;
     return html`
@@ -125,7 +131,7 @@ export default class DtLocationMapItem extends LitElement {
         />
         
         ${existingValue ? html`
-        <button class="input-addon">
+        <button class="input-addon" @click=${this._openMapModal}>
           <dt-icon icon="mdi:map" />
         </button>
         <button class="input-addon" @click=${this._delete}>
@@ -133,6 +139,12 @@ export default class DtLocationMapItem extends LitElement {
         </button>
         ` : null }
       </div>
+      
+      <dt-map-modal 
+        .metadata=${this.metadata} 
+        mapbox-token="${this.mapboxToken}" 
+      />
+      
 `;
   }
 }

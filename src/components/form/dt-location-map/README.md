@@ -38,7 +38,7 @@ Location field using Mapbox to search and geocode locations
 - [ ] disabled
 - [x] empty box if no value
 - [ ] button to add new value
-- [ ] open location in map dialog
+- [x] open location in map dialog
 - [x] clear/delete location
 - [ ] add multiple locations
 - [ ] search mapbox locations

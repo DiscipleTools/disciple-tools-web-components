@@ -16,6 +16,28 @@ export class DtMapModal extends DtBase {
     };
   }
 
+  static get styles() {
+    return [
+      css`
+        .map {
+          width: 100%;
+          min-height: 50dvb;
+        }
+      `,
+    ];
+  }
+
+  constructor() {
+    super();
+
+    this.addEventListener('open', (e) => {
+      this.shadowRoot.querySelector('dt-modal').dispatchEvent(new Event('open'));
+    });
+    this.addEventListener('close', (e) => {
+      this.shadowRoot.querySelector('dt-modal').dispatchEvent(new Event('close'));
+    });
+  }
+
   firstUpdated() {
     window.mapboxgl.accessToken = this.mapboxToken;
 
@@ -42,22 +64,12 @@ export class DtMapModal extends DtBase {
       .addTo(this.map);
   }
 
-  static get styles() {
-    return [
-      css`
-        .map {
-          width: 100%;
-          min-height: 50dvb;
-        }
-      `,
-    ];
-  }
-
   render() {
     return html`      
       <dt-modal
         .title=${this.metadata?.label}
         ?isopen=${this.isOpen}
+        hideButton
       >
         <div slot="content">
           <div class="map" id="map_${this.metadata?.grid_meta_id}"></div>
