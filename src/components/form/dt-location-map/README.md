@@ -33,17 +33,19 @@ Location field using Mapbox to search and geocode locations
 - [x] value
 - [x] placeholder
 - [ ] onchange
-- [ ] loading
+- [x] loading
 - [ ] saved
-- [ ] disabled
+- [x] disabled
 - [x] empty box if no value
-- [ ] button to add new value
 - [x] open location in map dialog
 - [x] clear/delete location
-- [ ] add multiple locations
-- [ ] search mapbox locations
-- [ ] select option (mouse)
-- [ ] select option (keyboard)
-- [ ] select existing location
+- [x] add multiple locations
+- [x] search mapbox locations
+- [ ] search google locations
+- [x] select option (mouse)
+- [x] select option (keyboard)
+- [x] select existing location
+- [ ] focus next location after adding
 - [ ] add custom (non-geocoded) location
+- [ ] edit custom (non-geocoded) location
 - [ ] select from pin on map (new)

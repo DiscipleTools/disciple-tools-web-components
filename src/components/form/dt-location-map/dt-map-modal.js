@@ -21,6 +21,7 @@ export class DtMapModal extends DtBase {
       css`
         .map {
           width: 100%;
+          min-width: 50vw;
           min-height: 50dvb;
         }
       `,
@@ -38,30 +39,36 @@ export class DtMapModal extends DtBase {
     });
   }
 
-  firstUpdated() {
-    window.mapboxgl.accessToken = this.mapboxToken;
-
-    const {lng, lat, level} = this.metadata;
-    let zoom = 15
-    if ( 'admin0' === level ){
-      zoom = 3
-    } else if ( 'admin1' === level ) {
-      zoom = 6
-    } else if ( 'admin2' === level ) {
-      zoom = 10
+  updated(changedProperties) {
+    if (changedProperties.has('mapboxToken') && this.mapboxToken) {
+      window.mapboxgl.accessToken = this.mapboxToken;
     }
-    const mapContainer = this.shadowRoot.querySelector('#map_' + this.metadata?.grid_meta_id)
-    this.map = new window.mapboxgl.Map({
-      container: mapContainer,
-      style: 'mapbox://styles/mapbox/streets-v12', // style URL
-      center: [lng, lat],
-      minZoom: 1,
-      zoom: zoom
-    });
-    this.map.on('load', () => this.map.resize());
-    new mapboxgl.Marker()
-      .setLngLat([lng, lat])
-      .addTo(this.map);
+
+    if (changedProperties.has('metadata') && this.metadata && this.metadata.lat) {
+      const { lng, lat, level } = this.metadata;
+      let zoom = 15
+      if ('admin0' === level) {
+        zoom = 3
+      } else if ('admin1' === level) {
+        zoom = 6
+      } else if ('admin2' === level) {
+        zoom = 10
+      }
+      const mapContainer = this.shadowRoot.querySelector('#map')
+      if (mapContainer) {
+        this.map = new window.mapboxgl.Map({
+          container: mapContainer,
+          style: 'mapbox://styles/mapbox/streets-v12', // style URL
+          center: [lng, lat],
+          minZoom: 1,
+          zoom: zoom
+        });
+        this.map.on('load', () => this.map.resize());
+        new mapboxgl.Marker()
+          .setLngLat([lng, lat])
+          .addTo(this.map);
+      }
+    }
   }
 
   render() {
@@ -72,7 +79,7 @@ export class DtMapModal extends DtBase {
         hideButton
       >
         <div slot="content">
-          <div class="map" id="map_${this.metadata?.grid_meta_id}"></div>
+          <div class="map" id="map"></div>
         </div>
       </dt-modal>
       

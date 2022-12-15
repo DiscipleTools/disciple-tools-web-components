@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
-import './dt-location-map.js';
+import './dt-location-map-item.js';
 
 const MAPBOX_TOKEN = process.env.STORYBOOK_MAPBOX_TOKEN;
 
@@ -41,37 +41,13 @@ const basicOptions = [
     "level": "place",
     "source": "user",
     "label": "Los Angeles, California, United States"
-  },
-  {
-    "label": [
-      "Test"
-    ],
-    "key": "contact_address_861"
   }
 ];
 export default {
-  title: 'Form/dt-location-map',
-  component: 'dt-location-map',
+  title: 'Form/dt-location-map/dt-location-map-item',
+  component: 'dt-location-map-item',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes) },
-    name: {
-      control: 'text',
-      type: { name: 'string', required: true },
-      description:
-        'Passed to `change` function to identify which input triggered the event',
-    },
-    value: {
-      control: 'text',
-      type: { name: 'array' },
-      table: {
-        type: {
-          summary: '{id:string, label:string}[]',
-          detail: `[{id:'1',label:'Item 1'},{id:'345',label:'Item 345'}]`,
-        },
-      },
-      description:
-        'Array of values indicating the selected values. Should be an array of option objects converted to a string with `JSON.stringify`. <br/>**Note:** This attribute will be updated on the HTML element when value changes.',
-    },
     placeholder: {
       control: 'text',
       description: 'String rendered as placeholder text',
@@ -119,58 +95,37 @@ export default {
 
 function Template(args) {
   const {
-    name = 'field-name',
-    label = 'Field Name',
-    mapboxToken = MAPBOX_TOKEN,
     placeholder,
-    value,
+    mapboxToken = MAPBOX_TOKEN,
+    metadata,
     disabled = false,
-    icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
-    iconAltText = 'Icon Alt Text',
-    isPrivate,
-    privateLabel,
     loading = false,
     saved = false,
     onchange,
     open,
-    slot,
     i18n,
   } = args;
   return html`
     <style>
       ${themeCss(args)}
     </style>
-    <dt-location-map
-      name="${name}"
-      label=${label}
-      mapbox-token=${mapboxToken}
+    <dt-location-map-item
       placeholder="${placeholder}"
-      value="${JSON.stringify(value)}"
+      mapbox-token=${mapboxToken}
+      metadata="${JSON.stringify(metadata)}"
       onchange="${onchange}"
       ?disabled=${disabled}
-      icon="${icon}"
-      iconAltText="${iconAltText}"
-      ?private=${isPrivate}
-      privateLabel="${privateLabel}"
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
       i18n="${JSON.stringify(i18n)}"
     >
-      ${slot}
-    </dt-location-map>
+    </dt-location-map-item>
   `;
 }
 
 export const Empty = Template.bind({});
 Empty.args = {};
-
-export const SvgIcon = Template.bind({});
-SvgIcon.args = {
-  icon: null,
-  // prettier-ignore
-  slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
-};
 
 export const CustomPlaceholder = Template.bind({});
 CustomPlaceholder.args = {
@@ -179,8 +134,13 @@ CustomPlaceholder.args = {
 
 export const SelectedValue = Template.bind({});
 SelectedValue.args = {
-  value: [basicOptions[1], basicOptions[2]],
+  metadata: basicOptions[1],
 };
+
+export const Open = Template.bind({});
+Open.args = {
+  open: true,
+}
 
 export const AutoSave = Template.bind({});
 AutoSave.args = {
@@ -193,18 +153,11 @@ Disabled.args = {
   disabled: true,
 };
 
-/*export const Loading = Template.bind({});
+export const Loading = Template.bind({});
 Loading.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
-  options: basicOptions,
   loading: true,
 };
-export const Saved = Template.bind({});
+/*export const Saved = Template.bind({});
 Saved.args = {
   value: [
     {
