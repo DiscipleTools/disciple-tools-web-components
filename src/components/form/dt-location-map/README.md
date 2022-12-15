@@ -45,7 +45,7 @@ Location field using Mapbox to search and geocode locations
 - [x] select option (mouse)
 - [x] select option (keyboard)
 - [x] select existing location
-- [ ] focus next location after adding
+- [x] focus next location after adding
 - [ ] add custom (non-geocoded) location
 - [ ] edit custom (non-geocoded) location
 - [ ] select from pin on map (new)

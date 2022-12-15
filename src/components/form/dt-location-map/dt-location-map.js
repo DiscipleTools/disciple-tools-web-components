@@ -61,6 +61,19 @@ export class DtLocationMap extends DtFormBase {
     }
     this.updateLocationList();
   }
+  updated(changedProperties) {
+    // if length of value was changed, focus the last element
+    if (changedProperties.has('value')) {
+      const old = changedProperties.get('value');
+      if (old && old?.length !== this.value?.length) {
+        const items = this.shadowRoot.querySelectorAll('dt-location-map-item');
+        if (items && items.length) {
+          console.log('trigger focus');
+          items[items.length - 1].dispatchEvent(new Event('autofocus'));
+        }
+      }
+    }
+  }
 
   updateLocationList() {
     this.locations = [
@@ -72,7 +85,6 @@ export class DtLocationMap extends DtFormBase {
   }
 
   selectLocation(evt) {
-    console.log(evt);
     const newLocation = {
       ...evt.detail.metadata,
       id: Date.now(),

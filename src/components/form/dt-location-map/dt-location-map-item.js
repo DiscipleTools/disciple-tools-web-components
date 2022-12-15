@@ -231,6 +231,19 @@ export default class DtLocationMapItem extends LitElement {
     this.debounceTimer = null;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('autofocus', async (evt) => {
+      // wait for render to complete
+      await this.updateComplete;
+
+      const input = this.shadowRoot.querySelector('input');
+      if (input) {
+        input.focus();
+      }
+    });
+  }
+
   updated(changedProperties) {
     this._scrollOptionListToActive();
 
@@ -381,7 +394,9 @@ export default class DtLocationMapItem extends LitElement {
   }
 
   _inputKeyUp(e) {
-    this.open = true;
+    if (e.target.value) {
+      this.open = true;
+    }
     this.query = e.target.value;
   }
 
@@ -403,36 +418,38 @@ export default class DtLocationMapItem extends LitElement {
    * @private
    */
   async _filterOptions() {
-    if (this.mapboxToken) {
-      this.loading = true;
+    if (this.query) {
+      if (this.mapboxToken) {
+        this.loading = true;
 
-      const params = new URLSearchParams({
-        types: ['country', 'region', 'postcode', 'district', 'place', 'locality', 'neighborhood', 'address'],
-        limit: 6,
-        access_token: this.mapboxToken,
-      });
+        const params = new URLSearchParams({
+          types: ['country', 'region', 'postcode', 'district', 'place', 'locality', 'neighborhood', 'address'],
+          limit: 6,
+          access_token: this.mapboxToken,
+        });
 
-      const options = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
+        const options = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        };
 
-      const apiUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(this.query)}.json?${params}`;
-      const response = await fetch(apiUrl, options);
+        const apiUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(this.query)}.json?${params}`;
+        const response = await fetch(apiUrl, options);
 
-      const results = await response.json();
+        const results = await response.json();
 
-      this.filteredOptions = results.features.map((i) => ({
-        lng: i.center[0],
-        lat: i.center[1],
-        level: i.place_type[0],
-        label: i.place_name,
-        source: 'user'
-      }));
+        this.filteredOptions = results.features.map((i) => ({
+          lng: i.center[0],
+          lat: i.center[1],
+          level: i.place_type[0],
+          label: i.place_name,
+          source: 'user'
+        }));
 
-      this.loading = false;
+        this.loading = false;
+      }
     }
     return this.filteredOptions;
   }
