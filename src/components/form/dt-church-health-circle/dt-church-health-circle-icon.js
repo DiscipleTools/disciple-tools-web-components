@@ -25,11 +25,18 @@ class DtChurchHealthIcon extends DtBase {
       metric: { type: Object },
       group: { type: Object },
       active: { type: Boolean, reflect: true },
+      missingIcon: { type: String },
     };
   }
 
   render() {
-    const { key, metric, active } = this;
+    const {
+      metric,
+      active,
+      missingIcon = `${window.wpApiShare.template_dir}/dt-assets/images/groups/missing.svg`,
+    } = this;
+
+    console.log(window.DtBase);
 
     return html`<div
       class=${classMap({

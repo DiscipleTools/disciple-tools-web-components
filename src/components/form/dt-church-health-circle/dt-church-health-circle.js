@@ -223,23 +223,20 @@ export class DtChurchHealthCircle extends DtBase {
    * @returns
    */
   render() {
-    //Show the spinner if we don't have data
+    // Show the spinner if we don't have data
     if (!this.group || !this.metrics.length) {
       return html`<dt-spinner></dt-spinner>`;
     }
 
-    //Setup data
+    // Setup data
     const practicedItems = this.group.health_metrics || [];
-    const missingIcon = this.missingIcon
-      ? this.missingIcon
-      : '/dt-assets/images/groups/missing.svg';
 
-    //Show the error message if we have one
+    // Show the error message if we have one
     if (this.errorMessage) {
       html`<dt-alert type="error">${this.errorMessage}</dt-alert>`;
     }
 
-    //Render the group circle
+    // Render the group circle
     return html`
       <div class="health-circle__wrapper">
         <div class="health-circle__container">
@@ -258,6 +255,7 @@ export class DtChurchHealthCircle extends DtBase {
                     .metric=${metric}
                     .active=${practicedItems.indexOf(key) !== -1}
                     .style="--i: ${index + 1}"
+                    .missingIcon="${this.missingIcon}"
                   >
                   </dt-church-health-icon>`
               )}
