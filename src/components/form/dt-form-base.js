@@ -64,6 +64,20 @@ export default class DtFormBase extends DtBase {
     };
   }
 
+  /**
+   * return the field elemnt
+   */
+  get _field() {
+    return this.shadowRoot.querySelector('input, textarea, select');
+  }
+
+  /**
+   * return the element to proxy focus to
+   */
+  get _focusTarget() {
+    return this._field;
+  }
+
   constructor() {
     super();
     this.touched = false;
