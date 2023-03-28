@@ -84,7 +84,7 @@ function Template(theme) {
       expands: true,
     >
       <dt-toggle id="toggleField" name="toggleField" label="Toggle Field"></dt-toggle>
-      
+
       <dt-text id='textField' name='textField' value='' label="Text Field"></dt-text>
 
       <dt-textarea id='textareaField' name='textareaField' value='' label="Textarea Field"></dt-textarea>
@@ -117,6 +117,10 @@ function Template(theme) {
         label="Connection Field"
         options="${JSON.stringify(posts)}"
       ></dt-connection>
+
+       <dt-button id="buttonField" name="buttonField" label="Button" context="primary">
+        Click Me
+      </dt-button>
     </dt-tile>
     <pre><code>
     ${themeCss(theme)}
