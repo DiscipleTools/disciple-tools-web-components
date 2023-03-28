@@ -1,11 +1,9 @@
-import { css, html } from "lit";
+import { css, html } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 import DtBase from '../../dt-base.js';
-import DtFormBase from "../dt-form-base.js";
+import DtFormBase from '../dt-form-base.js';
 
-
-
-export class DTCopyText extends DtBase {
+export class DtCopyText extends DtBase {
   static get styles() {
     return css`
       :root {
@@ -32,7 +30,7 @@ export class DTCopyText extends DtBase {
         width: 20px;
       }
 
-      :host([dir="rtl"]) .copy_icon {
+      :host([dir='rtl']) .copy_icon {
         transform: translate(24px, -5px);
       }
     `;
@@ -49,19 +47,19 @@ export class DTCopyText extends DtBase {
   get inputStyles() {
     if (this.success) {
       return {
-        "--dt-text-border-color":
-          "var(--copy-text-success-color, var(--success-color))",
-        "--dt-form-text-color":
-          "var( --copy-text-success-color, var(--success-color))",
-        color: "var( --copy-text-success-color, var(--success-color))",
+        '--dt-text-border-color':
+          'var(--copy-text-success-color, var(--success-color))',
+        '--dt-form-text-color':
+          'var( --copy-text-success-color, var(--success-color))',
+        color: 'var( --copy-text-success-color, var(--success-color))',
       };
     }
     if (this.error) {
       return {
-        "---dt-text-border-color":
-          "var(--copy-text-alert-color, var(--alert-color))",
-        "--dt-form-text-color":
-          "var(--copy-text-alert-color, var(--alert-color))",
+        '---dt-text-border-color':
+          'var(--copy-text-alert-color, var(--alert-color))',
+        '--dt-form-text-color':
+          'var(--copy-text-alert-color, var(--alert-color))',
       };
     }
 
@@ -69,7 +67,7 @@ export class DTCopyText extends DtBase {
   }
 
   get icon() {
-    return this.success ? "ic:round-check" : "ic:round-content-copy";
+    return this.success ? 'ic:round-check' : 'ic:round-content-copy';
   }
 
   async copy() {
@@ -104,4 +102,4 @@ export class DTCopyText extends DtBase {
   }
 }
 
-window.customElements.define("dt-copy-text", DTCopyText);
+window.customElements.define('dt-copy-text', DtCopyText);
