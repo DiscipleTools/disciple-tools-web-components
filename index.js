@@ -1,7 +1,10 @@
 /*
   Form Components
 */
+export { DtButton } from './src/components/form/dt-button/dt-button.js';
+export { DtChurchHealthCircle } from './src/components/form/dt-church-health-circle/dt-church-health-circle.js';
 export { DtConnection } from './src/components/form/dt-connection/dt-connection.js';
+export { DtCopyText } from './src/components/form/dt-copy-text/dt-copy-text.js';
 export { DtDate } from './src/components/form/dt-date/dt-date.js';
 export { DtLabel } from './src/components/form/dt-label/dt-label.js';
 export { DtLocation } from './src/components/form/dt-location/dt-location.js';
