@@ -1,5 +1,5 @@
-import { html, css } from "lit";
-import { classMap } from "lit/directives/class-map.js";
+import { html, css } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import DtBase from '../../dt-base.js';
 
 export class DtButton extends DtBase {
@@ -157,14 +157,15 @@ export class DtButton extends DtBase {
       title: { type: String },
       onClick: { type: Function },
       rounded: { type: Boolean },
+      confirm: { type: String },
     };
   }
 
   get classes() {
     const classes = {
-      "dt-button": true,
-      "dt-button--outline": this.outline,
-      "dt-button--rounded": this.rounded,
+      'dt-button': true,
+      'dt-button--outline': this.outline,
+      'dt-button--rounded': this.rounded,
     };
     const contextClass = `dt-button--${this.context}`;
     classes[contextClass] = true;
@@ -174,15 +175,21 @@ export class DtButton extends DtBase {
   constructor() {
     super();
 
-    this.context = "default";
+    this.context = 'default';
   }
 
   handleClick(e) {
+    if (this.confirm) {
+      if (!confirm(this.confirm)) {
+        e.preventDefault();
+        return;
+      }
+    }
     if (this.onClick) {
       e.preventDefault();
       this.onClick(e);
     } else {
-      const form = this.closest("form");
+      const form = this.closest('form');
       if (form) {
         form.submit();
       }
@@ -213,7 +220,6 @@ export class DtButton extends DtBase {
         </a>
       `;
     }
-
     return html`
       <button
         class=${classMap(this.classes)}
@@ -229,4 +235,4 @@ export class DtButton extends DtBase {
   }
 }
 
-window.customElements.define("dt-button", DtButton);
+window.customElements.define('dt-button', DtButton);

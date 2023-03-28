@@ -5,6 +5,7 @@ import {
   argTypes,
   buttonContexts,
 } from '../../../stories-theme.js';
+
 import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-button.js';
 
@@ -39,6 +40,7 @@ const Template = args => {
       ?rounded="${args.rounded}"
       .href="${args.href}"
       title="${args.title}"
+      confirm="${args.confirm}"
     >
       ${slot}
     </dt-button>
@@ -117,4 +119,10 @@ OutlineDisabled.args = {
 export const RoundedDefault = Template.bind({});
 RoundedDefault.args = {
   rounded: true,
+};
+
+export const WithConfrimationMessage = Template.bind({});
+WithConfrimationMessage.args = {
+  context: 'alert',
+  confirm: 'Are you sure you want to do this?',
 };
