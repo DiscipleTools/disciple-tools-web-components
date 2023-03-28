@@ -1,7 +1,10 @@
 /*
   Form Components
 */
+export { DtButton } from './src/components/form/dt-button/dt-button.js';
+export { DtChurchHealthCircle } from './src/components/form/dt-church-health-circle/dt-church-health-circle.js';
 export { DtConnection } from './src/components/form/dt-connection/dt-connection.js';
+export { DtCopyText } from './src/components/form/dt-copy-text/dt-copy-text.js';
 export { DtDate } from './src/components/form/dt-date/dt-date.js';
 export { DtLabel } from './src/components/form/dt-label/dt-label.js';
 export { DtLocation } from './src/components/form/dt-location/dt-location.js';
@@ -24,5 +27,6 @@ export { DtAlert } from './src/components/layout/dt-alert/dt-alert.js';
 export { DtList } from './src/components/layout/dt-list/dt-list.js';
 export { DtModal } from './src/components/layout/dt-modal/dt-modal.js';
 export { DtTile } from './src/components/layout/dt-tile/dt-tile.js';
+export { DtIcon } from './src/components/icons/dt-icon.js';
 
 export { default as DtBase } from './src/components/dt-base.js';
