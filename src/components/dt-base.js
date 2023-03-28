@@ -75,8 +75,6 @@ export default class DtBase extends LitElement {
    * @returns
    */
   _proxyFocus() {
-    console.log('focusing', this._focusTarget);
-
     if (!this._focusTarget) {
       return;
     }
