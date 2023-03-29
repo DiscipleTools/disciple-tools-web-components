@@ -40,9 +40,6 @@ export class DtNumberField extends DtFormBase {
           background-color: var(--dt-form-disabled-background-color, #e6e6e6);
           cursor: not-allowed;
         }
-        input:invalid {
-          border-color: var(--dt-form-invalid-border-color, #dc3545);
-        }
       `,
     ];
   }
@@ -56,20 +53,12 @@ export class DtNumberField extends DtFormBase {
         type: String,
         reflect: true,
       },
-      oldValue: {
-        type: String,
-      },
       min: { type: Number },
       max: { type: Number },
       loading: { type: Boolean },
       saved: { type: Boolean },
       onchange: { type: String },
     };
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.oldValue = this.value;
   }
 
   _checkValue(value) {
@@ -89,44 +78,24 @@ export class DtNumberField extends DtFormBase {
           newValue: e.target.value,
         },
         bubbles: true,
-        composed: true,
+        composed: true
       });
 
       this.value = e.target.value;
-      this._field.setCustomValidity('');
       this.dispatchEvent(event);
-      this.api = new ApiService(this.nonce, `${this.apiRoot}`);
 
-      try {
-        const response = await this.api.updatePost(this.postType, this.postID, {
-          [this.name]: e.target.value,
-        });
-        if (response.data && response.data.status !== 200) {
-          this.handleError(response.message);
-        } else {
-          this.saved = true;
-          this.oldValue = this.value;
-        }
-      } catch (error) {
-        this.handleError(error);
-      }
+      this.api = new ApiService(this.nonce, this.apiRoot);
+
+
+      const response = await this.api.updatePost(this.postType, this.postID, {
+        [this.name]: e.target.value,
+      });
+
+      this.saved = true;
+
     } else {
       e.currentTarget.value = '';
     }
-  }
-
-  handleError(er = 'An error occurred.') {
-    let error = er;
-    if (error instanceof Error) {
-      console.error(error);
-      error = error.message;
-    } else {
-      console.error(error);
-    }
-    this.error = error;
-    this._field.setCustomValidity(error);
-    this.invalid = true;
-    this.value = this.oldValue;
   }
 
   render() {
