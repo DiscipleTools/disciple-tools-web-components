@@ -1,8 +1,9 @@
 import { html } from 'lit';
 import { fixture, expect } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
-
 import './dt-number.js';
+import { stub } from 'sinon';
+import ApiService from '../../../services/apiService.js';
 
 describe('DT-Number', () => {
   it('should display id, name, label, and value attributes correctly', async () => {
@@ -22,14 +23,27 @@ describe('DT-Number', () => {
   });
 
   it('updates the text', async () => {
+    stub(ApiService.prototype, 'makeRequest').returns(
+      new Promise(resolve => {
+        resolve({
+          data: {
+            status: 200,
+          },
+        });
+      })
+    );
+
     const el = await fixture(
       html`<dt-number
-        id="name"
-        name="Name"
+        id="age"
+        name="age"
         label="Label Name"
-        value="John Doe"
+        value="2"
+        postID="1"
+        postType="contacts"
       ></dt-number>`
     );
+
     el.shadowRoot.querySelector('input').value = '';
     el.shadowRoot.querySelector('input').focus();
 
@@ -45,7 +59,7 @@ describe('DT-Number', () => {
   });
 
   it('should check min value', async () => {
-    const el = await fixture(html`<dt-number min="3"></dt-number>`);
+    const el = await fixture(html`<dt-number min="3" value="3"></dt-number>`);
     el.shadowRoot.querySelector('input').value = '';
     el.shadowRoot.querySelector('input').focus();
 
@@ -57,7 +71,7 @@ describe('DT-Number', () => {
       press: 'Enter',
     });
 
-    expect(el.value).to.be.undefined;
+    expect(el.value).to.equal('3');
 
     await sendKeys({
       type: '3',
@@ -71,7 +85,7 @@ describe('DT-Number', () => {
   });
 
   it('should check max value', async () => {
-    const el = await fixture(html`<dt-number max="10"></dt-number>`);
+    const el = await fixture(html`<dt-number max="10" value="1"></dt-number>`);
     el.shadowRoot.querySelector('input').value = '';
     el.shadowRoot.querySelector('input').focus();
 
@@ -83,7 +97,7 @@ describe('DT-Number', () => {
       press: 'Enter',
     });
 
-    expect(el.value).to.be.undefined;
+    expect(el.value).to.equal('1');
 
     await sendKeys({
       type: '10',
@@ -97,7 +111,9 @@ describe('DT-Number', () => {
   });
 
   it('should check min/max value', async () => {
-    const el = await fixture(html`<dt-number min="2" max="10"></dt-number>`);
+    const el = await fixture(
+      html`<dt-number min="2" max="10" value="2"></dt-number>`
+    );
     el.shadowRoot.querySelector('input').value = '';
     el.shadowRoot.querySelector('input').focus();
 
@@ -109,7 +125,7 @@ describe('DT-Number', () => {
       press: 'Enter',
     });
 
-    expect(el.value).to.be.undefined;
+    expect(el.value).to.equal('2');
     await sendKeys({
       type: '11',
     });
@@ -118,7 +134,7 @@ describe('DT-Number', () => {
       press: 'Enter',
     });
 
-    expect(el.value).to.be.undefined;
+    expect(el.value).to.equal('2');
 
     await sendKeys({
       type: '5',

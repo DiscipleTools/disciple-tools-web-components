@@ -95,12 +95,13 @@ export class DtNumberField extends DtFormBase {
       this.value = e.target.value;
       this._field.setCustomValidity('');
       this.dispatchEvent(event);
-      this.api = new ApiService(this.nonce, `${this.apiRoot}`);
+      this.api = new ApiService(this.nonce, this.apiRoot);
 
       try {
         const response = await this.api.updatePost(this.postType, this.postID, {
           [this.name]: e.target.value,
         });
+
         if (response.data && response.data.status !== 200) {
           this.handleError(response.message);
         } else {
