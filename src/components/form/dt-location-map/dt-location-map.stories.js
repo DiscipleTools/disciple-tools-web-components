@@ -191,6 +191,7 @@ Open.args = {
 
 export const AutoSave = Template.bind({});
 AutoSave.args = {
+  value: [basicOptions[0]],
   onchange: 'onAutoSave(event)',
 };
 

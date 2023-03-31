@@ -113,6 +113,12 @@ export class DtLocationMap extends DtFormBase {
   }
 
   selectLocation(evt) {
+    const event = new CustomEvent('change', {
+      detail: {
+        field: this.name,
+        oldValue: this.value,
+      },
+    });
     const newLocation = {
       ...evt.detail.metadata,
       id: Date.now(),
@@ -122,7 +128,10 @@ export class DtLocationMap extends DtFormBase {
       newLocation,
     ];
     this.updateLocationList();
-    //todo: dispatch event
+    event.detail.newValue = this.value;
+
+    // dispatch event for use with addEventListener from javascript
+    this.dispatchEvent(event);
     this._setFormValue(this.value);
   }
 

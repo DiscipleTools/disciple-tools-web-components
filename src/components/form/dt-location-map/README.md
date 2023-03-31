@@ -32,7 +32,7 @@ Location field using Mapbox to search and geocode locations
 - [x] label
 - [x] value
 - [x] placeholder
-- [ ] onchange
+- [x] onchange
 - [x] loading
 - [ ] saved
 - [x] disabled
