@@ -4,6 +4,7 @@ import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-location-map-item.js';
 
 const MAPBOX_TOKEN = process.env.STORYBOOK_MAPBOX_TOKEN;
+const GOOGLE_GEOCODE_TOKEN = process.env.STORYBOOK_GOOGLE_GEOCODE_TOKEN;
 
 const basicOptions = [
   {
@@ -97,6 +98,7 @@ function Template(args) {
   const {
     placeholder,
     mapboxToken = MAPBOX_TOKEN,
+    googleToken,
     metadata,
     disabled = false,
     loading = false,
@@ -112,6 +114,7 @@ function Template(args) {
     <dt-location-map-item
       placeholder="${placeholder}"
       mapbox-token=${mapboxToken}
+      google-token=${googleToken}
       metadata="${JSON.stringify(metadata)}"
       onchange="${onchange}"
       ?disabled=${disabled}
@@ -135,6 +138,11 @@ CustomPlaceholder.args = {
 export const SelectedValue = Template.bind({});
 SelectedValue.args = {
   metadata: basicOptions[1],
+};
+
+export const GoogleGeocode = Template.bind({});
+GoogleGeocode.args = {
+  googleToken: GOOGLE_GEOCODE_TOKEN,
 };
 
 export const Open = Template.bind({});

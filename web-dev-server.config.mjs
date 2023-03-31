@@ -36,7 +36,8 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
     },
     replace({
       include: ['src/**/*.stories.js'],
-      'process.env.STORYBOOK_MAPBOX_TOKEN': `"${process?.env?.STORYBOOK_MAPBOX_TOKEN || 'dummytoken'}"`
+      'process.env.STORYBOOK_MAPBOX_TOKEN': `"${process?.env?.STORYBOOK_MAPBOX_TOKEN || 'dummytoken'}"`,
+      'process.env.STORYBOOK_GOOGLE_GEOCODE_TOKEN': `"${process?.env?.STORYBOOK_GOOGLE_GEOCODE_TOKEN || 'dummytoken'}"`
     }),
   ],
 

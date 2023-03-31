@@ -41,7 +41,7 @@ Location field using Mapbox to search and geocode locations
 - [x] clear/delete location
 - [x] add multiple locations
 - [x] search mapbox locations
-- [ ] search google locations
+- [x] search google locations
 - [x] select option (mouse)
 - [x] select option (keyboard)
 - [x] select existing location

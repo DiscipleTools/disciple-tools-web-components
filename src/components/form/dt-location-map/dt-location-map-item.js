@@ -10,6 +10,7 @@ export default class DtLocationMapItem extends LitElement {
       id: { type: String, reflect: true },
       placeholder: { type: String },
       mapboxToken: { type: String, attribute: 'mapbox-token' },
+      googleToken: { type: String, attribute: 'google-token' },
       metadata: { type: Object },
       disabled: { type: Boolean },
       open: {
@@ -242,6 +243,10 @@ export default class DtLocationMapItem extends LitElement {
         input.focus();
       }
     });
+
+    let script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?libraries=places&key=${this.googleToken}`;
+    document.body.appendChild(script);
   }
 
   updated(changedProperties) {
@@ -316,7 +321,21 @@ export default class DtLocationMapItem extends LitElement {
     }
   }
 
-  _select(metadata) {
+  async _select(metadata) {
+    if (metadata.place_id && google.maps.places.PlacesService) {
+      // Google Places autocomplete will give a place_id instead of geometry details,
+      // so we need to get those details by geocoding the full address from Place lookup
+      this.loading = true;
+      const place = await this.getPlaceDetails(metadata.label);
+      this.loading = false;
+      if (place) {
+        metadata.lat = place.lat;
+        metadata.lng = place.lng;
+        // metadata.label = place.label;
+        metadata.level = place.level;
+      }
+    }
+
     // Create custom event with new/old values to pass to onchange function
     const options = {
       detail: {
@@ -335,6 +354,39 @@ export default class DtLocationMapItem extends LitElement {
 
     this.open = false; // close options list
     this.activeIndex = -1; // reset keyboard-selected option
+  }
+
+  async getPlaceDetails(address) {
+    const params = new URLSearchParams({
+      key: this.googleToken,
+      address,
+      language: this.locale || 'en',
+    });
+    const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?${params}`;
+    const response = await fetch(apiUrl, { method: 'GET' });
+
+    const data = await response.json();
+    let results = [];
+
+    // https://developers.google.com/maps/documentation/geocoding/requests-geocoding#StatusCodes
+    switch (data.status) {
+      case 'OK':
+        results = data.results.map((i) => ({
+          lat: i.geometry.location.lat,
+          lng: i.geometry.location.lng,
+          label: i.formatted_address,
+          level: i.types && i.types.length ? i.types[0] : null,
+          source: 'user',
+          raw: i,
+        }));
+        break;
+      case 'ZERO_RESULTS':
+      default:
+        // general error catch
+        break;
+    }
+
+    return results && results.length ? results[0] : null;
   }
 
   static _focusInput(e) {
@@ -419,7 +471,29 @@ export default class DtLocationMapItem extends LitElement {
    */
   async _filterOptions() {
     if (this.query) {
-      if (this.mapboxToken) {
+      if (this.googleToken && google.maps.places.AutocompleteService) {
+        this.loading = true;
+
+        const service = new google.maps.places.AutocompleteService();
+        service.getPlacePredictions({
+          input: this.query,
+          language: this.locale,
+        }, (predictions, status) => {
+          this.loading = false;
+          if (status != google.maps.places.PlacesServiceStatus.OK || !predictions) {
+            alert(status);
+            this.error = true;
+            return;
+          }
+
+          this.filteredOptions = predictions.map((i) => ({
+            label: i.description,
+            place_id: i.place_id,
+            source: 'user',
+            raw: i,
+          }));
+        });
+      } else if (this.mapboxToken) {
         this.loading = true;
 
         const params = new URLSearchParams({
@@ -461,6 +535,7 @@ export default class DtLocationMapItem extends LitElement {
       // // if query changes, trigger filter
       const queryChanged = props.has('query');
       if (queryChanged) {
+        this.error = false;
         clearTimeout(this.debounceTimer);
         this.debounceTimer = setTimeout(() => this._filterOptions(), 300);
       }
@@ -565,6 +640,9 @@ export default class DtLocationMapItem extends LitElement {
         <ul class="option-list" style=${styleMap(optionListStyles)}>
           ${this._renderOptions()}
         </ul>
+        ${(this.touched && this.invalid) || this.error
+          ? html`<dt-exclamation-circle class="icon-overlay alert"></dt-exclamation-circle>`
+            : null}
         ${this.loading
           ? html`<dt-spinner class="icon-overlay"></dt-spinner>` : null}
         ${this.saved 
