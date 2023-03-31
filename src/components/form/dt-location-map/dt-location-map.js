@@ -58,20 +58,24 @@ export class DtLocationMap extends DtFormBase {
     this.internals.setFormValue(JSON.stringify(value));
   }
 
+  willUpdate(...args) {
+    super.willUpdate(...args);
+
+    if (this.value) {
+      if (this.value.filter((opt) => !opt.id)) {
+        this.value = [
+          ...this.value.map((opt) => ({
+            ...opt,
+            id: opt.grid_meta_id,
+          }))
+        ];
+      }
+    }
+    this.updateLocationList();
+  }
   firstUpdated(...args) {
     super.firstUpdated(...args);
     this.internals.setFormValue(JSON.stringify(this.value));
-
-    if (this.value) {
-      // set `id` on every location
-      this.value = [
-        ...this.value.map((opt) => ({
-          ...opt,
-          id: opt.grid_meta_id,
-        }))
-      ];
-    }
-    this.updateLocationList();
   }
   updated(changedProperties) {
     // if length of value was changed, focus the last element
@@ -98,7 +102,8 @@ export class DtLocationMap extends DtFormBase {
   }
 
   updateLocationList() {
-    if (!this.disabled && this.open) {
+    if (!this.disabled && (this.open || !this.value || !this.value.length)) {
+      this.open = true;
       this.locations = [
         ...(this.value || []).filter(i => i.lat),
         {
