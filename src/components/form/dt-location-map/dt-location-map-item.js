@@ -244,9 +244,11 @@ export default class DtLocationMapItem extends LitElement {
       }
     });
 
-    let script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?libraries=places&key=${this.googleToken}`;
-    document.body.appendChild(script);
+    if (!window.google?.maps?.places?.AutocompleteService) {
+      let script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?libraries=places&key=${this.googleToken}`;
+      document.body.appendChild(script);
+    }
   }
 
   updated(changedProperties) {
@@ -289,8 +291,9 @@ export default class DtLocationMapItem extends LitElement {
   }
 
   _clickOption(e) {
-    if (e.target && e.target.value) {
-      this._select(JSON.parse(e.target.value));
+    const target = e.currentTarget ?? e.target;
+    if (target && target.value) {
+      this._select(JSON.parse(target.value));
     }
   }
 
@@ -317,7 +320,16 @@ export default class DtLocationMapItem extends LitElement {
 
   _keyboardSelectOption() {
     if (this.activeIndex > -1) {
-      this._select(this.filteredOptions[this.activeIndex]);
+      if (this.activeIndex < this.filteredOptions.length) {
+        // select one of the options
+        this._select(this.filteredOptions[this.activeIndex]);
+      } else {
+        // select the Add New option
+        this._select({
+          value: this.query,
+          label: this.query,
+        })
+      }
     }
   }
 
@@ -389,10 +401,12 @@ export default class DtLocationMapItem extends LitElement {
     return results && results.length ? results[0] : null;
   }
 
-  static _focusInput(e) {
-    if (e.target !== e.currentTarget) return;
-
-    e.target.getElementsByTagName('input')[0].focus();
+  get _focusTarget() {
+    let target = this._field;
+    if (this.metadata) {
+      target = this.shadowRoot.querySelector('button') || target;
+    }
+    return target;
   }
 
   _inputFocusIn() {
@@ -446,7 +460,9 @@ export default class DtLocationMapItem extends LitElement {
   }
 
   _inputKeyUp(e) {
-    if (e.target.value) {
+    const keycode = e.keyCode || e.which;
+    const ignoredKeys = [9, 13]; // ignore tab & enter;
+    if (e.target.value && !ignoredKeys.includes(keycode)) {
       this.open = true;
     }
     this.query = e.target.value;
@@ -454,7 +470,7 @@ export default class DtLocationMapItem extends LitElement {
 
   _listHighlightNext() {
     this.activeIndex = Math.min(
-      this.filteredOptions.length - 1,
+      this.filteredOptions.length,
       this.activeIndex + 1
     );
   }
@@ -480,13 +496,13 @@ export default class DtLocationMapItem extends LitElement {
           language: this.locale,
         }, (predictions, status) => {
           this.loading = false;
-          if (status != google.maps.places.PlacesServiceStatus.OK || !predictions) {
-            alert(status);
+          if (status != google.maps.places.PlacesServiceStatus.OK
+            && status != google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
             this.error = true;
             return;
           }
 
-          this.filteredOptions = predictions.map((i) => ({
+          this.filteredOptions = (predictions || []).map((i) => ({
             label: i.description,
             place_id: i.place_id,
             source: 'user',
@@ -570,7 +586,7 @@ export default class DtLocationMapItem extends LitElement {
     this.shadowRoot.querySelector('dt-map-modal').dispatchEvent(new Event('open'));
   }
 
-  _renderOption(opt, idx) {
+  _renderOption(opt, idx, label) {
     return html`
       <li tabindex="-1">
         <button
@@ -585,18 +601,29 @@ export default class DtLocationMapItem extends LitElement {
       ? 'active'
       : ''}"
         >
-          ${opt.label}
+          ${label ?? opt.label}
         </button>
       </li>
     `;
   }
 
   _renderOptions() {
+    let options = [];
     if (!this.filteredOptions.length) {
-      return html`<li><div>${msg('No options available')}</div></li>`;
+      if (this.loading) {
+        options.push(html`<li><div>${msg('Loading options...')}</div></li>`);
+      } else {
+        options.push(html`<li><div>${msg('No options available')}</div></li>`);
+      }
+    } else {
+      options.push(...this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx)));
     }
-//todo: insert option to add new
-    return this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx));
+
+    options.push(this._renderOption({
+      value: this.query,
+      label: this.query,
+    }, (this.filteredOptions || []).length, html`<strong>${msg('Use')}: "${this.query}"</strong>`));
+    return options;
   }
 
   render() {
@@ -605,6 +632,7 @@ export default class DtLocationMapItem extends LitElement {
       top: this.containerHeight ? `${this.containerHeight}px` : '2.5rem',
     };
     const existingValue = !!this.metadata?.label;
+    const hasGeometry = this.metadata.lat && this.metadata.lng;
     return html`
       <div class="input-group">
         <div class="field-container">      
@@ -613,23 +641,25 @@ export default class DtLocationMapItem extends LitElement {
             class="${this.disabled ? 'disabled' : null}"
             placeholder="${this.placeholder}"
             value="${this.metadata?.label}"
-            .disabled=${existingValue || this.disabled}
+            .disabled=${(existingValue && hasGeometry) || this.disabled}
             @focusin="${this._inputFocusIn}"
             @blur="${this._inputFocusOut}"
             @keydown="${this._inputKeyDown}"
             @keyup="${this._inputKeyUp}"
           />
           
-          ${existingValue ? html`
+          ${existingValue && hasGeometry ? html`
           <button 
-            class="input-addon" 
+            class="input-addon btn-map" 
             @click=${this._openMapModal}
             ?disabled=${this.disabled}
           >
             <dt-icon icon="mdi:map" />
           </button>
+          ` : null }
+          ${existingValue ? html`
           <button 
-            class="input-addon" 
+            class="input-addon btn-delete" 
             @click=${this._delete}
             ?disabled=${this.disabled}
           >

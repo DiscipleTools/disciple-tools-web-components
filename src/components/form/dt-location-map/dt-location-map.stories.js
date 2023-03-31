@@ -178,9 +178,20 @@ CustomPlaceholder.args = {
   placeholder: 'Custom Placeholder',
 };
 
-export const SelectedValue = Template.bind({});
-SelectedValue.args = {
+export const SelectedValueMaps = Template.bind({});
+SelectedValueMaps.args = {
   value: [basicOptions[1], basicOptions[2]],
+};
+
+export const SelectedValueMixed = Template.bind({});
+SelectedValueMixed.args = {
+  value: [
+    basicOptions[1],
+    {
+      label: 'Custom address',
+      key: 'contact_addres_1fe',
+    },
+  ],
 };
 
 export const Open = Template.bind({});

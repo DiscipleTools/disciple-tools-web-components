@@ -135,9 +135,16 @@ CustomPlaceholder.args = {
   placeholder: 'Custom Placeholder',
 };
 
-export const SelectedValue = Template.bind({});
-SelectedValue.args = {
+export const SelectedValueMap = Template.bind({});
+SelectedValueMap.args = {
   metadata: basicOptions[1],
+};
+export const SelectedValueAddress = Template.bind({});
+SelectedValueAddress.args = {
+  metadata: {
+    label: 'Custom address',
+    key: 'contact_address_1fe',
+  },
 };
 
 export const GoogleGeocode = Template.bind({});

@@ -105,14 +105,14 @@ export class DtLocationMap extends DtFormBase {
     if (!this.disabled && (this.open || !this.value || !this.value.length)) {
       this.open = true;
       this.locations = [
-        ...(this.value || []).filter(i => i.lat),
+        ...(this.value || []).filter(i => i.label),
         {
           id: Date.now(),
         }
       ];
     } else {
       this.locations = [
-        ...(this.value || []).filter(i => i.lat),
+        ...(this.value || []).filter(i => i.label),
       ];
     }
   }
