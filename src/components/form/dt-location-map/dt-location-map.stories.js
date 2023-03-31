@@ -182,6 +182,12 @@ SelectedValue.args = {
   value: [basicOptions[1], basicOptions[2]],
 };
 
+export const Open = Template.bind({});
+Open.args = {
+  value: [basicOptions[1], basicOptions[2]],
+  open: true,
+};
+
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   onchange: 'onAutoSave(event)',

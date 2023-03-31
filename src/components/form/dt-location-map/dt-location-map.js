@@ -12,6 +12,10 @@ export class DtLocationMap extends DtFormBase {
         type: Array,
         reflect: true,
       },
+      locations: {
+        type: Array,
+        state: true,
+      },
       open: {
         type: Boolean,
         state: true,
@@ -28,6 +32,9 @@ export class DtLocationMap extends DtFormBase {
     return [
       ...super.styles,
       css`
+        :host {
+          font-family: Helvetica, Arial, sans-serif;
+        }
         .input-group {
           display: flex;
         }
@@ -66,22 +73,38 @@ export class DtLocationMap extends DtFormBase {
     if (changedProperties.has('value')) {
       const old = changedProperties.get('value');
       if (old && old?.length !== this.value?.length) {
-        const items = this.shadowRoot.querySelectorAll('dt-location-map-item');
-        if (items && items.length) {
-          console.log('trigger focus');
-          items[items.length - 1].dispatchEvent(new Event('autofocus'));
-        }
+        this.focusNewLocation();
       }
+    }
+    // if length of locations was changed, focus the last element
+    if (changedProperties.has('locations')) {
+      const old = changedProperties.get('locations');
+      if (old && old?.length !== this.locations?.length) {
+        this.focusNewLocation();
+      }
+    }
+  }
+  focusNewLocation() {
+    const items = this.shadowRoot.querySelectorAll('dt-location-map-item');
+    if (items && items.length) {
+      // console.log('trigger focus');
+      items[items.length - 1].dispatchEvent(new Event('autofocus'));
     }
   }
 
   updateLocationList() {
-    this.locations = [
-      ...(this.value || []).filter(i => i.lat),
-      {
-        id: Date.now(),
-      }
-    ]
+    if (!this.disabled && this.open) {
+      this.locations = [
+        ...(this.value || []).filter(i => i.lat),
+        {
+          id: Date.now(),
+        }
+      ];
+    } else {
+      this.locations = [
+        ...(this.value || []).filter(i => i.lat),
+      ];
+    }
   }
 
   selectLocation(evt) {
@@ -119,6 +142,9 @@ export class DtLocationMap extends DtFormBase {
 
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
+  addNew(evt) {
+    this.open = true;
+    this.updateLocationList();
   }
 
   renderItem(opt, idx) {
@@ -143,6 +169,9 @@ export class DtLocationMap extends DtFormBase {
       ${this.labelTemplate()}
       
       ${repeat(this.locations || [], (opt) => opt.id, (opt, idx) => this.renderItem(opt, idx))}
+      ${!this.open
+        ? html`<a href="javascript:;" @click="${this.addNew}">Add New</a>`
+        : null}
     `;
   }
 }
