@@ -5,6 +5,8 @@ export { DtConnection } from './form/dt-connection/dt-connection.js';
 export { DtDate } from './form/dt-date/dt-date.js';
 export { DtLabel } from './form/dt-label/dt-label.js';
 export { DtLocation } from './form/dt-location/dt-location.js';
+export { DtLocationMap } from './form/dt-location-map/dt-location-map.js';
+export { DtMapModal } from './form/dt-location-map/dt-map-modal.js';
 export { DtMultiSelect } from './form/dt-multi-select/dt-multi-select.js';
 export { DtNumberField } from './form/dt-number/dt-number.js';
 export { DtSingleSelect } from './form/dt-single-select/dt-single-select.js';

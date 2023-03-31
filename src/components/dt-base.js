@@ -9,15 +9,25 @@ export default class DtBase extends LitElement {
   static get properties() {
     return {
       locale: { type: String },
-      apiRoot: {type: String, reflect: false},
-      postType: {type: String, reflect: false},
-      postID: {type: String, reflect: false},
+      apiRoot: { type: String, reflect: false },
+      postType: { type: String, reflect: false },
+      postID: { type: String, reflect: false },
     };
+  }
+
+  /**
+   * return the element to proxy focus to
+   */
+  get _focusTarget() {
+    return this.shadowRoot.children[0] instanceof Element
+      ? this.shadowRoot.children[0]
+      : null;
   }
 
   constructor() {
     super();
     updateWhenLocaleChanges(this);
+    this.addEventListener('focus', this._proxyFocus.bind(this));
   }
 
   connectedCallback() {
@@ -58,5 +68,17 @@ export default class DtBase extends LitElement {
         console.error(e);
       }
     }
+  }
+
+  /**
+   * Proxy focus to the focus target
+   * @returns
+   */
+  _proxyFocus() {
+    if (!this._focusTarget) {
+      return;
+    }
+
+    this._focusTarget.focus();
   }
 }

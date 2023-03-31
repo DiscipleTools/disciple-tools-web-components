@@ -1,22 +1,50 @@
-import { css, html } from "lit";
-import { classMap } from "lit/directives/class-map.js";
+import { css, html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import DtBase from '../../dt-base.js';
-import "../../icons/dt-church-health-icon.js";
+import './dt-church-health-circle-icon.js';
 
 export class DtChurchHealthCircle extends DtBase {
   static get styles() {
     return css`
-      .health-circle {
-        container-type: inline-size;
+      .health-circle__container {
+        --d: 50px; /* image size */
+        --rel: 0.5; /* how much extra space we want between images, 1 = one image size */
+        --r: calc(1 * var(--d) / var(--tan)); /* circle radius */
+        --s: calc(3 * var(--r));
 
+        margin: 1rem auto;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+
+        @supports (aspect-ratio) {
+          aspect-ratio: 1/1;
+        }
+        @supports not (aspect-ratio) {
+          padding-top: 100%;
+          height: 0;
+          position: relative;
+          overflow: visible;
+        }
+      }
+
+      .health-circle {
         display: block;
-        margin: 3rem auto;
         height: auto;
-        max-width: 100%;
-        aspect-ratio: 1/1;
         border-radius: 100%;
         border: 3px darkgray dashed;
+        max-width: 100%;
+
+        @supports not (aspect-ratio) {
+          position: absolute;
+          transform: translate(-50%, -50%);
+          left: 50%;
+          top: 50%;
+          width: calc(100% - 8px);
+          height: auto;
+        }
       }
+
       .health-circle__grid {
         display: inline-block;
         position: relative;
@@ -24,27 +52,27 @@ export class DtChurchHealthCircle extends DtBase {
         width: 100%;
         margin-left: auto;
         margin-right: auto;
-
-        --d: 2.5em; /* image size */
-        --rel: 0.5; /* how much extra space we want between images, 1 = one image size */
-        //--r: calc(0.7 * var(--d) / var(--tan)); /* circle radius */
-        --r: calc( (var(--diameter) - (var(--d) * 2) ) / 2);
-        --s: calc(2.75 * var(--r));
         position: relative;
-        width: 100%;
+        width: var(--s);
         max-width: 100%;
         height: auto;
         aspect-ratio: 1 / 1;
       }
-      @container (min-width: 350px) {
-        .health-circle__grid {
-          --d: 3.5em; /* image size */
+
+      @media (max-width: 519px) {
+        .health-circle {
+          max-width: 300px;
+          min-width: 300px;
+        }
+
+        .health-circle__container {
+          --r: calc(0.8 * var(--d) / var(--tan)); /* circle radius */
         }
       }
 
-      @container (max-width: 250px) {
-        .health-circle__grid {
-          --d: 1.5em; /* image size */
+      @media (min-width: 520px) {
+        .health-circle__container {
+          --r: calc(1.1 * var(--d) / var(--tan)); /* circle radius */
         }
       }
 
@@ -99,7 +127,20 @@ export class DtChurchHealthCircle extends DtBase {
 
     const entries = Object.entries(settings);
 
-    return entries
+    //We don't want to show church commitment in the circle
+    return entries.filter(([key, value]) => key !== 'church_commitment');
+  }
+
+  get isCommited() {
+    if (!this.group) {
+      return false;
+    }
+
+    if (!this.group.health_metrics) {
+      return false;
+    }
+
+    return this.group.health_metrics.includes('church_commitment');
   }
 
   /**
@@ -108,7 +149,6 @@ export class DtChurchHealthCircle extends DtBase {
   connectedCallback() {
     super.connectedCallback();
     this.fetch();
-    window.addEventListener('resize', () => {this.distributeItems(); });
   }
 
   adoptedCallback() {
@@ -128,14 +168,14 @@ export class DtChurchHealthCircle extends DtBase {
   async fetch() {
     try {
       const promises = [this.fetchSettings(), this.fetchGroup()];
-      const [settings, group] = await Promise.all(promises);
+      let [settings, group] = await Promise.all(promises);
       this.settings = settings;
-      this.group = group;
+      this.post = group;
       if (!settings) {
-        this.errorMessage = "Error loading settings";
+        this.errorMessage = 'Error loading settings';
       }
       if (!group) {
-        this.errorMessage = "Error loading group";
+        this.errorMessage = 'Error loading group';
       }
     } catch (e) {
       console.error(e);
@@ -150,7 +190,9 @@ export class DtChurchHealthCircle extends DtBase {
     if (this.group) {
       return Promise.resolve(this.group);
     }
-    return this.api.getPost('groups', this.groupId);
+    fetch(`/wp-json/dt-posts/v2/groups/${this.groupId}`).then(response =>
+      response.json()
+    );
   }
 
   /**
@@ -161,7 +203,9 @@ export class DtChurchHealthCircle extends DtBase {
     if (this.settings) {
       return Promise.resolve(this.settings);
     }
-    return this.api.getPost('groups', 'settings');
+    return fetch('/wp-json/dt-posts/v2/groups/settings').then(response =>
+      response.json()
+    );
   }
 
   /**
@@ -170,7 +214,7 @@ export class DtChurchHealthCircle extends DtBase {
    * @returns
    */
   findMetric(key) {
-    const metric = this.metrics.find((item) => item.key === key);
+    const metric = this.metrics.find(item => item.key === key);
     return metric ? metric.value : null;
   }
 
@@ -186,40 +230,50 @@ export class DtChurchHealthCircle extends DtBase {
 
     // Setup data
     const practicedItems = this.group.health_metrics || [];
-    const missingIcon = this.missingIcon
-      ? this.missingIcon
-      : "/dt-assets/images/groups/missing.svg";
 
     // Show the error message if we have one
     if (this.errorMessage) {
-      return html`<dt-alert type="error">${this.errorMessage}</dt-alert>`;
+      html`<dt-alert type="error">${this.errorMessage}</dt-alert>`;
     }
 
     // Render the group circle
     return html`
-      <div>
-        <div
-          class=${classMap({
-            "health-circle": true,
-            "health-circle--committed":
-              practicedItems.indexOf("church_commitment") !== -1,
-          })}
-        >
-          <div class="health-circle__grid">
-            ${this.metrics.map(
-              ([key, metric], index) =>
-                html`<dt-church-health-icon
-                  key="${key}"
-                  missingIcon="${missingIcon}"
-                  .group="${this.group}"
-                  .metric=${metric}
-                  .active=${practicedItems.indexOf(key) !== -1}
-                  .style="--i: ${index + 1}"
-                >
-                </dt-church-health-icon>`
-            )}
+      <div class="health-circle__wrapper">
+        <div class="health-circle__container">
+          <div
+            class=${classMap({
+              'health-circle': true,
+              'health-circle--committed': this.isCommited,
+            })}
+          >
+            <div class="health-circle__grid">
+              ${this.metrics.map(
+                ([key, metric], index) =>
+                  html`<dt-church-health-icon
+                    key="${key}"
+                    .group="${this.group}"
+                    .metric=${metric}
+                    .active=${practicedItems.indexOf(key) !== -1}
+                    .style="--i: ${index + 1}"
+                    .missingIcon="${this.missingIcon}"
+                  >
+                  </dt-church-health-icon>`
+              )}
+            </div>
           </div>
         </div>
+
+        <dt-toggle
+          name="church-commitment"
+          label="${this.settings.church_commitment.label}"
+          requiredmessage=""
+          icon="https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+          iconalttext="Icon Alt Text"
+          privatelabel=""
+          @click="${this.toggleClick}"
+          ?checked=${this.isCommited}
+        >
+        </dt-toggle>
       </div>
     `;
   }
@@ -229,22 +283,59 @@ export class DtChurchHealthCircle extends DtBase {
    * according to amount of health metric elements
    */
   distributeItems() {
-    const container = this.renderRoot.querySelector(".health-circle__grid");
-    if (container) {
-      const items = container.querySelectorAll("dt-church-health-icon");
+    const container = this.renderRoot.querySelector(
+      '.health-circle__container'
+    );
+    const items = container.querySelectorAll('dt-church-health-icon');
 
-      const nItems = items.length;
-      const m = nItems; /* how many are ON the circle */
-      const tan = Math.tan(Math.PI / m); /* tangent of half the base angle */
+    let n_items = items.length;
+    let m = n_items; /* how many are ON the circle */
+    let tan = Math.tan(Math.PI / m); /* tangent of half the base angle */
 
-      const containerWidth = container.clientWidth + "px";
+    container.style.setProperty('--m', m);
+    container.style.setProperty('--tan', +tan.toFixed(2));
+  }
 
+  toggleClick(e) {
+    let toggle = this.renderRoot.querySelector('dt-toggle');
+    let church_commitment = toggle.toggleAttribute('checked');
 
-      container.style.setProperty("--m", m);
-      container.style.setProperty("--tan", +tan.toFixed(2));
-      container.style.setProperty("--diameter", containerWidth);
+    const payload = {
+      health_metrics: {
+        values: [
+          {
+            value: 'church_commitment',
+            delete: !church_commitment,
+          },
+        ],
+      },
+    };
+    try {
+      API.update_post('groups', this.group.ID, payload);
+      if (!this.group.health_metrics) {
+        this.group.health_metrics = [];
+      }
+      if (church_commitment) {
+        this.group.health_metrics.push('church_commitment');
+      } else {
+        this.group.health_metrics.pop('church_commitment');
+      }
+    } catch (err) {
+      console.log(err);
     }
+
+    this.requestUpdate();
+  }
+
+  _isChecked() {
+    if (Object.hasOwn(this.group, 'health_metrics')) {
+      if (this.group.health_metrics.includes('church_commitment')) {
+        return (this.isChurch = true);
+      }
+      return (this.isChurch = false);
+    }
+    return (this.isChurch = false);
   }
 }
 
-window.customElements.define("dt-church-health-circle", DtChurchHealthCircle);
+window.customElements.define('dt-church-health-circle', DtChurchHealthCircle);

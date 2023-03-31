@@ -123,9 +123,10 @@ export class DtDate extends DtFormBase {
       },
     });
 
-    this.dispatchEvent(event);
     this.timestamp = timestampMilliseconds;
     this.value = value;
+    this._setFormValue(value);
+    this.dispatchEvent(event);
   }
 
   _change(e) {
