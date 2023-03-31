@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-location-map.js';
+import { FormDecorator } from '../../../stories-utils';
 
 const MAPBOX_TOKEN = process.env.STORYBOOK_MAPBOX_TOKEN;
 
@@ -197,6 +198,12 @@ export const Disabled = Template.bind({});
 Disabled.args = {
   value: [basicOptions[0]],
   disabled: true,
+};
+
+export const BasicForm = Template.bind({});
+BasicForm.decorators = [LocaleDecorator, FormDecorator];
+BasicForm.args = {
+  value: [basicOptions[0]],
 };
 
 /*export const Loading = Template.bind({});

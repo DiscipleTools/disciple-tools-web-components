@@ -53,9 +53,14 @@ export class DtLocationMap extends DtFormBase {
       id: Date.now(),
     }];
   }
+  _setFormValue(value) {
+    super._setFormValue(value);
+    this.internals.setFormValue(JSON.stringify(value));
+  }
 
   firstUpdated(...args) {
     super.firstUpdated(...args);
+    this.internals.setFormValue(JSON.stringify(this.value));
 
     if (this.value) {
       // set `id` on every location
@@ -117,6 +122,8 @@ export class DtLocationMap extends DtFormBase {
       newLocation,
     ];
     this.updateLocationList();
+    //todo: dispatch event
+    this._setFormValue(this.value);
   }
 
   deleteItem(evt) {
@@ -142,6 +149,9 @@ export class DtLocationMap extends DtFormBase {
 
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
+    this._setFormValue(this.value);
+  }
+
   addNew(evt) {
     this.open = true;
     this.updateLocationList();

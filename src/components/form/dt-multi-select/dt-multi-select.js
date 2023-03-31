@@ -315,6 +315,7 @@ export class DtMultiSelect extends DtFormBase {
 
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
+    this._setFormValue(this.value);
   }
 
   _remove(e) {
