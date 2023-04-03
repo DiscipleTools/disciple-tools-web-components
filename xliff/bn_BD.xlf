@@ -11,6 +11,27 @@
 <trans-unit id="sf9aee319a006c9b4">
   <source>Add</source>
 </trans-unit>
+<trans-unit id="sbf1ca928ec1deb62">
+  <source>Need more help?</source>
+</trans-unit>
+<trans-unit id="s226be12a5b1a27e8">
+  <source>Read the documentation</source>
+</trans-unit>
+<trans-unit id="s5e8250fb85d64c23">
+  <source>Close</source>
+</trans-unit>
+<trans-unit id="s29e25f5e4622f847">
+  <source>Open Dialog</source>
+</trans-unit>
+<trans-unit id="s33f85f24c0f5f008">
+  <source>Save</source>
+</trans-unit>
+<trans-unit id="s04ceadb276bbe149">
+  <source>Loading options...</source>
+</trans-unit>
+<trans-unit id="s625ad019db843f94">
+  <source>Use</source>
+</trans-unit>
 <trans-unit id="sd1a8dc951b2b6a98">
   <source>Choose which fields to display as columns in the list</source>
 </trans-unit>
@@ -37,18 +58,6 @@
 </trans-unit>
 <trans-unit id="sb59d68ed12d46377">
   <source>Loading</source>
-</trans-unit>
-<trans-unit id="sbf1ca928ec1deb62">
-  <source>Need more help?</source>
-</trans-unit>
-<trans-unit id="s226be12a5b1a27e8">
-  <source>Read the documentation</source>
-</trans-unit>
-<trans-unit id="s5e8250fb85d64c23">
-  <source>Close</source>
-</trans-unit>
-<trans-unit id="s29e25f5e4622f847">
-  <source>Open Dialog</source>
 </trans-unit>
 </body>
 </file>

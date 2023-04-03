@@ -9,11 +9,14 @@
     /* eslint-disable @typescript-eslint/no-explicit-any */
 
     export const templates = {
-      's226be12a5b1a27e8': `اقرأ الوثائق`,
+      's04ceadb276bbe149': `خيارات التحميل...`,
+'s226be12a5b1a27e8': `اقرأ الوثائق`,
 's29e25f5e4622f847': `افتح`,
+'s33f85f24c0f5f008': `حفظ`,
 's36cb242ac90353bc': `مجالات`,
 's41cb4006238ebd3b': `التحرير بالجملة`,
 's5e8250fb85d64c23': `غلق`,
+'s625ad019db843f94': `استخدام`,
 's8900c9de2dbae68b': `لا توجد خيارات متاحة`,
 's9d51bfd93b5dbeca': `عرض المحفوظات`,
 'sac83d7f9358b43db': str`${0}قائمة الأعضاء`,
