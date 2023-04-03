@@ -97,7 +97,7 @@ export class DtNumberField extends DtFormBase {
       this.dispatchEvent(event);
       this.api = new ApiService(this.nonce, `${this.apiRoot}`);
 
-      try {
+      /*try {
         const response = await this.api.updatePost(this.postType, this.postID, {
           [this.name]: e.target.value,
         });
@@ -109,7 +109,7 @@ export class DtNumberField extends DtFormBase {
         }
       } catch (error) {
         this.handleError(error);
-      }
+      }*/
     } else {
       e.currentTarget.value = '';
     }
