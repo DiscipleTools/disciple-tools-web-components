@@ -182,45 +182,28 @@ Saved.args = {
   ],
   options: basicOptions,
   saved: true,
-};
+};*/
 
 export const LocalizeRTL = Template.bind({});
 LocalizeRTL.decorators = [LocaleDecorator];
 LocalizeRTL.args = {
   lang: 'ar',
   dir: 'rtl',
-  label: 'اسم الإدخال',
-  placeholder: 'حدد العلامات',
-  allowAdd: true,
+  label: 'حقل الموقع',
+  placeholder: 'اختر موقعا',
   loading: true,
   value: [
     {
-      id: 'opt1',
-      label: 'تنكر هؤلاء الرجال المفتونون',
+      "grid_meta_id": "65",
+      "post_id": "43",
+      "post_type": "contacts",
+      "postmeta_id_location_grid": "1671",
+      "grid_id": "100366112",
+      "lng": "-73.9866",
+      "lat": "40.7306",
+      "level": "place",
+      "source": "user",
+      "label": "نيويورك ، نيويورك ، الولايات المتحدة"
     },
   ],
-  options: [
-    {
-      id: 'opt1',
-      label: 'تنكر هؤلاء الرجال المفتونون',
-    },
-    {
-      id: 'opt2',
-      label: 'م فيتساوي مع هؤلاء',
-    },
-    {
-      id: 'opt3',
-      label: 'فلا أحد يرفض',
-    },
-  ],
-  filters: [
-    {
-      id: 'focus',
-      label: 'منطقة التركيز',
-    },
-    {
-      id: 'all',
-      label: 'جميع المواقع',
-    },
-  ],
-};*/
+};

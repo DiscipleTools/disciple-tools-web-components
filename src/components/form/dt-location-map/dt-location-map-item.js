@@ -210,6 +210,7 @@ export default class DtLocationMapItem extends LitElement {
           position: absolute;
           inset-inline-end: 1rem;
           top: 0;
+          inset-inline-end: 3rem;
           height: 100%;
           display: flex;
           justify-content: center;
@@ -469,9 +470,12 @@ export default class DtLocationMapItem extends LitElement {
             source: 'user',
             raw: i,
           }));
+
+          this.loading = false;
         } catch (ex) {
           console.error(ex);
           this.error = true;
+          this.loading = false;
           return;
         }
       } else if (this.mapboxToken && this.mapboxService) {

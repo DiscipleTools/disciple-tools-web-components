@@ -49,4 +49,4 @@ Location field using Mapbox to search and geocode locations
 - [x] add custom (non-geocoded) location
 - [x] edit custom (non-geocoded) location
 - [x] select from pin on map (new)
-- [ ] Localization & RTL
+- [x] Localization & RTL
