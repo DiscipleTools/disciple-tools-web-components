@@ -170,7 +170,7 @@ export class DtModal extends DtBase {
       return html`
       <header>
             <h1 id="modal-field-title">${this.title}</h1>
-            <button @click="${this._closeModal}" class="toggle">${svg}</button>
+            <button @click="${this._cancelModal}" class="toggle">${svg}</button>
           </header>
       `;
     }
@@ -181,6 +181,16 @@ export class DtModal extends DtBase {
     this.isOpen = false;
     this.shadowRoot.querySelector('dialog').close();
     document.querySelector('body').style.overflow = "initial"
+  }
+  _cancelModal() {
+    this._triggerClose('cancel');
+  }
+  _triggerClose(action) {
+    this.dispatchEvent(new CustomEvent('close', {
+      detail: {
+        action,
+      },
+    }));
   }
 
   _dialogClick(e) {
@@ -199,13 +209,13 @@ export class DtModal extends DtBase {
       e.clientX <= rect.left + rect.width;
 
     if (clickedInDialog === false) {
-      this._closeModal();
+      this._cancelModal();
     }
   }
 
   _dialogKeypress(e) {
     if (e.key === 'Escape') {
-      this._closeModal();
+      this._cancelModal();
     }
   }
 
@@ -232,6 +242,9 @@ export class DtModal extends DtBase {
     }
   }
 
+  _onButtonClick() {
+    this._triggerClose('button');
+  }
 
   render() {
     // prettier-ignore
@@ -266,7 +279,7 @@ export class DtModal extends DtBase {
               data-close=""
               aria-label="Close reveal"
               type="button"
-              @click=${this._closeModal}
+              @click=${this._onButtonClick}
             >
               <slot name="close-button">${msg('Close')}</slot>
             </button>

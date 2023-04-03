@@ -40,6 +40,7 @@ const Template = args => {
       ?isopen="${args.isOpen}"
       metadata="${JSON.stringify(args.metadata)}"
       mapbox-token="${mapboxToken}"
+      center="${JSON.stringify(args.center)}"
     />
   `;
 };
@@ -60,8 +61,8 @@ Default.args = {
   },
 };
 
-export const OpenedModal = Template.bind({});
-OpenedModal.args = {
+export const OpenedModalWithLocation = Template.bind({});
+OpenedModalWithLocation.args = {
   metadata: {
     "grid_meta_id": "65",
     "post_id": "43",
@@ -75,6 +76,22 @@ OpenedModal.args = {
     "label": "New York, New York, United States"
   },
   isOpen: true,
+};
+
+export const OpenedModalEmpty = Template.bind({});
+OpenedModalEmpty.args = {
+  metadata: null,
+  isOpen: true,
+};
+
+export const OpenedModalEmptyWithCenter = Template.bind({});
+OpenedModalEmptyWithCenter.args = {
+  metadata: null,
+  isOpen: true,
+  center: [
+    -0.12768421957309783,
+    51.50737858330203
+  ]
 };
 
 export const LocalizeRTL = Template.bind({});

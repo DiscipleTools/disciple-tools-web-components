@@ -1,6 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 import { msg } from '@lit/localize';
+import MapboxService from '../../../services/mapboxService';
+import GoogleGeocodeService from '../../../services/googleGeocodeService';
 import '../../icons/dt-icon.js';
 import './dt-map-modal.js';
 
@@ -244,10 +246,12 @@ export default class DtLocationMapItem extends LitElement {
       }
     });
 
-    if (!window.google?.maps?.places?.AutocompleteService) {
-      let script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?libraries=places&key=${this.googleToken}`;
-      document.body.appendChild(script);
+    if (this.mapboxToken) {
+      this.mapboxService = new MapboxService(this.mapboxToken);
+    }
+
+    if (this.googleToken) {
+      this.googleGeocodeService = new GoogleGeocodeService(this.googleToken, window, document);
     }
   }
 
@@ -334,17 +338,16 @@ export default class DtLocationMapItem extends LitElement {
   }
 
   async _select(metadata) {
-    if (metadata.place_id && google.maps.places.PlacesService) {
+    if (metadata.place_id && this.googleGeocodeService) {
       // Google Places autocomplete will give a place_id instead of geometry details,
       // so we need to get those details by geocoding the full address from Place lookup
       this.loading = true;
-      const place = await this.getPlaceDetails(metadata.label);
+      const place = await this.googleGeocodeService.getPlaceDetails(metadata.label, this.locale);
       this.loading = false;
       if (place) {
-        metadata.lat = place.lat;
-        metadata.lng = place.lng;
-        // metadata.label = place.label;
-        metadata.level = place.level;
+        metadata.lat = place.geometry.location.lat;
+        metadata.lng = place.geometry.location.lng;
+        metadata.level = place.types && place.types.length ? place.types[0] : null;
       }
     }
 
@@ -366,39 +369,6 @@ export default class DtLocationMapItem extends LitElement {
 
     this.open = false; // close options list
     this.activeIndex = -1; // reset keyboard-selected option
-  }
-
-  async getPlaceDetails(address) {
-    const params = new URLSearchParams({
-      key: this.googleToken,
-      address,
-      language: this.locale || 'en',
-    });
-    const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?${params}`;
-    const response = await fetch(apiUrl, { method: 'GET' });
-
-    const data = await response.json();
-    let results = [];
-
-    // https://developers.google.com/maps/documentation/geocoding/requests-geocoding#StatusCodes
-    switch (data.status) {
-      case 'OK':
-        results = data.results.map((i) => ({
-          lat: i.geometry.location.lat,
-          lng: i.geometry.location.lng,
-          label: i.formatted_address,
-          level: i.types && i.types.length ? i.types[0] : null,
-          source: 'user',
-          raw: i,
-        }));
-        break;
-      case 'ZERO_RESULTS':
-      default:
-        // general error catch
-        break;
-    }
-
-    return results && results.length ? results[0] : null;
   }
 
   get _focusTarget() {
@@ -487,20 +457,11 @@ export default class DtLocationMapItem extends LitElement {
    */
   async _filterOptions() {
     if (this.query) {
-      if (this.googleToken && google.maps.places.AutocompleteService) {
+      if (this.googleToken && this.googleGeocodeService) {
         this.loading = true;
 
-        const service = new google.maps.places.AutocompleteService();
-        service.getPlacePredictions({
-          input: this.query,
-          language: this.locale,
-        }, (predictions, status) => {
-          this.loading = false;
-          if (status != google.maps.places.PlacesServiceStatus.OK
-            && status != google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-            this.error = true;
-            return;
-          }
+        try {
+          const predictions = await this.googleGeocodeService.getPlacePredictions(this.query, this.locale);
 
           this.filteredOptions = (predictions || []).map((i) => ({
             label: i.description,
@@ -508,29 +469,17 @@ export default class DtLocationMapItem extends LitElement {
             source: 'user',
             raw: i,
           }));
-        });
-      } else if (this.mapboxToken) {
+        } catch (ex) {
+          console.error(ex);
+          this.error = true;
+          return;
+        }
+      } else if (this.mapboxToken && this.mapboxService) {
         this.loading = true;
 
-        const params = new URLSearchParams({
-          types: ['country', 'region', 'postcode', 'district', 'place', 'locality', 'neighborhood', 'address'],
-          limit: 6,
-          access_token: this.mapboxToken,
-        });
+        const results = await this.mapboxService.searchPlaces(this.query, this.locale);
 
-        const options = {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        };
-
-        const apiUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(this.query)}.json?${params}`;
-        const response = await fetch(apiUrl, options);
-
-        const results = await response.json();
-
-        this.filteredOptions = results.features.map((i) => ({
+        this.filteredOptions = results.map((i) => ({
           lng: i.center[0],
           lat: i.center[1],
           level: i.place_type[0],
@@ -585,6 +534,39 @@ export default class DtLocationMapItem extends LitElement {
   _openMapModal() {
     this.shadowRoot.querySelector('dt-map-modal').dispatchEvent(new Event('open'));
   }
+  async _onMapModalSubmit(e) {
+    if (e?.detail?.location?.lat) {
+      const { location } = e?.detail;
+      const { lat, lng } = location;
+
+      // reverse geocode location and save
+      if (this.googleGeocodeService) {
+        const results = await this.googleGeocodeService.reverseGeocode(lng, lat, this.locale);
+        if (results && results.length) {
+          const place = results[0];
+          this._select({
+            lng: place.geometry.location.lng,
+            lat: place.geometry.location.lat,
+            level: place.types && place.types.length ? place.types[0] : null,
+            label: place.formatted_address,
+            source: 'user',
+          });
+        }
+      } else if (this.mapboxService) {
+        const results = await this.mapboxService.reverseGeocode(lng, lat, this.locale);
+        if (results && results.length) {
+          const place = results[0];
+          this._select({
+            lng: place.center[0],
+            lat: place.center[1],
+            level: place.place_type[0],
+            label: place.place_name,
+            source: 'user',
+          });
+        }
+      }
+    }
+  }
 
   _renderOption(opt, idx, label) {
     return html`
@@ -632,7 +614,7 @@ export default class DtLocationMapItem extends LitElement {
       top: this.containerHeight ? `${this.containerHeight}px` : '2.5rem',
     };
     const existingValue = !!this.metadata?.label;
-    const hasGeometry = this.metadata.lat && this.metadata.lng;
+    const hasGeometry = this.metadata?.lat && this.metadata?.lng;
     return html`
       <div class="input-group">
         <div class="field-container">      
@@ -665,7 +647,15 @@ export default class DtLocationMapItem extends LitElement {
           >
             <dt-icon icon="mdi:trash-can-outline" />
           </button>
-          ` : null }
+          ` : html`
+          <button 
+            class="input-addon btn-pin" 
+            @click=${this._openMapModal}
+            ?disabled=${this.disabled}
+          >
+            <dt-icon icon="mdi:map-marker-radius" />
+          </button>
+          ` }
         </div>
         <ul class="option-list" style=${styleMap(optionListStyles)}>
           ${this._renderOptions()}
@@ -681,7 +671,8 @@ export default class DtLocationMapItem extends LitElement {
       
       <dt-map-modal 
         .metadata=${this.metadata} 
-        mapbox-token="${this.mapboxToken}" 
+        mapbox-token="${this.mapboxToken}"
+        @submit=${this._onMapModalSubmit} 
       />
       
 `;
