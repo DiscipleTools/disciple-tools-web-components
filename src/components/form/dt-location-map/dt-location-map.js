@@ -25,6 +25,10 @@ export class DtLocationMap extends DtFormBase {
         type: String,
         attribute: 'mapbox-token',
       },
+      googleToken: {
+        type: String,
+        attribute: 'google-token',
+      },
     };
   }
 
@@ -177,6 +181,7 @@ export class DtLocationMap extends DtFormBase {
         placeholder="${this.placeholder}"
         .metadata=${opt}
         mapbox-token="${this.mapboxToken}"
+        google-token="${this.googleToken}"
         @delete=${this.deleteItem}
         @select=${this.selectLocation}
         ?disabled=${this.disabled}

@@ -5,6 +5,7 @@ import './dt-location-map.js';
 import { FormDecorator } from '../../../stories-utils';
 
 const MAPBOX_TOKEN = process.env.STORYBOOK_MAPBOX_TOKEN;
+const GOOGLE_GEOCODE_TOKEN = process.env.STORYBOOK_GOOGLE_GEOCODE_TOKEN;
 
 const basicOptions = [
   {
@@ -123,6 +124,7 @@ function Template(args) {
     name = 'field-name',
     label = 'Field Name',
     mapboxToken = MAPBOX_TOKEN,
+    googleToken = GOOGLE_GEOCODE_TOKEN,
     placeholder,
     value,
     disabled = false,
@@ -145,6 +147,7 @@ function Template(args) {
       name="${name}"
       label=${label}
       mapbox-token=${mapboxToken}
+      google-token=${googleToken}
       placeholder="${placeholder}"
       value="${JSON.stringify(value)}"
       onchange="${onchange}"

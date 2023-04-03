@@ -11,7 +11,7 @@ Location field using Mapbox to search and geocode locations
 | `saved`   | Show saved checkmark | `boolean` | `false` | `<dt-tags saved>` |
 | `onchange` | Event triggered when value is changed. Makes available `event` variable that includes field name, old value, and new value in `event.details` | `event` | - | `onChange(event)` |
 | `mapbox-token` | Mapbox token to be used for searches and showing map | `string` | - | - |
----| `onload` | Event triggered when search query is changed or options list needs to be populated. Makes available `event` variable that includes field name, search query, onSuccess event, and onError event in `event.details` | `event` | - | `onLoad(event)` |
+| `google-token` | Google Geocoding token to be used for searches and showing map | `string` | - | - |
 | `label`   | Text to be displayed in label | `string` | - | - |
 | `icon`    | URL to an icon to be displayed before the label | `string` | - | - |
 | `private` | Whether field should be marked as private | `boolean` | `false` | '<dt-label private>` |
@@ -48,4 +48,5 @@ Location field using Mapbox to search and geocode locations
 - [x] focus next location after adding
 - [x] add custom (non-geocoded) location
 - [x] edit custom (non-geocoded) location
-- [ ] select from pin on map (new)
+- [x] select from pin on map (new)
+- [ ] Localization & RTL
