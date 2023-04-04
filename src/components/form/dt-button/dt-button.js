@@ -33,10 +33,10 @@ export class DtButton extends DtBase {
         );
         color: var(--dt-button-context-text-color, var(--dt-button-text-color));
         text-rendering: optimizeLegibility;
-        gap: 10px;
-        justify-content: center;
-        align-content: center;
-        align-items: center;
+        gap: var(--dt-button-gap, 10px);
+        justify-content: var(--dt-button-justify-content, center);
+        align-content: var(--dt-button-align-content, center);
+        align-items: var(--dt-button-align-items, center);
         text-decoration: var(
           --dt-button-text-decoration,
           var(--dt-button-context-text-decoration, none)
@@ -130,9 +130,7 @@ export class DtButton extends DtBase {
         --dt-button-border-radius: 50%;
         --dt-button-padding-x: 0px;
         --dt-button-padding-y: 0px;
-        --dt-button-width: var(--dt-button-width, 1.2em);
-        --dt-button-aspect-ratio: var(--dt-button-aspect-ratio, 1/1);
-        --dt-button-line-height: var(--dt-button-height, inherit);
+        --dt-button-aspect-ratio: var(--dt-button-rounded-aspect-ratio, 1/1);
       }
 
       button.toggle {
