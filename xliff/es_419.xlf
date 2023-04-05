@@ -61,9 +61,11 @@
       </trans-unit>
       <trans-unit id="s41cb4006238ebd3b">
         <source>Bulk Edit</source>
+        <target state="translated">Edición masiva</target>
       </trans-unit>
       <trans-unit id="s36cb242ac90353bc">
         <source>Fields</source>
+        <target state="translated">Campos</target>
       </trans-unit>
       <trans-unit id="s9d51bfd93b5dbeca">
         <source>Show Archived</source>
