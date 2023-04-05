@@ -11,30 +11,37 @@
       </trans-unit>
       <trans-unit id="sf9aee319a006c9b4">
         <source>Add</source>
+        <target state="translated">Ajouter</target>
       </trans-unit>
       <trans-unit id="sbf1ca928ec1deb62">
         <source>Need more help?</source>
+        <target state="translated">Besoin d'aide ?</target>
       </trans-unit>
       <trans-unit id="s226be12a5b1a27e8">
         <source>Read the documentation</source>
+        <target state="translated">Lire la documentation</target>
       </trans-unit>
       <trans-unit id="s5e8250fb85d64c23">
         <source>Close</source>
+        <target state="translated">Fermer</target>
       </trans-unit>
       <trans-unit id="s29e25f5e4622f847">
         <source>Open Dialog</source>
       </trans-unit>
       <trans-unit id="s33f85f24c0f5f008">
         <source>Save</source>
+        <target state="translated">sauver</target>
       </trans-unit>
       <trans-unit id="s04ceadb276bbe149">
         <source>Loading options...</source>
       </trans-unit>
       <trans-unit id="s625ad019db843f94">
         <source>Use</source>
+        <target state="translated">Utiliser</target>
       </trans-unit>
       <trans-unit id="sd1a8dc951b2b6a98">
         <source>Choose which fields to display as columns in the list</source>
+        <target state="translated">Choisissez les champs à afficher sous forme de colonnes dans la liste</target>
       </trans-unit>
       <trans-unit id="scb9a1ff437efbd2a">
         <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
@@ -50,9 +57,11 @@
       </trans-unit>
       <trans-unit id="s41cb4006238ebd3b">
         <source>Bulk Edit</source>
+        <target state="translated">Modification groupée</target>
       </trans-unit>
       <trans-unit id="s36cb242ac90353bc">
         <source>Fields</source>
+        <target state="translated">Champs</target>
       </trans-unit>
       <trans-unit id="s9d51bfd93b5dbeca">
         <source>Show Archived</source>
