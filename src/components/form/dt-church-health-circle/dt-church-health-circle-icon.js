@@ -26,6 +26,7 @@ class DtChurchHealthIcon extends DtBase {
       group: { type: Object },
       active: { type: Boolean, reflect: true },
       missingIcon: { type: String },
+      handleSave: { type: Function },
     };
   }
 
@@ -35,8 +36,6 @@ class DtChurchHealthIcon extends DtBase {
       active,
       missingIcon = `${window.wpApiShare.template_dir}/dt-assets/images/groups/missing.svg`,
     } = this;
-
-    console.log(window.DtBase);
 
     return html`<div
       class=${classMap({
@@ -51,6 +50,10 @@ class DtChurchHealthIcon extends DtBase {
   }
 
   async _handleClick() {
+    if (!this.handleSave) {
+      return;
+    }
+
     const active = !this.active;
     this.active = active;
     const payload = {
@@ -63,14 +66,19 @@ class DtChurchHealthIcon extends DtBase {
         ],
       },
     };
+
     try {
-      API.update_post('groups', this.group.ID, payload);
-      if (active) {
-        this.group.health_metrics.push(this.key);
-      } else {
-        this.group.health_metrics.pop(this.key);
-      }
-    } catch (err) {}
+      await this.handleSave(this.group.ID, payload);
+    } catch (err) {
+      console.error(err);
+      return;
+    }
+
+    if (active) {
+      this.group.health_metrics.push(this.key);
+    } else {
+      this.group.health_metrics.pop(this.key);
+    }
   }
 }
 

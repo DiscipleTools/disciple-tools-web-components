@@ -112,6 +112,7 @@ export class DtChurchHealthCircle extends DtBase {
       settings: { type: Object, reflect: false },
       errorMessage: { type: String, attribute: false },
       missingIcon: { type: String },
+      handleSave: { type: Function },
     };
   }
 
@@ -256,6 +257,7 @@ export class DtChurchHealthCircle extends DtBase {
                     .active=${practicedItems.indexOf(key) !== -1}
                     .style="--i: ${index + 1}"
                     .missingIcon="${this.missingIcon}"
+                    .handleSave="${this.handleSave}"
                   >
                   </dt-church-health-icon>`
               )}
@@ -296,9 +298,18 @@ export class DtChurchHealthCircle extends DtBase {
     container.style.setProperty('--tan', +tan.toFixed(2));
   }
 
-  toggleClick(e) {
+  async toggleClick(e) {
+    const { handleSave } = this;
+
+    if (!handleSave) {
+      return;
+    }
+
     let toggle = this.renderRoot.querySelector('dt-toggle');
     let church_commitment = toggle.toggleAttribute('checked');
+    if (!this.group.health_metrics) {
+      this.group.health_metrics = [];
+    }
 
     const payload = {
       health_metrics: {
@@ -310,18 +321,19 @@ export class DtChurchHealthCircle extends DtBase {
         ],
       },
     };
+
     try {
-      API.update_post('groups', this.group.ID, payload);
-      if (!this.group.health_metrics) {
-        this.group.health_metrics = [];
-      }
-      if (church_commitment) {
-        this.group.health_metrics.push('church_commitment');
-      } else {
-        this.group.health_metrics.pop('church_commitment');
-      }
+      await handleSave(this.group.ID, payload);
     } catch (err) {
-      console.log(err);
+      toggle.toggleAttribute('checked', !church_commitment);
+      console.error(err);
+      return;
+    }
+
+    if (church_commitment) {
+      this.group.health_metrics.push('church_commitment');
+    } else {
+      this.group.health_metrics.pop('church_commitment');
     }
 
     this.requestUpdate();
