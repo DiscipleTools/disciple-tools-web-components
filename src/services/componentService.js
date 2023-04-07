@@ -1,7 +1,14 @@
 import ApiService from './apiService.js';
 
 export default class ComponentService {
-  constructor(postType, postId, nonce, apiRoot = '') {
+  /**
+   * Initialize ComponentService
+   * @param postType - D.T Post Type (e.g. contacts, groups, etc.)
+   * @param postId - ID of current post
+   * @param nonce - WordPress nonce for authentication
+   * @param apiRoot - Root of API (default: wp-json) (i.e. the part before dt/v1/ or dt-posts/v2/)
+   */
+  constructor(postType, postId, nonce, apiRoot = 'wp-json') {
     this.postType = postType;
     this.postId = postId;
     this.nonce = nonce;
@@ -33,7 +40,7 @@ export default class ComponentService {
     );
     if (allElements) {
       allElements.forEach(el =>
-        el.addEventListener('change', this.handleChangeEvent)
+        el.addEventListener('change', this.handleChangeEvent.bind(this))
       );
     }
   }

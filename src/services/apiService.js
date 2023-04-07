@@ -1,7 +1,12 @@
 export default class ApiService {
-  constructor(nonce, apiRoot = '') {
+  /**
+   * @param nonce - WordPress nonce for authentication
+   * @param apiRoot - Root of API (default: wp-json) (i.e. the part before dt/v1/ or dt-posts/v2/)
+   */
+  constructor(nonce, apiRoot = 'wp-json') {
     this.nonce = nonce;
     this.apiRoot = apiRoot.endsWith("/")? `${apiRoot}`: `${apiRoot} + "/"`;// ensure it ends with /
+    this.apiRoot = `/${apiRoot}/`.replace(/\/\//g, '/'); // ensure it starts/ends with /
   }
 
   /**
