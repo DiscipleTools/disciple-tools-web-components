@@ -685,7 +685,7 @@ export class DtList extends DtBase {
           </button>
         </div>
         <ul class="fieldsList">
-          ${msg('This is where the bulk edit form will go.')}
+          This is where the bulk edit form will go.
         </ul>
       </div>`;
     }

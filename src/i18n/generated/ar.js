@@ -27,6 +27,5 @@
 'sd1a8dc951b2b6a98': `اختر المجالات المراد عرضها كأعمدة في القائمة`,
 'seafe6ef133ede7da': str`عرض 1 of ${0}`,
 'sf9aee319a006c9b4': `لأضف`,
-'sb9b8c412407d5691': `This is where the bulk edit form will go.`,
     };
   

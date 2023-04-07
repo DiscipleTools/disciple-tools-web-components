@@ -21,7 +21,6 @@
 's625ad019db843f94': `Use`,
 'sd1a8dc951b2b6a98': `Choose which fields to display as columns in the list`,
 'scb9a1ff437efbd2a': str`Select all the ${0} you want to update from the list, and update them below`,
-'sb9b8c412407d5691': `This is where the bulk edit form will go.`,
 'sac83d7f9358b43db': str`${0} List`,
 'seafe6ef133ede7da': str`Showing 1 of ${0}`,
 's41cb4006238ebd3b': `Bulk Edit`,

@@ -1,73 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file target-language="pa_IN" source-language="en" original="lit-localize-inputs" datatype="plaintext">
-    <body>
-      <trans-unit id="sb1bd536b63e9e995">
-        <source>Private Field: Only I can see its content</source>
-      </trans-unit>
-      <trans-unit id="s8900c9de2dbae68b">
-        <source>No options available</source>
-      </trans-unit>
-      <trans-unit id="sf9aee319a006c9b4">
-        <source>Add</source>
-        <target state="translated">ਸ਼ਾਮਲ ਕਰੋ</target>
-      </trans-unit>
-      <trans-unit id="sbf1ca928ec1deb62">
-        <source>Need more help?</source>
-        <target state="translated">ਹੋਰ ਮਦਦ ਦੀ ਲੋੜ ਹੈ?</target>
-      </trans-unit>
-      <trans-unit id="s226be12a5b1a27e8">
-        <source>Read the documentation</source>
-        <target state="translated">ਦਸਤਾਵੇਜ਼ ਪੜ੍ਹੋ</target>
-      </trans-unit>
-      <trans-unit id="s5e8250fb85d64c23">
-        <source>Close</source>
-        <target state="translated">ਬੰਦ ਕਰੋ</target>
-      </trans-unit>
-      <trans-unit id="s29e25f5e4622f847">
-        <source>Open Dialog</source>
-      </trans-unit>
-      <trans-unit id="s33f85f24c0f5f008">
-        <source>Save</source>
-        <target state="translated">ਸੇਵ</target>
-      </trans-unit>
-      <trans-unit id="s04ceadb276bbe149">
-        <source>Loading options...</source>
-      </trans-unit>
-      <trans-unit id="s625ad019db843f94">
-        <source>Use</source>
-        <target state="translated">ਵਰਤੋਂ</target>
-      </trans-unit>
-      <trans-unit id="sd1a8dc951b2b6a98">
-        <source>Choose which fields to display as columns in the list</source>
-        <target state="translated">ਸੂਚੀ ਵਿੱਚ ਕਾਲਮ ਦੇ ਰੂਪ ਵਿੱਚ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰਨ ਲਈ ਕਿਹੜੇ ਖੇਤਰ ਚੁਣੋ</target>
-      </trans-unit>
-      <trans-unit id="scb9a1ff437efbd2a">
-        <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
-      </trans-unit>
-      <trans-unit id="sb9b8c412407d5691">
-        <source>This is where the bulk edit form will go.</source>
-      </trans-unit>
-      <trans-unit id="sac83d7f9358b43db">
-        <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
-      </trans-unit>
-      <trans-unit id="seafe6ef133ede7da">
-        <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
-      </trans-unit>
-      <trans-unit id="s41cb4006238ebd3b">
-        <source>Bulk Edit</source>
-        <target state="translated">ਥੋਕ ਸੰਪਾਦਨ</target>
-      </trans-unit>
-      <trans-unit id="s36cb242ac90353bc">
-        <source>Fields</source>
-        <target state="translated">ਖੇਤਰ</target>
-      </trans-unit>
-      <trans-unit id="s9d51bfd93b5dbeca">
-        <source>Show Archived</source>
-      </trans-unit>
-      <trans-unit id="sb59d68ed12d46377">
-        <source>Loading</source>
-      </trans-unit>
-    </body>
-  </file>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<file target-language="pa_IN" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+<body>
+<trans-unit id="sb1bd536b63e9e995">
+  <source>Private Field: Only I can see its content</source>
+</trans-unit>
+<trans-unit id="s8900c9de2dbae68b">
+  <source>No options available</source>
+</trans-unit>
+<trans-unit id="sf9aee319a006c9b4">
+  <source>Add</source>
+  <target>ਸ਼ਾਮਲ ਕਰੋ</target>
+</trans-unit>
+<trans-unit id="sbf1ca928ec1deb62">
+  <source>Need more help?</source>
+  <target>ਹੋਰ ਮਦਦ ਦੀ ਲੋੜ ਹੈ?</target>
+</trans-unit>
+<trans-unit id="s226be12a5b1a27e8">
+  <source>Read the documentation</source>
+  <target>ਦਸਤਾਵੇਜ਼ ਪੜ੍ਹੋ</target>
+</trans-unit>
+<trans-unit id="s5e8250fb85d64c23">
+  <source>Close</source>
+  <target>ਬੰਦ ਕਰੋ</target>
+</trans-unit>
+<trans-unit id="s29e25f5e4622f847">
+  <source>Open Dialog</source>
+</trans-unit>
+<trans-unit id="s33f85f24c0f5f008">
+  <source>Save</source>
+  <target>ਸੇਵ</target>
+</trans-unit>
+<trans-unit id="s04ceadb276bbe149">
+  <source>Loading options...</source>
+</trans-unit>
+<trans-unit id="s625ad019db843f94">
+  <source>Use</source>
+  <target>ਵਰਤੋਂ</target>
+</trans-unit>
+<trans-unit id="sd1a8dc951b2b6a98">
+  <source>Choose which fields to display as columns in the list</source>
+  <target>ਸੂਚੀ ਵਿੱਚ ਕਾਲਮ ਦੇ ਰੂਪ ਵਿੱਚ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰਨ ਲਈ ਕਿਹੜੇ ਖੇਤਰ ਚੁਣੋ</target>
+</trans-unit>
+<trans-unit id="scb9a1ff437efbd2a">
+  <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
+</trans-unit>
+<trans-unit id="sac83d7f9358b43db">
+  <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
+</trans-unit>
+<trans-unit id="seafe6ef133ede7da">
+  <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
+</trans-unit>
+<trans-unit id="s41cb4006238ebd3b">
+  <source>Bulk Edit</source>
+  <target>ਥੋਕ ਸੰਪਾਦਨ</target>
+</trans-unit>
+<trans-unit id="s36cb242ac90353bc">
+  <source>Fields</source>
+  <target>ਖੇਤਰ</target>
+</trans-unit>
+<trans-unit id="s9d51bfd93b5dbeca">
+  <source>Show Archived</source>
+</trans-unit>
+<trans-unit id="sb59d68ed12d46377">
+  <source>Loading</source>
+</trans-unit>
+</body>
+</file>
 </xliff>

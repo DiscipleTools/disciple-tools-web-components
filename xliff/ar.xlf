@@ -50,9 +50,6 @@
   <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
   <target>حَدِّد جميع <x id="0" equiv-text="${this.postType}"/> التي تريد تحديثها من القائمة ، وقم بتحديثها أدناه</target>
 </trans-unit>
-<trans-unit id="sb9b8c412407d5691">
-  <source>This is where the bulk edit form will go.</source>
-</trans-unit>
 <trans-unit id="sac83d7f9358b43db">
   <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
   <target><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/>قائمة الأعضاء</target>
