@@ -65,7 +65,7 @@ export default class DtFormBase extends DtBase {
   }
 
   /**
-   * return the field elemnt
+   * return the field element
    */
   get _field() {
     return this.shadowRoot.querySelector('input, textarea, select');

@@ -116,6 +116,17 @@ export default {
     locale: {
       control: 'text',
     },
+    allowNew: {
+      control: 'boolean',
+      description:
+        '(true|false) If attribute is present, the user can add new options',
+      table: {
+        type: {
+          summary: 'allowNew',
+          detail: '<dt-multi-select allowNew />',
+        },
+      },
+    },
     ...argTypes,
   },
 };
