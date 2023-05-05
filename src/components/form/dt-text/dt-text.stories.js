@@ -46,6 +46,7 @@ function Template(args) {
     privateLabel,
     loading = false,
     saved = false,
+    error,
     onChange,
     slot,
     type,
@@ -69,6 +70,7 @@ function Template(args) {
       privateLabel="${privateLabel}"
       ?loading=${loading}
       ?saved=${saved}
+      error="${error}"
       onchange=${onChange}
     >
       ${slot}
@@ -122,6 +124,11 @@ export const Saved = Template.bind({});
 Saved.decorators = [LocaleDecorator, FormDecorator];
 Saved.args = {
   saved: true,
+};
+export const Error = Template.bind({});
+Error.decorators = [LocaleDecorator, FormDecorator];
+Error.args = {
+  error: 'Custom error message',
 };
 
 export const basicForm = Template.bind({});

@@ -176,6 +176,7 @@ function Template(args) {
     privateLabel,
     loading = false,
     saved = false,
+    error,
     onchange,
     onload,
     open,
@@ -223,6 +224,7 @@ function Template(args) {
       ?allowAdd="${allowAdd}"
       ?loading="${loading}"
       ?saved="${saved}"
+      error="${error}"
       .open="${open}"
     >
       ${slot}
@@ -309,6 +311,12 @@ Saved.args = {
   ],
   options: basicOptions,
   saved: true,
+};
+export const Error = Template.bind({});
+Error.args = {
+  value: [basicOptions[1]],
+  options: basicOptions,
+  error: 'Field is invalid',
 };
 
 export const LocalizeRTL = Template.bind({});

@@ -30,6 +30,7 @@ export default class ComponentService {
     ];
 
     this.dynamicLoadComponents = [
+      'dt-connection',
       'dt-tags',
     ]
   }
@@ -84,13 +85,30 @@ export default class ComponentService {
     if (details) {
       const { field, query, onSuccess, onError } = details;
       try {
-        const values = await this.api.getMultiSelectValues(this.postType, field, query);
-        onSuccess(values.map(value => {
-          return {
-            id: value,
-            label: value,
-          }
-        }));
+        const component = event.target.tagName.toLowerCase();
+        let values = [];
+        switch (component) {
+          case 'dt-connection':
+            const connectionResponse = await this.api.listPostsCompact(this.postType, query);
+            if (connectionResponse?.posts) {
+              values = connectionResponse?.posts.map(value => ({
+                id: value['ID'],
+                label: value['name'],
+                link: value['permalink'],
+                status: value['status'],
+              }));
+            }
+            break;
+          case 'dt-tags':
+          default:
+            values = await this.api.getMultiSelectValues(this.postType, field, query);
+            values = values.map(value => ({
+              id: value,
+              label: value,
+            }));
+            break;
+        }
+        onSuccess(values);
       } catch (ex) {
         onError(ex);
       }
@@ -122,8 +140,10 @@ export default class ComponentService {
         event.target.removeAttribute('loading');
         event.target.setAttribute('saved', true);
       } catch (ex) {
+        console.error(ex);
         event.target.removeAttribute('loading');
         event.target.setAttribute('invalid', true); // this isn't hooked up yet
+        event.target.setAttribute('error', ex.message || ex.toString());
       }
     }
   }

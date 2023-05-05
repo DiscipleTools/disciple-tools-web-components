@@ -550,8 +550,16 @@ export class DtMultiSelect extends DtFormBase {
         ${this.saved
           ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
           : null}
-      </div>
-    `;
+        ${this.error
+          ? html`<dt-icon
+                icon="mdi:alert-circle"
+                class="icon-overlay alert"
+                tooltip="${this.error}"
+                size="2rem"
+                ></dt-icon>`
+              : null}
+        </div>
+`;
   }
 }
 

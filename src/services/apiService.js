@@ -43,6 +43,15 @@ export default class ApiService {
     const response = await fetch(fullURL, options);
 
     const content = await response.json();
+    if (!response.ok) {
+      const error = new Error(content?.message || content.toString());
+      error.args = {
+        status: response.status,
+        statusText: response.statusText,
+        body: content,
+      }
+      throw error;
+    }
 
     return content;
   }
@@ -98,6 +107,23 @@ export default class ApiService {
    */
   async deletePost(postType, postId) {
     return this.makeRequestOnPosts('DELETE', `${postType}/${postId}`);
+  }
+
+  /**
+   * Get compact list of posts for autocomplete fields
+   * @param {string} postType
+   * @param {string} query - the string to filter the list to. Or the id of the target record
+   * @returns {Promise<any>}
+   * @see https://developers.disciple.tools/theme-core/api-posts/list-posts-compact
+   */
+  async listPostsCompact(postType, query = '') {
+    const params = new URLSearchParams({
+      s: query
+    });
+    return this.makeRequestOnPosts(
+      'GET',
+      `${postType}/compact?${params}`
+    );
   }
 
   /**
