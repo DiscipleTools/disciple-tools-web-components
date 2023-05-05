@@ -260,6 +260,7 @@ AddNewOption.args = {
 
 export const AutoSave = Template.bind({});
 AutoSave.args = {
+  allowAdd: true,
   options: basicOptions,
   onchange: 'onAutoSave(event)',
 };

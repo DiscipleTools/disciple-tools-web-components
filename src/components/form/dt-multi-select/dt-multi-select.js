@@ -116,7 +116,7 @@ export class DtMultiSelect extends DtFormBase {
           outline: 0;
         }
         .field-container input::placeholder {
-          color: var(--dt-form-text-color, #000);
+          color: var(--dt-text-placeholder-color, #999);
           opacity: 1;
         }
 
@@ -208,7 +208,7 @@ export class DtMultiSelect extends DtFormBase {
     // set variable with width of container for truncating selected options via CSS
     const container = this.shadowRoot.querySelector('.input-group');
     const currentValue = container.style.getPropertyValue('--container-width');
-    if (!currentValue) {
+    if (!currentValue && container.clientWidth > 0) {
       container.style.setProperty(
         '--container-width',
         `${container.clientWidth}px`

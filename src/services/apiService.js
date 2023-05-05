@@ -116,6 +116,24 @@ export default class ApiService {
   }
 
   /**
+   * Get values for a multi_select field
+   * @param {string} postType
+   * @param {string} field
+   * @param {string} query - Search Query
+   * @returns {Promise<any>}
+   */
+  async getMultiSelectValues(postType, field, query = '') {
+    const params = new URLSearchParams({
+      s: query,
+      field,
+    });
+    return this.makeRequestOnPosts(
+      'GET',
+      `${postType}/multi-select-values?${params}`
+    );
+  }
+
+  /**
    * Transfer contact to another site
    * @param {number} contactId
    * @param {string} siteId

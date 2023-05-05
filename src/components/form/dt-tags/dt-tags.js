@@ -25,6 +25,19 @@ export class DtTags extends DtMultiSelect {
     ];
   }
 
+  willUpdate(props) {
+    super.willUpdate(props);
+
+    if (props) {
+      const openChanged = props.has('open');
+      // When list is first opened and we don't have any options yet,
+      // trigger _filterOptions to load options
+      if (openChanged && this.open && (!this.filteredOptions || !this.filteredOptions.length)) {
+        this._filterOptions();
+      }
+    }
+  }
+
   _clickOption(e) {
     if (e.target && e.target.value) {
       const id = e.target.value;
@@ -41,7 +54,7 @@ export class DtTags extends DtMultiSelect {
   _clickAddNew(e) {
     if (e.target) {
       this._select({
-        id: '',
+        id: e.target.dataset?.label,
         label: e.target.dataset?.label,
         isNew: true,
       });
@@ -81,7 +94,7 @@ export class DtTags extends DtMultiSelect {
     if (this.activeIndex > -1) {
       if (this.activeIndex + 1 > this.filteredOptions.length) {
         this._select({
-          id: '',
+          id: this.query,
           label: this.query,
           isNew: true,
         });
@@ -105,6 +118,11 @@ export class DtTags extends DtMultiSelect {
    * @private
    */
   _filterOptions() {
+    if (!this.open) {
+      // Only run this filtering if the list is open.
+      // This prevents it from running on initial load before a `load` event is attached.
+      return this.filteredOptions;
+    }
     const selectedValues = (this.value || [])
       .filter(i => !i.delete)
       .map(v => v?.id);
@@ -178,10 +196,18 @@ export class DtTags extends DtMultiSelect {
     return (this.value || [])
       .filter(i => !i.delete)
       .map(
-        opt => html`
+        opt => {
+          let link = opt.link;
+          if (!link && window?.SHAREDFUNCTIONS?.createCustomFilter) {
+            const query =  window.SHAREDFUNCTIONS.createCustomFilter(this.name, [opt.label])
+            const field_label = this.label || this.name
+            const labels = [{ id: `${this.name}_${opt.label}`, name: `${field_label}: ${opt.label}`}]
+            link = window.SHAREDFUNCTIONS.create_url_for_list_query(this.postType, query, labels);
+          }
+          return html`
           <div class="selected-option">
             <a
-              href="${opt.link}"
+              href="${link || '#'}"
               ?disabled="${this.disabled}"
               alt="${opt.status ? opt.status.label : opt.label}"
               >${opt.label}</a
@@ -194,7 +220,7 @@ export class DtTags extends DtMultiSelect {
               x
             </button>
           </div>
-        `
+        `}
       );
   }
 }

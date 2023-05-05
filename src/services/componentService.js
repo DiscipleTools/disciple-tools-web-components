@@ -28,6 +28,34 @@ export default class ComponentService {
       'dt-textarea',
       'dt-toggle',
     ];
+
+    this.dynamicLoadComponents = [
+      'dt-tags',
+    ]
+  }
+
+  /**
+   * Initialize components on the page with necessary event listeners
+   */
+  initialize() {
+    this.enableAutoSave();
+    this.attachLoadEvents();
+  }
+
+  /**
+   * Attach onload events to components that load their options
+   * dynamically via API
+   * @param {string} [selector] (Optional) Override default selector
+   */
+  attachLoadEvents(selector) {
+    const elements = document.querySelectorAll(
+      selector || this.dynamicLoadComponents.join(',')
+    );
+    if (elements) {
+      elements.forEach(el =>
+        el.addEventListener('load', this.handleLoadEvent.bind(this))
+      )
+    }
   }
 
   /**
@@ -45,6 +73,37 @@ export default class ComponentService {
     }
   }
 
+  /**
+   * Event listener for load events.
+   * Will attempt to load data from API and call success/error callback
+   * @param {Event} event
+   * @returns {Promise<void>}
+   */
+  async handleLoadEvent(event) {
+    const details = event.detail;
+    if (details) {
+      const { field, query, onSuccess, onError } = details;
+      try {
+        const values = await this.api.getMultiSelectValues(this.postType, field, query);
+        onSuccess(values.map(value => {
+          return {
+            id: value,
+            label: value,
+          }
+        }));
+      } catch (ex) {
+        onError(ex);
+      }
+    }
+  }
+
+  /**
+   * Event listener for change events.
+   * Will set loading property, attempt to save value via API,
+   * and then set saved/invalid attribute based on success
+   * @param {Event} event
+   * @returns {Promise<void>}
+   */
   async handleChangeEvent(event) {
     const details = event.detail;
     if (details) {
