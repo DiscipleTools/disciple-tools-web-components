@@ -597,9 +597,9 @@ export default class DtLocationMapItem extends LitElement {
     let options = [];
     if (!this.filteredOptions.length) {
       if (this.loading) {
-        options.push(html`<li><div>${msg('Loading options...')}</div></li>`);
+        options.push(html`<li><div>${msg('Loading...')}</div></li>`);
       } else {
-        options.push(html`<li><div>${msg('No options available')}</div></li>`);
+        options.push(html`<li><div>${msg('No Data Available')}</div></li>`);
       }
     } else {
       options.push(...this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx)));

@@ -510,7 +510,7 @@ export class DtMultiSelect extends DtFormBase {
 
   _renderOptions() {
     if (!this.filteredOptions.length) {
-      return html`<li><div>${msg('No options available')}</div></li>`;
+      return html`<li><div>${msg('No Data Available')}</div></li>`;
     }
 
     return this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx));
