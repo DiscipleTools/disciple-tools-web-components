@@ -269,6 +269,7 @@ describe('dt-tags', () => {
       html`<dt-tags
         name="custom-name"
         value="${JSON.stringify([options[1]])}"
+        .open="${true}"
       ></dt-tags>`
     );
     const input = el.shadowRoot.querySelector('input');
@@ -306,7 +307,7 @@ describe('dt-tags', () => {
     expect(el.value).not.to.be.empty;
     expect(el.value).to.eql([
       {
-        id: '',
+        id: 'new',
         label: 'new',
         isNew: true,
       },

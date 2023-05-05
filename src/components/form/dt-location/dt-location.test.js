@@ -295,6 +295,7 @@ describe('dt-location', () => {
         name="custom-name"
         value="${JSON.stringify([options[1]])}"
         filters="${JSON.stringify(filters)}"
+        .open="${true}"
       ></dt-location>`
     );
     const input = el.shadowRoot.querySelector('input');
@@ -333,7 +334,7 @@ describe('dt-location', () => {
     expect(el.value).not.to.be.empty;
     expect(el.value).to.eql([
       {
-        id: '',
+        id: 'new',
         label: 'new',
         isNew: true,
       },

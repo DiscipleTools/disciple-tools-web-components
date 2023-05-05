@@ -274,6 +274,7 @@ describe('dt-connection', () => {
       html`<dt-connection
         name="custom-name"
         value="${JSON.stringify([options[1]])}"
+        .open="${true}"
       ></dt-connection>`
     );
     const input = el.shadowRoot.querySelector('input');
@@ -311,7 +312,7 @@ describe('dt-connection', () => {
     expect(el.value).not.to.be.empty;
     expect(el.value).to.eql([
       {
-        id: '',
+        id: 'new',
         label: 'new',
         isNew: true,
       },

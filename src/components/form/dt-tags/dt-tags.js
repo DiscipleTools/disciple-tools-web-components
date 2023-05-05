@@ -118,11 +118,6 @@ export class DtTags extends DtMultiSelect {
    * @private
    */
   _filterOptions() {
-    if (!this.open) {
-      // Only run this filtering if the list is open.
-      // This prevents it from running on initial load before a `load` event is attached.
-      return this.filteredOptions;
-    }
     const selectedValues = (this.value || [])
       .filter(i => !i.delete)
       .map(v => v?.id);
@@ -136,7 +131,9 @@ export class DtTags extends DtMultiSelect {
               .toLocaleLowerCase()
               .includes(this.query.toLocaleLowerCase()))
       );
-    } else {
+    } else if (this.open) {
+      // Only run this filtering if the list is open.
+      // This prevents it from running on initial load before a `load` event is attached.
       this.loading = true;
       this.filteredOptions = [];
 
