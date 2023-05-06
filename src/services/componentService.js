@@ -88,8 +88,9 @@ export default class ComponentService {
         const component = event.target.tagName.toLowerCase();
         let values = [];
         switch (component) {
-          case 'dt-connection':
-            const connectionResponse = await this.api.listPostsCompact(this.postType, query);
+          case 'dt-connection': {
+            const postType = details.postType || this.postType;
+            const connectionResponse = await this.api.listPostsCompact(postType, query);
             if (connectionResponse?.posts) {
               values = connectionResponse?.posts.map(value => ({
                 id: value['ID'],
@@ -99,6 +100,7 @@ export default class ComponentService {
               }));
             }
             break;
+          }
           case 'dt-tags':
           default:
             values = await this.api.getMultiSelectValues(this.postType, field, query);

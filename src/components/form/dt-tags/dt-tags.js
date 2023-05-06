@@ -143,6 +143,7 @@ export class DtTags extends DtMultiSelect {
         bubbles: true,
         detail: {
           field: this.name,
+          postType: this.postType,
           query: this.query,
           onSuccess: result => {
             self.loading = false;
