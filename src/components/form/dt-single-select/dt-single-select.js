@@ -70,7 +70,6 @@ export class DtSingleSelect extends DtFormBase {
   static get properties() {
     return {
       ...super.properties,
-      name: { type: String },
       placeholder: { type: String },
       options: { type: Array },
       value: {

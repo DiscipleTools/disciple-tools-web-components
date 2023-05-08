@@ -8,7 +8,7 @@ export const LocaleDecorator = (story, context) =>
     ${story()}
   </div>`;
 
-export const FormDecorator = story => html`<form onsubmit="onFormSubmit(event)">
+export const FormDecorator = story => html`<form method="post" onsubmit="onFormSubmit(event)">
     ${story()}
 
     <button type="submit">Submit</button>
@@ -27,8 +27,16 @@ export const FormDecorator = story => html`<form onsubmit="onFormSubmit(event)">
 
       /** Get all of the form data */
       const formData = new FormData(form);
-      const data = {};
-      formData.forEach((value, key) => (data[key] = value));
+      const data = {
+        form: {},
+        el: {},
+      };
+      formData.forEach((value, key) => (data.form[key] = value));
+      Array.from(form.elements).forEach((el) => {
+        if (el.localName.startsWith('dt-')) {
+          data.el[el.name] = el.value;
+        }
+      });
       output.innerHTML = JSON.stringify(data, null, 2);
     }
   </script> `;

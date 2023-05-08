@@ -51,7 +51,6 @@ export class DtNumberField extends DtFormBase {
     return {
       ...super.properties,
       id: { type: String },
-      name: { type: String },
       value: {
         type: String,
         reflect: true,

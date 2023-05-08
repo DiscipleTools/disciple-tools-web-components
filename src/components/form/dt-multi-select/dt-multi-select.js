@@ -167,7 +167,6 @@ export class DtMultiSelect extends DtFormBase {
   static get properties() {
     return {
       ...super.properties,
-      name: { type: String },
       placeholder: { type: String },
       options: { type: Array },
       filteredOptions: { type: Array, state: true },

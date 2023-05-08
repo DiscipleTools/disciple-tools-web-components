@@ -43,6 +43,7 @@ export default class DtFormBase extends DtBase {
   static get properties() {
     return {
       ...super.properties,
+      name: { type: String },
       label: { type: String },
       icon: { type: String },
       iconAltText: { type: String },
@@ -97,12 +98,46 @@ export default class DtFormBase extends DtBase {
     super.firstUpdated(...args);
 
     // set initial form value
-    this.internals.setFormValue(this.value);
+    const formdata = DtFormBase._jsonToFormData(this.value, this.name);
+    this.internals.setFormValue(formdata);
     this._validateRequired();
   }
 
+  /**
+   * Recursively create FormData from JSON data
+   * @param formData
+   * @param data
+   * @param parentKey
+   * @private
+   */
+  static _buildFormData(formData, data, parentKey) {
+    if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+      Object.keys(data).forEach(key => {
+        this._buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+      });
+    } else {
+      const value = data == null ? '' : data;
+      formData.append(parentKey, value);
+    }
+  }
+
+  /**
+   * Convert JSON to FormData object
+   * @param data
+   * @param parentKey - prefix for all values. Should be the field name
+   * @returns {FormData}
+   * @private
+   */
+  static _jsonToFormData(data, parentKey) {
+    const formData = new FormData();
+    DtFormBase._buildFormData(formData, data, parentKey);
+    return formData;
+  }
+
   _setFormValue(value) {
-    this.internals.setFormValue(value);
+    // handle complex types like arrays and objects by converting to FormData
+    const formdata = DtFormBase._jsonToFormData(value, this.name);
+    this.internals.setFormValue(formdata, value);
     this._validateRequired();
     this.touched = true;
   }

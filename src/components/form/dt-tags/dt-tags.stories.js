@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-tags.js';
+import { FormDecorator } from '../../../stories-utils';
 
 const basicOptions = [
   {
@@ -297,6 +298,13 @@ Saved.args = {
   ],
   options: basicOptions,
   saved: true,
+};
+
+export const basicForm = Template.bind({});
+basicForm.decorators = [LocaleDecorator, FormDecorator];
+basicForm.args = {
+  value: [basicOptions[0], basicOptions[1]],
+  options: basicOptions,
 };
 
 export const LocalizeRTL = Template.bind({});

@@ -71,7 +71,6 @@ export class DtText extends DtFormBase {
     return {
       ...super.properties,
       id: { type: String },
-      name: { type: String },
       type: { type: String },
       placeholder: { type: String },
       value: {
