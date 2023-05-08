@@ -17,21 +17,21 @@ export class DtIcon extends DtBase {
         position: absolute;
         right: 0px;
         top: 100%;
-        min-width: 150px;
+        min-width: 9rem;
         border: solid 1px currentcolor;
-        background-color: #ffffff99;
-        padding: 5px;
-        border-radius: 5px;
+        background-color: var(--dt-form-background-color, var(--surface-1));
+        padding: .25rem;
+        border-radius: .25rem;
         text-align: end;
         z-index: 1;
         display:block;
       }
       .tooltip:before {
         position: absolute;
-        right: 10px;
-        top: -10px;
+        right: .7rem;
+        top: -.55rem;
         content: " ";
-        border-width: 5px;
+        border-width: .25rem;
         border-style: solid;
         border-color: transparent transparent currentcolor transparent;
       }
