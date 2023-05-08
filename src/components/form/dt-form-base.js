@@ -31,6 +31,7 @@ export default class DtFormBase extends DtBase {
 
         .icon-overlay.alert {
           color: var(--alert-color);
+          cursor: pointer;
         }
         .icon-overlay.success {
           color: var(--success-color);

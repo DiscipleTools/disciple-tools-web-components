@@ -22,9 +22,9 @@ export class DtIcon extends DtBase {
         background-color: #ffffff99;
         padding: 5px;
         border-radius: 5px;
-        text-align: right;
+        text-align: end;
         z-index: 1;
-        display:none;
+        display:block;
       }
       .tooltip:before {
         position: absolute;
@@ -35,8 +35,8 @@ export class DtIcon extends DtBase {
         border-style: solid;
         border-color: transparent transparent currentcolor transparent;
       }
-      iconify-icon:hover + .tooltip {
-        display: block;
+      .tooltip[hidden] {
+        display: none;
       }
     `;
   }
@@ -46,14 +46,23 @@ export class DtIcon extends DtBase {
       ...super.properties,
       icon: { type: String },
       tooltip: { type: String },
+      tooltip_open: { type: Boolean },
       size: { type: String },
     };
   }
 
+  _showTooltip() {
+    if (this.tooltip_open){
+      this.tooltip_open = false;
+    } else {
+      this.tooltip_open = true;
+    }
+  }
+
   render() {
-    const tooltip = this.tooltip ? html`<div class="tooltip">${this.tooltip}</div>` : null;
+    const tooltip = this.tooltip ? html`<div class="tooltip" ?hidden=${this.tooltip_open}>${this.tooltip}</div>` : null;
     return html`
-      <iconify-icon icon=${this.icon} width="${this.size}"></iconify-icon>
+      <iconify-icon icon=${this.icon} width="${this.size}" @click=${this._showTooltip}></iconify-icon>
       ${tooltip}
     `;
   }
