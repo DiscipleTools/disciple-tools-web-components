@@ -1,48 +1,39 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils.js';
+import { LocaleDecorator, FormDecorator } from '../../../stories-utils.js';
 import './dt-tags.js';
-import { FormDecorator } from '../../../stories-utils';
 
 const basicOptions = [
   {
-    id: 'opt1',
-    label: 'Option 1',
+    id: 'Option 1',
     link: '/#opt1',
   },
   {
-    id: 'opt2',
-    label: 'Option 2',
+    id: 'Option 2',
     link: '/#opt2',
   },
   {
-    id: 'opt3',
-    label: 'Option 3',
+    id: 'Option 3',
     link: '/#opt3',
   },
   {
-    id: 'opt4',
-    label: 'Option 4',
+    id: 'Option 4',
     link: '/#opt4',
   },
   {
-    id: 'opt5',
-    label: 'Option 5',
+    id: 'Option 5',
     link: '/#opt5',
   },
   {
-    id: 'opt6',
-    label: 'Option 6',
+    id: 'Option 6',
     link: '/#opt6',
   },
   {
-    id: 'opt7',
-    label: 'Option 7',
+    id: 'Option 7',
     link: '/#opt7',
   },
   {
-    id: 'opt8',
-    label: 'Option 8',
+    id: 'Option 8',
     link: '/#opt8',
   },
 ];
@@ -66,12 +57,12 @@ export default {
       type: { name: 'array' },
       table: {
         type: {
-          summary: '{id:string, label:string}[]',
-          detail: `[{id:'1',label:'Item 1'},{id:'345',label:'Item 345'}]`,
+          summary: 'string[]',
+          detail: `['1', '345', '83']`,
         },
       },
       description:
-        'Array of values indicating the selected values. Should be an array of option objects converted to a string with `JSON.stringify`. <br/>**Note:** This attribute will be updated on the HTML element when value changes.',
+        'Array of values indicating the selected values. Should be an array of strings converted to a string with `JSON.stringify`. <br/>**Note:** This attribute will be updated on the HTML element when value changes.',
     },
     options: {
       description:
@@ -246,7 +237,19 @@ CustomPlaceholder.args = {
 
 export const SelectedValue = Template.bind({});
 SelectedValue.args = {
-  value: [basicOptions[1]],
+  value: [basicOptions[1].id],
+};
+
+export const SelectedValueWithLabels = Template.bind({});
+SelectedValueWithLabels.args = {
+  value: ['opt1'],
+  options: [{
+    id: 'opt1',
+    label: 'Option 1',
+  }, {
+    id: 'opt2',
+    label: 'Option 2',
+  }],
 };
 
 export const LoadOptionsFromAPI = Template.bind({});
@@ -268,34 +271,19 @@ AutoSave.args = {
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
+  value: ['qui est esse'],
   options: basicOptions,
   disabled: true,
 };
 export const Loading = Template.bind({});
 Loading.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
+  value: ['qui est esse'],
   options: basicOptions,
   loading: true,
 };
 export const Saved = Template.bind({});
 Saved.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
+  value: ['qui est esse'],
   options: basicOptions,
   saved: true,
 };
@@ -303,7 +291,7 @@ Saved.args = {
 export const basicForm = Template.bind({});
 basicForm.decorators = [LocaleDecorator, FormDecorator];
 basicForm.args = {
-  value: [basicOptions[0], basicOptions[1]],
+  value: [basicOptions[0].id, basicOptions[1].id],
   options: basicOptions,
 };
 
@@ -316,24 +304,16 @@ LocalizeRTL.args = {
   placeholder: 'حدد العلامات',
   allowAdd: true,
   loading: true,
-  value: [
-    {
-      id: 'opt1',
-      label: 'تنكر هؤلاء الرجال المفتونون',
-    },
-  ],
+  value: ['تنكر هؤلاء الرجال المفتونون'],
   options: [
     {
-      id: 'opt1',
-      label: 'تنكر هؤلاء الرجال المفتونون',
+      id: 'تنكر هؤلاء الرجال المفتونون',
     },
     {
-      id: 'opt2',
-      label: 'م فيتساوي مع هؤلاء',
+      id: 'م فيتساوي مع هؤلاء',
     },
     {
-      id: 'opt3',
-      label: 'فلا أحد يرفض',
+      id: 'فلا أحد يرفض',
     },
   ],
 };

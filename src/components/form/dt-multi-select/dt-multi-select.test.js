@@ -235,6 +235,7 @@ describe('dt-multi-select', () => {
     const el = await fixture(
       html`<dt-multi-select
         options="${JSON.stringify(options)}"
+        .open="${true}"
       ></dt-multi-select>`
     );
     const input = el.shadowRoot.querySelector('input');

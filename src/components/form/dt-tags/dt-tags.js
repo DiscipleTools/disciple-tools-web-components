@@ -38,54 +38,13 @@ export class DtTags extends DtMultiSelect {
     }
   }
 
-  _clickOption(e) {
-    if (e.target && e.target.value) {
-      const id = e.target.value;
-      const option = this.filteredOptions.reduce((result, opt) => {
-        if (!result && opt.id === id) {
-          return opt;
-        }
-        return result;
-      }, null);
-      this._select(option);
-    }
-  }
-
   _clickAddNew(e) {
     if (e.target) {
-      this._select({
-        id: e.target.dataset?.label,
-        label: e.target.dataset?.label,
-        isNew: true,
-      });
-    }
-  }
-
-  _remove(e) {
-    if (e.target && e.target.dataset && e.target.dataset.value) {
-      const event = new CustomEvent('change', {
-        detail: {
-          field: this.name,
-          oldValue: this.value,
-        },
-      });
-      this.value = (this.value || []).map(i => {
-        const val = {
-          ...i,
-        };
-        if (i.id === e.target.dataset.value) {
-          val.delete = true;
-        }
-        return val;
-      });
-      event.detail.newValue = this.value;
-
-      // dispatch event for use with addEventListener from javascript
-      this.dispatchEvent(event);
-
-      // If option was de-selected while list was open, re-focus input
-      if (this.open) {
-        this.shadowRoot.querySelector('input').focus();
+      this._select(e.target.dataset?.label);
+      // clear search field if clicked with mouse, since field will lose focus
+      const input = this.shadowRoot.querySelector('input');
+      if (input) {
+        input.value = '';
       }
     }
   }
@@ -93,13 +52,9 @@ export class DtTags extends DtMultiSelect {
   _keyboardSelectOption() {
     if (this.activeIndex > -1) {
       if (this.activeIndex + 1 > this.filteredOptions.length) {
-        this._select({
-          id: this.query,
-          label: this.query,
-          isNew: true,
-        });
+        this._select(this.query);
       } else {
-        this._select(this.filteredOptions[this.activeIndex]);
+        this._select(this.filteredOptions[this.activeIndex].id);
       }
     }
   }
@@ -119,15 +74,14 @@ export class DtTags extends DtMultiSelect {
    */
   _filterOptions() {
     const selectedValues = (this.value || [])
-      .filter(i => !i.delete)
-      .map(v => v?.id);
+      .filter(i => !i.startsWith('-'));
 
     if (this.options?.length) {
       this.filteredOptions = (this.options || []).filter(
         opt =>
           !selectedValues.includes(opt.id) &&
           (!this.query ||
-            opt.label
+            opt.id
               .toLocaleLowerCase()
               .includes(this.query.toLocaleLowerCase()))
       );
@@ -148,8 +102,17 @@ export class DtTags extends DtMultiSelect {
           onSuccess: result => {
             self.loading = false;
 
+            // if given an array of strings, transform to object array
+            let options = result;
+            if (options.length && typeof options[0] === 'string') {
+              options = options.map(o => ({
+                id: o,
+              }));
+            }
+
+            self.allOptions = options;
             // filter out selected values from list
-            self.filteredOptions = result.filter(
+            self.filteredOptions = options.filter(
               opt => !selectedValues.includes(opt.id)
             );
           },
@@ -162,6 +125,28 @@ export class DtTags extends DtMultiSelect {
       this.dispatchEvent(event);
     }
     return this.filteredOptions;
+  }
+
+  _renderOption(opt, idx) {
+    return html`
+      <li tabindex="-1">
+        <button
+          value="${opt.id}"
+          type="button"
+          data-label="${opt.label}"
+          @click="${this._clickOption}"
+          @touchstart="${this._touchStart}"
+          @touchmove="${this._touchMove}"
+          @touchend="${this._touchEnd}"
+          tabindex="-1"
+          class="${this.activeIndex > -1 && this.activeIndex === idx
+      ? 'active'
+      : ''}"
+        >
+          ${opt.label || opt.id}
+        </button>
+      </li>
+    `;
   }
 
   _renderOptions() {
@@ -191,15 +176,23 @@ export class DtTags extends DtMultiSelect {
   }
 
   _renderSelectedOptions() {
+    const options = this.options || this.allOptions;
     return (this.value || [])
-      .filter(i => !i.delete)
+      .filter(i => !i.startsWith('-'))
       .map(
-        opt => {
-          let link = opt.link;
+        tag => {
+          let label = tag;
+          if (options) {
+            const option = options.filter(o => o === tag || o.id === tag);
+            if (option.length) {
+              label = option[0].label || option[0].id || tag;
+            }
+          }
+          let link;
           if (!link && window?.SHAREDFUNCTIONS?.createCustomFilter) {
-            const query =  window.SHAREDFUNCTIONS.createCustomFilter(this.name, [opt.label])
-            const field_label = this.label || this.name
-            const labels = [{ id: `${this.name}_${opt.label}`, name: `${field_label}: ${opt.label}`}]
+            const query =  window.SHAREDFUNCTIONS.createCustomFilter(this.name, [tag])
+            const fieldLabel = this.label || this.name
+            const labels = [{ id: `${this.name}_${tag}`, name: `${fieldLabel}: ${tag}`}]
             link = window.SHAREDFUNCTIONS.create_url_for_list_query(this.postType, query, labels);
           }
           return html`
@@ -207,13 +200,13 @@ export class DtTags extends DtMultiSelect {
             <a
               href="${link || '#'}"
               ?disabled="${this.disabled}"
-              alt="${opt.status ? opt.status.label : opt.label}"
-              >${opt.label}</a
+              alt="${tag}"
+              >${label}</a
             >
             <button
               @click="${this._remove}"
               ?disabled="${this.disabled}"
-              data-value="${opt.id}"
+              data-value="${tag}"
             >
               x
             </button>

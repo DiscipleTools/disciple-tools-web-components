@@ -1,8 +1,7 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils.js';
+import { LocaleDecorator, FormDecorator } from '../../../stories-utils.js';
 import './dt-multi-select.js';
-import { FormDecorator } from '../../../stories-utils';
 
 const basicOptions = [
   {

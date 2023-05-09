@@ -43,6 +43,130 @@ export class DtConnection extends DtTags {
     ];
   }
 
+  _clickOption(e) {
+    if (e.target && e.target.value) {
+      const id = e.target.value;
+      const option = this.filteredOptions.reduce((result, opt) => {
+        if (!result && opt.id === id) {
+          return opt;
+        }
+        return result;
+      }, null);
+      this._select(option);
+    }
+  }
+
+  _clickAddNew(e) {
+    if (e.target) {
+      this._select({
+        id: e.target.dataset?.label,
+        label: e.target.dataset?.label,
+        isNew: true,
+      });
+      // clear search field if clicked with mouse, since field will lose focus
+      const input = this.shadowRoot.querySelector('input');
+      if (input) {
+        input.value = '';
+      }
+    }
+  }
+
+  _keyboardSelectOption() {
+    if (this.activeIndex > -1) {
+      if (this.activeIndex + 1 > this.filteredOptions.length) {
+        this._select({
+          id: this.query,
+          label: this.query,
+          isNew: true,
+        });
+      } else {
+        this._select(this.filteredOptions[this.activeIndex]);
+      }
+    }
+  }
+
+  _remove(e) {
+    if (e.target && e.target.dataset && e.target.dataset.value) {
+      const event = new CustomEvent('change', {
+        detail: {
+          field: this.name,
+          oldValue: this.value,
+        },
+      });
+      this.value = (this.value || []).map(i => {
+        const val = {
+          ...i,
+        };
+        if (i.id === e.target.dataset.value) {
+          val.delete = true;
+        }
+        return val;
+      });
+      event.detail.newValue = this.value;
+
+      // dispatch event for use with addEventListener from javascript
+      this.dispatchEvent(event);
+
+      // If option was de-selected while list was open, re-focus input
+      if (this.open) {
+        this.shadowRoot.querySelector('input').focus();
+      }
+    }
+  }
+
+  /**
+   * Filter to options that:
+   *   1: are not selected
+   *   2: match the search query
+   * @private
+   */
+  _filterOptions() {
+    const selectedValues = (this.value || [])
+      .filter(i => !i.delete)
+      .map(v => v?.id);
+
+    if (this.options?.length) {
+      this.filteredOptions = (this.options || []).filter(
+        opt =>
+          !selectedValues.includes(opt.id) &&
+          (!this.query ||
+            opt.label
+              .toLocaleLowerCase()
+              .includes(this.query.toLocaleLowerCase()))
+      );
+    } else if (this.open) {
+      // Only run this filtering if the list is open.
+      // This prevents it from running on initial load before a `load` event is attached.
+      this.loading = true;
+      this.filteredOptions = [];
+
+      // need to fetch data via API request
+      const self = this;
+      const event = new CustomEvent('load', {
+        bubbles: true,
+        detail: {
+          field: this.name,
+          postType: this.postType,
+          query: this.query,
+          onSuccess: result => {
+            self.loading = false;
+
+            // filter out selected values from list
+            self.filteredOptions = result.filter(
+              opt => !selectedValues.includes(opt.id)
+            );
+          },
+          onError: error => {
+            console.warn(error);
+            self.loading = false;
+          },
+        },
+      });
+      this.dispatchEvent(event);
+    }
+    return this.filteredOptions;
+  }
+
   _renderSelectedOptions() {
     return (this.value || [])
       .filter(i => !i.delete)
