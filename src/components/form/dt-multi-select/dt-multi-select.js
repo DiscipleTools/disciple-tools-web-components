@@ -332,6 +332,7 @@ export class DtMultiSelect extends DtFormBase {
 
       // dispatch event for use with addEventListener from javascript
       this.dispatchEvent(event);
+      this._setFormValue(this.value);
 
       // If option was de-selected while list was open, re-focus input
       if (this.open) {
