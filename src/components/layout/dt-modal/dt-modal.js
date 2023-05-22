@@ -16,13 +16,14 @@ export class DtModal extends DtBase {
       }
 
       .dt-modal {
-        display: grid;
+        display: block;
         background: var(--dt-modal-background-color, #fff);
         color: var(--dt-modal-color, #000);
         max-inline-size: min(90vw, 100%);
         max-block-size: min(80vh, 100%);
         max-block-size: min(80dvb, 100%);
         margin: auto;
+        height: fit-content;
         padding: var(--dt-modal-padding, 1em);
         position: fixed;
         inset: 0;
@@ -68,6 +69,7 @@ export class DtModal extends DtBase {
 
       form {
         display: grid;
+        height: fit-content;
         grid-template-columns: 1fr;
         grid-template-rows: 100px auto 100px;
         grid-template-areas:
