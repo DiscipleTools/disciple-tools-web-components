@@ -95,7 +95,7 @@ SvgIcon.args = {
 export const EnteredValue = Template.bind({});
 EnteredValue.decorators = [LocaleDecorator, FormDecorator];
 EnteredValue.args = {
-  value: JSON.stringify([
+  value: [
     {
         "verified": false,
         "value": "test1",
@@ -106,7 +106,7 @@ EnteredValue.args = {
         "value": "test2",
         "key": "comm_channel_2"
     }
-]),
+]
 };
 
 export const AutoSave = Template.bind({});
