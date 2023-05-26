@@ -27,6 +27,7 @@ export default class ComponentService {
       'dt-text',
       'dt-textarea',
       'dt-toggle',
+      'dt-comm-channel',
     ];
 
     this.dynamicLoadComponents = [
@@ -210,6 +211,16 @@ export default class ComponentService {
           };
           break;
 
+        case 'dt-comm-channel':
+          if (typeof value === 'string') {
+            console.log('dt-comm-channel', value);
+            returnValue = [
+              {
+                id: value,
+              },
+            ];
+          }
+          break;
         default:
           break;
       }

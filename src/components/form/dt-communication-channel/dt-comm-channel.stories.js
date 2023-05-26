@@ -39,18 +39,7 @@ function Template(args) {
     id = 'name',
     name = 'field-name',
     label = 'Field Name',
-    value = JSON.stringify([
-      {
-          "verified": false,
-          "value": "test1",
-          "key": "comm_channel_1"
-      },
-      {
-          "verified": false,
-          "value": "test2",
-          "key": "comm_channel_2"
-      }
-  ]),
+    value = '',
     disabled = false,
     required = false,
     requiredMessage = '',
@@ -73,7 +62,7 @@ function Template(args) {
       id=${id}
       name=${name}
       label=${label}
-      value=${value}
+      .value=${value}
       type=${type}
       ?disabled=${disabled}
       ?required=${required}
@@ -106,7 +95,18 @@ SvgIcon.args = {
 export const EnteredValue = Template.bind({});
 EnteredValue.decorators = [LocaleDecorator, FormDecorator];
 EnteredValue.args = {
-  value: 'Lorem Ipsum',
+  value: JSON.stringify([
+    {
+        "verified": false,
+        "value": "test1",
+        "key": "comm_channel_1"
+    },
+    {
+        "verified": false,
+        "value": "test2",
+        "key": "comm_channel_2"
+    }
+]),
 };
 
 export const AutoSave = Template.bind({});
