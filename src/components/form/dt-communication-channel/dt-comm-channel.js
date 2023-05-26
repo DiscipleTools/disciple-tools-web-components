@@ -18,7 +18,11 @@ export class DtCommChannel extends DtText {
           width: 100%;
           align-items: center;
        }
-        .add-btn {
+       .add-btn {
+          background-color: transparent;
+          border: none;
+       }
+        .add-icon {
           color: var(--dt-comm-channel-add-btn-color, var(--success-color));
           height: 1.75rem;
           margin: 0 1rem
@@ -65,7 +69,9 @@ export class DtCommChannel extends DtText {
           : null}
         ${this.label}
       </dt-label>
-      <svg class="add-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18 10h-4V6a2 2 0 0 0-4 0l.071 4H6a2 2 0 0 0 0 4l4.071-.071L10 18a2 2 0 0 0 4 0v-4.071L18 14a2 2 0 0 0 0-4z" @click=${this._addClick}></svg>
+      <button class="add-btn" @click=${this._addClick}>
+        <svg class="add-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M18 10h-4V6a2 2 0 0 0-4 0l.071 4H6a2 2 0 0 0 0 4l4.071-.071L10 18a2 2 0 0 0 4 0v-4.071L18 14a2 2 0 0 0 0-4z"></svg>
+      </button>
     `;
   }
 
