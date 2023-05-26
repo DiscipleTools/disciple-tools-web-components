@@ -20,6 +20,7 @@ const config = {
   output: {
     dir: 'dist',
     format: 'es',
+    sourcemap: true,
   },
   plugins: [
     del({ targets: 'dist/*' }),
