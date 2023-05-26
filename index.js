@@ -17,6 +17,7 @@ export { DtTags } from './src/components/form/dt-tags/dt-tags.js';
 export { DtText } from './src/components/form/dt-text/dt-text.js';
 export { DtTextArea } from './src/components/form/dt-textarea/dt-textarea.js';
 export { DtToggle } from './src/components/form/dt-toggle/dt-toggle.js';
+export { DtCommChannel } from './src/components/form/dt-communication-channel/dt-comm-channel.js';
 
 export { default as DtFormBase } from './src/components/form/dt-form-base.js';
 
