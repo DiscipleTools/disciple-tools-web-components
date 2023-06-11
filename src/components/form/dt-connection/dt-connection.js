@@ -45,7 +45,7 @@ export class DtConnection extends DtTags {
 
   _clickOption(e) {
     if (e.target && e.target.value) {
-      const id = e.target.value;
+      const id = parseInt(e.target.value, 10);
       const option = this.filteredOptions.reduce((result, opt) => {
         if (!result && opt.id === id) {
           return opt;
