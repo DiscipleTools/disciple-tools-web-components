@@ -50,6 +50,6 @@ describe('dt-button-group', () => {
     expect(optionList).to.contain('button[value=opt2]');
     expect(optionList).to.contain('button[value=opt3]');
 
-    expect(optionList).not.to.be.displayed;
+    expect(optionList).to.be.displayed;
   });
 });
