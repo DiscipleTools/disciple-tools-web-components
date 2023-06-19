@@ -106,6 +106,13 @@ function Template(theme) {
         value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
         options="${JSON.stringify(options)}"
       ></dt-multi-select>
+        
+      <dt-button-group
+        label="Button Groups Field"
+        placeholder="Select Items"
+        value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
+        options="${JSON.stringify(options)}"
+      ></dt-button-group>
 
       <dt-tags
         label="Tags Field"
