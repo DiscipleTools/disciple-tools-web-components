@@ -13,7 +13,9 @@
     "storybook:build": "npm run analyze -- --exclude dist && build-storybook"
   },
   "dependencies": {
-    "lit": "^2.0.2"
+    "@disciple.tools/web-components": "^0.4.0",
+    "lit": "^2.0.2",
+    "min-jquery": "^1.7.0"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.4.17",
