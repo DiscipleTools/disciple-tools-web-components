@@ -259,7 +259,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
       ? 'active'
       : ''}"
         >
-          ${opt.label} foo
+          ${opt.label}
         </button>
       </li>
     `;

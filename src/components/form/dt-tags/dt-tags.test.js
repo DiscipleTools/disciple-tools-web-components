@@ -364,13 +364,20 @@ describe('dt-tags', () => {
 
   it('allows adding new option', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(options)}" .open="${true}"></dt-tags>`
+      html`<dt-tags options="${JSON.stringify(options)}" .open="${true}" allowAdd></dt-tags>`
     );
-    el.shadowRoot.querySelector('input').focus();
+    const input = el.shadowRoot.querySelector('input');
+    const optionsList = el.shadowRoot.querySelector('.option-list');
+    input.focus();
 
     await sendKeys({
       type: 'new',
     });
+
+    expect(optionsList).not.to.contain('button[value=opt1]');
+    expect(optionsList).not.to.contain('button[value=opt2]');
+    expect(optionsList).not.to.contain('button[value=opt3]');
+    expect(optionsList).to.contain('button[data-label=new]');
 
     await sendKeys({ press: 'ArrowDown' });
     await sendKeys({ press: 'Enter' });

@@ -298,7 +298,7 @@ describe('dt-connection', () => {
 
   it('allows adding new option', async () => {
     const el = await fixture(
-      html`<dt-connection options="${JSON.stringify(options)}"></dt-connection>`
+      html`<dt-connection options="${JSON.stringify(options)}" allowAdd></dt-connection>`
     );
     el.shadowRoot.querySelector('input').focus();
 

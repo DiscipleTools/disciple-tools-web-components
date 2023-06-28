@@ -320,7 +320,7 @@ describe('dt-location', () => {
 
   it('allows adding new option', async () => {
     const el = await fixture(
-      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`
+      html`<dt-location options="${JSON.stringify(options)}" allowAdd></dt-location>`
     );
     el.shadowRoot.querySelector('input').focus();
 
