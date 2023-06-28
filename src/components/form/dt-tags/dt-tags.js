@@ -38,34 +38,6 @@ export class DtTags extends DtMultiSelect {
     }
   }
 
-  _clickAddNew(e) {
-    if (e.target) {
-      this._select(e.target.dataset?.label);
-      // clear search field if clicked with mouse, since field will lose focus
-      const input = this.shadowRoot.querySelector('input');
-      if (input) {
-        input.value = '';
-      }
-    }
-  }
-
-  _keyboardSelectOption() {
-    if (this.activeIndex > -1) {
-      if (this.activeIndex + 1 > this.filteredOptions.length) {
-        this._select(this.query);
-      } else {
-        this._select(this.filteredOptions[this.activeIndex].id);
-      }
-    }
-  }
-
-  _listHighlightNext() {
-    this.activeIndex = Math.min(
-      this.filteredOptions.length, // allow 1 more than the list length
-      this.activeIndex + 1
-    );
-  }
-
   /**
    * Filter to options that:
    *   1: are not selected
@@ -147,32 +119,6 @@ export class DtTags extends DtMultiSelect {
         </button>
       </li>
     `;
-  }
-
-  _renderOptions() {
-    let optionsMarkup = super._renderOptions();
-
-    if (this.allowAdd && this.query) {
-      if (!Array.isArray(optionsMarkup)) {
-        optionsMarkup = [optionsMarkup];
-      }
-      optionsMarkup.push(html`<li>
-        <button
-          data-label="${this.query}"
-          @click="${this._clickAddNew}"
-          @touchstart="${this._touchStart}"
-          @touchmove="${this._touchMove}"
-          @touchend="${this._touchEnd}"
-          class="${this.activeIndex > -1 &&
-          this.activeIndex >= this.filteredOptions.length
-            ? 'active'
-            : ''}"
-        >
-          ${msg('Add')} "${this.query}"
-        </button>
-      </li>`);
-    }
-    return optionsMarkup;
   }
 
   _renderSelectedOptions() {

@@ -2,10 +2,11 @@ import { html, css } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 import { msg } from '@lit/localize';
 import DtFormBase from '../dt-form-base.js';
+import {HasOptionsList} from '../mixins/hasOptionsList.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
 
-export class DtMultiSelect extends DtFormBase {
+export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   static get styles() {
     return [
       ...super.styles,
@@ -168,109 +169,12 @@ export class DtMultiSelect extends DtFormBase {
     return {
       ...super.properties,
       placeholder: { type: String },
-      options: { type: Array },
-      filteredOptions: { type: Array, state: true },
-      value: {
-        type: Array,
-        reflect: true,
-      },
-      open: {
-        type: Boolean,
-        state: true,
-      },
-      query: {
-        type: String,
-        state: true,
-      },
-      activeIndex: {
-        type: Number,
-        state: true,
-      },
       containerHeight: {
         type: Number,
         state: true,
       },
       onchange: { type: String },
     };
-  }
-
-  constructor() {
-    super();
-    this.activeIndex = -1;
-    this.filteredOptions = [];
-    this.detectTap = false;
-  }
-
-  updated() {
-    this._scrollOptionListToActive();
-
-    // set variable with width of container for truncating selected options via CSS
-    const container = this.shadowRoot.querySelector('.input-group');
-    const currentValue = container.style.getPropertyValue('--container-width');
-    if (!currentValue && container.clientWidth > 0) {
-      container.style.setProperty(
-        '--container-width',
-        `${container.clientWidth}px`
-      );
-    }
-  }
-
-  /**
-   * When navigating via keyboard, keep active element within visible area of option list
-   * @private
-   */
-  _scrollOptionListToActive() {
-    const optionList = this.shadowRoot.querySelector('.option-list');
-    const activeEl = this.shadowRoot.querySelector('button.active');
-    if (optionList && activeEl) {
-      const elTop = activeEl.offsetTop;
-      const elBottom = activeEl.offsetTop + activeEl.clientHeight;
-      const listTop = optionList.scrollTop;
-      const listBottom = optionList.scrollTop + optionList.clientHeight;
-      if (elBottom > listBottom) {
-        // active element below visible area. scroll down
-        optionList.scrollTo({
-          top: elBottom - optionList.clientHeight,
-          behavior: 'smooth',
-        });
-      } else if (elTop < listTop) {
-        // active element above visible area. scroll up
-        optionList.scrollTo({ top: elTop, behavior: 'smooth' });
-      }
-    }
-  }
-
-  _clickOption(e) {
-    if (e.target && e.target.value) {
-      this._select(e.target.value);
-    }
-  }
-
-  _touchStart(e) {
-    if (e.target) {
-      this.detectTap = false;
-    }
-  }
-
-  _touchMove(e) {
-    if (e.target) {
-      this.detectTap = true;
-    }
-  }
-
-  _touchEnd(e) {
-    if (!this.detectTap) {
-      if (e.target && e.target.value) {
-        this._clickOption(e);
-      }
-      this.detectTap = false;
-    }
-  }
-
-  _keyboardSelectOption() {
-    if (this.activeIndex > -1) {
-      this._select(this.filteredOptions[this.activeIndex].id);
-    }
   }
 
   _select(value) {
@@ -341,83 +245,6 @@ export class DtMultiSelect extends DtFormBase {
     }
   }
 
-  static _focusInput(e) {
-    if (e.target !== e.currentTarget) return;
-
-    e.target.getElementsByTagName('input')[0].focus();
-  }
-
-  _inputFocusIn() {
-    this.open = true;
-    this.activeIndex = -1;
-  }
-
-  _inputFocusOut(e) {
-    // allow clicks on option list button to not close the option list
-    // Safari actually passes the parent <li> as the relatedTarget
-    if (
-      !e.relatedTarget ||
-      !['BUTTON', 'LI'].includes(e.relatedTarget.nodeName)
-    ) {
-      this.open = false;
-    }
-  }
-
-  _inputKeyDown(e) {
-    const keycode = e.keyCode || e.which;
-
-    switch (keycode) {
-      case 8: // backspace
-        if (e.target.value === '') {
-          this.value = this.value.slice(0, -1);
-        }
-        break;
-      case 38: // arrow up
-        this.open = true;
-        this._listHighlightPrevious();
-        break;
-      case 40: // arrow down
-        this.open = true;
-        this._listHighlightNext();
-        break;
-      case 9: // tab
-        if (this.activeIndex < 0) {
-          // if pressing tab while no option is selected,
-          // close the list so you can go to next field
-          this.open = false;
-        } else {
-          e.preventDefault();
-        }
-        this._keyboardSelectOption();
-        break;
-      case 13: // enter
-        this._keyboardSelectOption();
-        break;
-      case 27: // escape
-        this.open = false;
-        this.activeIndex = -1;
-        break;
-      default:
-        this.open = true;
-        break;
-    }
-  }
-
-  _inputKeyUp(e) {
-    this.query = e.target.value;
-  }
-
-  _listHighlightNext() {
-    this.activeIndex = Math.min(
-      this.filteredOptions.length - 1,
-      this.activeIndex + 1
-    );
-  }
-
-  _listHighlightPrevious() {
-    this.activeIndex = Math.max(0, this.activeIndex - 1);
-  }
-
   /**
    * Filter to options that:
    *   1: are not selected
@@ -448,19 +275,6 @@ export class DtMultiSelect extends DtFormBase {
       if (valueChanged || queryChanged || optionsChanged) {
         this._filterOptions();
       }
-
-      // Set the containerHeight for dropdown positioning if it hasn't been set yet
-      if (
-        !this.containerHeight &&
-        this.shadowRoot.children &&
-        this.shadowRoot.children.length
-      ) {
-        const inputGroup = this.shadowRoot.querySelector('.input-group');
-        if (inputGroup) {
-          this.containerHeight =
-            inputGroup.offsetHeight;
-        }
-      }
     }
   }
 
@@ -484,36 +298,6 @@ export class DtMultiSelect extends DtFormBase {
           `
         )
     );
-  }
-
-  _renderOption(opt, idx) {
-    return html`
-      <li tabindex="-1">
-        <button
-          value="${opt.id}"
-          type="button"
-          data-label="${opt.label}"
-          @click="${this._clickOption}"
-          @touchstart="${this._touchStart}"
-          @touchmove="${this._touchMove}"
-          @touchend="${this._touchEnd}"
-          tabindex="-1"
-          class="${this.activeIndex > -1 && this.activeIndex === idx
-            ? 'active'
-            : ''}"
-        >
-          ${opt.label}
-        </button>
-      </li>
-    `;
-  }
-
-  _renderOptions() {
-    if (!this.filteredOptions.length) {
-      return html`<li><div>${msg('No Data Available')}</div></li>`;
-    }
-
-    return this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx));
   }
 
   render() {

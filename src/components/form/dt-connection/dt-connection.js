@@ -47,12 +47,14 @@ export class DtConnection extends DtTags {
     if (e.target && e.target.value) {
       const id = parseInt(e.target.value, 10);
       const option = this.filteredOptions.reduce((result, opt) => {
-        if (!result && opt.id === id) {
+        if (!result && opt.id == id) {
           return opt;
         }
         return result;
       }, null);
-      this._select(option);
+      if (option) {
+        this._select(option);
+      }
     }
   }
 
