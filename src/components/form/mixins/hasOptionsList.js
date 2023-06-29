@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 import { msg } from '@lit/localize';
 
 export const HasOptionsList = (superClass) => class extends superClass {
@@ -70,8 +70,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
     }
   }
 
-
-  _select(value) {
+  _select() { // eslint-disable-line class-methods-use-this
     console.error("Must implement `_select(value)` function");
   }
 
@@ -289,7 +288,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
       if (!Array.isArray(optionsMarkup)) {
         optionsMarkup = [optionsMarkup];
       }
-      optionsMarkup.push(html`<li>
+      optionsMarkup.push(html`<li tabindex="-1">
         <button
           data-label="${this.query}"
           @click="${this._clickAddNew}"
