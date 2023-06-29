@@ -36,4 +36,4 @@ At each level, you can adjust:
 - Shadows
 
 Each component also has a specific set of properties that you can adjust. See the [documentation
-for the components](category/components) to see which properties are available.
+for the components](/docs/category/components) to see which properties are available.
