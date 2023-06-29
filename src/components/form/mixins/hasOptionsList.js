@@ -203,12 +203,14 @@ export const HasOptionsList = (superClass) => class extends superClass {
       } else {
         this._select(this.filteredOptions[this.activeIndex].id);
       }
+      this._clearSearch();
     }
   }
 
   _clickOption(e) {
     if (e.target && e.target.value) {
       this._select(e.target.value);
+      this._clearSearch();
     }
   }
 
@@ -216,11 +218,15 @@ export const HasOptionsList = (superClass) => class extends superClass {
     if (e.target) {
       this._select(e.target.dataset?.label);
       // clear search field if clicked with mouse, since field will lose focus
-      const input = this.shadowRoot.querySelector('input');
+      this._clearSearch();
+    }
+  }
+
+  _clearSearch()  {
+    const input = this.shadowRoot.querySelector('input');
       if (input) {
         input.value = '';
       }
-    }
   }
 
   /*** Option List Navigation ***/
