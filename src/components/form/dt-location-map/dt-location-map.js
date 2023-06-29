@@ -57,6 +57,7 @@ export class DtLocationMap extends DtFormBase {
       id: Date.now(),
     }];
   }
+
   _setFormValue(value) {
     super._setFormValue(value);
     this.internals.setFormValue(JSON.stringify(value));
@@ -77,10 +78,12 @@ export class DtLocationMap extends DtFormBase {
     }
     this.updateLocationList();
   }
+
   firstUpdated(...args) {
     super.firstUpdated(...args);
     this.internals.setFormValue(JSON.stringify(this.value));
   }
+
   updated(changedProperties) {
     // if length of value was changed, focus the last element
     if (changedProperties.has('value')) {
@@ -97,6 +100,7 @@ export class DtLocationMap extends DtFormBase {
       }
     }
   }
+
   focusNewLocation() {
     const items = this.shadowRoot.querySelectorAll('dt-location-map-item');
     if (items && items.length) {
@@ -170,14 +174,14 @@ export class DtLocationMap extends DtFormBase {
     this._setFormValue(this.value);
   }
 
-  addNew(evt) {
+  addNew() {
     this.open = true;
     this.updateLocationList();
   }
 
-  renderItem(opt, idx) {
+  renderItem(opt) {
     return html`
-      <dt-location-map-item 
+      <dt-location-map-item
         placeholder="${this.placeholder}"
         .metadata=${opt}
         mapbox-token="${this.mapboxToken}"
@@ -185,7 +189,7 @@ export class DtLocationMap extends DtFormBase {
         @delete=${this.deleteItem}
         @select=${this.selectLocation}
         ?disabled=${this.disabled}
-      />
+      ></dt-location-map-item>
     `;
   }
 
@@ -196,10 +200,10 @@ export class DtLocationMap extends DtFormBase {
     });
     return html`
       ${this.labelTemplate()}
-      
+
       ${repeat(this.locations || [], (opt) => opt.id, (opt, idx) => this.renderItem(opt, idx))}
       ${!this.open
-        ? html`<a href="javascript:;" @click="${this.addNew}">Add New</a>`
+        ? html`<button @click="${this.addNew}">Add New</button>`
         : null}
     `;
   }
