@@ -1,5 +1,4 @@
 import { css, html } from 'lit';
-import { msg } from '@lit/localize';
 import { DtMultiSelect } from '../dt-multi-select/dt-multi-select.js';
 
 export class DtTags extends DtMultiSelect {

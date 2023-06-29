@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 import { msg } from '@lit/localize';
 
 export const HasOptionsList = (superClass) => class extends superClass {
@@ -70,12 +70,11 @@ export const HasOptionsList = (superClass) => class extends superClass {
     }
   }
 
-
-  _select(value) {
+  _select() { // eslint-disable-line class-methods-use-this
     console.error("Must implement `_select(value)` function");
   }
 
-  /*** Search Input Field Events ***/
+  /* Search Input Field Events */
   static _focusInput(e) {
     if (e.target !== e.currentTarget) return;
 
@@ -174,7 +173,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
     }
   }
 
-  /*** Option List Events ***/
+  /* Option List Events */
   _touchStart(e) {
     if (e.target) {
       this.detectTap = false;
@@ -203,12 +202,14 @@ export const HasOptionsList = (superClass) => class extends superClass {
       } else {
         this._select(this.filteredOptions[this.activeIndex].id);
       }
+      this._clearSearch();
     }
   }
 
   _clickOption(e) {
     if (e.target && e.target.value) {
       this._select(e.target.value);
+      this._clearSearch();
     }
   }
 
@@ -216,14 +217,18 @@ export const HasOptionsList = (superClass) => class extends superClass {
     if (e.target) {
       this._select(e.target.dataset?.label);
       // clear search field if clicked with mouse, since field will lose focus
-      const input = this.shadowRoot.querySelector('input');
-      if (input) {
-        input.value = '';
-      }
+      this._clearSearch();
     }
   }
 
-  /*** Option List Navigation ***/
+  _clearSearch()  {
+    const input = this.shadowRoot.querySelector('input');
+      if (input) {
+        input.value = '';
+      }
+  }
+
+  /* Option List Navigation */
   _listHighlightNext() {
     if (this.allowAdd) {
       this.activeIndex = Math.min(
@@ -242,7 +247,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
     this.activeIndex = Math.max(0, this.activeIndex - 1);
   }
 
-  /*** Rendering ***/
+  /* Rendering */
   _renderOption(opt, idx) {
     return html`
       <li tabindex="-1">
@@ -283,7 +288,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
       if (!Array.isArray(optionsMarkup)) {
         optionsMarkup = [optionsMarkup];
       }
-      optionsMarkup.push(html`<li>
+      optionsMarkup.push(html`<li tabindex="-1">
         <button
           data-label="${this.query}"
           @click="${this._clickAddNew}"
