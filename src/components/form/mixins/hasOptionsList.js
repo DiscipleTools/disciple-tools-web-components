@@ -75,7 +75,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
     console.error("Must implement `_select(value)` function");
   }
 
-  /*** Search Input Field Events ***/
+  /* Search Input Field Events */
   static _focusInput(e) {
     if (e.target !== e.currentTarget) return;
 
@@ -174,7 +174,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
     }
   }
 
-  /*** Option List Events ***/
+  /* Option List Events */
   _touchStart(e) {
     if (e.target) {
       this.detectTap = false;
@@ -229,7 +229,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
       }
   }
 
-  /*** Option List Navigation ***/
+  /* Option List Navigation */
   _listHighlightNext() {
     if (this.allowAdd) {
       this.activeIndex = Math.min(
@@ -248,7 +248,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
     this.activeIndex = Math.max(0, this.activeIndex - 1);
   }
 
-  /*** Rendering ***/
+  /* Rendering */
   _renderOption(opt, idx) {
     return html`
       <li tabindex="-1">
