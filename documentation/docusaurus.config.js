@@ -98,6 +98,10 @@ const config = {
                 href: 'https://disciple.tools/',
               },
               {
+                label: 'NPM',
+                href: 'https://www.npmjs.com/package/@disciple.tools/web-components',
+              },
+              {
                 label: 'GitHub',
                 href: 'https://github.com/DiscipleTools/disciple-tools-web-components',
               },

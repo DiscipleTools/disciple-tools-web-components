@@ -2,46 +2,112 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Intro
 
 Let's discover **Docusaurus in less than 5 minutes**.
 
+## Why Web Components?
+ 
+HTML custom elements are now widely supported across browsers, and building encapsulated web 
+components allows us to package logic and styles for the defined field types within Disciple.Tools. 
+By doing this, the main theme doesn't need other javascript dependencies and initialization scripts,
+and PHP developers can stick to writing PHP instead of also needing to figure out complex javascript
+interactions.
+
+## Main Concepts
+
+This web components library was built with a few main concepts in mind that drive the initial and future development:
+
+- **HTML/Framework Support**: Components should work in a standard HTML form, via events and API requests, and by including in other javascript frameworks. Whatever method developers want to use the components should be supported.
+- **Loose Coupling**: Components do not implement specific Disciple.Tools APIs directly within their functionality. Events are dispatched for coupling to APIs or other data sources, and the `ComponentService` provides coupling to standard APIs when needed.
+- **Javascript Events**: Communication outside the components happens by dispatching javascript events
+- **CSS Customization**: Styles default to the main Disciple.Tools styles, but can be customized at various layers via CSS variables/properties. Change styles for all components or for a single component. Styling should be versatile.
+
 ## Getting Started
 
-Get started by **creating a new site**.
+## Install
+### NPM
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
-
-### What you'll need
-
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
-
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
+The easiest way to include the web components is to use NPM. If your project will make use of NPM, you can run:
 
 ```bash
-npm init docusaurus@latest my-website classic
+npm i @disciple.tools/web-components
 ```
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+You can then include the library based on the type of project you're working on:
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+### Manual Build
 
-## Start your site
+See [git repo](https://github.com/DiscipleTools/disciple-tools-web-components#build-for-use-in-html) for details on 
+how to manually build the components to include in a project without NPM. 
 
-Run the development server:
+## Include Scripts
 
-```bash
-cd my-website
-npm run start
+### Javascript Projects (React, Vue, etc.)
+
+```javascript
+import '@disciple.tools/web-components';
 ```
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+Your framework may need a wrapper component to make these components work, so see the 
+specific documentation for your framework.
+ 
+- [React Sample Documentation](https://github.com/DiscipleTools/disciple-tools-web-components/tree/master/samples/react-include)
+- [Vue Sample Documentation](https://github.com/DiscipleTools/disciple-tools-web-components/tree/master/samples/vue-include)
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+### Standard HTML
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+```html
+<script type="module" src="/path/to/@disciple.tools/web-components/dist/index.js"></script>
+```
+
+See [HTML Sample Documentation](https://github.com/DiscipleTools/disciple-tools-web-components/tree/master/samples/html)
+
+### WordPress
+
+If you're using the Disciple.Tools theme, the components are all included (only in the `next` branch releases for now) 
+and can be used without explicitly including scripts.
+
+If you are writing a Magic Link or other plugin for WordPress that doesn't include the theme files, 
+you'll need to include the script files.
+
+```php
+$path = '../path/to/components/dist/form/index.js';
+wp_enqueue_script( 'dtwc-form-components', 
+  plugin_dir_url( __FILE__ ) . $path, 
+  null, 
+  filemtime( plugin_dir_path( __FILE__ ) . $path ) 
+);
+
+$css_path = '../path/to/components/src/styles/light.css';
+wp_enqueue_style( 'dtwc-light-css', 
+  plugin_dir_url( __FILE__ ) . $css_path, 
+  null, 
+  filemtime( plugin_dir_path( __FILE__ ) . $css_path ) 
+);
+```
+
+## Render Components
+
+Once your scripts are included, you can use the components like you would any other standard
+HTML elements when you render your page.
+
+```html
+<html>
+<head>...</head>
+<body>
+  <main>
+    <h1>My Page</h1>
+    <div>
+      <dt-text id='textField' name='textField' label="My Text Field"></dt-text>
+    </div>
+  </main>
+</body>
+</html>
+```
+
+## Next Steps
+
+Learn about the [Component Architecture](category/architecture) in case you want to extend or contribute to the components.
+
+View [All Components](category/components) to learn about how each component works.

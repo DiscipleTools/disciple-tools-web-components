@@ -8,6 +8,7 @@ import 'element-internals-polyfill'; // eslint-disable-line import/no-extraneous
 export default class DtBase extends LitElement {
   static get properties() {
     return {
+      RTL: { type: String },
       locale: { type: String },
       apiRoot: { type: String, reflect: false },
       postType: { type: String, reflect: false },

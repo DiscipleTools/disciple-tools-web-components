@@ -18,8 +18,8 @@
     "format": "eslint --ext .js,.html . --fix --ignore-path .gitignore && prettier \"**/*.js\" --write",
     "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
-    "storybook": "npm run analyze -- --exclude dist --exclude samples && web-dev-server -c .storybook/server.mjs",
-    "storybook:build": "npm run analyze -- --exclude dist --exclude samples && build-storybook && cp -r assets/ storybook-static/assets && cp netlify.toml storybook-static",
+    "storybook": "npm run analyze -- --exclude dist --exclude samples --exclude documentation && web-dev-server -c .storybook/server.mjs",
+    "storybook:build": "npm run analyze -- --exclude dist --exclude samples --exclude documentation && build-storybook && cp -r assets/ storybook-static/assets && cp netlify.toml storybook-static",
     "build": "rollup -c && rollup -c rollup.services.config.js && rm -rf ./samples/html/js && cp -R ./dist ./samples/html/js",
     "localize:extract": "lit-localize extract",
     "localize:build": "lit-localize build"
