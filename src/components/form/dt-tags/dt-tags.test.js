@@ -29,6 +29,11 @@ const optionsWithLabel = [
     label: 'Option 3',
   },
 ]
+async function wait(ms) {
+  return new Promise(r => {
+    setTimeout(r, ms);
+  });
+}
 
 async function clickOption(el, id) {
   const input = el.shadowRoot.querySelector('input');
@@ -406,5 +411,20 @@ describe('dt-tags', () => {
       .to.have.descendant('button')
       .with.attribute('disabled');
     expect(selectedOption).to.have.descendant('a').with.attribute('disabled');
+  });
+
+  it('clicks add new button', async () => {
+    const el = await fixture(
+      html`<dt-tags options="${JSON.stringify(options)}" allowAdd></dt-tags>`
+    );
+    const input = el.shadowRoot.querySelector('input');
+    input.focus();
+    await sendKeys({ type: 'new' });
+    await wait(100);
+    await sendKeys({ press: 'ArrowDown' });
+    await sendKeys({ press: 'Enter' });
+
+    const selectedOption = el.shadowRoot.querySelector('.selected-option');
+    expect(selectedOption).to.have.descendant('a').with.text('new');
   });
 });
