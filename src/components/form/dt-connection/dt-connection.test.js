@@ -340,4 +340,20 @@ describe('dt-connection', () => {
       .with.attribute('disabled');
     expect(selectedOption).to.have.descendant('a').with.attribute('disabled');
   });
+
+
+  it('clicks add new button', async () => {
+    const el = await fixture(
+      html`<dt-connection options="${JSON.stringify(options)}" allowAdd></dt-connection>`
+    );
+    const input = el.shadowRoot.querySelector('input');
+    input.focus();
+    await sendKeys({ type: 'new' });
+    await wait(100);
+    await sendKeys({ press: 'ArrowDown' });
+    await sendKeys({ press: 'Enter' });
+
+    const selectedOption = el.shadowRoot.querySelector('.selected-option');
+    expect(selectedOption).to.have.descendant('a').with.text('new');
+  });
 });
