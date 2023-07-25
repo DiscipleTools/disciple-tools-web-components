@@ -7,41 +7,63 @@ export class DtChurchHealthCircle extends DtBase {
   static get styles() {
     return css`
       .health-circle__container {
-        --d: 50px; /* image size */
-        --rel: 0.5; /* how much extra space we want between images, 1 = one image size */
+        --d: 55px; /* image size */
+        --rel: 1; /* how much extra space we want between images, 1 = one image size */
         --r: calc(1 * var(--d) / var(--tan)); /* circle radius */
         --s: calc(3 * var(--r));
-
         margin: 1rem auto;
         display: flex;
         justify-content: center;
         align-items: baseline;
-
-        @supports (aspect-ratio) {
-          aspect-ratio: 1/1;
-        }
-        @supports not (aspect-ratio) {
-          padding-top: 100%;
-          height: 0;
-          position: relative;
-          overflow: visible;
-        }
+        padding-top: 100%;
+        height: 0;
+        position: relative;
+        overflow: visible;
       }
 
       .health-circle {
         display: block;
-        height: auto;
         border-radius: 100%;
         border: 3px darkgray dashed;
         max-width: 100%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+        width: 100%;
+        height: 100%;
+      }
 
-        @supports not (aspect-ratio) {
-          position: absolute;
-          transform: translate(-50%, -50%);
-          left: 50%;
-          top: 50%;
-          width: calc(100% - 8px);
-          height: auto;
+      @media (max-width: 519px) {
+        .health-circle__container {
+          --d: 40px; /* image size */
+        }
+
+        .health-circle {
+          max-width: 300px;
+          max-height: 300px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .health-circle__container {
+          --d: 30px; /* image size */
+        }
+
+        .health-circle {
+          max-width: 250px;
+          max-height: 250px;
+        }
+      }
+
+      @media (max-width: 321px) {
+        .health-circle__container {
+          --d: 25px; /* image size */
+        }
+
+        .health-circle {
+          max-width: 225px;
+          max-height: 225px;
         }
       }
 
@@ -55,25 +77,6 @@ export class DtChurchHealthCircle extends DtBase {
         position: relative;
         width: var(--s);
         max-width: 100%;
-        height: auto;
-        aspect-ratio: 1 / 1;
-      }
-
-      @media (max-width: 519px) {
-        .health-circle {
-          max-width: 300px;
-          min-width: 300px;
-        }
-
-        .health-circle__container {
-          --r: calc(0.8 * var(--d) / var(--tan)); /* circle radius */
-        }
-      }
-
-      @media (min-width: 520px) {
-        .health-circle__container {
-          --r: calc(1.1 * var(--d) / var(--tan)); /* circle radius */
-        }
       }
 
       .health-circle--committed {
@@ -81,26 +84,20 @@ export class DtChurchHealthCircle extends DtBase {
       }
 
       dt-church-health-icon {
-        margin: auto;
         position: absolute;
-        height: 50px;
-        width: 50px;
         border-radius: 100%;
         font-size: 16px;
         color: black;
         text-align: center;
         font-style: italic;
         cursor: pointer;
-
-        position: absolute;
         top: 50%;
         left: 50%;
         margin: calc(-0.5 * var(--d));
         width: var(--d);
         height: var(--d);
         --az: calc(var(--i) * 1turn / var(--m));
-        transform: rotate(var(--az)) translate(var(--r))
-          rotate(calc(-1 * var(--az)));
+        transform: rotate(var(--az)) translate(var(--r)) rotate(calc(-1 * var(--az)));
       }
     `;
   }
@@ -295,7 +292,7 @@ export class DtChurchHealthCircle extends DtBase {
     let tan = Math.tan(Math.PI / m); /* tangent of half the base angle */
 
     container.style.setProperty('--m', m);
-    container.style.setProperty('--tan', +tan.toFixed(2));
+    container.style.setProperty('--tan', + tan.toFixed(2));
   }
 
   async toggleClick(e) {
