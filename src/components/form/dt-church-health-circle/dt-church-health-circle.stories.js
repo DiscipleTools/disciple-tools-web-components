@@ -269,14 +269,16 @@ function Template(args) {
     <style>
       ${themeCss(args)}
     </style>
-    <dt-church-health-circle
-      .group=${args.group}
-      .settings=${args.settings}
-      groupId="${args.groupId}"
-      apiRoot="/wp-json"
-      missingIcon="/assets/groups/missing.svg"
-      .handleSave=${args.handleSave}
-    ></dt-church-health-circle>
+    <div style='width: 300px; height: 300px;'>
+      <dt-church-health-circle
+        .group=${args.group}
+        .settings=${args.settings}
+        groupId="${args.groupId}"
+        apiRoot="/wp-json"
+        missingIcon="/assets/groups/missing.svg"
+        .handleSave=${args.handleSave}
+      ></dt-church-health-circle>
+    </div>
   `;
 }
 

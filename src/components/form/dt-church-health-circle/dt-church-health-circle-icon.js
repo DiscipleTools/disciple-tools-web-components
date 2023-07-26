@@ -9,8 +9,8 @@ class DtChurchHealthIcon extends DtBase {
         display: block;
       }
       .health-item img {
-        height: 50px;
-        width: 50px;
+        width: var(--d);
+        height: var(--d);
         filter: grayscale(1) opacity(0.75);
       }
       .health-item--active img {
