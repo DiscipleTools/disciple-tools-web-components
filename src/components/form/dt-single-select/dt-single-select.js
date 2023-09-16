@@ -122,6 +122,7 @@ export class DtSingleSelect extends DtFormBase {
 
     // update value in this component
     this.value = e.target.value;
+    this._setFormValue(this.value);
 
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
