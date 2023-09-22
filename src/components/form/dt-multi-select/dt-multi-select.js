@@ -220,7 +220,6 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
     this._setFormValue(this.value);
-    console.log('field changed')
   }
 
   _remove(e) {
