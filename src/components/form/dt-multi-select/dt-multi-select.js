@@ -180,6 +180,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   _select(value) {
     // Create custom event with new/old values to pass to onchange function
     const event = new CustomEvent('change', {
+      bubbles: true,
       detail: {
         field: this.name,
         oldValue: this.value,
@@ -224,6 +225,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   _remove(e) {
     if (e.target && e.target.dataset && e.target.dataset.value) {
       const event = new CustomEvent('change', {
+        bubbles: true,
         detail: {
           field: this.name,
           oldValue: this.value,
