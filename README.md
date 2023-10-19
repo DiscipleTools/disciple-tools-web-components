@@ -112,7 +112,7 @@ Localization happens in 3 steps:
 ### Using localized strings
 See [Lit Localize docs](https://lit.dev/docs/localization/overview/#message-types) for full documentation.
 
-When outputing text within a component that is not coming from the user (and would thus be translated by the user), use the `msg` function:
+When outputting text within a component that is not coming from the user (and would thus be translated by the user), use the `msg` function:
 
 ```
 import {msg} from '@lit/localize';
