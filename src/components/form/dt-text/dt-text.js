@@ -83,6 +83,7 @@ export class DtText extends DtFormBase {
 
   _change(e) {
     const event = new CustomEvent('change', {
+      bubbles: true,
       detail: {
         field: this.name,
         oldValue: this.value,
