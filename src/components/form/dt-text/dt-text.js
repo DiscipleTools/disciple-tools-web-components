@@ -47,7 +47,7 @@ export class DtText extends DtFormBase {
             --dt-text-disabled-background-color,
             var(--dt-form-disabled-background-color, #e6e6e6)
           );
-          cursor: not-allowed;
+          cursor: copy;
         }
         input:focus-within,
         input:focus-visible {
