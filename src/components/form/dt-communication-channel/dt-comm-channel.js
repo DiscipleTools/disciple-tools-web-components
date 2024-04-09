@@ -28,7 +28,31 @@ export class DtCommChannel extends DtText {
           margin: 0 1rem
         }
         .input-group {
+          display: flex;
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+        }
+        .input-group li {
+          display: flex;
           width: 100%;
+          flex-direction: row;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
+        }
+        #path0_fill {
+          fill: red;
+        }
+
+        .delete-button {
+          background-color: transparent;
+          border: none;
+        }
+
+        .delete-button svg {
+          width: 100%;
+          height: 20px;
         }
       `,
     ];
@@ -42,13 +66,20 @@ export class DtCommChannel extends DtText {
   }
 
   _addClick() {
-    console.log('add click');
-    console.log(this.value);
-    this.value.push({
-      verified: false,
-      value: '',
-      key: `new-${this.name}`
-    });
+    const newValue = {
+        verified: false,
+        value: '',
+        key: `new-${this.name}-${this.value.length}`
+      };
+    this.value = [...this.value, newValue];
+    this.requestUpdate();
+  }
+
+  _deleteField(item) {
+    const index = this.value.findIndex(itemm => itemm.key === item.key);
+    if (index !== -1) {
+      this.value.splice(index, 1);
+    }
     this.requestUpdate();
   }
 
@@ -76,6 +107,18 @@ export class DtCommChannel extends DtText {
   }
 
   _inputFieldTemplate(item) {
+    const isFirstItem = item.key === `new-${this.name}-0`;
+    const deleteButton = !isFirstItem ? html`
+      <button class="delete-button"  @click=${() => this._deleteField(item)}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+          <path
+            id="path0_fill"
+            fill-rule="evenodd"
+            d="M 14 7C 14 10.866 10.866 14 7 14C 3.13403 14 0 10.866 0 7C 0 3.13401 3.13403 0 7 0C 10.866 0 14 3.13401 14 7ZM 9.51294 3.51299L 7 6.01299L 4.48706 3.51299L 3.5 4.49999L 6.01294 6.99999L 3.5 9.49999L 4.48706 10.487L 7 7.98699L 9.5 10.5L 10.4871 9.51299L 7.98706 6.99999L 10.5 4.49999L 9.51294 3.51299Z"
+          />
+        </svg>
+      </button>
+  ` : '';
     return html`
       <div class="input-group">
         <input
@@ -92,6 +135,7 @@ export class DtCommChannel extends DtText {
           novalidate
           @keyup="${this.implicitFormSubmit}"
         />
+        ${deleteButton}
 
         ${this.touched && this.invalid
           ? html`<dt-exclamation-circle
@@ -125,7 +169,6 @@ export class DtCommChannel extends DtText {
     const key = e.target.id;
     const {value} = e.target;
     const newValue = this.value;
-
     this.value.find((o, i) => {
       if (o.key === key) {
           newValue[i] = { verified: false, value, key };
@@ -143,7 +186,6 @@ export class DtCommChannel extends DtText {
     });
 
     this.value = newValue;
-    console.log(this.value);
 
     this._setFormValue(this.value);
 
@@ -152,7 +194,12 @@ export class DtCommChannel extends DtText {
 
   _renderInputFields() {
     if (!this.value) {
-      return this._inputFieldTemplate({});
+      this.value = [{
+        verified: false,
+        value: '',
+        key: `new-${this.name}-0`
+      }];
+      return this._inputFieldTemplate(this.value[0]);
     }
     return html`
       ${this.value.map((item) =>
@@ -160,6 +207,7 @@ export class DtCommChannel extends DtText {
       )}
     `;
   }
+
 
   render() {
     return html`
