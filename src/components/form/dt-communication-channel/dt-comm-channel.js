@@ -67,19 +67,20 @@ export class DtCommChannel extends DtText {
 
   _addClick() {
     const newValue = {
-        verified: false,
-        value: '',
-        key: `new-${this.name}-${this.value.length}`
-      };
+      verified: false,
+      value: '',
+      key: `new-${this.name}-${Math.floor(Math.random() * 100)}`
+    };
     this.value = [...this.value, newValue];
     this.requestUpdate();
   }
 
   _deleteField(item) {
-    const index = this.value.findIndex(itemm => itemm.key === item.key);
+    const index = this.value.findIndex(currentItem => currentItem.key === item.key);
     if (index !== -1) {
       this.value.splice(index, 1);
     }
+    this.value = [...this.value];
     this.requestUpdate();
   }
 
@@ -96,8 +97,8 @@ export class DtCommChannel extends DtText {
         icon="${this.icon}"
       >
         ${!this.icon
-          ? html`<slot name="icon-start" slot="icon-start"></slot>`
-          : null}
+        ? html`<slot name="icon-start" slot="icon-start"></slot>`
+        : null}
         ${this.label}
       </dt-label>
       <button class="add-btn" @click=${this._addClick}>
@@ -138,24 +139,24 @@ export class DtCommChannel extends DtText {
         ${deleteButton}
 
         ${this.touched && this.invalid
-          ? html`<dt-exclamation-circle
+        ? html`<dt-exclamation-circle
               class="icon-overlay alert"
             ></dt-exclamation-circle>`
-          : null}
+        : null}
         ${this.error
-          ? html`<dt-icon
+        ? html`<dt-icon
               icon="mdi:alert-circle"
               class="icon-overlay alert"
               tooltip="${this.error}"
               size="2rem"
               ></dt-icon>`
-            : null}
+        : null}
         ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
+        ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
+        : null}
         ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
+        ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
+        : null}
       </div>
     `;
   }
@@ -167,12 +168,12 @@ export class DtCommChannel extends DtText {
 
   _change(e) {
     const key = e.target.id;
-    const {value} = e.target;
+    const { value } = e.target;
     const newValue = this.value;
     this.value.find((o, i) => {
       if (o.key === key) {
-          newValue[i] = { verified: false, value, key };
-          return true; // stop searching
+        newValue[i] = { verified: false, value, key };
+        return true; // stop searching
       }
       return false;
     });
@@ -199,15 +200,16 @@ export class DtCommChannel extends DtText {
         value: '',
         key: `new-${this.name}-0`
       }];
+
+      // initializing with 0 so that delete button does comes in
       return this._inputFieldTemplate(this.value[0]);
     }
     return html`
       ${this.value.map((item) =>
-        this._inputFieldTemplate(item)
-      )}
+      this._inputFieldTemplate(item)
+    )}
     `;
   }
-
 
   render() {
     return html`
