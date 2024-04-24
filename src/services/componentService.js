@@ -8,7 +8,7 @@ export default class ComponentService {
    * @param nonce - WordPress nonce for authentication
    * @param apiRoot - Root of API (default: wp-json) (i.e. the part before dt/v1/ or dt-posts/v2/)
    */
-  constructor(postType, postId, nonce, apiRoot = 'wp-json') {
+  constructor(postType, postId, nonce, apiRoot = 'nextdttheme/wordpress/wp-json') {
     this.postType = postType;
     this.postId = postId;
     this.nonce = nonce;
@@ -17,17 +17,17 @@ export default class ComponentService {
     this.api = new ApiService(this.nonce, this.apiRoot);
 
     this.autoSaveComponents = [
-      'dt-connection',
-      'dt-date',
-      'dt-location',
-      'dt-multi-select',
-      'dt-number',
-      'dt-single-select',
-      'dt-tags',
-      'dt-text',
-      'dt-textarea',
-      'dt-toggle',
-      'dt-comm-channel',
+      // 'dt-connection',
+      // 'dt-date',
+      // 'dt-location',
+      // 'dt-multi-select',
+      // 'dt-number',
+      // 'dt-single-select',
+      // 'dt-tags',
+      // 'dt-text',
+      // 'dt-textarea',
+      // 'dt-toggle',
+      // 'dt-comm-channel',
     ];
 
     this.dynamicLoadComponents = [
@@ -40,7 +40,7 @@ export default class ComponentService {
    * Initialize components on the page with necessary event listeners
    */
   initialize() {
-    this.enableAutoSave();
+    // this.enableAutoSave();
     this.attachLoadEvents();
   }
 
@@ -136,17 +136,19 @@ export default class ComponentService {
 
       // Update post via API
       try {
+        console.log('hhf dhshk---', this.postType, this.postId)
         await this.api.updatePost(this.postType, this.postId, {
           [field]: apiValue,
         });
 
         event.target.removeAttribute('loading');
         event.target.setAttribute('saved', true);
-      } catch (ex) {
-        console.error(ex);
+      } catch (error) {
+        console.error(error);
+        console.log('error here', error)
         event.target.removeAttribute('loading');
         event.target.setAttribute('invalid', true); // this isn't hooked up yet
-        event.target.setAttribute('error', ex.message || ex.toString());
+        event.target.setAttribute('error', error.message || error.toString());
       }
     }
   }

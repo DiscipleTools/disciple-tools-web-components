@@ -164,6 +164,7 @@ export class DtCommChannel extends DtText {
   _setFormValue(value) {
     super._setFormValue(value);
     this.internals.setFormValue(JSON.stringify(value));
+    this.value = [...this.value];
   }
 
   _change(e) {

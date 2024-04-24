@@ -97,11 +97,14 @@ export class DtConnection extends DtTags {
           oldValue: this.value,
         },
       });
+      console.log('event', event)
       this.value = (this.value || []).map(i => {
         const val = {
           ...i,
         };
-        if (i.id === e.target.dataset.value) {
+
+        console.log('this.value', this.value)
+        if (parseInt(i.id) === parseInt(e.target.dataset.value)) {
           val.delete = true;
         }
         return val;
