@@ -72,12 +72,13 @@ export class DtText extends DtFormBase {
       ...super.properties,
       id: { type: String },
       type: { type: String },
+      maxlength: {type: Number},
       placeholder: { type: String },
       value: {
         type: String,
         reflect: true,
       },
-      onchange: { type: String },
+      onchange: { type: String }
     };
   }
 
@@ -146,6 +147,7 @@ export class DtText extends DtFormBase {
           name="${this.name}"
           aria-label="${this.label}"
           type="${this.type || 'text'}"
+          maxlength="${this.maxlength || '100'}"
           placeholder="${this.placeholder}"
           ?disabled=${this.disabled}
           ?required=${this.required}
