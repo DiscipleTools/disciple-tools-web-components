@@ -15,9 +15,9 @@ export class DtIcon extends DtBase {
       }
       .tooltip {
         position: absolute;
-        right: 0px;
-        top: 100%;
-        min-width: 9rem;
+        right: 20px;
+        top: -50%;
+        min-width: max-content;
         border: solid 1px currentcolor;
         background-color: var(--dt-form-background-color, var(--surface-1));
         padding: .25rem;
@@ -29,7 +29,7 @@ export class DtIcon extends DtBase {
       .tooltip:before {
         position: absolute;
         right: .7rem;
-        top: -.55rem;
+        top: 1.45rem;
         content: " ";
         border-width: .25rem;
         border-style: solid;
