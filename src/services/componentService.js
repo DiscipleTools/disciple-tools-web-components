@@ -40,7 +40,9 @@ export default class ComponentService {
    * Initialize components on the page with necessary event listeners
    */
   initialize() {
-    this.enableAutoSave();
+    if(this.postId){
+      this.enableAutoSave();
+    }
     this.attachLoadEvents();
   }
 
@@ -142,11 +144,11 @@ export default class ComponentService {
 
         event.target.removeAttribute('loading');
         event.target.setAttribute('saved', true);
-      } catch (ex) {
-        console.error(ex);
+      } catch (error) {
+        console.error(error);
         event.target.removeAttribute('loading');
         event.target.setAttribute('invalid', true); // this isn't hooked up yet
-        event.target.setAttribute('error', ex.message || ex.toString());
+        event.target.setAttribute('error', error.message || error.toString());
       }
     }
   }

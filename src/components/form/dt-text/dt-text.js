@@ -167,8 +167,8 @@ export class DtText extends DtFormBase {
               class="icon-overlay alert"
               tooltip="${this.error}"
               size="2rem"
-              ></dt-icon>`
-            : null}
+            ></dt-icon>`
+          : null}
         ${this.loading
           ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
           : null}

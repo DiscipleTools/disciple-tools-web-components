@@ -21,7 +21,7 @@ export default class DtFormBase extends DtBase {
         /* === Inline Icons === */
         .icon-overlay {
           position: absolute;
-          inset-inline-end: 1rem;
+          inset-inline-end: 2rem;
           top: 0;
           height: 100%;
           display: flex;
