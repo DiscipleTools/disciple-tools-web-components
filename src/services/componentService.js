@@ -8,7 +8,7 @@ export default class ComponentService {
    * @param nonce - WordPress nonce for authentication
    * @param apiRoot - Root of API (default: wp-json) (i.e. the part before dt/v1/ or dt-posts/v2/)
    */
-  constructor(postType, postId, nonce, apiRoot = 'nextdttheme/wp-json') {
+  constructor(postType, postId, nonce, apiRoot = 'wp-json') {
     this.postType = postType;
     this.postId = postId;
     this.nonce = nonce;
