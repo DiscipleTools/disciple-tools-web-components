@@ -1,70 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-<file target-language="bs_BA" source-language="en" original="lit-localize-inputs" datatype="plaintext">
-<body>
-<trans-unit id="sb1bd536b63e9e995">
-  <source>Private Field: Only I can see its content</source>
-</trans-unit>
-<trans-unit id="s8900c9de2dbae68b">
-  <source>No options available</source>
-</trans-unit>
-<trans-unit id="sf9aee319a006c9b4">
-  <source>Add</source>
-  <target>Dodati</target>
-</trans-unit>
-<trans-unit id="sbf1ca928ec1deb62">
-  <source>Need more help?</source>
-  <target>Trebate više pomoći?</target>
-</trans-unit>
-<trans-unit id="s226be12a5b1a27e8">
-  <source>Read the documentation</source>
-  <target>Pročitajte dokumentaciju</target>
-</trans-unit>
-<trans-unit id="s5e8250fb85d64c23">
-  <source>Close</source>
-  <target>Zatvori</target>
-</trans-unit>
-<trans-unit id="s29e25f5e4622f847">
-  <source>Open Dialog</source>
-</trans-unit>
-<trans-unit id="s33f85f24c0f5f008">
-  <source>Save</source>
-  <target>Save</target>
-</trans-unit>
-<trans-unit id="s04ceadb276bbe149">
-  <source>Loading options...</source>
-</trans-unit>
-<trans-unit id="s625ad019db843f94">
-  <source>Use</source>
-  <target>Korist</target>
-</trans-unit>
-<trans-unit id="sd1a8dc951b2b6a98">
-  <source>Choose which fields to display as columns in the list</source>
-  <target>Odaberite polja koja će se prikazati kao kolone na listi</target>
-</trans-unit>
-<trans-unit id="scb9a1ff437efbd2a">
-  <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
-</trans-unit>
-<trans-unit id="sac83d7f9358b43db">
-  <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
-</trans-unit>
-<trans-unit id="seafe6ef133ede7da">
-  <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
-</trans-unit>
-<trans-unit id="s41cb4006238ebd3b">
-  <source>Bulk Edit</source>
-  <target>Skupno uređivanje</target>
-</trans-unit>
-<trans-unit id="s36cb242ac90353bc">
-  <source>Fields</source>
-  <target>Polja</target>
-</trans-unit>
-<trans-unit id="s9d51bfd93b5dbeca">
-  <source>Show Archived</source>
-</trans-unit>
-<trans-unit id="sb59d68ed12d46377">
-  <source>Loading</source>
-</trans-unit>
-</body>
-</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file target-language="bs_BA" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+    <body>
+      <trans-unit id="sb1bd536b63e9e995" xml:space="preserve">
+        <source>Private Field: Only I can see its content</source>
+        <target state="translated">Privatno polje: Samo ja mogu vidjeti njegov sadržaj</target>
+      </trans-unit>
+      <trans-unit id="s8900c9de2dbae68b" xml:space="preserve">
+        <source>No options available</source>
+        <target state="translated">Nema dostupnih opcija</target>
+      </trans-unit>
+      <trans-unit id="sf9aee319a006c9b4">
+        <source>Add</source>
+        <target>Dodati</target>
+      </trans-unit>
+      <trans-unit id="sbf1ca928ec1deb62">
+        <source>Need more help?</source>
+        <target>Trebate više pomoći?</target>
+      </trans-unit>
+      <trans-unit id="s226be12a5b1a27e8">
+        <source>Read the documentation</source>
+        <target>Pročitajte dokumentaciju</target>
+      </trans-unit>
+      <trans-unit id="s5e8250fb85d64c23">
+        <source>Close</source>
+        <target>Zatvori</target>
+      </trans-unit>
+      <trans-unit id="s29e25f5e4622f847" xml:space="preserve">
+        <source>Open Dialog</source>
+        <target state="translated">Otvorite dijalog</target>
+      </trans-unit>
+      <trans-unit id="s33f85f24c0f5f008" xml:space="preserve">
+        <source>Save</source>
+        <target state="translated">Sačuvaj</target>
+      </trans-unit>
+      <trans-unit id="s04ceadb276bbe149" xml:space="preserve">
+        <source>Loading options...</source>
+        <target state="translated">Učitavanje opcija...</target>
+      </trans-unit>
+      <trans-unit id="s625ad019db843f94" xml:space="preserve">
+        <source>Use</source>
+        <target state="translated">Koristi</target>
+      </trans-unit>
+      <trans-unit id="sd1a8dc951b2b6a98" xml:space="preserve">
+        <source>Choose which fields to display as columns in the list</source>
+        <target state="translated">Odaberite koja polja će se prikazati kao kolone na listi</target>
+      </trans-unit>
+      <trans-unit id="scb9a1ff437efbd2a" xml:space="preserve">
+        <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
+        <target state="translated">Odaberite sve <x id="0" equiv-text="${this.postType}"/> koje želite ažurirati sa liste i ažurirajte ih ispod</target>
+      </trans-unit>
+      <trans-unit id="sac83d7f9358b43db" xml:space="preserve">
+        <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
+        <target state="translated"><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> Lista</target>
+      </trans-unit>
+      <trans-unit id="seafe6ef133ede7da" xml:space="preserve">
+        <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
+        <target state="translated">Prikazuje se 1 od <x id="0" equiv-text="${this.total}"/></target>
+      </trans-unit>
+      <trans-unit id="s41cb4006238ebd3b">
+        <source>Bulk Edit</source>
+        <target>Skupno uređivanje</target>
+      </trans-unit>
+      <trans-unit id="s36cb242ac90353bc">
+        <source>Fields</source>
+        <target>Polja</target>
+      </trans-unit>
+      <trans-unit id="s9d51bfd93b5dbeca" xml:space="preserve">
+        <source>Show Archived</source>
+        <target state="translated">Prikaži arhivirano</target>
+      </trans-unit>
+      <trans-unit id="sb59d68ed12d46377" xml:space="preserve">
+        <source>Loading</source>
+        <target state="translated">Učitavanje</target>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>
