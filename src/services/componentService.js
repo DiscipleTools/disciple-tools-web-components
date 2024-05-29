@@ -172,6 +172,7 @@ export default class ComponentService {
           break;
 
         case 'dt-multi-select':
+          case 'dt-tags':
           if (typeof value === 'string') {
             returnValue = [value];
           }
@@ -191,7 +192,6 @@ export default class ComponentService {
 
         case 'dt-connection':
         case 'dt-location':
-        case 'dt-tags':
           if (typeof value === 'string') {
             returnValue = [
               {
@@ -209,13 +209,12 @@ export default class ComponentService {
               }
               return ret;
             }),
-            force_values: false,
+            // force_values: false,
           };
           break;
 
         case 'dt-comm-channel':
           if (typeof value === 'string') {
-            console.log('dt-comm-channel', value);
             returnValue = [
               {
                 id: value,
