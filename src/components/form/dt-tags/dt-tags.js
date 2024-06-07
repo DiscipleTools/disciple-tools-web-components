@@ -56,7 +56,7 @@ export class DtTags extends DtMultiSelect {
               .toLocaleLowerCase()
               .includes(this.query.toLocaleLowerCase()))
       );
-    } else if (this.open) {
+    } else if (this.open || this.canUpdate) {
       // Only run this filtering if the list is open.
       // This prevents it from running on initial load before a `load` event is attached.
       this.loading = true;
@@ -64,7 +64,7 @@ export class DtTags extends DtMultiSelect {
 
       // need to fetch data via API request
       const self = this;
-      const event = new CustomEvent('load', {
+      const event = new CustomEvent('focus', {
         bubbles: true,
         detail: {
           field: this.name,
@@ -90,6 +90,7 @@ export class DtTags extends DtMultiSelect {
           onError: error => {
             console.warn(error);
             self.loading = false;
+            this.canUpdate = false;
           },
         },
       });
@@ -107,6 +108,7 @@ export class DtTags extends DtMultiSelect {
           data-label="${opt.label}"
           @click="${this._clickOption}"
           @touchstart="${this._touchStart}"
+          @blur="${this._inputFocusOut}"
           @touchmove="${this._touchMove}"
           @touchend="${this._touchEnd}"
           tabindex="-1"

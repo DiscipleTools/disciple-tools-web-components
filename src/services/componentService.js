@@ -57,7 +57,7 @@ export default class ComponentService {
     );
     if (elements) {
       elements.forEach(el =>
-        el.addEventListener('load', this.handleLoadEvent.bind(this))
+        el.addEventListener('focus', this.handleLoadEvent.bind(this))
       )
     }
   }
@@ -94,15 +94,21 @@ export default class ComponentService {
           case 'dt-connection': {
             const postType = details.postType || this.postType;
             const connectionResponse = await this.api.listPostsCompact(postType, query);
-            if (connectionResponse?.posts) {
-              values = connectionResponse?.posts.map(value => ({
-                id: value['ID'],
-                label: value['name'],
-                link: value['permalink'],
-                status: value['status'],
-              }));
-            }
-            break;
+            //for filtering the user itself from the response.
+            const filteredConnectionResponse = {
+              ...connectionResponse,
+              posts: connectionResponse.posts.filter(post => post.ID !== parseInt(this.postId))
+          };
+          
+          if (filteredConnectionResponse?.posts) {
+            values = filteredConnectionResponse?.posts.map(value => ({
+              id: value['ID'],
+              label: value['name'],
+              link: value['permalink'],
+              status: value['status'],
+            }));
+          }
+          break;
           }
           case 'dt-tags':
           default:
