@@ -57,7 +57,7 @@ export default class ComponentService {
     );
     if (elements) {
       elements.forEach(el =>
-        el.addEventListener('dt:get-data', this.handleLoadEvent.bind(this))
+        el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this))
       )
     }
   }
@@ -83,7 +83,7 @@ export default class ComponentService {
    * @param {Event} event
    * @returns {Promise<void>}
    */
-  async handleLoadEvent(event) {
+  async handleGetDataEvent(event) {
     const details = event.detail;
     if (details) {
       const { field, query, onSuccess, onError } = details;
