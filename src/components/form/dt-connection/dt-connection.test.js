@@ -200,7 +200,7 @@ describe('dt-connection', () => {
       ></dt-connection>`
     );
 
-    setTimeout(() => clickOption(el, '1'));
+    setTimeout(() => clickOption(el, '1'), 100);
 
     const { detail } = await oneEvent(el, 'change');
 
@@ -223,7 +223,7 @@ describe('dt-connection', () => {
         `.selected-option button[data-value="1"]`
       );
       optionBtn.click();
-    });
+    }, 100);
 
     const { detail } = await oneEvent(el, 'change');
 
@@ -280,7 +280,7 @@ describe('dt-connection', () => {
     const input = el.shadowRoot.querySelector('input');
     input.focus();
 
-    setTimeout(() => sendKeys({ type: 'o' }));
+    setTimeout(() => sendKeys({ type: 'o' }), 100);
 
     const { detail } = await oneEvent(el, 'load');
 
