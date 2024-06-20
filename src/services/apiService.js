@@ -141,12 +141,13 @@ export default class ApiService {
       args
     );
   }
-  async checkFieldValueExists(field_type, value){
-    return this.makeRequestOnPosts(
-      'POST',
-      `${field_type}/check_field_value_exists`, 
-        value
-    );
+
+  async checkFieldValueExists(fieldType, value){
+      return this.makeRequestOnPosts(
+        'POST',
+        `${fieldType}/check_field_value_exists`,
+          value
+      );
   }
 
   /**
