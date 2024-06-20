@@ -150,7 +150,7 @@ export class DtLocation extends DtTags {
       // need to fetch data via API request
       const self = this;
       const selectEl = this.shadowRoot.querySelector('select');
-      const event = new CustomEvent('load', {
+      const event = new CustomEvent('dt:get-data', {
         bubbles: true,
         detail: {
           field: this.name,
