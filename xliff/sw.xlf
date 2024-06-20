@@ -6,8 +6,9 @@
         <source>Private Field: Only I can see its content</source>
         <target state="translated">Sehemu ya Faragha: Ni mimi pekee ninayeweza kuona maudhui yake</target>
       </trans-unit>
-      <trans-unit id="s8900c9de2dbae68b">
+      <trans-unit id="s8900c9de2dbae68b" xml:space="preserve">
         <source>No options available</source>
+        <target state="translated">Hakuna chaguo zinazopatikana</target>
       </trans-unit>
       <trans-unit id="sf9aee319a006c9b4">
         <source>Add</source>
@@ -33,8 +34,9 @@
         <source>Save</source>
         <target>Hifadhi</target>
       </trans-unit>
-      <trans-unit id="s04ceadb276bbe149">
+      <trans-unit id="s04ceadb276bbe149" xml:space="preserve">
         <source>Loading options...</source>
+        <target state="translated">Inapakia chaguo...</target>
       </trans-unit>
       <trans-unit id="s625ad019db843f94">
         <source>Use</source>
@@ -44,8 +46,9 @@
         <source>Choose which fields to display as columns in the list</source>
         <target>Chagua ni sehemu zipi zitaonyeshwa kama safu wima kwenye orodha</target>
       </trans-unit>
-      <trans-unit id="scb9a1ff437efbd2a">
+      <trans-unit id="scb9a1ff437efbd2a" xml:space="preserve">
         <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
+        <target state="translated">Chagua <x id="0" equiv-text="${this.postType}"/> zote ungependa kusasisha kutoka kwenye orodha, na uzisasishe hapa chini.</target>
       </trans-unit>
       <trans-unit id="sac83d7f9358b43db">
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
