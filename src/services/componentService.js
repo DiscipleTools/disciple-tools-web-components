@@ -94,18 +94,18 @@ export default class ComponentService {
           case 'dt-connection': {
             const postType = details.postType || this.postType;
             const connectionResponse = await this.api.listPostsCompact(postType, query);
-            //for filtering the user itself from the response.
+            // for filtering the user itself from the response.
             const filteredConnectionResponse = {
               ...connectionResponse,
-              posts: connectionResponse.posts.filter(post => post.ID !== parseInt(this.postId))
+              posts: connectionResponse.posts.filter(post => post.ID !== parseInt(this.postId, 10))
           };
-          
+
           if (filteredConnectionResponse?.posts) {
             values = filteredConnectionResponse?.posts.map(value => ({
-              id: value['ID'],
-              label: value['name'],
-              link: value['permalink'],
-              status: value['status'],
+              id: value.ID,
+              label: value.name,
+              link: value.permalink,
+              status: value.status,
             }));
           }
           break;
@@ -221,7 +221,6 @@ export default class ComponentService {
 
         case 'dt-comm-channel':
           if (typeof value === 'string') {
-            console.log('dt-comm-channel', value);
             returnValue = [
               {
                 id: value,
