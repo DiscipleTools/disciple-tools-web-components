@@ -101,7 +101,7 @@ export class DtConnection extends DtTags {
         const val = {
           ...i,
         };
-        if (i.id === parseInt(e.target.dataset.value)) {
+        if (i.id === e.target.dataset.value) {
           val.delete = true;
         }
         return val;
