@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 import { msg } from '@lit/localize';
-import MapboxService from '../../../services/mapboxService';
-import GoogleGeocodeService from '../../../services/googleGeocodeService';
+import MapboxService from '../../../services/mapboxService.js';
+import GoogleGeocodeService from '../../../services/googleGeocodeService.js';
 import '../../icons/dt-icon.js';
 import './dt-map-modal.js';
 
@@ -45,7 +45,7 @@ export default class DtLocationMapItem extends LitElement {
           font-family: Helvetica, Arial, sans-serif;
           display: block;
         }
-        
+
         .input-group {
           color: var(--dt-multi-select-text-color, #0a0a0a);
           margin-bottom: 1rem;
@@ -62,7 +62,7 @@ export default class DtLocationMapItem extends LitElement {
         .input-group.disabled *:hover {
           cursor: not-allowed;
         }
-        
+
         /* === Options List === */
         .option-list {
           list-style: none;
@@ -144,7 +144,7 @@ export default class DtLocationMapItem extends LitElement {
           cursor: not-allowed;
         }
         input.disabled {
-          color: var(--dt-text-placeholder-color, #999);        
+          color: var(--dt-text-placeholder-color, #999);
         }
         input:focus-within,
         input:focus-visible {
@@ -160,7 +160,7 @@ export default class DtLocationMapItem extends LitElement {
         input.invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
         }
-        
+
         .field-container {
           display: flex;
           margin-bottom: 0.5rem;
@@ -193,7 +193,7 @@ export default class DtLocationMapItem extends LitElement {
           background-color: var(--dt-location-map-button-hover-background-color, #cc4b37);
           color: var(--dt-location-map-button-hover-color, #ffffff);
         }
-        
+
         .input-addon:disabled {
           background-color: var(--dt-form-disabled-background-color);
           color: var(--dt-text-placeholder-color, #999);
@@ -201,7 +201,7 @@ export default class DtLocationMapItem extends LitElement {
         .input-addon:disabled:hover {
           background-color: var(--dt-form-disabled-background-color);
           color: var(--dt-text-placeholder-color, #999);
-          cursor: not-allowed;          
+          cursor: not-allowed;
         }
       `,
       css`
@@ -237,7 +237,7 @@ export default class DtLocationMapItem extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('autofocus', async (evt) => {
+    this.addEventListener('autofocus', async () => {
       // wait for render to complete
       await this.updateComplete;
 
@@ -256,7 +256,12 @@ export default class DtLocationMapItem extends LitElement {
     }
   }
 
-  updated(changedProperties) {
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('autofocus', this.handleAutofocus);
+  }
+
+  updated() {
     this._scrollOptionListToActive();
 
     // set variable with width of container for truncating selected options via CSS
@@ -526,6 +531,7 @@ export default class DtLocationMapItem extends LitElement {
   _change() {
 
   }
+
   _delete() {
     const options = {
       detail: {
@@ -535,9 +541,11 @@ export default class DtLocationMapItem extends LitElement {
     };
     this.dispatchEvent(new CustomEvent('delete', options));
   }
+
   _openMapModal() {
     this.shadowRoot.querySelector('dt-map-modal').dispatchEvent(new Event('open'));
   }
+
   async _onMapModalSubmit(e) {
     if (e?.detail?.location?.lat) {
       const { location } = e?.detail;
@@ -621,43 +629,43 @@ export default class DtLocationMapItem extends LitElement {
     const hasGeometry = this.metadata?.lat && this.metadata?.lng;
     return html`
       <div class="input-group">
-        <div class="field-container">      
-          <input 
+        <div class="field-container">
+          <input
             type="text"
             class="${this.disabled ? 'disabled' : null}"
             placeholder="${this.placeholder}"
-            value="${this.metadata?.label}"
+            .value="${this.metadata?.label}"
             .disabled=${(existingValue && hasGeometry) || this.disabled}
             @focusin="${this._inputFocusIn}"
             @blur="${this._inputFocusOut}"
             @keydown="${this._inputKeyDown}"
             @keyup="${this._inputKeyUp}"
           />
-          
+
           ${existingValue && hasGeometry ? html`
-          <button 
-            class="input-addon btn-map" 
+          <button
+            class="input-addon btn-map"
             @click=${this._openMapModal}
             ?disabled=${this.disabled}
           >
-            <dt-icon icon="mdi:map" />
+            <dt-icon icon="mdi:map"></dt-icon>
           </button>
           ` : null }
           ${existingValue ? html`
-          <button 
-            class="input-addon btn-delete" 
+          <button
+            class="input-addon btn-delete"
             @click=${this._delete}
             ?disabled=${this.disabled}
           >
-            <dt-icon icon="mdi:trash-can-outline" />
+            <dt-icon icon="mdi:trash-can-outline"></dt-icon>
           </button>
           ` : html`
-          <button 
-            class="input-addon btn-pin" 
+          <button
+            class="input-addon btn-pin"
             @click=${this._openMapModal}
             ?disabled=${this.disabled}
           >
-            <dt-icon icon="mdi:map-marker-radius" />
+            <dt-icon icon="mdi:map-marker-radius"></dt-icon>
           </button>
           ` }
         </div>
@@ -669,16 +677,16 @@ export default class DtLocationMapItem extends LitElement {
             : null}
         ${this.loading
           ? html`<dt-spinner class="icon-overlay"></dt-spinner>` : null}
-        ${this.saved 
+        ${this.saved
           ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}
       </div>
-      
-      <dt-map-modal 
-        .metadata=${this.metadata} 
+
+      <dt-map-modal
+        .metadata=${this.metadata}
         mapbox-token="${this.mapboxToken}"
-        @submit=${this._onMapModalSubmit} 
-      />
-      
+        @submit=${this._onMapModalSubmit}
+      ></dt-map-modal>
+
 `;
   }
 }
