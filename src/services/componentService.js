@@ -209,7 +209,7 @@ export default class ComponentService {
               }
               return ret;
             }),
-            // force_values: false,
+            force_values: false,
           };
           break;
 
