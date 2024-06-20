@@ -57,7 +57,7 @@ export default class ComponentService {
     );
     if (elements) {
       elements.forEach(el =>
-        el.addEventListener('focus', this.handleLoadEvent.bind(this))
+        el.addEventListener('dt:get-data', this.handleLoadEvent.bind(this))
       )
     }
   }

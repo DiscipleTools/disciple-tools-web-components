@@ -146,7 +146,7 @@ export class DtConnection extends DtTags {
 
       // need to fetch data via API request
       const self = this;
-      const event = new CustomEvent('focus', {
+      const event = new CustomEvent('dt:get-data', {
         bubbles: true,
         detail: {
           field: this.name,
