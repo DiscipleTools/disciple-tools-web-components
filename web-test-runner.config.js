@@ -1,8 +1,9 @@
 // import { playwrightLauncher } from '@web/test-runner-playwright';
 
-const filteredLogs = ['Running in dev mode', 'lit-html is in dev mode'];
+const filteredLogs = ['Running in dev mode', 'Lit is in dev mode'];
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
+  testsFinishTimeout: 15000,
   /** Test files to run */
   files: [
     'src/components/**/test/*.test.js',
