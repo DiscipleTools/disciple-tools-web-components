@@ -178,6 +178,7 @@ export default class ComponentService {
           break;
 
         case 'dt-multi-select':
+          case 'dt-tags':
           if (typeof value === 'string') {
             returnValue = [value];
           }
@@ -197,7 +198,6 @@ export default class ComponentService {
 
         case 'dt-connection':
         case 'dt-location':
-        case 'dt-tags':
           if (typeof value === 'string') {
             returnValue = [
               {

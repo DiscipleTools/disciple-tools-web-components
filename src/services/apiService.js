@@ -142,6 +142,14 @@ export default class ApiService {
     );
   }
 
+  async checkFieldValueExists(fieldType, value){
+      return this.makeRequestOnPosts(
+        'POST',
+        `${fieldType}/check_field_value_exists`,
+          value
+      );
+  }
+
   /**
    * Get values for a multi_select field
    * @param {string} postType
