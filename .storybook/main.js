@@ -32,19 +32,19 @@ const config = {
       },
     },
   ],
-  // staticDirs: ['../assets'],
-  // rollupConfig(config) {
-  //   config.plugins.unshift(replace({
-  //     include: ['src/**/*.stories.js'],
-  //     preventAssignment: true,
-  //     values: {
-  //       'process.env.STORYBOOK_MAPBOX_TOKEN': `"${process?.env?.STORYBOOK_MAPBOX_TOKEN || 'dummytoken'}"`,
-  //       'process.env.STORYBOOK_GOOGLE_GEOCODE_TOKEN': `"${process?.env?.STORYBOOK_GOOGLE_GEOCODE_TOKEN || 'dummytoken'}"`,
-  //     },
-  //   }))
-  //
-  //   return config;
-  // },
+  staticDirs: ['../assets'],
+  rollupFinal(config) {
+    config.plugins.unshift(replace({
+      include: ['src/**/*.stories.js'],
+      preventAssignment: true,
+      values: {
+        'process.env.STORYBOOK_MAPBOX_TOKEN': `"${process?.env?.STORYBOOK_MAPBOX_TOKEN || 'dummytoken'}"`,
+        'process.env.STORYBOOK_GOOGLE_GEOCODE_TOKEN': `"${process?.env?.STORYBOOK_GOOGLE_GEOCODE_TOKEN || 'dummytoken'}"`,
+      },
+    }));
+
+    return config;
+  },
 };
 
 export default config;

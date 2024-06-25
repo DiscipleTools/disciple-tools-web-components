@@ -4,7 +4,7 @@ import { terser } from 'rollup-plugin-terser';
 import minifyHTML from 'rollup-plugin-minify-html-literals';
 import summary from 'rollup-plugin-summary';
 import multiInput from 'rollup-plugin-multi-input';
-import del from 'rollup-plugin-delete'
+import del from 'rollup-plugin-delete';
 
 const copyConfig = {
   targets: [{ src: 'node_modules/@webcomponents', dest: 'build/node_modules' }],
