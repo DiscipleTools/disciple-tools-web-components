@@ -20,6 +20,7 @@ const config = {
     '@storybook/addon-a11y',
     '@storybook/addon-essentials',
     '@storybook/addon-links',
+    '@storybook/addon-themes',
     {
       name: '@storybook/addon-docs',
       options: {

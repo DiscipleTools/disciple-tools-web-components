@@ -8,7 +8,7 @@ export const LocaleDecorator = (story, context) =>
     ${story()}
   </div>`;
 
-export const FormDecorator = story => html`<form method="post" onsubmit="onFormSubmit(event)">
+export const FormDecorator = story => html`<form method="post" onsubmit="onFormSubmit(event)" style="background-color: var(--surface-0);">
     ${story()}
 
     <button type="submit">Submit</button>

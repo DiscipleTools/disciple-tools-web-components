@@ -1,6 +1,6 @@
 import { setCustomElementsManifest } from '@storybook/web-components';
+import { withCssFileTheme } from './themeDecorator.js';
 import customElements from '../custom-elements.json' with { type: "json" };
-import '../src/styles/light.css' with { type: "css" };
 
 setCustomElementsManifest(customElements);
 
@@ -37,8 +37,20 @@ export default {
   parameters: {
     docs: {
       toc: {
-        headingSelector: 'h1, h2'
+        headingSelector: 'h1, h2',
       },
     },
   },
 };
+export const decorators = [
+  withCssFileTheme({
+    // These keys are the labels that will be displayed in the toolbar theme switcher
+    // The values must match the CSS filenames in ./src/styles (without the .css suffix)
+    themes: {
+      light: 'light',
+      dark: 'dark',
+      dim: 'dim',
+    },
+    defaultTheme: 'light', // The key of your default theme
+  }),
+];
