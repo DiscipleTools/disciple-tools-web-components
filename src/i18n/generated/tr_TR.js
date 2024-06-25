@@ -17,7 +17,6 @@
 's41cb4006238ebd3b': `Toplu Düzenleme`,
 's5e8250fb85d64c23': `Kapat`,
 's625ad019db843f94': `Kullan`,
-'s8900c9de2dbae68b': `Seçenek yok`,
 's9d51bfd93b5dbeca': `Arşivlenmiş Göster`,
 'sac83d7f9358b43db': str`${0} Listesi`,
 'sb1bd536b63e9e995': `Özel Alan: İçeriğini sadece ben görebilirim`,
@@ -27,5 +26,7 @@
 'sd1a8dc951b2b6a98': `Listede Hangi Alanların Sütun Olarak Görüntüleneceğini Seçin`,
 'seafe6ef133ede7da': str`Gösteriliyor 1 of ${0}`,
 'sf9aee319a006c9b4': `Ekle`,
+'sd2e180dab4fbcfb9': `No Data Available`,
+'s49730f3d5751a433': `Loading...`,
     };
   

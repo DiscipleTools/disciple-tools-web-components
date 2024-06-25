@@ -57,7 +57,7 @@ export default class ComponentService {
     );
     if (elements) {
       elements.forEach(el =>
-        el.addEventListener('load', this.handleLoadEvent.bind(this))
+        el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this))
       )
     }
   }
@@ -83,7 +83,7 @@ export default class ComponentService {
    * @param {Event} event
    * @returns {Promise<void>}
    */
-  async handleLoadEvent(event) {
+  async handleGetDataEvent(event) {
     const details = event.detail;
     if (details) {
       const { field, query, onSuccess, onError } = details;
@@ -94,15 +94,21 @@ export default class ComponentService {
           case 'dt-connection': {
             const postType = details.postType || this.postType;
             const connectionResponse = await this.api.listPostsCompact(postType, query);
-            if (connectionResponse?.posts) {
-              values = connectionResponse?.posts.map(value => ({
-                id: value['ID'],
-                label: value['name'],
-                link: value['permalink'],
-                status: value['status'],
-              }));
-            }
-            break;
+            // for filtering the user itself from the response.
+            const filteredConnectionResponse = {
+              ...connectionResponse,
+              posts: connectionResponse.posts.filter(post => post.ID !== parseInt(this.postId, 10))
+          };
+
+          if (filteredConnectionResponse?.posts) {
+            values = filteredConnectionResponse?.posts.map(value => ({
+              id: value.ID,
+              label: value.name,
+              link: value.permalink,
+              status: value.status,
+            }));
+          }
+          break;
           }
           case 'dt-tags':
           default:
@@ -172,6 +178,7 @@ export default class ComponentService {
           break;
 
         case 'dt-multi-select':
+          case 'dt-tags':
           if (typeof value === 'string') {
             returnValue = [value];
           }
@@ -191,7 +198,6 @@ export default class ComponentService {
 
         case 'dt-connection':
         case 'dt-location':
-        case 'dt-tags':
           if (typeof value === 'string') {
             returnValue = [
               {
@@ -215,7 +221,6 @@ export default class ComponentService {
 
         case 'dt-comm-channel':
           if (typeof value === 'string') {
-            console.log('dt-comm-channel', value);
             returnValue = [
               {
                 id: value,
