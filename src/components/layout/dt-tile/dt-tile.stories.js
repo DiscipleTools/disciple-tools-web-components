@@ -7,7 +7,7 @@ import '../../form/dt-label/dt-label.js';
 import '../../form/dt-text/dt-text.js';
 
 export default {
-  title: 'dt-tile',
+  title: 'Components/Layout/Tile',
   component: 'dt-tile',
   argTypes: {
     theme: {

@@ -13,7 +13,7 @@ import './form/dt-tags/dt-tags.js';
 import './form/dt-connection/dt-connection.js';
 
 export default {
-  title: 'Kitchen Sink',
+  title: 'Components/All',
   argTypes,
   theme: 'default',
 };
@@ -128,4 +128,4 @@ function Template(theme) {
   `;
 }
 
-export const KitchenSink = Template.bind({});
+export const Components = Template.bind({});

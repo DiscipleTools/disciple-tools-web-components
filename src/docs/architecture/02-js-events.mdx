@@ -1,0 +1,61 @@
+import { Meta, Controls } from '@storybook/blocks';
+
+<Meta title="Architecture/Javascript Events" />
+
+# Javascript Events
+
+The primary way that the components communicate with the containing page is by dispatching
+javascript events. Interacting with them is as easy as listening for events like you do for
+any standard HTML component
+
+## Add Event Listener
+
+To listen for an event, attach an event listener:
+
+```html
+<dt-text id="my-text-input" name="my-text"></dt-text>
+
+<script>
+function myEventListener(evt) {
+  console.log(evt);
+}
+document.getElementById('my-text-input').addEventListener('event-name', myEventListener);
+</script>
+```
+
+## Example: Change Event
+
+A standard event for all of the form components is the change event. This gets triggered any time
+the value of a form component changes.
+
+Let's take a look at the text field to see how you might use it.
+
+```html
+<dt-text id="my-text-input" name="my-text"></dt-text>
+
+<script>
+function onChange(evt) {
+  const detail = evt.detail;
+  console.log(`input with name '${detail.field}' was changed to '${detail.newValue}`);
+  // here is where you can fire an API request to save this value
+}
+document.getElementById('my-text-input').addEventListener('change', onChange);
+</script>
+```
+
+All of the `Event` objects that are passed to the event listener will contain a `detail` property
+that has all of the data relevant to that event.
+
+For this `change` event, the `Event` would have values like this:
+
+```json
+{
+  "type": "change",
+  "detail": {
+    "field": "my-text",
+    "oldValue": "",
+    "newValue": "[what the user typed]"
+  },
+  [...]
+}
+```

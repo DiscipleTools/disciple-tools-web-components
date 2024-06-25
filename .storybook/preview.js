@@ -1,3 +1,9 @@
+import { setCustomElementsManifest } from '@storybook/web-components';
+import customElements from '../custom-elements.json' with { type: "json" };
+import '../src/styles/light.css' with { type: "css" };
+
+setCustomElementsManifest(customElements);
+
 const registerServiceWorker = async () => {
   if ('serviceWorker' in navigator) {
     try {
@@ -26,3 +32,13 @@ registerServiceWorker();
 
 document.documentElement.setAttribute('lang', 'en');
 document.documentElement.setAttribute('dir', 'ltr');
+
+export default {
+  parameters: {
+    docs: {
+      toc: {
+        headingSelector: 'h1, h2'
+      },
+    },
+  },
+};

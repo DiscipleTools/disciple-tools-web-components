@@ -4,7 +4,7 @@ import { FormDecorator, LocaleDecorator } from '../../../stories-utils.js';
 import './dt-text.js';
 
 export default {
-  title: 'Form/dt-text',
+  title: 'Components/Form/Text',
   component: 'dt-text',
   argTypes: {
     theme: {
@@ -23,7 +23,7 @@ export default {
       defaultValue: 'text',
     },
     icon: { control: 'text' },
-    isPrivate: { control: 'boolean' },
+    private: { control: 'boolean' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
     onchange: { control: 'text' },
@@ -42,7 +42,6 @@ function Template(args) {
     requiredMessage = '',
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     iconAltText = 'Icon Alt Text',
-    isPrivate,
     privateLabel,
     loading = false,
     saved = false,
@@ -52,9 +51,6 @@ function Template(args) {
     type,
   } = args;
   return html`
-    <style>
-      ${themeCss(args)}
-    </style>
     <dt-text
       id=${id}
       name=${name}
@@ -66,7 +62,7 @@ function Template(args) {
       requiredMessage=${requiredMessage}
       icon="${icon}"
       iconAltText="${iconAltText}"
-      ?private=${isPrivate}
+      ?private=${args.private}
       privateLabel="${privateLabel}"
       ?loading=${loading}
       ?saved=${saved}
@@ -110,7 +106,7 @@ Disabled.args = {
 export const privateField = Template.bind({});
 privateField.decorators = [LocaleDecorator, FormDecorator];
 privateField.args = {
-  isPrivate: true,
+  private: true,
   value: 'Lorem Ipsum',
   privateLabel: 'This is a custom tooltip',
 };

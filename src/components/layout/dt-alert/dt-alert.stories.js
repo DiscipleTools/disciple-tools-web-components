@@ -9,7 +9,7 @@ import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-alert.js';
 
 export default {
-  title: 'dt-alert',
+  title: 'Components/Layout/Alert',
   component: 'dt-alert',
   argTypes: {
     theme: {

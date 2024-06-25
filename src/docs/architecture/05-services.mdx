@@ -1,0 +1,108 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Architecture/Services" />
+
+# Services
+
+Two helper services are included in the library to help with initializing components when
+sending values to the Disciple.Tools API.
+
+- [ApiService](#apiservice)
+- [ComponentService](#componentservice)
+
+## ApiService
+
+This will provide a structured way to send and receive data with the standard Disciple.Tools API.
+
+### Initialization
+
+To initialize, instantiate the class while passing a WP nonce (for authentication) and the
+root path of the WordPress API (if different than `wp-json`).
+
+```javascript
+const apiService = new ApiService(wpnonce);
+```
+
+### Utility Methods
+
+A few utility methods are used internally to share logic among all the endpoint methods:
+
+#### `makeRequest`
+
+##### Arguments
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| type | string | HTTP Method |
+| url  | string | Either full URL to API endpoint or just the URL segment after base |
+| data | object | Post data to send in body of request |
+| base (optional) | Base of URL endpoint. Defaults to "dt/v1/" |
+
+##### Return
+
+Promise with body of response as JSON object.
+
+#### `makeRequestOnPosts`
+
+Specific use of `makeRequest` for all of the endpoints that are specific to a given post.
+Sets the `base` argument and passes all of the rest through to `makeRequest`
+
+`return this.makeRequest(type, url, data, 'dt-posts/v2/');`
+
+### Endpoint Methods
+
+Most standard endpoints that are needed for the web components have been implemented.
+Those include (but may not be limited to):
+
+- getPost
+- createPost
+- updatePost
+- deletePost
+- listPostsCompact
+- getPostDuplicates
+- getMultiSelectValues
+- transferContact
+- transferContactSummaryUpdate
+- requestRecordAccess
+- createComment
+- updateComment
+- deleteComment
+- getComments
+- toggle_comment_reaction
+- getPostActivity
+- getSingleActivity
+- revertActivity
+- getPostShares
+- addPostShare
+- removePostShare
+- getFilters
+- saveFilters
+- deleteFilter
+- searchUsers
+- createUser
+- advanced_search
+
+See the [source code](https://github.com/DiscipleTools/disciple-tools-web-components/blob/master/src/services/apiService.js)
+for details of all endpoints included.
+
+Refer to [theme documentation](https://developers.disciple.tools/theme-core/api-posts)
+for all of the available endpoints.
+
+## ComponentService
+
+The ComponentService helps to initialize the ApiService and hook up all change events for a given
+page on Disciple.Tools. Once a post page is loaded in the theme, you just run the following
+to setup all of the needed event listeners:
+
+```javascript
+const componentService = new ComponentService(postType, postId, nonce, apiRoot);
+componentService.initialize();
+```
+
+The **initialize** method will do two things: 1) listen for change events on all D.T components
+and automatically save the updated values via API, and 2) setup `load` events for all components
+that need to request data from the API for a list of options.
+
+The service will automatically map the format of the value from the JS object in the component
+to the schema that the API requires. This way you don't have to know which format is needed in which
+place - the service handles it for you.

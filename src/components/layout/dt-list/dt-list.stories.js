@@ -1963,7 +1963,7 @@ const arabicDefaultPosts = [
 ];
 
 export default {
-  title: 'dt-list',
+  title: 'Components/Layout/List',
   component: 'dt-list',
   postType: 'contacts',
   args: {
