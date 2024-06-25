@@ -1,7 +1,18 @@
+// import fs from 'fs';
+// import path from 'path';
+// import { fileURLToPath } from 'url';
 import { setCustomElementsManifest } from '@storybook/web-components';
 import { withCssFileTheme } from './themeDecorator.js';
 import customElements from '../custom-elements.json' with { type: "json" };
+// import customElements from '../custom-elements.json';
 
+// const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+// const customElements = fs.readFileSync(
+//   path.resolve(path.dirname(__filename), '../custom-elements.json'),
+//   'utf8'
+// );
+// console.dir(customElements);
+// setCustomElementsManifest(JSON.parse(customElements));
 setCustomElementsManifest(customElements);
 
 const registerServiceWorker = async () => {
