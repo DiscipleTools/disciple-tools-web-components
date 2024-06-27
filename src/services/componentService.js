@@ -75,6 +75,13 @@ export default class ComponentService {
         el.addEventListener('change', this.handleChangeEvent.bind(this))
       );
     }
+    //adding event to remove the field via cross button
+    const commChannel=document.querySelectorAll('dt-comm-channel')
+    if(commChannel){
+      commChannel.forEach(el=>{
+        el.addEventListener('remove-input',this.handleChangeEvent.bind(this));
+      })
+    }
   }
 
   /**
@@ -136,19 +143,26 @@ export default class ComponentService {
   async handleChangeEvent(event) {
     const details = event.detail;
     if (details) {
-      const { field, newValue } = details;
+      const { field, newValue, oldValue} = details;
       const component = event.target.tagName.toLowerCase();
-      const apiValue = ComponentService.convertValue(component, newValue);
+      const apiValue = ComponentService.convertValue(component, newValue, oldValue);
 
       event.target.setAttribute('loading', true);
 
       // Update post via API
       try {
-        await this.api.updatePost(this.postType, this.postId, {
+        const apiResponse= await this.api.updatePost(this.postType, this.postId, {
           [field]: apiValue,
         });
 
+        //Update value attribute in frontend
+        if(component==='dt-comm-channel'){
+          const valueAttri= apiResponse[field]
+          event.target.setAttribute('value',JSON.stringify(valueAttri))
+        }
+
         event.target.removeAttribute('loading');
+        event.target.setAttribute('error', '');
         event.target.setAttribute('saved', true);
       } catch (error) {
         console.error(error);
@@ -165,7 +179,7 @@ export default class ComponentService {
    * @param {mixed} value
    * @returns {mixed}
    */
-  static convertValue(component, value) {
+  static convertValue(component, value, oldValue) {
     let returnValue = value;
 
     // Convert component value format into what the API expects
@@ -220,12 +234,22 @@ export default class ComponentService {
           break;
 
         case 'dt-comm-channel':
-          if (typeof value === 'string') {
-            returnValue = [
-              {
-                id: value,
-              },
-            ];
+          let valueLength = value.length;
+          //case: Delete
+           if(oldValue && oldValue.delete===true){
+            returnValue=[oldValue];
+          }
+          //case: Add
+           else if(value[valueLength-1].key==='' || value[valueLength-1].key.startsWith('new-contact')){
+              returnValue=[]
+              value.forEach(obj=>{
+                returnValue.push({value : obj.value})
+                })
+              }
+            //case: Edit
+              else{
+                returnValue=value;
+              
           }
           break;
         default:

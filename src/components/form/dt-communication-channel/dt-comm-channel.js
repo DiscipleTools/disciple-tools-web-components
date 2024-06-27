@@ -81,6 +81,20 @@ export class DtCommChannel extends DtText {
       this.value.splice(index, 1);
     }
     this.value = [...this.value];
+
+     //alter the item object for covertValue function
+     const { verified, value, ...itemToDispatch } = item;
+     item={...itemToDispatch, delete:true};
+ 
+     //Event to bind with cross button of comm-channel
+      const removeEvent = new CustomEvent('remove-input', {
+       detail: {
+         field: this.name,
+         oldValue:item,
+         newValue: this.value,
+       },
+     });
+     this.dispatchEvent(removeEvent);
     this.requestUpdate();
   }
 
@@ -165,6 +179,7 @@ export class DtCommChannel extends DtText {
     super._setFormValue(value);
     this.internals.setFormValue(JSON.stringify(value));
     this.value = [...this.value];
+    this.requestUpdate();
   }
 
   _change(e) {
