@@ -5,8 +5,11 @@
 <trans-unit id="sb1bd536b63e9e995">
   <source>Private Field: Only I can see its content</source>
 </trans-unit>
-<trans-unit id="s8900c9de2dbae68b">
-  <source>No options available</source>
+<trans-unit id="s04ceadb276bbe149">
+  <source>Loading options...</source>
+</trans-unit>
+<trans-unit id="sd2e180dab4fbcfb9">
+  <source>No Data Available</source>
 </trans-unit>
 <trans-unit id="sf9aee319a006c9b4">
   <source>Add</source>
@@ -31,8 +34,8 @@
   <source>Save</source>
   <target>Sačuvaj</target>
 </trans-unit>
-<trans-unit id="s04ceadb276bbe149">
-  <source>Loading options...</source>
+<trans-unit id="s49730f3d5751a433">
+  <source>Loading...</source>
 </trans-unit>
 <trans-unit id="s625ad019db843f94">
   <source>Use</source>

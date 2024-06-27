@@ -6,9 +6,12 @@
   <source>Private Field: Only I can see its content</source>
   <target>Özel Alan: İçeriğini sadece ben görebilirim</target>
 </trans-unit>
-<trans-unit id="s8900c9de2dbae68b">
-  <source>No options available</source>
-  <target>Seçenek yok</target>
+<trans-unit id="s04ceadb276bbe149">
+  <source>Loading options...</source>
+  <target>Seçenekler Yükleniyor...</target>
+</trans-unit>
+<trans-unit id="sd2e180dab4fbcfb9">
+  <source>No Data Available</source>
 </trans-unit>
 <trans-unit id="sf9aee319a006c9b4">
   <source>Add</source>
@@ -34,9 +37,8 @@
   <source>Save</source>
   <target>Kaydet</target>
 </trans-unit>
-<trans-unit id="s04ceadb276bbe149">
-  <source>Loading options...</source>
-  <target>Seçenekler Yükleniyor...</target>
+<trans-unit id="s49730f3d5751a433">
+  <source>Loading...</source>
 </trans-unit>
 <trans-unit id="s625ad019db843f94">
   <source>Use</source>

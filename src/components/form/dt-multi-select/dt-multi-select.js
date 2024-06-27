@@ -216,6 +216,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     event.detail.newValue = this.value;
     this.open = false; // close options list
     this.activeIndex = -1; // reset keyboard-selected option
+    this.canUpdate = true;
 
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);

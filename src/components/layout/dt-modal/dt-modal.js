@@ -184,9 +184,11 @@ export class DtModal extends DtBase {
     this.shadowRoot.querySelector('dialog').close();
     document.querySelector('body').style.overflow = "initial"
   }
+
   _cancelModal() {
     this._triggerClose('cancel');
   }
+
   _triggerClose(action) {
     this.dispatchEvent(new CustomEvent('close', {
       detail: {
