@@ -4,7 +4,7 @@
   "author": "disciple.tools",
   "license": "GPL-2.0-or-later",
   "homepage": "https://github.com/DiscipleTools/disciple-tools-web-components",
-  "version": "0.6.3",
+  "version": "0.7.0-beta.1",
   "type": "module",
   "main": "index.js",
   "module": "index.js",
@@ -35,6 +35,7 @@
     "storybook": "npm run analyze && storybook dev -p 8080",
     "storybook:build": "npm run analyze && storybook build && cp -r assets/ storybook-static/assets && cp netlify.toml storybook-static",
     "build": "vite build",
+    "postbuild": "rm -rf ./samples/html/js && cp -R ./dist ./samples/html/js",
     "localize:extract": "lit-localize extract",
     "localize:build": "lit-localize build"
   },

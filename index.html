@@ -42,13 +42,13 @@
 
     <dt-tags
             label="Tags Field"
-            value='[{"id":"personal","label":"Personal"}]'
+            value='["personal"]'
             options='[{"id":"personal","label":"Personal"},{"id":"web","label":"Web"},{"id":"facebook","label":"Facebook"}]'
     ></dt-tags>
 
     <dt-connection
             label="Connection Field"
-            options="${JSON.stringify(posts)}"
+            options='[{"id":"1","label":"John Doe"},{"id":"2","label":"Jane Smith","user":true},{"id":"3","label":"Trevor Virtue","user":true},{"id":"4","label":"Jane Meldrum"}]'
     ></dt-connection>
   </dt-tile>
   </body>
