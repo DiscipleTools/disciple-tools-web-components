@@ -1,21 +1,15 @@
-// import { playwrightLauncher } from '@web/test-runner-playwright';
+import { legacyPlugin } from '@web/dev-server-legacy';
+import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
 
 const filteredLogs = ['Running in dev mode', 'Lit is in dev mode'];
 
-export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
-  testsFinishTimeout: 15000,
+export default {
+  testsFinishTimeout: 30000,
   /** Test files to run */
   files: [
-    'src/components/**/test/*.test.js',
-    'src/components/**/*.test.js',
-    'src/services/**/*.test.js',
+    'src/**/*.test.js',
   ],
-
-  /** Resolve bare module imports */
-  nodeResolve: {
-    exportConditions: ['browser', 'development'],
-  },
-
+  nodeResolve: true,
   /** Filter out lit dev mode logs */
   filterBrowserLogs(log) {
     for (const arg of log.args) {
@@ -25,22 +19,24 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
     }
     return true;
   },
+  plugins: [
+    vitePlugin(),
 
-  /** Compile JS for older browsers. Requires @web/dev-server-esbuild plugin */
-  // esbuildTarget: 'auto',
-
-  /** Amount of browsers to run concurrently */
-  // concurrentBrowsers: 2,
-
-  /** Amount of test files per browser to test concurrently */
-  // concurrency: 1,
-
-  /** Browsers to run tests on */
-  // browsers: [
-  //   playwrightLauncher({ product: 'chromium' }),
-  //   playwrightLauncher({ product: 'firefox' }),
-  //   playwrightLauncher({ product: 'webkit' }),
-  // ],
-
-  // See documentation for all available options
-});
+    // make sure this plugin is always last
+    legacyPlugin({
+      polyfills: {
+        webcomponents: true,
+        // Inject lit's polyfill-support module into test files, which is required
+        // for interfacing with the webcomponents polyfills
+        custom: [
+          {
+            name: 'lit-polyfill-support',
+            path: 'node_modules/lit/polyfill-support.js',
+            test: "!('attachShadow' in Element.prototype)",
+            module: false,
+          },
+        ],
+      },
+    }),
+  ],
+};

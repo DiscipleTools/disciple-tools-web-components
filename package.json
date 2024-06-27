@@ -13,11 +13,20 @@
     "npm": ">=7.0.0"
   },
   "exports": {
-    ".": "./index.js"
+    ".": {
+      "import": "./index.js",
+      "require": "./dist/index.umd.cjs"
+    },
+    "./styles/*.css": {
+      "style": "./src/styles/*.css"
+    },
+    "./index.js": {
+      "script": "./dist/index.js"
+    }
   },
   "scripts": {
     "analyze": "cem analyze --config \"./custom-elements-manifest.config.js\"",
-    "start": "web-dev-server",
+    "start": "vite",
     "lint": "eslint --ext .js,.html . --ignore-path .gitignore && prettier \"**/*.js\" --check --ignore-path .gitignore",
     "format": "eslint --ext .js,.html . --fix --ignore-path .gitignore && prettier \"**/*.js\" --write --ignore-path .gitignore",
     "prepare": "husky",
@@ -25,7 +34,7 @@
     "test:watch": "web-test-runner --watch",
     "storybook": "npm run analyze && storybook dev -p 8080",
     "storybook:build": "npm run analyze && storybook build && cp -r assets/ storybook-static/assets && cp netlify.toml storybook-static",
-    "build": "rollup -c && rollup -c rollup.services.config.js && rm -rf ./samples/html/js && cp -R ./dist ./samples/html/js",
+    "build": "vite build",
     "localize:extract": "lit-localize extract",
     "localize:build": "lit-localize build"
   },
@@ -35,45 +44,32 @@
     "lit": "^3.1.4"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^1.5.0",
     "@custom-elements-manifest/analyzer": "^0.10.2",
+    "@esm-bundle/chai": "^4.3.4-fix.0",
     "@lit/localize-tools": "^0.7.2",
     "@open-wc/eslint-config": "^12.0.3",
-    "@open-wc/testing": "^3.1.5",
-    "@rollup/plugin-node-resolve": "^13.3.0",
-    "@rollup/plugin-replace": "^5.0.7",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@storybook/addon-a11y": "^7.6.19",
-    "@storybook/addon-docs": "^7.6.19",
-    "@storybook/addon-essentials": "^7.6.19",
-    "@storybook/addon-links": "^7.6.19",
-    "@storybook/addon-storysource": "^7.6.19",
+    "@open-wc/testing": "^4.0.0",
+    "@remcovaes/web-test-runner-vite-plugin": "^1.2.1",
+    "@storybook/addon-essentials": "^8.1.10",
+    "@storybook/addon-links": "^8.1.10",
     "@storybook/addon-themes": "^8.1.10",
-    "@storybook/icons": "^1.2.9",
-    "@storybook/web-components": "^7.6.19",
-    "@typescript-eslint/eslint-plugin": "^5.41.0",
-    "@web/dev-server": "^0.1.31",
-    "@web/dev-server-rollup": "^0.3.19",
-    "@web/rollup-plugin-copy": "^0.3.0",
-    "@web/rollup-plugin-html": "^2.3.0",
-    "@web/storybook-builder": "^0.1.16",
-    "@web/storybook-framework-web-components": "^0.1.2",
-    "@web/test-runner": "^0.15.0",
-    "dotenv": "^16.4.5",
+    "@storybook/blocks": "^8.1.10",
+    "@storybook/test": "^8.1.10",
+    "@storybook/web-components": "^8.1.10",
+    "@storybook/web-components-vite": "^8.1.10",
+    "@web/dev-server-legacy": "^2.1.1",
+    "@web/test-runner": "^0.18.2",
+    "@web/test-runner-commands": "^0.9.0",
     "element-internals-polyfill": "^1.3.11",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.7",
     "prettier": "^3.3.2",
-    "react": "^18.3.1",
-    "remark-gfm": "^3.0.0",
-    "rollup": "^2.79.1",
-    "rollup-plugin-delete": "^2.0.0",
-    "rollup-plugin-minify-html-literals": "^1.2.6",
-    "rollup-plugin-multi-input": "^1.4.1",
-    "rollup-plugin-summary": "^1.4.3",
-    "rollup-plugin-terser": "^7.0.2",
-    "storybook": "^7.6.19"
+    "remark-gfm": "^4.0.0",
+    "storybook": "^8.1.10",
+    "vite": "^5.3.1"
   },
   "customElements": "custom-elements.json",
   "eslintConfig": {

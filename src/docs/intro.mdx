@@ -59,15 +59,14 @@ See [HTML Sample Documentation](https://github.com/DiscipleTools/disciple-tools-
 
 #### CDN
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.6.3/src/styles/light.css?ver=0.6.3" type="text/css" media="all">
-<script type="module" src="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.6.3/dist/index.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.6.3/dist/services.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.7.0/styles/light.css" type="text/css" media="all">
+<script src="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.7.0/index.js"></script>
 ```
 
 #### Local Include
 ```html
-<script type="module" src="/path/to/@disciple.tools/web-components/dist/index.js"></script>
-<script src="/path/to/@disciple.tools/web-components/dist/services.min.js"></script>
+<link rel="stylesheet" href="/path/to/@disciple.tools/web-components/src/styles/light.css" type="text/css" media="all">
+<script src="/path/to/@disciple.tools/web-components/dist/index.js"></script>
 ```
 
 
@@ -83,44 +82,10 @@ you'll need to include the script files.
 
 ```php
 
-$dtwc_version = '0.6.3';
-wp_enqueue_style( 'dt-web-components-css', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/src/styles/light.css", [], $dtwc_version );
-wp_enqueue_script( 'dt-web-components-js', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/dist/index.min.js", $dtwc_version );
-wp_enqueue_script( 'dt-web-components-services-js', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/dist/services.min.js", $dtwc_version );
+$dtwc_version = '0.7.0';
+wp_enqueue_style( 'dt-web-components-css', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/styles/light.css", [], $dtwc_version );
+wp_enqueue_script( 'dt-web-components-js', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/index.js", $dtwc_version );
 
-$path = '../path/to/components/dist/form/index.js';
-wp_enqueue_script( 'dtwc-form-components',
-  plugin_dir_url( __FILE__ ) . $path,
-  null,
-  filemtime( plugin_dir_path( __FILE__ ) . $path )
-);
-
-$css_path = '../path/to/components/src/styles/light.css';
-wp_enqueue_style( 'dtwc-light-css',
-  plugin_dir_url( __FILE__ ) . $css_path,
-  null,
-  filemtime( plugin_dir_path( __FILE__ ) . $css_path )
-);
-
-add_filter( 'script_loader_tag', [ $this, 'script_loader_tag' ], 10, 2 );
-public function script_loader_tag( $tag, $handle ) {
-    // add type="module" to web components script tag
-    if ( str_contains( $handle, 'dt-web-components-js' ) ) {
-        $re = '/type=[\'"](.*?)[\'"]/m';
-
-        preg_match_all( $re, $tag, $matches, PREG_SET_ORDER, 0 );
-
-        if ( count( $matches ) > 0 ) {
-            $tag = str_replace( $matches[0][0], 'type="module"', $tag );
-        } else {
-            $tag = str_replace( '<script ', '<script type="module" ', $tag );
-        }
-
-        return $tag;
-    }
-
-    return $tag;
-}
 ```
 
 #### Local Include
@@ -139,26 +104,6 @@ wp_enqueue_style( 'dt-web-components-css',
   null,
   filemtime( plugin_dir_path( __FILE__ ) . $css_path )
 );
-
-add_filter( 'script_loader_tag', [ $this, 'script_loader_tag' ], 10, 2 );
-public function script_loader_tag( $tag, $handle ) {
-    // add type="module" to web components script tag
-    if ( str_contains( $handle, 'dt-web-components-js' ) ) {
-        $re = '/type=[\'"](.*?)[\'"]/m';
-
-        preg_match_all( $re, $tag, $matches, PREG_SET_ORDER, 0 );
-
-        if ( count( $matches ) > 0 ) {
-            $tag = str_replace( $matches[0][0], 'type="module"', $tag );
-        } else {
-            $tag = str_replace( '<script ', '<script type="module" ', $tag );
-        }
-
-        return $tag;
-    }
-
-    return $tag;
-}
 ```
 
 ## Render Components

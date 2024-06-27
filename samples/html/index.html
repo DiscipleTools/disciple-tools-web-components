@@ -24,20 +24,20 @@
       label="Single Select Field"
       placeholder="Select Item"
       value="opt1"
-      options="${JSON.stringify(options)}"
+      options='[{"id":"opt1","label":"Option 1"},{"id":"opt2","label":"Option 2"},{"id":"opt3","label":"Option 3"},{"id":"opt4","label":"Option 4"},{"id":"opt5","label":"Option 5"}]'
     ></dt-single-select>
 
     <dt-multi-select
       label="Multi Select Field"
       placeholder="Select Items"
-      value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
-      options="${JSON.stringify(options)}"
+      value='["opt1","opt2"]'
+      options='[{"id":"opt1","label":"Option 1"},{"id":"opt2","label":"Option 2"},{"id":"opt3","label":"Option 3"},{"id":"opt4","label":"Option 4"},{"id":"opt5","label":"Option 5"}]'
     ></dt-multi-select>
 
     <dt-tags
       label="Tags Field"
-      value="${JSON.stringify([{id:'personal',label:'Personal'}])}"
-      options="${JSON.stringify(tags)}"
+      value='[{"id":"personal","label":"Personal"}]'
+      options='[{"id":"personal","label":"Personal"},{"id":"web","label":"Web"},{"id":"facebook","label":"Facebook"}]'
     ></dt-tags>
 
     <dt-connection

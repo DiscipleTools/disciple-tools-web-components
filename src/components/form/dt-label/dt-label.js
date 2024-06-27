@@ -36,6 +36,7 @@ export class DtLabel extends DtBase {
         inset-inline-start: -1rem;
         font-weight: normal;
         padding: 0.4rem;
+        z-index: 1;
       }
       .tooltip:before {
         content: '';
