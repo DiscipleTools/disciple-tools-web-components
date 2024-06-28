@@ -84,8 +84,6 @@ export class DtText extends DtFormBase {
         type: String,
         reflect: true,
       },
-      /** Change event */
-      onchange: { type: String },
     };
   }
 

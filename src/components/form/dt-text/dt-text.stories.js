@@ -1,5 +1,6 @@
 import { html } from 'lit';
-import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { action } from '@storybook/addon-actions';
+import { themes, argTypes } from '../../../stories-theme.js';
 import { FormDecorator, LocaleDecorator } from '../../../stories-utils.js';
 import './dt-text.js';
 
@@ -26,7 +27,6 @@ export default {
     private: { control: 'boolean' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
-    onchange: { control: 'text' },
     ...argTypes,
   },
 };
@@ -46,7 +46,6 @@ function Template(args) {
     loading = false,
     saved = false,
     error,
-    onChange,
     slot,
     type,
   } = args;
@@ -67,7 +66,7 @@ function Template(args) {
       ?loading=${loading}
       ?saved=${saved}
       error="${error}"
-      onchange=${onChange}
+      @change="${action('on-change')}"
     >
       ${slot}
     </dt-text>
