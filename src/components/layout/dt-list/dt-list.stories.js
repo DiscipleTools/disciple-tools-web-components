@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 import { themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-list.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
@@ -1963,7 +1963,7 @@ const arabicDefaultPosts = [
 ];
 
 export default {
-  title: 'dt-list',
+  title: 'Components/Layout/List',
   component: 'dt-list',
   postType: 'contacts',
   args: {

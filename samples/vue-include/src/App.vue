@@ -59,6 +59,7 @@
       <dt-text
         name='textField'
         label="Text Field"
+        :private="true"
         :value="values.textField"
         @change="handleChange"></dt-text>
 
