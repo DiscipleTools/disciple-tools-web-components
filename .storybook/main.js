@@ -30,6 +30,6 @@ const config = {
       },
     },
   ],
-  staticDirs: ['../assets'],
+  staticDirs: ['../assets', '../src/styles'],
 };
 export default config;

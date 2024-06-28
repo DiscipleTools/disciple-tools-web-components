@@ -23,18 +23,19 @@ export const withCssFileTheme = ({ themes, defaultTheme, parentSelector = DEFAUL
         return;
       }
 
-      // e.g. <link href="/src/styles/light.css" type="text/css" rel="stylesheet" data-theme="light">
-      Object.entries(themes)
-        .filter(([themeName]) => themeName !== selectedThemeName)
-        .forEach(([themeName, className]) => {
-          const link = head.querySelector(`link[data-theme="${themeName}"]`);
-          if (link) {
-            link.remove();
-          }
-        });
+      let linkExists = false
+      head.querySelectorAll('link[data-theme]').forEach((el) => {
+        if (!linkExists && el.dataset.theme === selectedThemeName) {
+          linkExists = true;
+        } else {
+          el.remove();
+        }
+      });
 
-      const link = `<link href="/src/styles/${themes[selectedThemeName]}.css" type="text/css" rel="stylesheet" data-theme="${themes[selectedThemeName]}">`
-      document.head.innerHTML += link;
+      if (!linkExists) {
+        const link = `<link href="/${themes[selectedThemeName]}.css" type="text/css" rel="stylesheet" data-theme="${selectedThemeName}">`
+        document.head.innerHTML += link;
+      }
     }, [themeOverride, selected, parentSelector]);
 
     return storyFn();
