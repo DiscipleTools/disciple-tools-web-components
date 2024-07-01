@@ -54,6 +54,11 @@ export class DtCommChannel extends DtText {
           width: 100%;
           height: 20px;
         }
+
+        .icon-overlay {
+          inset-inline-end: 3rem;
+          top: -15%;
+        }
       `,
     ];
   }
@@ -85,7 +90,7 @@ export class DtCommChannel extends DtText {
      //alter the item object for covertValue function
      const { verified, value, ...itemToDispatch } = item;
      item={...itemToDispatch, delete:true};
- 
+
      //Event to bind with cross button of comm-channel
       const removeEvent = new CustomEvent('remove-input', {
        detail: {
