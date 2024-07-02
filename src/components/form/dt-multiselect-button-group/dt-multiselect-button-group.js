@@ -38,39 +38,15 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
 
   constructor() {
     super();
-    this.buttons= [
-      {
-          "Button 1": {
-              "label": "Button 1",
-              "description": "",
-              "icon": "http://localhost/nextdttheme/wp-content/themes/disciple-tools-theme/dt-assets/images/bible.svg?v=2"
-          },
-          "Button 2": {
-              "label": "Button 2",
-              "description": "",
-              "icon": "http://localhost/nextdttheme/wp-content/themes/disciple-tools-theme/dt-assets/images/reading.svg?v=2"
-          },
-          "Button 3": {
-              "label": "Button 3",
-              "description": "",
-              "icon": "http://localhost/nextdttheme/wp-content/themes/disciple-tools-theme/dt-assets/images/speak.svg?v=2"
-          },
-          "Button 4": {
-              "label": "Button 4",
-              "description": "",
-              "icon": "http://localhost/nextdttheme/wp-content/themes/disciple-tools-theme/dt-assets/images/hand-heart.svg?v=2"
-          },
-          "Button 5": {
-              "label": "Button 5",
-              "description": "",
-              "icon": "http://localhost/nextdttheme/wp-content/themes/disciple-tools-theme/dt-assets/images/account-voice.svg?v=2"
-          },
-      }
-  ]
+    this.buttons= [];
     this.selectedButtons = [];
     this.value = [];
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.selectedButtons = this.value ? this.value.map(button => ({ value: button })) : [];
+  }
 
   _handleButtonClick(event) {
     const buttonValue = event.target.value;
@@ -83,6 +59,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       this.selectedButtons.push({ value: buttonValue });
     }
     this.value = this.selectedButtons.map(button => button.value);
+
     this._setFormValue(this.value);
 
     this.dispatchEvent(new CustomEvent('selection-changed', {
@@ -100,7 +77,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
           return items.map(item => {
             const isSelected = this.selectedButtons.some(
               selected => selected.value === item
-            );
+            )
             const context = isSelected ? 'success' : 'disabled';
             return html`
             <dt-button

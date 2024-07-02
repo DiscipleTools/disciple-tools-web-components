@@ -40,6 +40,8 @@ const Template = args => {
       .href="${args.href}"
       title="${args.title}"
       confirm="${args.confirm}"
+     .value="${args.value}"
+      .buttons="${args.buttons}"
     >
       ${slot}
     </dt-multiselect-buttons-group>
@@ -48,3 +50,60 @@ const Template = args => {
 
 export const BasicGroup = Template.bind({});
 BasicGroup.decorators = [LocaleDecorator, FormDecorator];
+BasicGroup.args = {
+  buttons: [
+    {
+      "Button 1": {
+          "label": "Button 1",
+          "description": "",
+          "icon": "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+      },
+      "Button 2": {
+          "label": "Button 2",
+          "description": "",
+          "icon": "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+      },
+      "Button 3": {
+          "label": "Button 3",
+          "description": "",
+          "icon": "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+      },
+      "Button 4": {
+          "label": "Button 4",
+          "description": "",
+          "icon": "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+      }
+    }
+  ],
+};
+
+
+export const ButtonsSelected = Template.bind({});
+ButtonsSelected.decorators = [LocaleDecorator, FormDecorator];
+ButtonsSelected.args = {
+  buttons: [
+    {
+      "Button 1": {
+          "label": "Button 1",
+          "description": "",
+          "icon": "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+      },
+      "Button 2": {
+          "label": "Button 2",
+          "description": "",
+          "icon": "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+      },
+      "Button 3": {
+          "label": "Button 3",
+          "description": "",
+          "icon": "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+      },
+      "Button 4": {
+          "label": "Button 4",
+          "description": "",
+          "icon": "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+      }
+    }
+  ],
+  value: ["Button 1", "Button 2"]
+};
