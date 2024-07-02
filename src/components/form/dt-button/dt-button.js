@@ -14,6 +14,7 @@ export class DtButton extends DtBase {
       .dt-button {
         cursor: pointer;
         display: flex;
+        margin: 5px;
         padding: var(--dt-button-padding-y, 10px)
           var(--dt-button-padding-x, 10px);
         font-family: var(--dt-button-font-family);
@@ -177,7 +178,8 @@ export class DtButton extends DtBase {
   }
 
   handleClick(e) {
-    if (this.confirm) {
+    e.preventDefault();
+      if (this.confirm) {
       if (!confirm(this.confirm)) {
         e.preventDefault();
         return;
@@ -187,12 +189,20 @@ export class DtButton extends DtBase {
       e.preventDefault();
       this.onClick(e);
     } else {
+      console.log('dfhksdh', this)
+
       const form = this.closest('form');
       if (form) {
         form.submit();
       }
     }
   }
+
+  // this.onClick(e){
+  //   console.log('inside function', e)
+  // }
+
+
 
   _dismiss() {
     this.hide = true;
@@ -223,7 +233,8 @@ export class DtButton extends DtBase {
         class=${classMap(this.classes)}
         title=${this.title}
         type=${this.type}
-        @click=${() => this.handleClick()}
+        .value=${this.value}
+        @click=${this.handleClick}
       >
         <div>
           <slot></slot>
