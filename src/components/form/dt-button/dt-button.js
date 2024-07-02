@@ -173,7 +173,6 @@ export class DtButton extends DtBase {
 
   constructor() {
     super();
-
     this.context = 'default';
   }
 
@@ -189,20 +188,12 @@ export class DtButton extends DtBase {
       e.preventDefault();
       this.onClick(e);
     } else {
-      console.log('dfhksdh', this)
-
       const form = this.closest('form');
       if (form) {
         form.submit();
       }
     }
   }
-
-  // this.onClick(e){
-  //   console.log('inside function', e)
-  // }
-
-
 
   _dismiss() {
     this.hide = true;

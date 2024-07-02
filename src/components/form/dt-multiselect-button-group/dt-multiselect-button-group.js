@@ -1,15 +1,21 @@
-import { LitElement, html, css } from 'lit';
-import { DtButton } from '../dt-button/dt-button.js';
+import { html, css } from 'lit';
 import DtFormBase from '../dt-form-base.js';
-import { property } from 'lit/decorators.js';
 
 
 export class DtMultiSelectButtonGroup extends DtFormBase {
-  static styles = css`
+  static get styles() {
+  return css`
   :host {
       margin-bottom: 5px;
     }
-  `;
+    .icon img {
+      width: 15px !important;
+      height: 15px !important;
+      display: inline;
+    }
+  `
+   };
+
   static get properties() {
     return {
       buttons: { type: Array },
@@ -90,7 +96,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
        ${this.labelTemplate()}
        <div>
         ${this.buttons.map(buttonSet => {
-          let items = Object.keys(buttonSet);
+          const items = Object.keys(buttonSet);
           return items.map(item => {
             const isSelected = this.selectedButtons.some(
               selected => selected.value === item
@@ -104,6 +110,11 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
               .value=${item}
               @click="${this._handleButtonClick}"
               >
+               <span class="icon">
+                ${buttonSet[item].icon
+                  ? html`<img src="${buttonSet[item].icon}" alt="${this.iconAltText}" />`
+                  : null}
+            </span>
              ${buttonSet[item].label}</dt-button>
           `;
           });
