@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent } from '@open-wc/testing';
+import { fixture, expect, oneEvent, aTimeout } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-location.js';
@@ -111,7 +111,7 @@ describe('dt-location', () => {
     expect(optionList).not.to.be.displayed;
 
     input.focus();
-    await wait(50); // wait for UI update
+    await aTimeout(50); // wait for UI update
 
     expect(optionList).to.be.displayed;
   });

@@ -68,6 +68,21 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     this.requestUpdate();
   }
 
+  _inputKeyDown(e) {
+      const keycode = e.keyCode || e.which;
+  console.log(keycode);
+  console.log(e);
+      switch (keycode) {
+        case 13: // enter
+          this._handleButtonClick(e);
+          break;
+        default:
+          // handle other keycodes here
+          break;
+      }
+  }
+
+
   render() {
     return html`
        ${this.labelTemplate()}
@@ -79,6 +94,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
               selected => selected.value === item
             )
             const context = isSelected ? 'success' : 'disabled';
+
             return html`
             <dt-button
               id=${item}
@@ -86,6 +102,8 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
               context=${context}
               .value=${item}
               @click="${this._handleButtonClick}"
+              @keydown="${this._inputKeyDown}"
+              role="button"
               >
                <span class="icon">
                 ${buttonSet[item].icon
