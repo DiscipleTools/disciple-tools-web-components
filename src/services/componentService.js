@@ -8,7 +8,7 @@ export default class ComponentService {
    * @param nonce - WordPress nonce for authentication
    * @param apiRoot - Root of API (default: wp-json) (i.e. the part before dt/v1/ or dt-posts/v2/)
    */
-  constructor(postType, postId, nonce, apiRoot = 'wp-json') {
+  constructor(postType, postId, nonce, apiRoot = '/wp-json') {
     this.postType = postType;
     this.postId = postId;
     this.nonce = nonce;
@@ -28,6 +28,7 @@ export default class ComponentService {
       'dt-textarea',
       'dt-toggle',
       'dt-comm-channel',
+      'dt-multiselect-buttons-group',
     ];
 
     this.dynamicLoadComponents = [
@@ -217,6 +218,20 @@ export default class ComponentService {
             }),
             force_values: false,
           };
+          break;
+
+        case 'dt-multiselect-buttons-group':
+          if (typeof value === 'string') {
+            returnValue = [value];
+          }
+          returnValue = {
+            values: returnValue.map(itemId => {
+              const ret = {
+                value: itemId,
+              }
+              return ret;
+             }
+            ) }
           break;
 
         case 'dt-comm-channel':

@@ -59,11 +59,13 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       this.selectedButtons.push({ value: buttonValue });
     }
     this.value = this.selectedButtons.map(button => button.value);
-
     this._setFormValue(this.value);
-
-    this.dispatchEvent(new CustomEvent('selection-changed', {
-      detail: { selectedButtons: this.value }
+     this.dispatchEvent(new CustomEvent('change', {
+      detail: {
+        field: this.name,
+        oldValue: this.value,
+        newValue: this.selectedButtons,
+      },
     }));
     this.requestUpdate();
   }
@@ -86,6 +88,12 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
   render() {
     return html`
        ${this.labelTemplate()}
+       ${this.loading
+          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
+          : null}
+        ${this.saved
+          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
+          : null}
        <div>
         ${this.buttons.map(buttonSet => {
           const items = Object.keys(buttonSet);
@@ -100,7 +108,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
               id=${item}
               type="success"
               context=${context}
-              .value=${item}
+              .value=${item || this.value}
               @click="${this._handleButtonClick}"
               @keydown="${this._inputKeyDown}"
               role="button"
