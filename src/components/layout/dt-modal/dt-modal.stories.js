@@ -139,6 +139,7 @@ const Template = args => {
       ?hideHeader="${args.hideHeader}"
       buttonclass="${JSON.stringify(args.buttonClass)}"
       buttonstyle="${JSON.stringify(args.buttonStyle)}"
+      buttonLabel="Open Dialog"
     >
       <span slot="content"> ${slot} </span>
     </dt-modal>
