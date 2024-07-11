@@ -92,7 +92,7 @@ export class DtCommChannel extends DtText {
      item={...itemToDispatch, delete:true};
 
      //Event to bind with cross button of comm-channel
-      const removeEvent = new CustomEvent('remove-input', {
+      const removeEvent = new CustomEvent('change', {
        detail: {
          field: this.name,
          oldValue:item,
@@ -180,10 +180,11 @@ export class DtCommChannel extends DtText {
     `;
   }
 
+  //update the value comming from API
   _setFormValue(value) {
     super._setFormValue(value);
     this.internals.setFormValue(JSON.stringify(value));
-    this.value = [...this.value];
+    this.value = value;
     this.requestUpdate();
   }
 
@@ -204,18 +205,22 @@ export class DtCommChannel extends DtText {
         field: this.name,
         oldValue: this.value,
         newValue,
+        onSuccess: result => {
+          if (result) {
+            this._setFormValue(result[this.name]);
+          }
+        },
       },
     });
-
     this.value = newValue;
-
     this._setFormValue(this.value);
 
     this.dispatchEvent(event);
   }
 
+  //rendering the input at 0 index
   _renderInputFields() {
-    if (!this.value) {
+    if ((this.value == null || !(this.value.length))) {
       this.value = [{
         verified: false,
         value: '',

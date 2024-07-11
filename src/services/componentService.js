@@ -7,14 +7,14 @@ export default class ComponentService {
    * @param postId - ID of current post
    * @param nonce - WordPress nonce for authentication
    * @param apiRoot - Root of API (default: wp-json) (i.e. the part before dt/v1/ or dt-posts/v2/)
-   */
-  constructor(postType, postId, nonce, apiRoot = 'wp-json') {
-    this.postType = postType;
-    this.postId = postId;
-    this.nonce = nonce;
-    this.apiRoot = `${apiRoot}/`.replace('//', '/'); // ensure it ends with /
-
-    this.api = new ApiService(this.nonce, this.apiRoot);
+  */
+ constructor(postType, postId, nonce, apiRoot = 'wp-json') {
+   this.postType = postType;
+   this.postId = postId;
+   this.nonce = nonce;
+   this.apiRoot = `${apiRoot}/`.replace('//', '/'); // ensure it ends with /
+   
+   this.api = new ApiService(this.nonce, this.apiRoot);
 
     this.autoSaveComponents = [
       'dt-connection',
@@ -74,13 +74,6 @@ export default class ComponentService {
       allElements.forEach(el =>
         el.addEventListener('change', this.handleChangeEvent.bind(this))
       );
-    }
-    //adding event to remove the field via cross button
-    const commChannel=document.querySelectorAll('dt-comm-channel')
-    if(commChannel){
-      commChannel.forEach(el=>{
-        el.addEventListener('remove-input',this.handleChangeEvent.bind(this));
-      })
     }
   }
 
@@ -151,14 +144,13 @@ export default class ComponentService {
 
       // Update post via API
       try {
-        const apiResponse= await this.api.updatePost(this.postType, this.postId, {
+      const apiResponse= await this.api.updatePost(this.postType, this.postId, {
           [field]: apiValue,
         });
 
-        //Update value attribute in frontend
-        if(component==='dt-comm-channel'){
-          const valueAttri= apiResponse[field]
-          event.target.setAttribute('value',JSON.stringify(valueAttri))
+        //Sending response to update value
+        if(component==='dt-comm-channel' && details.onSuccess){
+          details.onSuccess(apiResponse);
         }
 
         event.target.removeAttribute('loading');
