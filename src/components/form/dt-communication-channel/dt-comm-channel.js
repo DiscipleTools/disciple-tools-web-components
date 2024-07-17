@@ -87,15 +87,15 @@ export class DtCommChannel extends DtText {
     }
     this.value = [...this.value];
 
-     //alter the item object for covertValue function
+     // alter the item object for covertValue function
      const { verified, value, ...itemToDispatch } = item;
-     item={...itemToDispatch, delete:true};
+     const newItem = {...itemToDispatch, delete:true};
 
-     //Event to bind with cross button of comm-channel
+     // Event to bind with cross button of comm-channel
       const removeEvent = new CustomEvent('change', {
        detail: {
          field: this.name,
-         oldValue:item,
+         oldValue:newItem,
          newValue: this.value,
        },
      });
@@ -180,7 +180,7 @@ export class DtCommChannel extends DtText {
     `;
   }
 
-  //update the value comming from API
+  // update the value comming from API
   _setFormValue(value) {
     super._setFormValue(value);
     this.internals.setFormValue(JSON.stringify(value));
@@ -218,7 +218,7 @@ export class DtCommChannel extends DtText {
     this.dispatchEvent(event);
   }
 
-  //rendering the input at 0 index
+  // rendering the input at 0 index
   _renderInputFields() {
     if ((this.value == null || !(this.value.length))) {
       this.value = [{
