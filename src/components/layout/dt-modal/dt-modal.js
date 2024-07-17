@@ -178,8 +178,8 @@ export class DtModal extends DtBase {
   constructor() {
     super();
     this.context = 'default';
-    this.addEventListener('open', (e) => this._openModal());
-    this.addEventListener('close', (e) => this._closeModal());
+    this.addEventListener('open', () => this._openModal());
+    this.addEventListener('close', () => this._closeModal());
   }
 
   _openModal() {
@@ -188,7 +188,8 @@ export class DtModal extends DtBase {
 
     document.querySelector('body').style.overflow = "hidden"
   }
-//to format title coming from backend
+// to format title coming from backend
+
   get formattedTitle() {
     if (!this.title) return '';
     return this.title.charAt(0).toUpperCase() + this.title.slice(1);
@@ -334,7 +335,7 @@ export class DtModal extends DtBase {
        ${this.imageSrc
                 ? html`<img
                     src="${this.imageSrc}"
-                    alt="Image Description"
+                    alt="${this.buttonLabel} icon"
                     class="help-icon"
                     style=${styleMap(this.imageStyle || {})}
                   />`
