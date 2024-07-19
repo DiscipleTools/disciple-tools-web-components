@@ -2,6 +2,7 @@
   Form Components
 */
 export { DtButton } from './src/components/form/dt-button/dt-button.js';
+export { DtDropdown } from './src/components/form/dt-dropdown/dt-dropdown.js'
 export { DtChurchHealthCircle } from './src/components/form/dt-church-health-circle/dt-church-health-circle.js';
 export { DtConnection } from './src/components/form/dt-connection/dt-connection.js';
 export { DtCopyText } from './src/components/form/dt-copy-text/dt-copy-text.js';

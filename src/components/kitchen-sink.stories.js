@@ -11,6 +11,7 @@ import './form/dt-multi-select/dt-multi-select.js';
 import './form/dt-single-select/dt-single-select.js';
 import './form/dt-tags/dt-tags.js';
 import './form/dt-connection/dt-connection.js';
+import './form/dt-dropdown/dt-dropdown.js'
 
 export default {
   title: 'Kitchen Sink',
@@ -115,6 +116,8 @@ function Template(theme) {
       >
 
       </dt-multiselect-button-group>
+      <dt-dropdown text="Vijender">
+      </dt-dropdown>
 
       <dt-tags
         label="Tags Field"

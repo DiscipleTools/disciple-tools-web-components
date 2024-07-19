@@ -172,6 +172,7 @@ export class DtModal extends DtBase {
       imageStyle: {type:Object},
       tileLabel: {type:String},
       buttonLabel:{type: String},
+      dropdownListImg: {type: String},
     };
   }
 
@@ -183,6 +184,8 @@ export class DtModal extends DtBase {
   }
 
   _openModal() {
+    console.log('style',this.buttonStyle);
+  
     this.isOpen = true;
     this.shadowRoot.querySelector('dialog').showModal();
 
@@ -330,6 +333,7 @@ export class DtModal extends DtBase {
         @click="${this._openModal}"
         style=${styleMap(this.buttonStyle || {})}
       >
+      ${this.dropdownListImg ? html`<img src=${this.dropdownListImg} alt="" style="width = 15px; height : 15px">`:''}
       ${this.buttonLabel
       ?html`${this.buttonLabel}`:''}
        ${this.imageSrc
