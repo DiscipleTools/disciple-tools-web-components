@@ -31,17 +31,14 @@ export default class ComponentService {
       'dt-multiselect-buttons-group',
     ];
 
-    this.dynamicLoadComponents = [
-      'dt-connection',
-      'dt-tags',
-    ]
+    this.dynamicLoadComponents = ['dt-connection', 'dt-tags'];
   }
 
   /**
    * Initialize components on the page with necessary event listeners
    */
   initialize() {
-    if(this.postId){
+    if (this.postId) {
       this.enableAutoSave();
     }
     this.attachLoadEvents();
@@ -59,7 +56,7 @@ export default class ComponentService {
     if (elements) {
       elements.forEach(el =>
         el.addEventListener('load', this.handleLoadEvent.bind(this))
-      )
+      );
     }
   }
 
@@ -94,7 +91,10 @@ export default class ComponentService {
         switch (component) {
           case 'dt-connection': {
             const postType = details.postType || this.postType;
-            const connectionResponse = await this.api.listPostsCompact(postType, query);
+            const connectionResponse = await this.api.listPostsCompact(
+              postType,
+              query
+            );
             if (connectionResponse?.posts) {
               values = connectionResponse?.posts.map(value => ({
                 id: value['ID'],
@@ -107,7 +107,11 @@ export default class ComponentService {
           }
           case 'dt-tags':
           default:
-            values = await this.api.getMultiSelectValues(this.postType, field, query);
+            values = await this.api.getMultiSelectValues(
+              this.postType,
+              field,
+              query
+            );
             values = values.map(value => ({
               id: value,
               label: value,
@@ -216,21 +220,29 @@ export default class ComponentService {
 
         case 'dt-multiselect-buttons-group':
           if (typeof value === 'string') {
-            returnValue = [value];
+            returnValue = [
+              {
+                id: value,
+              },
+            ];
           }
           returnValue = {
-            values: returnValue.map(itemId => {
-              const ret = {
-                value: itemId,
+            values: returnValue.map(item => {
+              if (item.value.startsWith('-')) {
+                const removedItem = item.value.replace('-', '');
+                return {
+                  value: removedItem,
+                  delete: true,
+                };
               }
-              return ret;
-             }
-            ) }
-          break;
+                return item;
 
+            }),
+            force_values: false,
+          };
+          break;
         case 'dt-comm-channel':
           if (typeof value === 'string') {
-            console.log('dt-comm-channel', value);
             returnValue = [
               {
                 id: value,
