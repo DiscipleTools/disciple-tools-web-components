@@ -55,7 +55,6 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     );
     if (index > -1) {
       this.selectedButtons.splice(index, 1);
-      // this.selectedButtons.push({ value: `-${buttonValue}`, delete: true });
       this.selectedButtons.push({ value: `-${buttonValue}` });
     } else {
       this.selectedButtons.push({ value: buttonValue});
