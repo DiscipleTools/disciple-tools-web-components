@@ -11,6 +11,7 @@ import './form/dt-multi-select/dt-multi-select.js';
 import './form/dt-single-select/dt-single-select.js';
 import './form/dt-tags/dt-tags.js';
 import './form/dt-connection/dt-connection.js';
+import './form/dt-users/dt-users.js'
 
 export default {
   title: 'Kitchen Sink',
@@ -126,6 +127,10 @@ function Template(theme) {
         label="Connection Field"
         options="${JSON.stringify(posts)}"
       ></dt-connection>
+      <dt-users
+        label="Connection Field"
+        options="${JSON.stringify(posts)}"
+      ></dt-users>
 
        <dt-button id="buttonField" name="buttonField" label="Button" context="primary">
         Click Me

@@ -2,6 +2,7 @@ export { DtButton } from './dt-button/dt-button.js';
 export { DtChurchHealthCircle } from './dt-church-health-circle/dt-church-health-circle.js';
 // export { DtCommunicationChannel } from './dt-communication-channel/dt-communication-channel.js';
 export { DtConnection } from './dt-connection/dt-connection.js';
+export { DtUsers} from './dt-users/dt-users.js';
 export { DtDate } from './dt-date/dt-date.js';
 export { DtLabel } from './dt-label/dt-label.js';
 export { DtLocation } from './dt-location/dt-location.js';
