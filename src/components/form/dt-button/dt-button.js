@@ -157,6 +157,7 @@ export class DtButton extends DtBase {
       onClick: { type: Function },
       rounded: { type: Boolean },
       confirm: { type: String },
+      buttonClass: { type: String },
     };
   }
 

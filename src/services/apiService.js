@@ -3,7 +3,7 @@ export default class ApiService {
    * @param nonce - WordPress nonce for authentication
    * @param apiRoot - Root of API (default: wp-json) (i.e. the part before dt/v1/ or dt-posts/v2/)
    */
-  constructor(nonce, apiRoot = '/wp-json') {
+  constructor(nonce, apiRoot = 'wp-vijender/wp-json') {
     this.nonce = nonce;
     this.apiRoot = apiRoot.endsWith("/")? `${apiRoot}`: `${apiRoot} + "/"`;// ensure it ends with /
     this.apiRoot = `/${apiRoot}/`.replace(/\/\//g, '/'); // ensure it starts/ends with /
@@ -420,6 +420,11 @@ export default class ApiService {
    */
   async searchUsers(query) {
     return this.makeRequest('GET', `users/get_users?s=${query}`);
+  }
+
+  //Duplicate Users
+  async checkDuplicateUsers(postType,postId){
+    return this.makeRequestOnPosts('GET', `${postType}/${postId}/duplicates`);
   }
 
   /**

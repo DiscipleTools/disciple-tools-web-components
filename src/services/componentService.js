@@ -8,7 +8,7 @@ export default class ComponentService {
    * @param nonce - WordPress nonce for authentication
    * @param apiRoot - Root of API (default: wp-json) (i.e. the part before dt/v1/ or dt-posts/v2/)
   */
- constructor(postType, postId, nonce, apiRoot = 'wp-json') {
+ constructor(postType, postId, nonce, apiRoot = 'wp-vijender/wp-json') {
    this.postType = postType;
    this.postId = postId;
    this.nonce = nonce;
@@ -34,6 +34,7 @@ export default class ComponentService {
     this.dynamicLoadComponents = [
       'dt-connection',
       'dt-tags',
+      'dt-modal'
     ]
   }
 
@@ -52,15 +53,41 @@ export default class ComponentService {
    * dynamically via API
    * @param {string} [selector] (Optional) Override default selector
    */
-  attachLoadEvents(selector) {
+  async attachLoadEvents(selector) {
     const elements = document.querySelectorAll(
       selector || this.dynamicLoadComponents.join(',')
     );
+    //check if there is dt-modal and duplicate-detected class with it on DOM.
+    const filteredElements = Array.from(elements).filter(element => {
+      return element.tagName.toLowerCase() === 'dt-modal' && element.classList.contains('duplicate-detected');
+    });
+    //calling the function to check duplicates
+    if(filteredElements){
+      this.checkDuplicates(elements,filteredElements)
+    }
+    
     if (elements) {
       elements.forEach(el =>
         el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this))
       )
     }
+    
+  }
+
+ async checkDuplicates(elements,filteredElements){
+   const dtModal = document.querySelector('dt-modal.duplicate-detected');
+   const button= dtModal.shadowRoot.querySelector('.duplicates-detected-button');
+   if(button){
+    button.style.display='none'
+  }
+    const duplicates=await this.api.checkDuplicateUsers(this.postType,this.postId)
+    //showing the button to show duplicates
+    if(filteredElements && duplicates.ids.length>0){
+      if(button){
+        button.style.display='block'
+      }
+    }
+    
   }
 
   /**
