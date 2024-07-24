@@ -73,25 +73,39 @@ export class DtDropdown extends LitElement {
   box-shadow: 0 3px 8px rgba(0,0,0,.15);
 }
 
-.dropdown ul a {
+.dropdown ul button {
   display: block;
   padding: 6px 15px;
   text-decoration: none;
   color: #3f729b;
+  font-size: 1rem;
+  border-radius: 0.25em;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  background: node;
+  border:none
 }
 
-.dropdown ul a:hover,
+
 .dropdown ul a:focus {
  background-color: var(--button-hover-color, #2980b9);
 }
 
-.alter{
-color:#3f729b
+.list-style{
+color:#3f729b;
 padding: 5px 15px 5px 15px;
 font-size: 1rem;
 }
 
-.alter:hover{
+.list-style:hover{
+background-color: var(--button-hover-color, #3f729b);
+}
+
+:hover {
+  color: var(--hover-color)!important;
+}
+.list-style:hover{
 background-color: var(--button-hover-color, #2980b9);
 }
       `
@@ -110,8 +124,8 @@ background-color: var(--button-hover-color, #2980b9);
 
   constructor() {
     super();
-    }
-    render() {
+  }
+  render() {
     return html`
     <div class="dropdown">
     <button 
@@ -123,6 +137,7 @@ background-color: var(--button-hover-color, #2980b9);
     
     </button>
     <ul 
+    class="abc"
     @mouseover=${this._handleHover} 
     @mouseleave=${this._handleMouseLeave}>
 
@@ -130,26 +145,37 @@ background-color: var(--button-hover-color, #2980b9);
     ${option.isModal ? html`
     <li>
     <dt-modal 
-    class="alter" 
+     class="list-style"
     dropdownListImg=${option.icon}
     buttonLabel="${option.label}" 
     buttonClass={} 
-    buttonStyle =${JSON.stringify({ 'color': '#3f729b', 'background': 'none', 'border': 'none' })}>
+    buttonStyle =${JSON.stringify({ 'color': '#3f729b', 'background': 'none', 'border': 'none', '--hover-color': 'white'})}>
     </dt-modal>
     </li>
     ` :
         html`
-    <li class="alter">
-    <a href="${option.href}">
-    <img src=${option.icon} style="width = 15px; height : 15px"> ${option.label}
-    </a>
+    <li class="list-style">
+   
+    <button style=" background : none ; border : none; --hover-color:white" @click="${() => this._redirectToHref(option.href)}">
+    <img src=${option.icon} style="width: 15px; height: 15px">
+    ${option.label}
+    </button>
     </li>
     `}
     `)}
     </ul>
+    
 
     </div>
     `;
+  }
+
+  _redirectToHref(href) {
+    console.log('href:::', href);
+    if (!/^https?:\/\//i.test(href)) {
+      href = 'http://' + href;
+    }
+    window.open(href, '_blank');
   }
 
 

@@ -50,7 +50,7 @@ Default.args = {
   options:[
     { label: 'Option 1', icon: 'http://localhost/wp-vijender/wp-content/themes/disciple-tools-theme-next/dt-assets/images/circle-square-triangle.svg?v=2', isModal: true },
     { label: 'Option 2', icon: 'http://localhost/wp-vijender/wp-content/themes/disciple-tools-theme-next/dt-assets/images/arrow-user.svg', isModal: true },
-    { label: 'Option 3', icon: 'http://localhost/wp-vijender/wp-content/themes/disciple-tools-theme-next/dt-assets/images/trash.svg', isModal: false, href: 'www.javascript.com' },
+    { label: 'Option 3', icon: 'http://localhost/wp-vijender/wp-content/themes/disciple-tools-theme-next/dt-assets/images/trash.svg', isModal: false, href: 'https://www.google.com' },
   ],
   selectedOptionLabel:'Action Items',
   buttonStyle: {

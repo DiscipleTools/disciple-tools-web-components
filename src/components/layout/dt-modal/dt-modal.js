@@ -112,6 +112,9 @@ export class DtModal extends DtBase {
         cursor: pointer;
         text-decoration: none;
       }
+        :hover {
+        color: var(--hover-color)!important;
+      }
       .button.opener {
         color: var(--dt-modal-button-opener-color,var(--dt-modal-button-color, #fff) );
         background: var(--dt-modal-button-opener-background, var(--dt-modal-button-background, #3f729b) );
