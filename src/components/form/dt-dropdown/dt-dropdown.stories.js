@@ -10,7 +10,7 @@ import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-dropdown.js';
 
 export default {
-  title: 'Form/dropdown',
+  title: 'Form/dt-dropdown',
   component: 'dt-dropdown',
   argTypes: {
     theme: {

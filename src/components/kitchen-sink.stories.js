@@ -116,7 +116,7 @@ function Template(theme) {
       >
 
       </dt-multiselect-button-group>
-      <dt-dropdown text="Vijender">
+      <dt-dropdown text="Sample">
       </dt-dropdown>
 
       <dt-tags
@@ -126,7 +126,7 @@ function Template(theme) {
       ></dt-tags>
 
       <dt-connection
-        label="Connection Field"
+        label="Dropdown Field"
         options="${JSON.stringify(posts)}"
       ></dt-connection>
 
