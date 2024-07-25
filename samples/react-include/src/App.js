@@ -12,7 +12,7 @@ const DtSingleSelect = wrapWc('dt-single-select');
 const DtMultiSelect = wrapWc('dt-multi-select');
 const DtTags = wrapWc('dt-tags');
 const DtConnection = wrapWc('dt-connection');
-const DtUsers = wrapWc('dt-users');
+const DtUsersConnection = wrapWc('dt-users-connection');
 
 function App() {
   const [output, setOutput] = useState();
@@ -113,12 +113,12 @@ function App() {
           options={posts}
           change={handleChange}
         ></DtConnection>
-        <DtUsers
+        <DtUsersConnection
           name="connectionsField"
           label="Connection Field"
           options={posts}
           change={handleChange}
-        ></DtUsers>
+        ></DtUsersConnection>
       </DtTile>
 
       <pre>

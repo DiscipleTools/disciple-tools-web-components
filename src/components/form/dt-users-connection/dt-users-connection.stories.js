@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
-import './dt-users.js';
+import './dt-users-connection.js';
 
 const basicOptions =[
     {
@@ -20,8 +20,8 @@ const basicOptions =[
     }
 ]
 export default {
-  title: 'Form/dt-users',
-  component: 'dt-users',
+  title: 'Form/dt-users-connection',
+  component: 'dt-users-connection',
   argTypes: {
     theme: {
       control: 'select',
@@ -170,7 +170,7 @@ function Template(args) {
           });
       }
     </script>
-    <dt-users
+    <dt-users-connection
       name="${name}"
       label=${label}
       placeholder="${placeholder}"
@@ -189,7 +189,7 @@ function Template(args) {
       .open="${open}"
     >
       ${slot}
-    </dt-users>
+    </dt-users-connection>
   `;
 }
 

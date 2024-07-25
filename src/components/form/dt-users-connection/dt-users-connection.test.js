@@ -2,7 +2,7 @@ import { html } from 'lit';
 import { fixture, expect, oneEvent, aTimeout } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
-import './dt-users.js';
+import './dt-users-connection.js';
 
 const options = [
   {
@@ -36,10 +36,10 @@ async function clickOption(el, id) {
   optionBtn.click();
 }
 
-describe('dt-users', () => {
+describe('dt-users-connection', () => {
   it('sets placeholder', async () => {
     const el = await fixture(
-      html`<dt-users placeholder="Custom Placeholder"></dt-users>`
+      html`<dt-users-connection placeholder="Custom Placeholder"></dt-users-connection>`
     );
     const input = el.shadowRoot.querySelector('input');
 
@@ -48,7 +48,7 @@ describe('dt-users', () => {
 
   it('sets options', async () => {
     const el = await fixture(
-      html`<dt-users options="${JSON.stringify(options)}"></dt-users>`
+      html`<dt-users-connection options="${JSON.stringify(options)}"></dt-users-connection>`
     );
     const optionList = el.shadowRoot.querySelector('.option-list');
 
@@ -69,10 +69,10 @@ describe('dt-users', () => {
 
   it('sets selection from attribute', async () => {
     const el = await fixture(
-      html`<dt-users
+      html`<dt-users-connection
         value="${JSON.stringify([options[0], options[1]])}"
         options="${JSON.stringify(options)}"
-      ></dt-users>`
+      ></dt-users-connection>`
     );
     const container = el.shadowRoot.querySelector('.field-container');
 
@@ -83,7 +83,7 @@ describe('dt-users', () => {
 
   it('opens option list on input focus', async () => {
     const el = await fixture(
-      html`<dt-users options="${JSON.stringify(options)}"></dt-users>`
+      html`<dt-users-connection options="${JSON.stringify(options)}"></dt-users-connection>`
     );
     const input = el.shadowRoot.querySelector('input');
     const optionList = el.shadowRoot.querySelector('.option-list');
@@ -98,7 +98,7 @@ describe('dt-users', () => {
 
   it('selects option via mouse', async () => {
     const el = await fixture(
-      html`<dt-users options="${JSON.stringify(options)}"></dt-users>`
+      html`<dt-users-connection options="${JSON.stringify(options)}"></dt-users-connection>`
     );
     const input = el.shadowRoot.querySelector('input');
     const optionBtn = el.shadowRoot.querySelector(
@@ -116,7 +116,7 @@ describe('dt-users', () => {
 
   it('selects option via keyboard', async () => {
     const el = await fixture(
-      html`<dt-users options="${JSON.stringify(options)}"></dt-users>`
+      html`<dt-users-connection options="${JSON.stringify(options)}"></dt-users-connection>`
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
@@ -134,7 +134,7 @@ describe('dt-users', () => {
 
   it('updates value attribute', async () => {
     const el = await fixture(
-      html`<dt-users options="${JSON.stringify(options)}"></dt-users>`
+      html`<dt-users-connection options="${JSON.stringify(options)}"></dt-users-connection>`
     );
 
     await clickOption(el, '1');
@@ -144,10 +144,10 @@ describe('dt-users', () => {
 
   it('marks removed options with `delete`', async () => {
     const el = await fixture(
-      html`<dt-users
+      html`<dt-users-connection
         value="${JSON.stringify([options[0], options[2]])}"
         options="${JSON.stringify(options)}"
-      ></dt-users>`
+      ></dt-users-connection>`
     );
 
     const optionBtn = el.shadowRoot.querySelector(
@@ -166,12 +166,12 @@ describe('dt-users', () => {
 
   it('adds previously removed value', async () => {
     const el = await fixture(
-      html`<dt-users
+      html`<dt-users-connection
         value="${JSON.stringify([
           { id: options[0].id, label: 'old', delete: true },
         ])}"
         options="${JSON.stringify(options)}"
-      ></dt-users>`
+      ></dt-users-connection>`
     );
     const input = el.shadowRoot.querySelector('input');
     const optionBtn = el.shadowRoot.querySelector(
@@ -193,11 +193,11 @@ describe('dt-users', () => {
 
   it('triggers change event - item added', async () => {
     const el = await fixture(
-      html`<dt-users
+      html`<dt-users-connection
         name="custom-name"
         value="${JSON.stringify([options[1]])}"
         options="${JSON.stringify(options)}"
-      ></dt-users>`
+      ></dt-users-connection>`
     );
 
     setTimeout(() => clickOption(el, '1'));
@@ -211,11 +211,11 @@ describe('dt-users', () => {
 
   it('triggers change event - item removed', async () => {
     const el = await fixture(
-      html`<dt-users
+      html`<dt-users-connection
         name="custom-name"
         value="${JSON.stringify([options[0]])}"
         options="${JSON.stringify(options)}"
-      ></dt-users>`
+      ></dt-users-connection>`
     );
 
     setTimeout(() => {
@@ -239,7 +239,7 @@ describe('dt-users', () => {
 
   it('filters options on text input', async () => {
     const el = await fixture(
-      html`<dt-users options="${JSON.stringify(options)}"></dt-users>`
+      html`<dt-users-connection options="${JSON.stringify(options)}"></dt-users-connection>`
     );
     const input = el.shadowRoot.querySelector('input');
     const optionsList = el.shadowRoot.querySelector('.option-list');
@@ -257,7 +257,7 @@ describe('dt-users', () => {
 
   it('filters options on option selection', async () => {
     const el = await fixture(
-      html`<dt-users options="${JSON.stringify(options)}"></dt-users>`
+      html`<dt-users-connection options="${JSON.stringify(options)}"></dt-users-connection>`
     );
     const input = el.shadowRoot.querySelector('input');
     const optionsList = el.shadowRoot.querySelector('.option-list');
@@ -271,11 +271,11 @@ describe('dt-users', () => {
 
   it('loads options from event if no options provided', async () => {
     const el = await fixture(
-      html`<dt-users
+      html`<dt-users-connection
         name="custom-name"
         value="${JSON.stringify([options[1]])}"
         .open="${true}"
-      ></dt-users>`
+      ></dt-users-connection>`
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
@@ -298,7 +298,7 @@ describe('dt-users', () => {
 
   it('allows adding new option', async () => {
     const el = await fixture(
-      html`<dt-users options="${JSON.stringify(options)}" allowAdd></dt-users>`
+      html`<dt-users-connection options="${JSON.stringify(options)}" allowAdd></dt-users-connection>`
     );
     el.shadowRoot.querySelector('input').focus();
 
@@ -321,11 +321,11 @@ describe('dt-users', () => {
 
   it('disables inputs', async () => {
     const el = await fixture(
-      html`<dt-users
+      html`<dt-users-connection
         disabled
         value="${JSON.stringify([options[1]])}"
         options="${JSON.stringify(options)}"
-      ></dt-users>`
+      ></dt-users-connection>`
     );
 
     const input = el.shadowRoot.querySelector('input');
@@ -344,7 +344,7 @@ describe('dt-users', () => {
 
   it('clicks add new button', async () => {
     const el = await fixture(
-      html`<dt-users options="${JSON.stringify(options)}" allowAdd></dt-users>`
+      html`<dt-users-connection options="${JSON.stringify(options)}" allowAdd></dt-users-connection>`
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();

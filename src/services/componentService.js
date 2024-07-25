@@ -29,13 +29,13 @@ export default class ComponentService {
       'dt-toggle',
       'dt-comm-channel',
       'dt-multiselect-buttons-group',
-      'dt-users'
+      'dt-users-connection'
     ];
 
     this.dynamicLoadComponents = [
       'dt-connection',
       'dt-tags',
-      'dt-users',
+      'dt-users-connection',
     ]
   }
 
@@ -114,7 +114,7 @@ export default class ComponentService {
           break;
           }
           //for getting the list from the api
-          case 'dt-users': {
+          case 'dt-users-connection': {
             const postType = details.postType || this.postType;
             const connectionResponse = await this.api.searchUsers(`&post_type=${postType}`);
           
@@ -163,7 +163,7 @@ export default class ComponentService {
       try {
 //         var apiResponse;
 // switch(component){
-//   case 'dt-users':{
+//   case 'dt-users-connection':{
 //      apiResponse= await this.api.deleteFilter(this.postType,this.postId,{
 
 //     })
@@ -230,7 +230,7 @@ export default class ComponentService {
           };
           break;
         //seperate case for dt-user
-        case 'dt-users':
+        case 'dt-users-connection':
 
             returnValue=[
               {

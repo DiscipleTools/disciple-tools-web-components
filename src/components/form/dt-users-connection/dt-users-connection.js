@@ -1,7 +1,7 @@
 import { css, html } from 'lit';
 import { DtTags } from '../dt-tags/dt-tags.js';
 
-export class DtUsers extends DtTags {
+export class DtUsersConnection extends DtTags {
   static get styles() {
     return [
       ...super.styles,
@@ -226,4 +226,4 @@ export class DtUsers extends DtTags {
   }
 }
 
-window.customElements.define('dt-users', DtUsers);
+window.customElements.define('dt-users-connection', DtUsersConnection);
