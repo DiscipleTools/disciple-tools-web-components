@@ -54,6 +54,11 @@ export class DtCommChannel extends DtText {
           width: 100%;
           height: 20px;
         }
+
+        .icon-overlay {
+          inset-inline-end: 3rem;
+          top: -15%;
+        }
       `,
     ];
   }
@@ -81,6 +86,20 @@ export class DtCommChannel extends DtText {
       this.value.splice(index, 1);
     }
     this.value = [...this.value];
+
+     // alter the item object for covertValue function
+     const { verified, value, ...itemToDispatch } = item;
+     const newItem = {...itemToDispatch, delete:true};
+
+     // Event to bind with cross button of comm-channel
+      const removeEvent = new CustomEvent('change', {
+       detail: {
+         field: this.name,
+         oldValue:newItem,
+         newValue: this.value,
+       },
+     });
+     this.dispatchEvent(removeEvent);
     this.requestUpdate();
   }
 
@@ -161,10 +180,12 @@ export class DtCommChannel extends DtText {
     `;
   }
 
+  // update the value comming from API
   _setFormValue(value) {
     super._setFormValue(value);
     this.internals.setFormValue(JSON.stringify(value));
-    this.value = [...this.value];
+    this.value = value;
+    this.requestUpdate();
   }
 
   _change(e) {
@@ -184,18 +205,22 @@ export class DtCommChannel extends DtText {
         field: this.name,
         oldValue: this.value,
         newValue,
+        onSuccess: result => {
+          if (result) {
+            this._setFormValue(result[this.name]);
+          }
+        },
       },
     });
-
     this.value = newValue;
-
     this._setFormValue(this.value);
 
     this.dispatchEvent(event);
   }
 
+  // rendering the input at 0 index
   _renderInputFields() {
-    if (!this.value) {
+    if ((this.value == null || !(this.value.length))) {
       this.value = [{
         verified: false,
         value: '',

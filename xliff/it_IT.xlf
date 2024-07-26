@@ -1,81 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-<file target-language="it_IT" source-language="en" original="lit-localize-inputs" datatype="plaintext">
-<body>
-<trans-unit id="sb1bd536b63e9e995">
-  <source>Private Field: Only I can see its content</source>
-  <target>Campo Privato: Solo io posso vedere i suoi contenuti</target>
-</trans-unit>
-<trans-unit id="s04ceadb276bbe149">
-  <source>Loading options...</source>
-  <target>Caricando opzioni...</target>
-</trans-unit>
-<trans-unit id="sd2e180dab4fbcfb9">
-  <source>No Data Available</source>
-</trans-unit>
-<trans-unit id="sf9aee319a006c9b4">
-  <source>Add</source>
-  <target>Inserisci</target>
-</trans-unit>
-<trans-unit id="sbf1ca928ec1deb62">
-  <source>Need more help?</source>
-  <target>Hai bisogno di ulteriore assistenza?</target>
-</trans-unit>
-<trans-unit id="s226be12a5b1a27e8">
-  <source>Read the documentation</source>
-  <target>Leggi la documentazione</target>
-</trans-unit>
-<trans-unit id="s5e8250fb85d64c23">
-  <source>Close</source>
-  <target>Chiudi</target>
-</trans-unit>
-<trans-unit id="s29e25f5e4622f847">
-  <source>Open Dialog</source>
-  <target>Apri Dialogo</target>
-</trans-unit>
-<trans-unit id="s33f85f24c0f5f008">
-  <source>Save</source>
-  <target>Salvare</target>
-</trans-unit>
-<trans-unit id="s49730f3d5751a433">
-  <source>Loading...</source>
-</trans-unit>
-<trans-unit id="s625ad019db843f94">
-  <source>Use</source>
-  <target>Uso</target>
-</trans-unit>
-<trans-unit id="sd1a8dc951b2b6a98">
-  <source>Choose which fields to display as columns in the list</source>
-  <target>Scegli quali campi visualizzare come colonne nell'elenco</target>
-</trans-unit>
-<trans-unit id="scb9a1ff437efbd2a">
-  <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
-  <target>Seleziona tutti i <x id="0" equiv-text="${this.postType}"/>vuoi aggiornare dalla lista e aggiornali sotto</target>
-</trans-unit>
-<trans-unit id="sac83d7f9358b43db">
-  <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
-  <target><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> Lista</target>
-</trans-unit>
-<trans-unit id="seafe6ef133ede7da">
-  <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
-  <target>Visualizzando 1 di <x id="0" equiv-text="${this.total}"/></target>
-</trans-unit>
-<trans-unit id="s41cb4006238ebd3b">
-  <source>Bulk Edit</source>
-  <target>Modifica in blocco</target>
-</trans-unit>
-<trans-unit id="s36cb242ac90353bc">
-  <source>Fields</source>
-  <target>Campi</target>
-</trans-unit>
-<trans-unit id="s9d51bfd93b5dbeca">
-  <source>Show Archived</source>
-  <target>Visualizza Archiviati</target>
-</trans-unit>
-<trans-unit id="sb59d68ed12d46377">
-  <source>Loading</source>
-  <target>Caricando</target>
-</trans-unit>
-</body>
-</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file target-language="it_IT" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+    <body>
+      <trans-unit id="sb1bd536b63e9e995">
+        <source>Private Field: Only I can see its content</source>
+        <target>Campo Privato: Solo io posso vedere i suoi contenuti</target>
+      </trans-unit>
+      <trans-unit id="s04ceadb276bbe149">
+        <source>Loading options...</source>
+        <target>Caricando opzioni...</target>
+      </trans-unit>
+      <trans-unit id="sd2e180dab4fbcfb9" xml:space="preserve">
+        <source>No Data Available</source>
+        <target state="translated">Dati Non Disponibili</target>
+      </trans-unit>
+      <trans-unit id="sf9aee319a006c9b4">
+        <source>Add</source>
+        <target>Inserisci</target>
+      </trans-unit>
+      <trans-unit id="sbf1ca928ec1deb62">
+        <source>Need more help?</source>
+        <target>Hai bisogno di ulteriore assistenza?</target>
+      </trans-unit>
+      <trans-unit id="s226be12a5b1a27e8">
+        <source>Read the documentation</source>
+        <target>Leggi la documentazione</target>
+      </trans-unit>
+      <trans-unit id="s5e8250fb85d64c23">
+        <source>Close</source>
+        <target>Chiudi</target>
+      </trans-unit>
+      <trans-unit id="s29e25f5e4622f847">
+        <source>Open Dialog</source>
+        <target>Apri Dialogo</target>
+      </trans-unit>
+      <trans-unit id="s33f85f24c0f5f008" xml:space="preserve">
+        <source>Save</source>
+        <target state="translated">Salva</target>
+      </trans-unit>
+      <trans-unit id="s49730f3d5751a433" xml:space="preserve">
+        <source>Loading...</source>
+        <target state="translated">Caricando...</target>
+      </trans-unit>
+      <trans-unit id="s625ad019db843f94" xml:space="preserve">
+        <source>Use</source>
+        <target state="translated">Utilizza</target>
+      </trans-unit>
+      <trans-unit id="sd1a8dc951b2b6a98">
+        <source>Choose which fields to display as columns in the list</source>
+        <target>Scegli quali campi visualizzare come colonne nell'elenco</target>
+      </trans-unit>
+      <trans-unit id="scb9a1ff437efbd2a">
+        <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
+        <target>Seleziona tutti i <x id="0" equiv-text="${this.postType}"/>vuoi aggiornare dalla lista e aggiornali sotto</target>
+      </trans-unit>
+      <trans-unit id="sac83d7f9358b43db">
+        <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
+        <target><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> Lista</target>
+      </trans-unit>
+      <trans-unit id="seafe6ef133ede7da">
+        <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
+        <target>Visualizzando 1 di <x id="0" equiv-text="${this.total}"/></target>
+      </trans-unit>
+      <trans-unit id="s41cb4006238ebd3b">
+        <source>Bulk Edit</source>
+        <target>Modifica in blocco</target>
+      </trans-unit>
+      <trans-unit id="s36cb242ac90353bc">
+        <source>Fields</source>
+        <target>Campi</target>
+      </trans-unit>
+      <trans-unit id="s9d51bfd93b5dbeca">
+        <source>Show Archived</source>
+        <target>Visualizza Archiviati</target>
+      </trans-unit>
+      <trans-unit id="sb59d68ed12d46377">
+        <source>Loading</source>
+        <target>Caricando</target>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>
