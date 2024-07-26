@@ -187,6 +187,18 @@ CustomButtonStyle.args = {
   },
 };
 
+export const DuplicateDetected = Template.bind({});
+DuplicateDetected.args = {
+  title: 'Duplicate Detected',
+  buttonClass: {"duplicates-detected-button":true},
+  isHelp: false,
+  isOpen: false,
+  slot: html`<p>
+      A duplicate record has been detected. Please review the data and try
+      again.
+    </p>`,
+};
+
 export const LocalizeRTL = Template.bind({});
 LocalizeRTL.decorators = [LocaleDecorator];
 
