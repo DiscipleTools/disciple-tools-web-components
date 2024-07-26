@@ -330,16 +330,16 @@ export class DtModal extends DtBase {
         @click="${this._openModal}"
         style=${styleMap(this.buttonStyle || {})}
       >
+      ${this.imageSrc
+               ? html`<img
+                   src="${this.imageSrc}"
+                   alt="${this.buttonLabel} icon"
+                   class="help-icon"
+                   style=${styleMap(this.imageStyle || {})}
+                 />`
+               : ''}
       ${this.buttonLabel
       ?html`${this.buttonLabel}`:''}
-       ${this.imageSrc
-                ? html`<img
-                    src="${this.imageSrc}"
-                    alt="${this.buttonLabel} icon"
-                    class="help-icon"
-                    style=${styleMap(this.imageStyle || {})}
-                  />`
-                : ''}
       </button>
       ` : null}
     `;

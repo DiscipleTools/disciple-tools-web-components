@@ -139,7 +139,9 @@ const Template = args => {
       ?hideHeader="${args.hideHeader}"
       buttonclass="${JSON.stringify(args.buttonClass)}"
       buttonstyle="${JSON.stringify(args.buttonStyle)}"
-      buttonLabel="Open Dialog"
+      buttonLabel="${args.buttonLabel?args.buttonLabel:'Open Modal'}"
+      imageSrc="${args.imageSrc?args.imageSrc:''}"
+      imageStyle="${JSON.stringify(args.imageStyle)}"
     >
       <span slot="content"> ${slot} </span>
     </dt-modal>
@@ -185,6 +187,23 @@ CustomButtonStyle.args = {
   buttonStyle: {
     padding: '40px',
   },
+};
+
+export const DuplicateDetected = Template.bind({});
+DuplicateDetected.args = {
+  title: 'Duplicate Detected',
+  class: 'duplicates-detected',
+  buttonClass: {"duplicates-detected-button":true},
+  buttonLabel: 'Duplicate Detected',
+  buttonStyle: {"background-color":"transparent","border":"1px","color":"#3f729b","border-style":"solid","font-weight":"600","border-color":"#3f729b","display":""},
+  imageStyle: {"filter":"hue-rotate(0deg)"},
+  imageSrc: "/assets/triangle-exclamation-solid.svg",
+  isHelp: false,
+  isOpen: false,
+  slot: html`<p>
+      A duplicate record has been detected. Please review the data and try
+      again.
+    </p>`,
 };
 
 export const LocalizeRTL = Template.bind({});
