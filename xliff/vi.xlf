@@ -2,11 +2,13 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file target-language="vi" source-language="en" original="lit-localize-inputs" datatype="plaintext">
     <body>
-      <trans-unit id="sb1bd536b63e9e995">
+      <trans-unit id="sb1bd536b63e9e995" xml:space="preserve">
         <source>Private Field: Only I can see its content</source>
+        <target state="translated">Trường riêng tư: Chỉ tôi mới có thể xem nội dung</target>
       </trans-unit>
-      <trans-unit id="s04ceadb276bbe149">
+      <trans-unit id="s04ceadb276bbe149" xml:space="preserve">
         <source>Loading options...</source>
+        <target state="translated">Đang tải tùy chọn...</target>
       </trans-unit>
       <trans-unit id="sd2e180dab4fbcfb9" xml:space="preserve">
         <source>No Data Available</source>
@@ -28,8 +30,9 @@
         <source>Close</source>
         <target>Đóng</target>
       </trans-unit>
-      <trans-unit id="s29e25f5e4622f847">
+      <trans-unit id="s29e25f5e4622f847" xml:space="preserve">
         <source>Open Dialog</source>
+        <target state="translated">Mở hộp thoại</target>
       </trans-unit>
       <trans-unit id="s33f85f24c0f5f008">
         <source>Save</source>
@@ -47,14 +50,17 @@
         <source>Choose which fields to display as columns in the list</source>
         <target>Chọn các trường để hiển thị dưới dạng cột trong danh sách</target>
       </trans-unit>
-      <trans-unit id="scb9a1ff437efbd2a">
+      <trans-unit id="scb9a1ff437efbd2a" xml:space="preserve">
         <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
+        <target state="translated">Chọn toàn bộ <x id="0" equiv-text="${this.postType}"/> nếu bạn muốn cập nhật từ danh sách, cập nhật ở phía dưới</target>
       </trans-unit>
-      <trans-unit id="sac83d7f9358b43db">
+      <trans-unit id="sac83d7f9358b43db" xml:space="preserve">
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
+        <target state="translated"><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> Danh sách</target>
       </trans-unit>
-      <trans-unit id="seafe6ef133ede7da">
+      <trans-unit id="seafe6ef133ede7da" xml:space="preserve">
         <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
+        <target state="translated">Đang hiển thị 1 of <x id="0" equiv-text="${this.total}"/></target>
       </trans-unit>
       <trans-unit id="s41cb4006238ebd3b">
         <source>Bulk Edit</source>
@@ -64,11 +70,13 @@
         <source>Fields</source>
         <target>Trường</target>
       </trans-unit>
-      <trans-unit id="s9d51bfd93b5dbeca">
+      <trans-unit id="s9d51bfd93b5dbeca" xml:space="preserve">
         <source>Show Archived</source>
+        <target state="translated">Hiển thị đã lưu trữ</target>
       </trans-unit>
-      <trans-unit id="sb59d68ed12d46377">
+      <trans-unit id="sb59d68ed12d46377" xml:space="preserve">
         <source>Loading</source>
+        <target state="translated">Đang tải</target>
       </trans-unit>
     </body>
   </file>
