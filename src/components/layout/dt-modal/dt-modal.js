@@ -188,7 +188,7 @@ export class DtModal extends DtBase {
 
   _openModal() {
     console.log('style',this.buttonStyle);
-  
+
     this.isOpen = true;
     this.shadowRoot.querySelector('dialog').showModal();
 
@@ -337,16 +337,16 @@ export class DtModal extends DtBase {
         style=${styleMap(this.buttonStyle || {})}
       >
       ${this.dropdownListImg ? html`<img src=${this.dropdownListImg} alt="" style="width = 15px; height : 15px">`:''}
+      ${this.imageSrc
+               ? html`<img
+                   src="${this.imageSrc}"
+                   alt="${this.buttonLabel} icon"
+                   class="help-icon"
+                   style=${styleMap(this.imageStyle || {})}
+                 />`
+               : ''}
       ${this.buttonLabel
       ?html`${this.buttonLabel}`:''}
-       ${this.imageSrc
-                ? html`<img
-                    src="${this.imageSrc}"
-                    alt="${this.buttonLabel} icon"
-                    class="help-icon"
-                    style=${styleMap(this.imageStyle || {})}
-                  />`
-                : ''}
       </button>
       ` : null}
     `;
