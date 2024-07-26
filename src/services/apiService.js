@@ -422,7 +422,7 @@ export default class ApiService {
     return this.makeRequest('GET', `users/get_users?s=${query}`);
   }
 
-  //Duplicate Users
+  // Duplicate Users
   async checkDuplicateUsers(postType,postId){
     return this.makeRequestOnPosts('GET', `${postType}/${postId}/duplicates`);
   }
