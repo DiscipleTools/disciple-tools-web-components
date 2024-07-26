@@ -42,7 +42,7 @@ export default class ComponentService {
    * Initialize components on the page with necessary event listeners
    */
   initialize() {
-    if(this.postId){
+    if (this.postId) {
       this.enableAutoSave();
     }
     this.attachLoadEvents();
@@ -138,7 +138,11 @@ export default class ComponentService {
           }
           case 'dt-tags':
           default:
-            values = await this.api.getMultiSelectValues(this.postType, field, query);
+            values = await this.api.getMultiSelectValues(
+              this.postType,
+              field,
+              query
+            );
             values = values.map(value => ({
               id: value,
               label: value,
@@ -253,18 +257,26 @@ export default class ComponentService {
 
         case 'dt-multiselect-buttons-group':
           if (typeof value === 'string') {
-            returnValue = [value];
+            returnValue = [
+              {
+                id: value,
+              },
+            ];
           }
           returnValue = {
-            values: returnValue.map(itemId => {
-              const ret = {
-                value: itemId,
+            values: returnValue.map(item => {
+              if (item.value.startsWith('-')) {
+                const removedItem = item.value.replace('-', '');
+                return {
+                  value: removedItem,
+                  delete: true,
+                };
               }
-              return ret;
-             }
-            ) }
+                return item;
+              }),
+              force_values: false,
+          };
           break;
-
         case 'dt-comm-channel': {
           const valueLength = value.length;
           // case: Delete
