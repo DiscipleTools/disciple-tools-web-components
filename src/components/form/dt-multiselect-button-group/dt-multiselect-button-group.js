@@ -74,8 +74,6 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
 
   _inputKeyDown(e) {
       const keycode = e.keyCode || e.which;
-  console.log(keycode);
-  console.log(e);
       switch (keycode) {
         case 13: // enter
           this._handleButtonClick(e);
