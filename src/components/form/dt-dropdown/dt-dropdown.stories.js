@@ -36,7 +36,7 @@ const Template = args => {
   const {options,buttonStyle} = args;
 
   return html`
-  
+
      <dt-dropdown label=${args.label} options=${JSON.stringify(options)} selectedOptionLabel=${args.selectedOptionLabel} buttonStyle=${JSON.stringify(buttonStyle)}>
       </dt-dropdown>
 
@@ -48,9 +48,9 @@ export const Default = Template.bind({});
 Default.args = {
   label: 'Button',
   options:[
-    { label: 'Option 1', icon: 'http://localhost/wp-vijender/wp-content/themes/disciple-tools-theme-next/dt-assets/images/circle-square-triangle.svg?v=2', isModal: true },
-    { label: 'Option 2', icon: 'http://localhost/wp-vijender/wp-content/themes/disciple-tools-theme-next/dt-assets/images/arrow-user.svg', isModal: true },
-    { label: 'Option 3', icon: 'http://localhost/wp-vijender/wp-content/themes/disciple-tools-theme-next/dt-assets/images/trash.svg', isModal: false, href: 'https://www.google.com' },
+    { label: 'Option 1', icon: '/assets/circle-square-triangle.svg?v=2', isModal: true },
+    { label: 'Option 2', icon: '/assets/arrow-user.svg', isModal: true },
+    { label: 'Option 3', icon: '/assets/trash.svg', isModal: false, href: 'https://www.google.com' },
   ],
   selectedOptionLabel:'Action Items',
   buttonStyle: {
