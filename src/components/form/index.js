@@ -14,4 +14,5 @@ export { DtText } from './dt-text/dt-text.js';
 export { DtTextArea } from './dt-textarea/dt-textarea.js';
 export { DtToggle } from './dt-toggle/dt-toggle.js';
 export { DtCommChannel } from './dt-communication-channel/dt-comm-channel.js';
+export { DtMultiSelectButtonGroup } from './dt-multiselect-button-group/dt-multiselect-button-group.js';
 // export { DtUserSelect } from './dt-user-select/dt-user-select.js';

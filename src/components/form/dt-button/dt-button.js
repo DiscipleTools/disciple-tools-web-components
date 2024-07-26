@@ -14,6 +14,7 @@ export class DtButton extends DtBase {
       .dt-button {
         cursor: pointer;
         display: flex;
+        margin: 5px;
         padding: var(--dt-button-padding-y, 10px)
           var(--dt-button-padding-x, 10px);
         font-family: var(--dt-button-font-family);
@@ -172,12 +173,12 @@ export class DtButton extends DtBase {
 
   constructor() {
     super();
-
     this.context = 'default';
   }
 
   handleClick(e) {
-    if (this.confirm) {
+    e.preventDefault();
+      if (this.confirm) {
       if (!confirm(this.confirm)) {
         e.preventDefault();
         return;
@@ -223,7 +224,8 @@ export class DtButton extends DtBase {
         class=${classMap(this.classes)}
         title=${this.title}
         type=${this.type}
-        @click=${() => this.handleClick()}
+        .value=${this.value}
+        @click=${this.handleClick}
       >
         <div>
           <slot></slot>
