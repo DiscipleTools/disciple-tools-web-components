@@ -47,21 +47,19 @@ describe('DtCommChannel', () => {
   });
 
   it('emits a "change" event on adding a new item', async () => {
-    const listener = oneEvent(element, 'change');
-    // const addButton = element.shadowRoot.querySelector('button.add-btn');
-
-    // addButton.click();
-    // await wait(50);
-
     const input = element.shadowRoot.querySelector('input');
 
     input.focus();
 
-    sendKeys({
-      type: 'Test',
+    await sendKeys({
+      type: 'Tes',
     });
     await wait(50);
+    const listener = oneEvent(element, 'change');
 
+    await sendKeys({
+      type: 't',
+    });
     input.blur();
 
     await wait(50);
