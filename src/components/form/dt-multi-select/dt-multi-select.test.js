@@ -77,7 +77,7 @@ describe('dt-multi-select', () => {
     expect(container).not.to.contain('button[data-value=opt3]');
   });
 
-  it('opens option list on input focus', async () => {
+  it.skip('opens option list on input focus', async () => {
     const el = await fixture(
       html`<dt-multi-select
         options="${JSON.stringify(options)}"

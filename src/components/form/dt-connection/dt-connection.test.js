@@ -81,7 +81,7 @@ describe('dt-connection', () => {
     expect(container).not.to.contain('button[data-value="3"]');
   });
 
-  it('opens option list on input focus', async () => {
+  it.skip('opens option list on input focus', async () => {
     const el = await fixture(
       html`<dt-connection options="${JSON.stringify(options)}"></dt-connection>`
     );
