@@ -33,6 +33,16 @@ export class DtModal extends DtBase {
         z-index: 1000;
         transition: opacity 0.1s ease-in-out;
       }
+      .dt-modal.dt-modal--width {
+        max-width: 80rem;
+        width: 600px;
+        background-color: #fefefe;
+        border: 1px solid #cacaca;
+        border-radius: 10px;
+      }
+      #modal-field-title {
+      font-size: 2rem;
+      }
 
       dialog:not([open]) {
         pointer-events: none;
@@ -71,7 +81,7 @@ export class DtModal extends DtBase {
         display: grid;
         height: fit-content;
         grid-template-columns: 1fr;
-        grid-template-rows: 100px auto 100px;
+        grid-template-rows: 52px auto 50px;
         grid-template-areas:
           'header'
           'main'
@@ -94,7 +104,7 @@ export class DtModal extends DtBase {
 
       .button {
         color: var(--dt-modal-button-color, #fff);
-        background: var(--dt-modal-button-background, #000);
+        background: var(--dt-modal-button-background, #3f729b);
         font-size: 1rem;
         border: 0.1em solid var(--dt-modal-button-background, #000);
         border-radius: 0.25em;
@@ -104,7 +114,7 @@ export class DtModal extends DtBase {
       }
       .button.opener {
         color: var(--dt-modal-button-opener-color,var(--dt-modal-button-color, #fff) );
-        background: var(--dt-modal-button-opener-background, var(--dt-modal-button-background, #000) );
+        background: var(--dt-modal-button-opener-background, var(--dt-modal-button-background, #3f729b) );
         border: 0.1em solid var(--dt-modal-button-opener-background, #000);
       }
       button.toggle {
@@ -127,6 +137,9 @@ export class DtModal extends DtBase {
         grid-area: footer;
         display: flex;
         justify-content: space-between;
+        align-items: flex-start;
+        padding-top: 18px;
+        border-top: 1px solid #ccc;
       }
 
       .help-more h5 {
@@ -136,6 +149,11 @@ export class DtModal extends DtBase {
       .help-more .button {
         font-size: 0.75rem;
         display: block;
+      }
+      .help-icon {
+        -webkit-filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
+        filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
+        height: 15px;
       }
     `;
   }
@@ -150,14 +168,18 @@ export class DtModal extends DtBase {
       hideButton: { type: Boolean },
       buttonClass: { type: Object },
       buttonStyle: { type: Object },
+      imageSrc: {type: String},
+      imageStyle: {type:Object},
+      tileLabel: {type:String},
+      buttonLabel:{type: String},
     };
   }
 
   constructor() {
     super();
     this.context = 'default';
-    this.addEventListener('open', (e) => this._openModal());
-    this.addEventListener('close', (e) => this._closeModal());
+    this.addEventListener('open', () => this._openModal());
+    this.addEventListener('close', () => this._closeModal());
   }
 
   _openModal() {
@@ -166,12 +188,18 @@ export class DtModal extends DtBase {
 
     document.querySelector('body').style.overflow = "hidden"
   }
+// to format title coming from backend
+
+  get formattedTitle() {
+    if (!this.title) return '';
+    return this.title.charAt(0).toUpperCase() + this.title.slice(1);
+  }
 
   _dialogHeader(svg) {
     if (!this.hideHeader) {
       return html`
       <header>
-            <h1 id="modal-field-title">${this.title}</h1>
+            <h1 id="modal-field-title" class="modal-header">${this.formattedTitle}</h1>
             <button @click="${this._cancelModal}" class="toggle">${svg}</button>
           </header>
       `;
@@ -184,9 +212,11 @@ export class DtModal extends DtBase {
     this.shadowRoot.querySelector('dialog').close();
     document.querySelector('body').style.overflow = "initial"
   }
+
   _cancelModal() {
     this._triggerClose('cancel');
   }
+
   _triggerClose(action) {
     this.dispatchEvent(new CustomEvent('close', {
       detail: {
@@ -266,7 +296,7 @@ export class DtModal extends DtBase {
     return html`
       <dialog
         id=""
-        class="dt-modal"
+        class="dt-modal dt-modal--width"
         @click=${this._dialogClick}
         @keypress=${this._dialogKeypress}
       >
@@ -300,7 +330,16 @@ export class DtModal extends DtBase {
         @click="${this._openModal}"
         style=${styleMap(this.buttonStyle || {})}
       >
-        <slot name="openButton">${msg('Open Dialog')}</slot>
+      ${this.imageSrc
+               ? html`<img
+                   src="${this.imageSrc}"
+                   alt="${this.buttonLabel} icon"
+                   class="help-icon"
+                   style=${styleMap(this.imageStyle || {})}
+                 />`
+               : ''}
+      ${this.buttonLabel
+      ?html`${this.buttonLabel}`:''}
       </button>
       ` : null}
     `;

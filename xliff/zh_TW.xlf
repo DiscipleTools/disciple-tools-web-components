@@ -2,13 +2,17 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file target-language="zh_TW" source-language="en" original="lit-localize-inputs" datatype="plaintext">
     <body>
-      <trans-unit id="sb1bd536b63e9e995" xml:space="preserve">
+      <trans-unit id="sb1bd536b63e9e995">
         <source>Private Field: Only I can see its content</source>
-        <target state="translated">私人欄位：只有我可以看見內容</target>
+        <target>私人欄位：只有我可以看見內容</target>
       </trans-unit>
-      <trans-unit id="s8900c9de2dbae68b" xml:space="preserve">
-        <source>No options available</source>
-        <target state="translated">沒有可使用的選項</target>
+      <trans-unit id="s04ceadb276bbe149">
+        <source>Loading options...</source>
+        <target>正在載入選項...</target>
+      </trans-unit>
+      <trans-unit id="sd2e180dab4fbcfb9" xml:space="preserve">
+        <source>No Data Available</source>
+        <target state="translated">沒有可用數據</target>
       </trans-unit>
       <trans-unit id="sf9aee319a006c9b4">
         <source>Add</source>
@@ -26,17 +30,17 @@
         <source>Close</source>
         <target>關</target>
       </trans-unit>
-      <trans-unit id="s29e25f5e4622f847" xml:space="preserve">
+      <trans-unit id="s29e25f5e4622f847">
         <source>Open Dialog</source>
-        <target state="translated">開啟對話視窗</target>
+        <target>開啟對話視窗</target>
       </trans-unit>
-      <trans-unit id="s33f85f24c0f5f008" xml:space="preserve">
+      <trans-unit id="s33f85f24c0f5f008">
         <source>Save</source>
-        <target state="translated">儲存</target>
+        <target>儲存</target>
       </trans-unit>
-      <trans-unit id="s04ceadb276bbe149" xml:space="preserve">
-        <source>Loading options...</source>
-        <target state="translated">正在載入選項...</target>
+      <trans-unit id="s49730f3d5751a433" xml:space="preserve">
+        <source>Loading...</source>
+        <target state="translated">載入中...</target>
       </trans-unit>
       <trans-unit id="s625ad019db843f94">
         <source>Use</source>
@@ -46,17 +50,17 @@
         <source>Choose which fields to display as columns in the list</source>
         <target>選擇哪些欄位要顯示為列表中的直行</target>
       </trans-unit>
-      <trans-unit id="scb9a1ff437efbd2a" xml:space="preserve">
+      <trans-unit id="scb9a1ff437efbd2a">
         <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
-        <target state="translated">從清單中選取要更新的項目<x id="0" equiv-text="${this.postType}"/>，並在下面進行更新</target>
+        <target>從清單中選取要更新的項目<x id="0" equiv-text="${this.postType}"/>，並在下面進行更新</target>
       </trans-unit>
-      <trans-unit id="sac83d7f9358b43db" xml:space="preserve">
+      <trans-unit id="sac83d7f9358b43db">
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
-        <target state="translated"><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> 清單</target>
+        <target><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> 清單</target>
       </trans-unit>
-      <trans-unit id="seafe6ef133ede7da" xml:space="preserve">
+      <trans-unit id="seafe6ef133ede7da">
         <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
-        <target state="translated">第1頁 （共<x id="0" equiv-text="${this.total}"/>頁）</target>
+        <target>第1頁 （共<x id="0" equiv-text="${this.total}"/>頁）</target>
       </trans-unit>
       <trans-unit id="s41cb4006238ebd3b">
         <source>Bulk Edit</source>
@@ -66,13 +70,13 @@
         <source>Fields</source>
         <target>欄位</target>
       </trans-unit>
-      <trans-unit id="s9d51bfd93b5dbeca" xml:space="preserve">
+      <trans-unit id="s9d51bfd93b5dbeca">
         <source>Show Archived</source>
-        <target state="translated">顯示已儲存</target>
+        <target>顯示已儲存</target>
       </trans-unit>
-      <trans-unit id="sb59d68ed12d46377" xml:space="preserve">
+      <trans-unit id="sb59d68ed12d46377">
         <source>Loading</source>
-        <target state="translated">載入中</target>
+        <target>載入中</target>
       </trans-unit>
     </body>
   </file>

@@ -7,14 +7,14 @@ export default class ComponentService {
    * @param postId - ID of current post
    * @param nonce - WordPress nonce for authentication
    * @param apiRoot - Root of API (default: wp-json) (i.e. the part before dt/v1/ or dt-posts/v2/)
-   */
-  constructor(postType, postId, nonce, apiRoot = '/wp-json') {
-    this.postType = postType;
-    this.postId = postId;
-    this.nonce = nonce;
-    this.apiRoot = `${apiRoot}/`.replace('//', '/'); // ensure it ends with /
+  */
+ constructor(postType, postId, nonce, apiRoot = 'wp-json') {
+   this.postType = postType;
+   this.postId = postId;
+   this.nonce = nonce;
+   this.apiRoot = `${apiRoot}/`.replace('//', '/'); // ensure it ends with /
 
-    this.api = new ApiService(this.nonce, this.apiRoot);
+   this.api = new ApiService(this.nonce, this.apiRoot);
 
     this.autoSaveComponents = [
       'dt-connection',
@@ -31,7 +31,11 @@ export default class ComponentService {
       'dt-multiselect-buttons-group',
     ];
 
-    this.dynamicLoadComponents = ['dt-connection', 'dt-tags'];
+    this.dynamicLoadComponents = [
+      'dt-connection',
+      'dt-tags',
+      'dt-modal'
+    ]
   }
 
   /**
@@ -49,15 +53,39 @@ export default class ComponentService {
    * dynamically via API
    * @param {string} [selector] (Optional) Override default selector
    */
-  attachLoadEvents(selector) {
+  async attachLoadEvents(selector) {
     const elements = document.querySelectorAll(
       selector || this.dynamicLoadComponents.join(',')
     );
+    // check if there is dt-modal and duplicate-detected class with it on DOM.
+    const filteredElements = Array.from(elements).filter(element => element.tagName.toLowerCase() === 'dt-modal' && element.classList.contains('duplicate-detected'));
+    // calling the function to check duplicates
+    if(filteredElements){
+      this.checkDuplicates(elements,filteredElements)
+    }
+
     if (elements) {
       elements.forEach(el =>
-        el.addEventListener('load', this.handleLoadEvent.bind(this))
-      );
+        el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this))
+      )
     }
+
+  }
+
+ async checkDuplicates(elements,filteredElements){
+   const dtModal = document.querySelector('dt-modal.duplicate-detected');
+   const button= dtModal.shadowRoot.querySelector('.duplicates-detected-button');
+   if(button){
+    button.style.display='none'
+  }
+    const duplicates=await this.api.checkDuplicateUsers(this.postType,this.postId)
+    // showing the button to show duplicates
+    if(filteredElements && duplicates.ids.length>0){
+      if(button){
+        button.style.display='block'
+      }
+    }
+
   }
 
   /**
@@ -81,7 +109,7 @@ export default class ComponentService {
    * @param {Event} event
    * @returns {Promise<void>}
    */
-  async handleLoadEvent(event) {
+  async handleGetDataEvent(event) {
     const details = event.detail;
     if (details) {
       const { field, query, onSuccess, onError } = details;
@@ -91,19 +119,22 @@ export default class ComponentService {
         switch (component) {
           case 'dt-connection': {
             const postType = details.postType || this.postType;
-            const connectionResponse = await this.api.listPostsCompact(
-              postType,
-              query
-            );
-            if (connectionResponse?.posts) {
-              values = connectionResponse?.posts.map(value => ({
-                id: value['ID'],
-                label: value['name'],
-                link: value['permalink'],
-                status: value['status'],
-              }));
-            }
-            break;
+            const connectionResponse = await this.api.listPostsCompact(postType, query);
+            // for filtering the user itself from the response.
+            const filteredConnectionResponse = {
+              ...connectionResponse,
+              posts: connectionResponse.posts.filter(post => post.ID !== parseInt(this.postId, 10))
+          };
+
+          if (filteredConnectionResponse?.posts) {
+            values = filteredConnectionResponse?.posts.map(value => ({
+              id: value.ID,
+              label: value.name,
+              link: value.permalink,
+              status: value.status,
+            }));
+          }
+          break;
           }
           case 'dt-tags':
           default:
@@ -135,19 +166,25 @@ export default class ComponentService {
   async handleChangeEvent(event) {
     const details = event.detail;
     if (details) {
-      const { field, newValue } = details;
+      const { field, newValue, oldValue} = details;
       const component = event.target.tagName.toLowerCase();
-      const apiValue = ComponentService.convertValue(component, newValue);
+      const apiValue = ComponentService.convertValue(component, newValue, oldValue);
 
       event.target.setAttribute('loading', true);
 
       // Update post via API
       try {
-        await this.api.updatePost(this.postType, this.postId, {
+      const apiResponse= await this.api.updatePost(this.postType, this.postId, {
           [field]: apiValue,
         });
 
+        // Sending response to update value
+        if(component==='dt-comm-channel' && details.onSuccess){
+          details.onSuccess(apiResponse);
+        }
+
         event.target.removeAttribute('loading');
+        event.target.setAttribute('error', '');
         event.target.setAttribute('saved', true);
       } catch (error) {
         console.error(error);
@@ -164,7 +201,7 @@ export default class ComponentService {
    * @param {mixed} value
    * @returns {mixed}
    */
-  static convertValue(component, value) {
+  static convertValue(component, value, oldValue) {
     let returnValue = value;
 
     // Convert component value format into what the API expects
@@ -177,6 +214,7 @@ export default class ComponentService {
           break;
 
         case 'dt-multi-select':
+          case 'dt-tags':
           if (typeof value === 'string') {
             returnValue = [value];
           }
@@ -196,7 +234,6 @@ export default class ComponentService {
 
         case 'dt-connection':
         case 'dt-location':
-        case 'dt-tags':
           if (typeof value === 'string') {
             returnValue = [
               {
@@ -236,20 +273,30 @@ export default class ComponentService {
                 };
               }
                 return item;
-
-            }),
-            force_values: false,
+              }),
+              force_values: false,
           };
           break;
-        case 'dt-comm-channel':
-          if (typeof value === 'string') {
-            returnValue = [
-              {
-                id: value,
-              },
-            ];
+        case 'dt-comm-channel': {
+          const valueLength = value.length;
+          // case: Delete
+           if(oldValue && oldValue.delete===true){
+            returnValue=[oldValue];
+          }
+          // case: Add
+           else if(value[valueLength-1].key==='' || value[valueLength-1].key.startsWith('new-contact')){
+              returnValue=[]
+              value.forEach(obj=>{
+                returnValue.push({value : obj.value})
+                })
+              }
+            // case: Edit
+              else{
+                returnValue=value;
+
           }
           break;
+        }
         default:
           break;
       }

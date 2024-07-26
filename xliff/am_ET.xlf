@@ -5,8 +5,12 @@
       <trans-unit id="sb1bd536b63e9e995">
         <source>Private Field: Only I can see its content</source>
       </trans-unit>
-      <trans-unit id="s8900c9de2dbae68b">
-        <source>No options available</source>
+      <trans-unit id="s04ceadb276bbe149">
+        <source>Loading options...</source>
+      </trans-unit>
+      <trans-unit id="sd2e180dab4fbcfb9" xml:space="preserve">
+        <source>No Data Available</source>
+        <target state="translated">ምንም ውሂብ የለም</target>
       </trans-unit>
       <trans-unit id="sf9aee319a006c9b4">
         <source>Add</source>
@@ -31,8 +35,9 @@
         <source>Save</source>
         <target>አስቀምጥ</target>
       </trans-unit>
-      <trans-unit id="s04ceadb276bbe149">
-        <source>Loading options...</source>
+      <trans-unit id="s49730f3d5751a433" xml:space="preserve">
+        <source>Loading...</source>
+        <target state="translated">በመጫን ላይ ...</target>
       </trans-unit>
       <trans-unit id="s625ad019db843f94">
         <source>Use</source>
@@ -47,7 +52,7 @@
       </trans-unit>
       <trans-unit id="sac83d7f9358b43db">
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
-        <target state="translated"><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> ዝርዝር</target>
+        <target><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> ዝርዝር</target>
       </trans-unit>
       <trans-unit id="seafe6ef133ede7da">
         <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>

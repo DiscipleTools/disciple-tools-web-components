@@ -26,6 +26,10 @@ export const HasOptionsList = (superClass) => class extends superClass {
         type: Boolean,
         state: true,
       },
+      canUpdate:{
+        type:Boolean,
+        state: true
+      },
       activeIndex: {
         type: Number,
         state: true,
@@ -99,6 +103,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
       !['BUTTON', 'LI'].includes(e.relatedTarget.nodeName)
     ) {
       this.open = false;
+      this.canUpdate = true;
     }
   }
 

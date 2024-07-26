@@ -4,10 +4,15 @@
     <body>
       <trans-unit id="sb1bd536b63e9e995">
         <source>Private Field: Only I can see its content</source>
-        <target state="translated">Sehemu ya Faragha: Ni mimi pekee ninayeweza kuona maudhui yake</target>
+        <target>Sehemu ya Faragha: Ni mimi pekee ninayeweza kuona maudhui yake</target>
       </trans-unit>
-      <trans-unit id="s8900c9de2dbae68b">
-        <source>No options available</source>
+      <trans-unit id="s04ceadb276bbe149">
+        <source>Loading options...</source>
+        <target>Inapakia chaguo...</target>
+      </trans-unit>
+      <trans-unit id="sd2e180dab4fbcfb9" xml:space="preserve">
+        <source>No Data Available</source>
+        <target state="translated">Hakuna Data Inayopatikana</target>
       </trans-unit>
       <trans-unit id="sf9aee319a006c9b4">
         <source>Add</source>
@@ -27,14 +32,15 @@
       </trans-unit>
       <trans-unit id="s29e25f5e4622f847">
         <source>Open Dialog</source>
-        <target state="translated">Fungua Kidirisha</target>
+        <target>Fungua Kidirisha</target>
       </trans-unit>
       <trans-unit id="s33f85f24c0f5f008">
         <source>Save</source>
         <target>Hifadhi</target>
       </trans-unit>
-      <trans-unit id="s04ceadb276bbe149">
-        <source>Loading options...</source>
+      <trans-unit id="s49730f3d5751a433" xml:space="preserve">
+        <source>Loading...</source>
+        <target state="translated">Inapakia...</target>
       </trans-unit>
       <trans-unit id="s625ad019db843f94">
         <source>Use</source>
@@ -46,14 +52,15 @@
       </trans-unit>
       <trans-unit id="scb9a1ff437efbd2a">
         <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
+        <target>Chagua <x id="0" equiv-text="${this.postType}"/> zote ungependa kusasisha kutoka kwenye orodha, na uzisasishe hapa chini.</target>
       </trans-unit>
       <trans-unit id="sac83d7f9358b43db">
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
-        <target state="translated">Orodha ya<x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/></target>
+        <target>Orodha ya<x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/></target>
       </trans-unit>
       <trans-unit id="seafe6ef133ede7da">
         <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
-        <target state="translated">Inaonyesha 1 kati ya <x id="0" equiv-text="${this.total}"/></target>
+        <target>Inaonyesha 1 kati ya <x id="0" equiv-text="${this.total}"/></target>
       </trans-unit>
       <trans-unit id="s41cb4006238ebd3b">
         <source>Bulk Edit</source>
@@ -65,11 +72,11 @@
       </trans-unit>
       <trans-unit id="s9d51bfd93b5dbeca">
         <source>Show Archived</source>
-        <target state="translated">Onyesha Kumbukumbu</target>
+        <target>Onyesha Kumbukumbu</target>
       </trans-unit>
       <trans-unit id="sb59d68ed12d46377">
         <source>Loading</source>
-        <target state="translated">Inapakia</target>
+        <target>Inapakia</target>
       </trans-unit>
     </body>
   </file>

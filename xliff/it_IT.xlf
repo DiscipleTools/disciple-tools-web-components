@@ -4,11 +4,15 @@
     <body>
       <trans-unit id="sb1bd536b63e9e995">
         <source>Private Field: Only I can see its content</source>
-        <target state="translated">Campo Privato: Solo io posso vedere i suoi contenuti</target>
+        <target>Campo Privato: Solo io posso vedere i suoi contenuti</target>
       </trans-unit>
-      <trans-unit id="s8900c9de2dbae68b">
-        <source>No options available</source>
-        <target state="translated">Nessuna opzione disponibile</target>
+      <trans-unit id="s04ceadb276bbe149">
+        <source>Loading options...</source>
+        <target>Caricando opzioni...</target>
+      </trans-unit>
+      <trans-unit id="sd2e180dab4fbcfb9" xml:space="preserve">
+        <source>No Data Available</source>
+        <target state="translated">Dati Non Disponibili</target>
       </trans-unit>
       <trans-unit id="sf9aee319a006c9b4">
         <source>Add</source>
@@ -28,19 +32,19 @@
       </trans-unit>
       <trans-unit id="s29e25f5e4622f847">
         <source>Open Dialog</source>
-        <target state="translated">Apri Dialogo</target>
+        <target>Apri Dialogo</target>
       </trans-unit>
-      <trans-unit id="s33f85f24c0f5f008">
+      <trans-unit id="s33f85f24c0f5f008" xml:space="preserve">
         <source>Save</source>
-        <target>Salvare</target>
+        <target state="translated">Salva</target>
       </trans-unit>
-      <trans-unit id="s04ceadb276bbe149">
-        <source>Loading options...</source>
-        <target state="translated">Caricando opzioni...</target>
+      <trans-unit id="s49730f3d5751a433" xml:space="preserve">
+        <source>Loading...</source>
+        <target state="translated">Caricando...</target>
       </trans-unit>
-      <trans-unit id="s625ad019db843f94">
+      <trans-unit id="s625ad019db843f94" xml:space="preserve">
         <source>Use</source>
-        <target>Uso</target>
+        <target state="translated">Utilizza</target>
       </trans-unit>
       <trans-unit id="sd1a8dc951b2b6a98">
         <source>Choose which fields to display as columns in the list</source>
@@ -48,15 +52,15 @@
       </trans-unit>
       <trans-unit id="scb9a1ff437efbd2a">
         <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
-        <target state="translated">Seleziona tutti i <x id="0" equiv-text="${this.postType}"/>vuoi aggiornare dalla lista e aggiornali sotto</target>
+        <target>Seleziona tutti i <x id="0" equiv-text="${this.postType}"/>vuoi aggiornare dalla lista e aggiornali sotto</target>
       </trans-unit>
       <trans-unit id="sac83d7f9358b43db">
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
-        <target state="translated"><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> Lista</target>
+        <target><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> Lista</target>
       </trans-unit>
       <trans-unit id="seafe6ef133ede7da">
         <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
-        <target state="translated">Visualizzando 1 di <x id="0" equiv-text="${this.total}"/></target>
+        <target>Visualizzando 1 di <x id="0" equiv-text="${this.total}"/></target>
       </trans-unit>
       <trans-unit id="s41cb4006238ebd3b">
         <source>Bulk Edit</source>
@@ -68,11 +72,11 @@
       </trans-unit>
       <trans-unit id="s9d51bfd93b5dbeca">
         <source>Show Archived</source>
-        <target state="translated">Visualizza Archiviati</target>
+        <target>Visualizza Archiviati</target>
       </trans-unit>
       <trans-unit id="sb59d68ed12d46377">
         <source>Loading</source>
-        <target state="translated">Caricando</target>
+        <target>Caricando</target>
       </trans-unit>
     </body>
   </file>
