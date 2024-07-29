@@ -1,6 +1,7 @@
 import { html, css } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import DtBase from '../../dt-base.js';
+import ComponentService from '../../../services/componentService.js';
 
 export class DtButton extends DtBase {
   static get styles() {
@@ -149,6 +150,7 @@ export class DtButton extends DtBase {
 
   static get properties() {
     return {
+      name: { type: String },
       context: { type: String },
       type: { type: String },
       outline: { type: Boolean },
@@ -196,6 +198,18 @@ export class DtButton extends DtBase {
     }
   }
 
+
+  onClick(e){
+    e.preventDefault();
+     const event = new CustomEvent('click', {
+      detail: {
+        field: this.name,
+      }
+    });
+      this.dispatchEvent(event);
+
+    };
+
   _dismiss() {
     this.hide = true;
   }
@@ -208,6 +222,7 @@ export class DtButton extends DtBase {
     if (this.href) {
       return html`
         <a
+          name=${this.name}
           class=${classMap(this.classes)}
           href=${this.href}
           title=${this.title}
@@ -221,7 +236,9 @@ export class DtButton extends DtBase {
       `;
     }
     return html`
+
       <button
+        name=${this.name}
         class=${classMap(this.classes)}
         title=${this.title}
         type=${this.type}
