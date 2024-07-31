@@ -136,7 +136,7 @@ export class DtDropdown extends LitElement {
     @focus=${this._handleHover}
     >
 
-    ${this.options.map(
+    ${this.options ? this.options.map(
       option => html`
         ${option.isModal
           ? html`
@@ -172,7 +172,7 @@ export class DtDropdown extends LitElement {
               </li>
             `}
       `
-    )}
+    ):''}
     </ul>
 
 
