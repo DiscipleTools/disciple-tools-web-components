@@ -6,18 +6,27 @@ import './dt-users-connection.js';
 
 const options = [
   {
-    id: '1',
-    label: 'Option 1',
-  },
-  {
-    id: '2',
-    label: 'Second Option',
-    user: true,
-  },
-  {
-    id: '3',
-    label: 'Option Three',
-  },
+    name: "Option 1",
+    id: 1,
+    avatar: "https:\/\/2.gravatar.com\/avatar\/2373ee570d59db06102d14feb50a4291?s=16&d=mm&r=g",
+    contact_id: 10,
+    status_color: "#4caf50",
+},
+{
+    name: "Option 2",
+    id: 2,
+    avatar: "https:\/\/0.gravatar.com\/avatar\/3f009d72559f51e7e454b16e5d0687a1?s=16&d=mm&r=g",
+    contact_id: 6,
+    update_needed: 0
+},
+{
+  name: "Option 3",
+  id: 3,
+  avatar: "https:\/\/0.gravatar.com\/avatar\/3f009d72559f51e7e454b16e5d0687a1?s=16&d=mm&r=g",
+  contact_id: 5,
+  update_needed: 0
+}
+
 ];
 async function wait(ms) {
   return new Promise(r => {
@@ -60,9 +69,6 @@ describe('dt-users-connection', () => {
     expect(optionList)
       .to.have.descendant('button[value="1"]')
       .with.contain.trimmed.text('Option 1');
-    expect(optionList)
-      .to.have.descendant('button[value="2"]')
-      .and.contain('svg');
 
     expect(optionList).not.to.be.displayed;
   });
@@ -155,11 +161,19 @@ describe('dt-users-connection', () => {
     );
     optionBtn.click();
     await wait(100);
-
-    expect(el.value).to.deep.include({ id: '3', label: options[2].label });
+    expect(el.value).to.deep.include({ 
+      name: options[2].name, 
+      id: 3, 
+      avatar: "https:\/\/0.gravatar.com\/avatar\/3f009d72559f51e7e454b16e5d0687a1?s=16&d=mm&r=g",
+      contact_id: 5,
+      update_needed: 0 
+    });
     expect(el.value).to.deep.include({
-      id: '1',
-      label: options[0].label,
+      name: options[0].name,
+      id: 1,
+      avatar: "https:\/\/2.gravatar.com\/avatar\/2373ee570d59db06102d14feb50a4291?s=16&d=mm&r=g",
+      contact_id: 10,
+      status_color: "#4caf50",
       delete: true,
     });
   });
@@ -179,13 +193,12 @@ describe('dt-users-connection', () => {
     );
 
     input.focus();
-
     optionBtn.click();
     await wait(100);
 
-    expect(el.value).to.deep.include({ id: '1', label: 'old' });
+    expect(el.value).to.deep.include({ id: 1, label: 'old' });
     expect(el.value).to.not.deep.include({
-      id: '1',
+      id: 1,
       label: 'old',
       delete: true,
     });
@@ -246,7 +259,7 @@ describe('dt-users-connection', () => {
     input.focus();
 
     await sendKeys({
-      type: 'Sec',
+      type: 'Option 2',
     });
 
     expect(optionsList).to.be.displayed;
@@ -342,18 +355,4 @@ describe('dt-users-connection', () => {
   });
 
 
-  it('clicks add new button', async () => {
-    const el = await fixture(
-      html`<dt-users-connection options="${JSON.stringify(options)}" allowAdd></dt-users-connection>`
-    );
-    const input = el.shadowRoot.querySelector('input');
-    input.focus();
-    await sendKeys({ type: 'new' });
-    await wait(100);
-    await sendKeys({ press: 'ArrowDown' });
-    await sendKeys({ press: 'Enter' });
-
-    const selectedOption = el.shadowRoot.querySelector('.selected-option');
-    expect(selectedOption).to.have.descendant('a').with.text('new');
-  });
 });

@@ -173,7 +173,6 @@ export class DtUsersConnection extends DtTags {
   }
 
   _renderSelectedOptions() {
-    console.log('this.value', this.value)
     return (this.value || [])
       .filter(i => !i.delete)
       .map(
