@@ -101,7 +101,7 @@ export class DtUsersConnection extends DtTags {
         const val = {
           ...i,
         };
-        if (i.id === parseInt(e.target.dataset.value)) {
+        if (i.id === parseInt(e.target.dataset.value, 10)) {
           val.delete = true;
         }
         return val;
@@ -179,6 +179,7 @@ export class DtUsersConnection extends DtTags {
         opt => html`
           <div class="selected-option">
             <a
+              href="${opt.link}"
               style="border-inline-start-color: ${opt.status_color
                 ? opt.status_color
                 : ''}"
@@ -199,9 +200,6 @@ export class DtUsersConnection extends DtTags {
   }
 
   _renderOption(opt, idx) {
-    // prettier-ignore
-    const svg = html`<svg width="24" height="24" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>circle-08 2</title><desc>Created using Figma</desc><g id="Canvas" transform="translate(1457 4940)"><g id="circle-08 2"><g id="Group"><g id="Vector"><use xlink:href="#path0_fill" transform="translate(-1457 -4940)" fill="#000000"/></g></g></g></g><defs><path id="path0_fill" d="M 12 0C 5.383 0 0 5.383 0 12C 0 18.617 5.383 24 12 24C 18.617 24 24 18.617 24 12C 24 5.383 18.617 0 12 0ZM 8 10C 8 7.791 9.844 6 12 6C 14.156 6 16 7.791 16 10L 16 11C 16 13.209 14.156 15 12 15C 9.844 15 8 13.209 8 11L 8 10ZM 12 22C 9.567 22 7.335 21.124 5.599 19.674C 6.438 18.091 8.083 17 10 17L 14 17C 15.917 17 17.562 18.091 18.401 19.674C 16.665 21.124 14.433 22 12 22Z"/></defs></svg>`
-
     return html`
       <li tabindex="-1" style="border-inline-start-color:${opt.status_color}">
         <button
@@ -218,6 +216,7 @@ export class DtUsersConnection extends DtTags {
             ? 'active'
             : ''}"
         >
+          <span class="avatar"><img src="${opt.avatar}" alt="${opt.name}"/></span>
           <span class="connection-id">${opt.name}</span>
         </button>
       </li>
