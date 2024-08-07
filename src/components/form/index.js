@@ -1,4 +1,5 @@
 export { DtButton } from './dt-button/dt-button.js';
+export { DtDropdown } from './dt-dropdown/dt-dropdown.js';
 export { DtChurchHealthCircle } from './dt-church-health-circle/dt-church-health-circle.js';
 // export { DtCommunicationChannel } from './dt-communication-channel/dt-communication-channel.js';
 export { DtConnection } from './dt-connection/dt-connection.js';

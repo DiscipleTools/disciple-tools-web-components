@@ -13,6 +13,7 @@ const DtMultiSelect = wrapWc('dt-multi-select');
 const DtTags = wrapWc('dt-tags');
 const DtConnection = wrapWc('dt-connection');
 const DtUsersConnection = wrapWc('dt-users-connection');
+const DtDropdown = wrapWc('dt-dropdown');
 
 function App() {
   const [output, setOutput] = useState();
@@ -96,7 +97,7 @@ function App() {
           change={handleChange}
         ></DtMultiSelect>
         <DtDtropdown text="Vijender">
-          
+
         </DtDtropdown>
 
         <DtTags
@@ -113,18 +114,27 @@ function App() {
           options={posts}
           change={handleChange}
         ></DtConnection>
+
         <DtUsersConnection
           name="connectionsField"
           label="Connection Field"
           options={posts}
           change={handleChange}
         ></DtUsersConnection>
+
+        <DtDropdown
+          name="connectionsField"
+          label="Connection Field"
+          options={posts}
+          change={handleChange}
+        ></DtDropdown>
+
       </DtTile>
 
       <pre>
         <code>Event:
           {output}
-{`  
+{`
 
 Values: ${JSON.stringify(values, null, 2)}
 `}
