@@ -36,6 +36,7 @@ export default class ComponentService {
       'dt-connection',
       'dt-tags',
       'dt-users-connection',
+      'dt-modal'
     ]
   }
 
@@ -43,7 +44,7 @@ export default class ComponentService {
    * Initialize components on the page with necessary event listeners
    */
   initialize() {
-    if(this.postId){
+    if (this.postId) {
       this.enableAutoSave();
     }
     this.attachLoadEvents();
@@ -54,15 +55,39 @@ export default class ComponentService {
    * dynamically via API
    * @param {string} [selector] (Optional) Override default selector
    */
-  attachLoadEvents(selector) {
+  async attachLoadEvents(selector) {
     const elements = document.querySelectorAll(
       selector || this.dynamicLoadComponents.join(',')
     );
+    // check if there is dt-modal and duplicate-detected class with it on DOM.
+    const filteredElements = Array.from(elements).filter(element => element.tagName.toLowerCase() === 'dt-modal' && element.classList.contains('duplicate-detected'));
+    // calling the function to check duplicates
+    if(filteredElements){
+      this.checkDuplicates(elements,filteredElements)
+    }
+
     if (elements) {
       elements.forEach(el =>
         el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this))
       )
     }
+
+  }
+
+ async checkDuplicates(elements,filteredElements){
+   const dtModal = document.querySelector('dt-modal.duplicate-detected');
+   const button= dtModal.shadowRoot.querySelector('.duplicates-detected-button');
+   if(button){
+    button.style.display='none'
+  }
+    const duplicates=await this.api.checkDuplicateUsers(this.postType,this.postId)
+    // showing the button to show duplicates
+    if(filteredElements && duplicates.ids.length>0){
+      if(button){
+        button.style.display='block'
+      }
+    }
+
   }
 
   /**
@@ -117,7 +142,7 @@ export default class ComponentService {
           case 'dt-users-connection': {
             const postType = details.postType || this.postType;
             const connectionResponse = await this.api.searchUsers(`&post_type=${postType}`);
-          
+
             values= connectionResponse.map(value=>({
               id:value.ID,
               name:value.name,
@@ -129,7 +154,11 @@ export default class ComponentService {
           }
           case 'dt-tags':
           default:
-            values = await this.api.getMultiSelectValues(this.postType, field, query);
+            values = await this.api.getMultiSelectValues(
+              this.postType,
+              field,
+              query
+            );
             values = values.map(value => ({
               id: value,
               label: value,
@@ -176,7 +205,7 @@ export default class ComponentService {
   // }
 // }
 
-        //Sending response to update value
+        // Sending response to update value
         if(component==='dt-comm-channel' && details.onSuccess){
           details.onSuccess(apiResponse);
         }
@@ -237,7 +266,7 @@ export default class ComponentService {
                 id: value,
               },
             ];
-          
+
           break;
         case 'dt-connection':
         case 'dt-location':
@@ -264,37 +293,46 @@ export default class ComponentService {
 
         case 'dt-multiselect-buttons-group':
           if (typeof value === 'string') {
-            returnValue = [value];
+            returnValue = [
+              {
+                id: value,
+              },
+            ];
           }
           returnValue = {
-            values: returnValue.map(itemId => {
-              const ret = {
-                value: itemId,
+            values: returnValue.map(item => {
+              if (item.value.startsWith('-')) {
+                const removedItem = item.value.replace('-', '');
+                return {
+                  value: removedItem,
+                  delete: true,
+                };
               }
-              return ret;
-             }
-            ) }
+                return item;
+              }),
+              force_values: false,
+          };
           break;
-
-        case 'dt-comm-channel':
-          let valueLength = value.length;
-          //case: Delete
+        case 'dt-comm-channel': {
+          const valueLength = value.length;
+          // case: Delete
            if(oldValue && oldValue.delete===true){
             returnValue=[oldValue];
           }
-          //case: Add
+          // case: Add
            else if(value[valueLength-1].key==='' || value[valueLength-1].key.startsWith('new-contact')){
               returnValue=[]
               value.forEach(obj=>{
                 returnValue.push({value : obj.value})
                 })
               }
-            //case: Edit
+            // case: Edit
               else{
                 returnValue=value;
 
           }
           break;
+        }
         default:
           break;
       }
