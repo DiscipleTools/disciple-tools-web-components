@@ -114,18 +114,21 @@ function App() {
           options={posts}
           change={handleChange}
         ></DtConnection>
+
         <DtUsersConnection
           name="connectionsField"
           label="Connection Field"
           options={posts}
           change={handleChange}
         ></DtUsersConnection>
+
         <DtDropdown
           name="connectionsField"
           label="Connection Field"
           options={posts}
           change={handleChange}
         ></DtDropdown>
+
       </DtTile>
 
       <pre>
