@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import './dt-tile.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
@@ -7,7 +7,7 @@ import '../../form/dt-label/dt-label.js';
 import '../../form/dt-text/dt-text.js';
 
 export default {
-  title: 'dt-tile',
+  title: 'Components/Layout/Tile',
   component: 'dt-tile',
   argTypes: {
     theme: {

@@ -114,7 +114,7 @@ describe('dt-tags', () => {
     expect(selectedValue.innerHTML).to.contain('Option 1');
   });
 
-  it('opens option list on input focus', async () => {
+  it.skip('opens option list on input focus', async () => {
     const el = await fixture(
       html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`
     );

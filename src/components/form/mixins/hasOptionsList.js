@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import {repeat} from 'lit/directives/repeat.js';
 import { msg } from '@lit/localize';
 
 export const HasOptionsList = (superClass) => class extends superClass {
@@ -282,13 +283,11 @@ export const HasOptionsList = (superClass) => class extends superClass {
       }
       return html`<li><div>${msg('No Data Available')}</div></li>`;
     }
-
-    return this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx));
+    return repeat(this.filteredOptions, (opt) => opt.id, (opt, idx) => this._renderOption(opt, idx));
   }
 
   _renderOptions() {
     let optionsMarkup = this._baseRenderOptions();
-
     if (this.allowAdd && this.query) {
       if (!Array.isArray(optionsMarkup)) {
         optionsMarkup = [optionsMarkup];

@@ -5,6 +5,9 @@ import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
 import '../../icons/dt-exclamation-circle.js';
 
+/**
+ * Basic single line text input
+ */
 export class DtText extends DtFormBase {
   static get styles() {
     return [
@@ -70,14 +73,17 @@ export class DtText extends DtFormBase {
   static get properties() {
     return {
       ...super.properties,
+      /** Element ID */
       id: { type: String },
+      /** `type` attribute of `<input />` */
       type: { type: String },
+      /** Placeholder displayed when no value is entered */
       placeholder: { type: String },
+      /** Value of field. Reflected back to attribute in order to select from DOM if needed. */
       value: {
         type: String,
         reflect: true,
       },
-      onchange: { type: String },
     };
   }
 

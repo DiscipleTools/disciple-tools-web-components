@@ -1,21 +1,35 @@
-const replace = require('@rollup/plugin-replace');
+/** @type { import('@storybook/web-components-vite').StorybookConfig } */
+import remarkGfm from 'remark-gfm';
 
-module.exports = {
+const config = {
   stories: [
-    '../src/components/**/*.stories.js',
-    '../src/components/*.stories.js',
+    "../src/docs/**/*.mdx",
+    "../src/**/*.mdx",
+    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
-  staticDirs: ['../assets'],
-  rollupConfig(config) {
-    config.plugins.unshift(replace({
-      include: ['src/**/*.stories.js'],
-      preventAssignment: true,
-      values: {
-        'process.env.STORYBOOK_MAPBOX_TOKEN': `"${process?.env?.STORYBOOK_MAPBOX_TOKEN || 'dummytoken'}"`,
-        'process.env.STORYBOOK_GOOGLE_GEOCODE_TOKEN': `"${process?.env?.STORYBOOK_GOOGLE_GEOCODE_TOKEN || 'dummytoken'}"`,
-      },
-    }))
-
-    return config;
+  framework: {
+    name: "@storybook/web-components-vite",
+    options: {},
   },
+  docs: {
+    autodocs: true,
+  },
+  addons: [
+    '@storybook/addon-essentials',
+    '@storybook/addon-links',
+    '@storybook/addon-themes',
+    '@chromatic-com/storybook',
+    {
+      name: '@storybook/addon-docs',
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
+  ],
+  staticDirs: ['../assets', '../src/styles'],
 };
+export default config;

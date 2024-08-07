@@ -5,19 +5,49 @@ import ApiService from '../services/apiService.js';
 
 import 'element-internals-polyfill'; // eslint-disable-line import/no-extraneous-dependencies
 
+/**
+ * Core base class that extends LitElement. It provides basic functionality for localization.
+ * @extends LitElement
+ */
 export default class DtBase extends LitElement {
   static get properties() {
     return {
-      RTL: { type: String },
+      /**
+       * Sets the text direction used for localization. If it is not set,
+       * it will read the `dir` attribute of the nearest parent,
+       * defaulting to the root `<html>` element if no others are found.
+       */
+      RTL: { type: Boolean },
+      /**
+       * Defines the locale to be used for localization of the component.
+       * If it is not set, it will read the `lang` attribute of the nearest parent,
+       * defaulting to the root `<html>` element if no others are found.
+       */
       locale: { type: String },
+      /**
+       * _Feature migrated to ApiService_
+       * @deprecated
+       */
       apiRoot: { type: String, reflect: false },
+      /**
+       * _Feature migrated to ApiService_
+       * @deprecated
+       */
       postType: { type: String, reflect: false },
+      /**
+       * _Feature migrated to ApiService_
+       * @deprecated
+       */
       postID: { type: String, reflect: false },
     };
   }
 
   /**
-   * return the element to proxy focus to
+   * Used to set which element of the shadow DOM should receive focus when the component itself
+   * receives focus. This will use the `_focusTarget`, so that getter should be changed instead
+   * of this function.
+   *
+   * By default, it will find the first child in the shadow DOM and focus that element
    */
   get _focusTarget() {
     return this.shadowRoot.children[0] instanceof Element
@@ -72,7 +102,9 @@ export default class DtBase extends LitElement {
   }
 
   /**
-   * Proxy focus to the focus target
+   * Used to transfer focus to the shadow DOM when the component itself receives focus.
+   * This will use the `_focusTarget` to determine which shadow DOM element to focus,
+   * so that getter should be changed instead of this function when the shadow DOM is non-standard.
    * @returns
    */
   _proxyFocus() {

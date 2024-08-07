@@ -1,0 +1,39 @@
+import { Meta, Controls } from '@storybook/blocks';
+
+<Meta title="Architecture/CSS Styling" />
+
+# CSS Styling
+
+The way that HTML custom elements and the shadow DOM work, you can't style the components through
+normal stylesheets included on your page. The styles are scoped within the component and
+the only CSS from outside that can pass through is CSS variables and custom properties.
+
+You can see [Lit's documentation](https://lit.dev/docs/components/styles/#theming) about the process for more information.
+
+## Theming Disciple.Tools Web Components
+
+While building our components, we have integrated a variety of CSS custom properties to allow
+theming the whole library with just a few properties, or customizing a specific component with
+other properties.
+
+To see all of the CSS custom properties that are used in the components, you can look at the main
+[light.css](https://github.com/DiscipleTools/disciple-tools-web-components/blob/master/src/styles/light.css)
+for their current definitions and see how they inherit from each other.
+
+Style properties can be set at 3 different levels:
+- Global
+- All Form Components
+- Individual Components
+
+At each level, you can adjust:
+- Colors
+  - Primary
+  - Text
+  - Surface
+  - Border
+  - Statuses (alert, caution, success, inactive, disabled)
+- Font Family
+- Shadows
+
+Each component also has a specific set of properties that you can adjust. See the documentation
+for the [components](?path=/story/components-all--components) to see which properties are available.

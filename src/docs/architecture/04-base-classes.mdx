@@ -1,0 +1,145 @@
+import { Meta, Controls } from '@storybook/blocks';
+
+<Meta title="Architecture/Base Classes" />
+
+# Base Classes
+
+This library uses two main base classes that all components inherit from in order to share
+certain common features. Those classes are:
+
+- [DtBase](#dtbase)
+- [DtFormBase](#dtformbase)
+
+## `DtBase`
+
+This is the core base class. It provides basic functionality for localization.
+
+### Properties
+
+| Property | Definition | Description |
+| -------- | ---------- | ----------- |
+| locale | `{ type: String }` | Defines the locale to be used for localization of the component. If it is not set, it will read the `lang` attribute of the nearest parent, defaulting to the root `<html>` element if no others are found. |
+| RTL | `{ type: String }` | Sets the text direction used for localization. If it is not set, it will read the `dir` attribute of the nearest parent, defaulting to the root `<html>` element if no others are found. |
+
+### Members
+
+#### `_proxyFocus()`
+
+Used to transfer focus to the shadow DOM when the component itself receives focus.
+This will use the `_focusTarget` to determine which shadow DOM element to focus,
+so that getter should be changed instead of this function when the shadow DOM is non-standard.
+
+#### `get _focusTarget()`
+
+Used to set which element of the shadow DOM should receive focus when the component itself
+receives focus. This will use the `_focusTarget`, so that getter should be changed instead
+of this function.
+
+By default, it will find the first child in the shadow DOM and focus that element:
+
+```javascript
+get _focusTarget() {
+  return this.shadowRoot.children[0] instanceof Element
+    ? this.shadowRoot.children[0]
+    : null;
+}
+```
+
+
+## `DtFormBase`
+
+This extends `DtBase` to add features specific to form components, including base styles
+and integration with HTML forms.
+
+This also adds a label above the form input.
+
+### Properties
+
+Inherits all properties from [DtBase](#dtbase).
+
+| Property | Definition | Description |
+| -------- | ---------- | ----------- |
+| name | `{ type: String }` | The name attribute used to identify an input within a form. This will be submitted with the form as the field's key. |
+| label | `{ type: String }` | Text to be displayed in the label above the form field.<br/><br/>Leave this empty to not display a label. |
+| icon | `{ type: String }` | Icon to be used beside the label. This should be a URL to an image file.<br/><br/>To use an embedded SVG as the icon, see the `icon` slot. |
+| iconAltText | `{ type: String }` | Alt text to be added to icon image |
+| private | `{ type: Boolean }` | Indicates if field is marked with a lock icon to indicate private fields.|
+| privateLabel | `{ type: String }` | Tooltip text to be added to private icon. |
+| disabled | `{ type: Boolean }` | Disables field. |
+| required | `{ type: Boolean }` | Validates that field is not empty when form is submitted and displays error if not. |
+| requiredMessage | `{ type: String }` | Error message to be displayed for required field validation.
+| touched | `{ type: Boolean, state: true }` | _Internal state value not available via HTML attribute._<br/><br/>Indicates that the form field has been changed to use when validating form. |
+| invalid | `{ type: Boolean, state: true }` | _Internal state value not available via HTML attribute._<br/><br/>Indicates that the form field is not valid to use when validating form. |
+| error | `{ type: String }` | Enables error state with error icon. This error message will be displayed. |
+| loading | `{ type: Boolean }` | Enables display of loading indicator. |
+| saved | `{ type: Boolean }` | Enables display of saved indicator. |
+
+### Members
+
+#### `get _field`
+
+Identifies the form element to receive focus when the component receives focus.
+
+#### `get _focusTarget`
+
+Sets the focus target to `_field`.
+
+#### `_setFormValue(value)`
+
+Interacts with the form internals to set the form value that will be submitted with a standard
+HTML form.
+
+#### `_validateRequired()`
+
+Not implemented by default.
+
+Can/should be overriden by each component to implement logic for checking if a value is entered/selected.
+
+Example:
+```javascript
+_validateRequired() {
+  const { value } = this;
+  const input = this.shadowRoot.querySelector('input');
+  if (value === '' && this.required) {
+    this.invalid = true;
+    this.internals.setValidity({
+      valueMissing: true
+    }, this.requiredMessage || 'This field is required', input);
+  } else {
+    this.invalid = false;
+    this.internals.setValidity({});
+  }
+}
+```
+
+#### `labelTemplate()`
+
+Renders the `<dt-label>` element. Should be used in each component to place the label in
+the appropriate location.
+
+#### `render()`
+
+Renders the component. This should be overridden by each component.
+
+### Slots
+
+####  Default
+
+Places content after the default label.
+
+#### `icon-start`
+
+HTML to be displayed in place of the label icon. Use this if you want to render an SVG icon.
+
+Example:
+```html
+<dt-my-element>
+  <svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>
+</dt-my-element>
+```
+
+### CSS Properties
+
+- `--disabled-color`
+- `--alert-color`
+- `--success-color`

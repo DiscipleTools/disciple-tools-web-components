@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 import {
   themes,
   themeCss,
@@ -8,7 +8,7 @@ import { LocaleDecorator } from '../../../stories-utils.js';
 
 import './dt-map-modal.js';
 
-const MAPBOX_TOKEN = process.env.STORYBOOK_MAPBOX_TOKEN;
+const MAPBOX_TOKEN = import.meta.env.VITE_STORYBOOK_MAPBOX_TOKEN;
 
 export default {
   title: 'Form/dt-location-map/dt-map-modal',

@@ -1,15 +1,13 @@
----
-sidebar_position: 1
----
+import { Meta, Controls } from '@storybook/blocks';
 
-# Intro
+<Meta title="Introduction" />
 
-Let's discover **Docusaurus in less than 5 minutes**.
+# Introduction
 
 ## Why Web Components?
- 
-HTML custom elements are now widely supported across browsers, and building encapsulated web 
-components allows us to package logic and styles for the defined field types within Disciple.Tools. 
+
+HTML custom elements are now widely supported across browsers, and building encapsulated web
+components allows us to package logic and styles for the defined field types within Disciple.Tools.
 By doing this, the main theme doesn't need other javascript dependencies and initialization scripts,
 and PHP developers can stick to writing PHP instead of also needing to figure out complex javascript
 interactions.
@@ -38,8 +36,8 @@ You can then include the library based on the type of project you're working on:
 
 ### Manual Build
 
-See [git repo](https://github.com/DiscipleTools/disciple-tools-web-components#build-for-use-in-html) for details on 
-how to manually build the components to include in a project without NPM. 
+See [git repo](https://github.com/DiscipleTools/disciple-tools-web-components#build-for-use-in-html) for details on
+how to manually build the components to include in a project without NPM.
 
 ## Include Scripts
 
@@ -49,41 +47,62 @@ how to manually build the components to include in a project without NPM.
 import '@disciple.tools/web-components';
 ```
 
-Your framework may need a wrapper component to make these components work, so see the 
+Your framework may need a wrapper component to make these components work, so see the
 specific documentation for your framework.
- 
+
 - [React Sample Documentation](https://github.com/DiscipleTools/disciple-tools-web-components/tree/master/samples/react-include)
 - [Vue Sample Documentation](https://github.com/DiscipleTools/disciple-tools-web-components/tree/master/samples/vue-include)
 
 ### Standard HTML
 
+See [HTML Sample Documentation](https://github.com/DiscipleTools/disciple-tools-web-components/tree/master/samples/html)
+
+#### CDN
 ```html
-<script type="module" src="/path/to/@disciple.tools/web-components/dist/index.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.7.0/styles/light.css" type="text/css" media="all">
+<script src="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.7.0/dist/index.js"></script>
 ```
 
-See [HTML Sample Documentation](https://github.com/DiscipleTools/disciple-tools-web-components/tree/master/samples/html)
+#### Local Include
+```html
+<link rel="stylesheet" href="/path/to/@disciple.tools/web-components/src/styles/light.css" type="text/css" media="all">
+<script src="/path/to/@disciple.tools/web-components/dist/index.js"></script>
+```
+
 
 ### WordPress
 
-If you're using the Disciple.Tools theme, the components are all included (only in the `next` branch releases for now) 
+If you're using the Disciple.Tools theme, the components are all included (only in the `next` branch releases for now)
 and can be used without explicitly including scripts.
 
-If you are writing a Magic Link or other plugin for WordPress that doesn't include the theme files, 
+If you are writing a Magic Link or other plugin for WordPress that doesn't include the theme files,
 you'll need to include the script files.
 
+#### CDN
+
 ```php
-$path = '../path/to/components/dist/form/index.js';
-wp_enqueue_script( 'dtwc-form-components', 
-  plugin_dir_url( __FILE__ ) . $path, 
-  null, 
-  filemtime( plugin_dir_path( __FILE__ ) . $path ) 
+
+$dtwc_version = '0.7.0';
+wp_enqueue_style( 'dt-web-components-css', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/styles/light.css", [], $dtwc_version );
+wp_enqueue_script( 'dt-web-components-js', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/dist/index.js", $dtwc_version );
+
+```
+
+#### Local Include
+
+```php
+$path = '../path/to/components/dist/index.js';
+wp_enqueue_script( 'dt-web-components-js',
+  plugin_dir_url( __FILE__ ) . $path,
+  null,
+  filemtime( plugin_dir_path( __FILE__ ) . $path )
 );
 
 $css_path = '../path/to/components/src/styles/light.css';
-wp_enqueue_style( 'dtwc-light-css', 
-  plugin_dir_url( __FILE__ ) . $css_path, 
-  null, 
-  filemtime( plugin_dir_path( __FILE__ ) . $css_path ) 
+wp_enqueue_style( 'dt-web-components-css',
+  plugin_dir_url( __FILE__ ) . $css_path,
+  null,
+  filemtime( plugin_dir_path( __FILE__ ) . $css_path )
 );
 ```
 
@@ -108,6 +127,6 @@ HTML elements when you render your page.
 
 ## Next Steps
 
-Learn about the [Component Architecture](category/architecture) in case you want to extend or contribute to the components.
+Learn about the [Component Architecture](?path=/docs/architecture-open-wc-lit--docs) in case you want to extend or contribute to the components.
 
-View [All Components](category/components) to learn about how each component works.
+View [All Components](?path=/story/components-all--components) to learn about how each component works.
