@@ -1,3 +1,4 @@
+/* eslint-disable no-promise-executor-return */
 import { fixture, html, expect } from '@open-wc/testing';
 
 import './dt-dropdown.js';
@@ -16,8 +17,8 @@ describe('dt-dropdown', () => {
 
 
     const dtDropdown = await fixture(html`
-      <dt-dropdown 
-        selectedOptionLabel=${selectedOptionLabel} 
+      <dt-dropdown
+        selectedOptionLabel=${selectedOptionLabel} >
       </dt-dropdown>
     `);
     const button = dtDropdown.shadowRoot.querySelector('button');
@@ -63,21 +64,21 @@ describe('dt-dropdown', () => {
     const dtDropdown = await fixture(html`
       <dt-dropdown
       selectedOptionLabel='Custom label'
-      .options=${options}
+      .options=${options} >
       </dt-dropdown>
       `)
 
       const button = dtDropdown.shadowRoot.querySelector('button');
       const list = dtDropdown.shadowRoot.querySelector('ul.abc');
-      
+
       button.dispatchEvent(new MouseEvent('mouseover')); // Simulate mouseover event on the button
       await new Promise(resolve => setTimeout(resolve, 10)); // Wait for the event to trigger the display change
-      
+
       expect(list.style.display).to.be.equal('block');  // Expect the list to be displayed after hover
-      
+
       button.dispatchEvent(new MouseEvent('mouseleave')); // Simulate mouseleave event on the button
       await new Promise(resolve => setTimeout(resolve, 10));  // Wait for the event to trigger the display change
-      
+
       expect(list.style.display).to.be.equal('none'); // Expect the list to be hidden after leaving the button
 
   })
