@@ -12,6 +12,7 @@ import './form/dt-single-select/dt-single-select.js';
 import './form/dt-tags/dt-tags.js';
 import './form/dt-connection/dt-connection.js';
 import './form/dt-dropdown/dt-dropdown.js'
+import './form/dt-users-connection/dt-users-connection.js'
 
 export default {
   title: 'Kitchen Sink',
@@ -129,6 +130,10 @@ function Template(theme) {
         label="Dropdown Field"
         options="${JSON.stringify(posts)}"
       ></dt-connection>
+      <dt-users-connection
+        label="Connection Field"
+        options="${JSON.stringify(posts)}"
+      ></dt-users-connection>
 
        <dt-button id="buttonField" name="buttonField" label="Button" context="primary">
         Click Me

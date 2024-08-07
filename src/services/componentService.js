@@ -29,11 +29,13 @@ export default class ComponentService {
       'dt-toggle',
       'dt-comm-channel',
       'dt-multiselect-buttons-group',
+      'dt-users-connection'
     ];
 
     this.dynamicLoadComponents = [
       'dt-connection',
       'dt-tags',
+      'dt-users-connection',
       'dt-modal'
     ]
   }
@@ -42,7 +44,7 @@ export default class ComponentService {
    * Initialize components on the page with necessary event listeners
    */
   initialize() {
-    if(this.postId){
+    if (this.postId) {
       this.enableAutoSave();
     }
     this.attachLoadEvents();
@@ -136,9 +138,27 @@ export default class ComponentService {
           }
           break;
           }
+          //for getting the list from the api
+          case 'dt-users-connection': {
+            const postType = details.postType || this.postType;
+            const connectionResponse = await this.api.searchUsers(`&post_type=${postType}`);
+
+            values= connectionResponse.map(value=>({
+              id:value.ID,
+              name:value.name,
+              avatar:value.avatar,
+              status_color:value.status_color,
+            }));
+          break;
+
+          }
           case 'dt-tags':
           default:
-            values = await this.api.getMultiSelectValues(this.postType, field, query);
+            values = await this.api.getMultiSelectValues(
+              this.postType,
+              field,
+              query
+            );
             values = values.map(value => ({
               id: value,
               label: value,
@@ -170,9 +190,20 @@ export default class ComponentService {
 
       // Update post via API
       try {
-      const apiResponse= await this.api.updatePost(this.postType, this.postId, {
-          [field]: apiValue,
-        });
+//         var apiResponse;
+// switch(component){
+//   case 'dt-users-connection':{
+//      apiResponse= await this.api.deleteFilter(this.postType,this.postId,{
+
+//     })
+//   }
+
+//   default:{
+     const apiResponse= await this.api.updatePost(this.postType, this.postId, {
+        [field]: apiValue,
+      });
+  // }
+// }
 
         // Sending response to update value
         if(component==='dt-comm-channel' && details.onSuccess){
@@ -227,7 +258,16 @@ export default class ComponentService {
             force_values: false,
           };
           break;
+        //seperate case for dt-user
+        case 'dt-users-connection':
 
+            returnValue=[
+              {
+                id: value,
+              },
+            ];
+
+          break;
         case 'dt-connection':
         case 'dt-location':
           if (typeof value === 'string') {
@@ -253,18 +293,26 @@ export default class ComponentService {
 
         case 'dt-multiselect-buttons-group':
           if (typeof value === 'string') {
-            returnValue = [value];
+            returnValue = [
+              {
+                id: value,
+              },
+            ];
           }
           returnValue = {
-            values: returnValue.map(itemId => {
-              const ret = {
-                value: itemId,
+            values: returnValue.map(item => {
+              if (item.value.startsWith('-')) {
+                const removedItem = item.value.replace('-', '');
+                return {
+                  value: removedItem,
+                  delete: true,
+                };
               }
-              return ret;
-             }
-            ) }
+                return item;
+              }),
+              force_values: false,
+          };
           break;
-
         case 'dt-comm-channel': {
           const valueLength = value.length;
           // case: Delete

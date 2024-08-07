@@ -55,11 +55,12 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     );
     if (index > -1) {
       this.selectedButtons.splice(index, 1);
+      this.selectedButtons.push({ value: `-${buttonValue}` });
     } else {
-      this.selectedButtons.push({ value: buttonValue });
+      this.selectedButtons.push({ value: buttonValue});
     }
-    this.value = this.selectedButtons.map(button => button.value);
-    this._setFormValue(this.value);
+    this.value = this.selectedButtons.filter(button => !button.value.startsWith('-')).map(button => button.value);
+
      this.dispatchEvent(new CustomEvent('change', {
       detail: {
         field: this.name,
@@ -67,13 +68,12 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
         newValue: this.selectedButtons,
       },
     }));
+    this._setFormValue(this.value);
     this.requestUpdate();
   }
 
   _inputKeyDown(e) {
       const keycode = e.keyCode || e.which;
-  console.log(keycode);
-  console.log(e);
       switch (keycode) {
         case 13: // enter
           this._handleButtonClick(e);
@@ -99,7 +99,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
           const items = Object.keys(buttonSet);
           return items.map(item => {
             const isSelected = this.selectedButtons.some(
-              selected => selected.value === item
+              selected => selected.value === item && !selected.delete
             )
             const context = isSelected ? 'success' : 'disabled';
 
