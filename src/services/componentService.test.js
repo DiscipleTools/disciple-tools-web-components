@@ -246,14 +246,7 @@ describe('ComponentService', () => {
       });
       it('handles expected: array of tags', async () => {
         const result = ComponentService.convertValue('dt-tags', [
-          {
-            id: 'opt1',
-            label: 'Option 1',
-          },
-          {
-            id: 'opt2',
-            label: 'Option 2',
-          },
+           'opt1','opt2',
         ]);
         expect(result).to.eql({
           values: [
@@ -269,15 +262,7 @@ describe('ComponentService', () => {
       });
       it('handles expected: deleted items', () => {
         const result = ComponentService.convertValue('dt-tags', [
-          {
-            id: 'opt1',
-            label: 'Option 1',
-          },
-          {
-            id: 'opt2',
-            label: 'Option 2',
-            delete: true,
-          },
+          'opt1','-opt2'
         ]);
         expect(result).to.eql({
           values: [
