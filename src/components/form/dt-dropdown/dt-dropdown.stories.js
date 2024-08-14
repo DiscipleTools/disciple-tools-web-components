@@ -39,7 +39,7 @@ const Template = args => {
     <style>
       ${themeCss(args)}
     </style>
-     <dt-dropdown label=${args.label} options=${JSON.stringify(options)} selectedOptionLabel=${args.selectedOptionLabel} buttonStyle=${JSON.stringify(buttonStyle)}>
+     <dt-dropdown options=${JSON.stringify(options)} label=${args.label}>
       </dt-dropdown>
 
 
@@ -48,20 +48,13 @@ const Template = args => {
 
 export const Default = Template.bind({});
 Default.args = {
-  label: 'Button',
+  label: 'Action Items',
   options:[
     { label: 'Option 1', icon: '/assets/circle-square-triangle.svg?v=2', isModal: true },
     { label: 'Option 2', icon: '/assets/arrow-user.svg', isModal: true },
     { label: 'Option 3', icon: '/assets/trash.svg', isModal: false, href: 'https://www.google.com' },
   ],
-  selectedOptionLabel:'Action Items',
-  buttonStyle: {
-    padding: '8px',
-    backgroundColor: '#00897B',
-    color: 'white',
-    borderRadius: '4px',
-   border:'none',
-  },
+
 };
 
 export const LocalizeRTL = Template.bind({});
@@ -75,12 +68,4 @@ LocalizeRTL.args = {
     { label: 'الخيار 2', icon: '/assets/arrow-user.svg', isModal: true },
     { label: 'الخيار 3', icon: '/assets/trash.svg', isModal: false, href: 'https://www.google.com' },
   ],
-  selectedOptionLabel:'خطوات العمل',
-  buttonStyle: {
-    padding: '8px',
-    backgroundColor: '#00897B',
-    color: 'white',
-    borderRadius: '4px',
-   border:'none',
-  },
 };

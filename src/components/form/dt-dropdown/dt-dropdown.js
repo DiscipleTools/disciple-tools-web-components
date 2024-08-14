@@ -16,9 +16,7 @@ export class DtDropdown extends LitElement {
         cursor: pointer;
         border-radius: 5px;
       }
-      button:hover {
-        background-color: var(--button-hover-color, #2980b9);
-      }
+      
       slot {
         display: none;
         min-width: 200px;
@@ -48,10 +46,19 @@ export class DtDropdown extends LitElement {
         position: relative;
         display: inline-block;
       }
+        button.BtnLabel{
+        padding:8px;
+        border:none;
+        background-color:#00897B;
+        color:white !important;
+        border-radius:4px;
+        }
+        
 
       .dropdown ul {
-        // position: absolute;
+        position: absolute;
         z-index: 999;
+        min-width:200px;
         display: none;
         // left: -100vw;
         // top: calc(1.5em + 14px);
@@ -112,7 +119,6 @@ export class DtDropdown extends LitElement {
       label: { type: String },
       isModal: { type: Boolean },
       buttonStyle: { type: Object },
-      selectedOptionLabel: { type: String },
     };
   }
 
@@ -120,13 +126,14 @@ export class DtDropdown extends LitElement {
     return html`
     <div class="dropdown">
     <button
+    class="BtnLabel"
     style=${styleMap(this.buttonStyle || {})}
     @mouseover=${this._handleHover}
     @mouseleave=${this._handleMouseLeave}
     @focus=${this._handleHover}
     >
 
-    ${this.selectedOptionLabel} \u25BC
+    ${this.label} \u25BC
 
     </button>
     <ul
@@ -145,10 +152,12 @@ export class DtDropdown extends LitElement {
                   class="list-style"
                   dropdownListImg=${option.icon}
                   buttonLabel="${option.label}"
-                  buttonClass="{}"
+                  buttonClass='{}'
                   buttonStyle=${JSON.stringify({
                     color: '#3f729b',
                     background: 'none',
+                    fontSize:'12px',
+                    textAlign: 'left',
                     border: 'none',
                     '--hover-color': 'white',
                   })}
@@ -159,7 +168,7 @@ export class DtDropdown extends LitElement {
           : html`
               <li class="list-style">
                 <button
-                  style=" background : none ; border : none; --hover-color:white"
+                  style=" background : none ; border : none; --hover-color:white; font-size:12px;text-align:left"
                   @click="${() => this._redirectToHref(option.href)}"
                 >
                   <img
@@ -198,6 +207,13 @@ export class DtDropdown extends LitElement {
     const ulElement = this.shadowRoot.querySelector('ul');
     ulElement.style.display = 'none';
   }
+
+  // this will work ehen we implement dt-modal in list without button.
+
+//   _handleListItemClick() {
+//     const ulElement = this.shadowRoot.querySelector('ul');
+//     ulElement.style.display = 'none';
+// }
 }
 
 window.customElements.define('dt-dropdown', DtDropdown);
