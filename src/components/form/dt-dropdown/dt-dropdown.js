@@ -2,6 +2,8 @@ import { html, css, LitElement } from 'lit';
 import '../dt-button/dt-button.js';
 import '../../layout/dt-modal/dt-modal.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { classMap } from 'lit/directives/class-map.js';
+
 
 export class DtDropdown extends LitElement {
   static get styles() {
@@ -46,7 +48,7 @@ export class DtDropdown extends LitElement {
         position: relative;
         display: inline-block;
       }
-        button.BtnLabel{
+      button.dt-dropdown{
         padding:8px;
         border:none;
         background-color:#00897B;
@@ -119,14 +121,25 @@ export class DtDropdown extends LitElement {
       label: { type: String },
       isModal: { type: Boolean },
       buttonStyle: { type: Object },
+      default: { type : Boolean },
+      context:{ type: String },
     };
+  }
+
+  get classes() {
+    const classes = {
+      'dt-dropdown': true,
+    };
+    const contextClass = `dt-dropdown--${this.context}`;
+    classes[contextClass] = true;
+    return classes;
   }
 
   render() {
     return html`
     <div class="dropdown">
     <button
-    class="BtnLabel"
+    class=${classMap(this.classes)}
     style=${styleMap(this.buttonStyle || {})}
     @mouseover=${this._handleHover}
     @mouseleave=${this._handleMouseLeave}
@@ -151,7 +164,7 @@ export class DtDropdown extends LitElement {
                 <dt-modal
                   class="list-style"
                   dropdownListImg=${option.icon}
-                  buttonLabel="${option.label}"
+                  buttonLabel="${option.label.replace(/-/g, ' ')}"
                   buttonClass='{}'
                   buttonStyle=${JSON.stringify({
                     color: '#3f729b',
@@ -176,7 +189,7 @@ export class DtDropdown extends LitElement {
                     style="width: 15px; height: 15px"
                     alt=${option.label}
                   />
-                  ${option.label}
+                  ${option.label.replace(/-/g, ' ')}
                 </button>
               </li>
             `}
