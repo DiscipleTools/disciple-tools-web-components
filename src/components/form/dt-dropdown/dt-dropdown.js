@@ -220,13 +220,6 @@ export class DtDropdown extends LitElement {
     const ulElement = this.shadowRoot.querySelector('ul');
     ulElement.style.display = 'none';
   }
-
-  // this will work ehen we implement dt-modal in list without button.
-
-//   _handleListItemClick() {
-//     const ulElement = this.shadowRoot.querySelector('ul');
-//     ulElement.style.display = 'none';
-// }
 }
 
 window.customElements.define('dt-dropdown', DtDropdown);
