@@ -112,6 +112,9 @@ export class DtModal extends DtBase {
         cursor: pointer;
         text-decoration: none;
       }
+        :hover {
+        color: var(--hover-color)!important;
+      }
       .button.opener {
         color: var(--dt-modal-button-opener-color,var(--dt-modal-button-color, #fff) );
         background: var(--dt-modal-button-opener-background, var(--dt-modal-button-background, #3f729b) );
@@ -196,10 +199,11 @@ export class DtModal extends DtBase {
       buttonClass: { type: Object },
       buttonStyle: { type: Object },
       headerClass: { type: Object },
-      imageSrc: { type: String },
-      imageStyle: { type: Object },
-      tileLabel: { type: String },
-      buttonLabel: { type: String },
+      imageSrc: {type: String},
+      imageStyle: {type:Object},
+      tileLabel: {type:String},
+      buttonLabel:{type: String},
+      dropdownListImg: {type: String},
     };
   }
 
@@ -211,6 +215,8 @@ export class DtModal extends DtBase {
   }
 
   _openModal() {
+    console.log('style',this.buttonStyle);
+
     this.isOpen = true;
     this.shadowRoot.querySelector('dialog').showModal();
 
@@ -358,6 +364,7 @@ export class DtModal extends DtBase {
         @click="${this._openModal}"
         style=${styleMap(this.buttonStyle || {})}
       >
+      ${this.dropdownListImg ? html`<img src=${this.dropdownListImg} alt="" style="width = 15px; height : 15px">`:''}
       ${this.imageSrc
             ? html`<img
                    src="${this.imageSrc}"
