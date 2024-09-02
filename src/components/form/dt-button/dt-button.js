@@ -1,7 +1,6 @@
 import { html, css } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import DtBase from '../../dt-base.js';
-import ComponentService from '../../../services/componentService.js';
 
 export class DtButton extends DtBase {
   static get styles() {
@@ -135,6 +134,24 @@ export class DtButton extends DtBase {
         --dt-button-aspect-ratio: var(--dt-button-rounded-aspect-ratio, 1/1);
       }
 
+      .dt-button--custom {
+        padding: var(--dt-button-padding-y, 7px)
+          var(--dt-button-padding-x, 10px);
+        font-size: var(--dt-button-font-size, 12px);
+        font-weight: var(--dt-button-font-weight, 300);
+        border-radius: var(--dt-button-border-radius, 5px);
+      }
+
+      .dt-button--star {
+      --dt-button-background-color: transparent;
+      --dt-button-border-color: transparent;
+      padding: 0;
+    }
+      ::slotted(svg) {
+        margin: 2px !important;
+        vertical-align: middle !important;
+      }
+
       button.toggle {
         margin-inline-end: 0;
         margin-inline-start: auto;
@@ -160,6 +177,8 @@ export class DtButton extends DtBase {
       rounded: { type: Boolean },
       confirm: { type: String },
       buttonClass: { type: String },
+      custom:  { type: Boolean },
+      favorite: { type: Boolean, reflect: true },
     };
   }
 
@@ -168,6 +187,7 @@ export class DtButton extends DtBase {
       'dt-button': true,
       'dt-button--outline': this.outline,
       'dt-button--rounded': this.rounded,
+      'dt-button--custom': this.custom,
     };
     const contextClass = `dt-button--${this.context}`;
     classes[contextClass] = true;
@@ -177,6 +197,43 @@ export class DtButton extends DtBase {
   constructor() {
     super();
     this.context = 'default';
+    this.favorite = false; // Initialize with a default value
+  }
+
+  connectedCallback() {
+    // Code that runs after the component's initial render
+    super.connectedCallback();
+    if (this.id === 'favorite-button') {
+      window.addEventListener('load', async () => {
+        this.loading = true;
+      const event = await new CustomEvent('dt:get-data', {
+        bubbles: true,
+        detail: {
+          field: this.id,
+          postType: this.postType,
+          onSuccess: result => {
+            this.favorite = result; // Updated state
+            const slot = this.shadowRoot.querySelector('slot');
+            const slottedElements = slot.assignedNodes({ flatten: true });
+            const svg = slottedElements.find(node =>
+             node.nodeType === Node.ELEMENT_NODE && node.classList.contains('icon-star')
+           );
+           if(this.favorite && this.favorite) {
+              svg.classList.add('selected'); // Add the class
+           } else {
+             svg.classList.remove('selected'); // Remove the class
+           }
+            this.requestUpdate();
+          },
+          onError: error => {
+            console.warn(error);
+          },
+        },
+      });
+      this.dispatchEvent(event);
+    })
+   }
+
   }
 
   handleClick(e) {
@@ -189,7 +246,9 @@ export class DtButton extends DtBase {
     }
     if (this.onClick) {
       e.preventDefault();
-      this.onClick(e);
+      // if (this.id === 'favorite-button') {
+        this.onClick(e);
+      // }
     } else {
       const form = this.closest('form');
       if (form) {
@@ -201,33 +260,58 @@ export class DtButton extends DtBase {
 
   onClick(e){
     e.preventDefault();
+    if (this.id === 'favorite-button') {
      const event = new CustomEvent('click', {
       detail: {
-        field: this.name,
+        field: this.id,
+        favorite: !this.favorite,
       }
     });
+    this.favorite = !this.favorite;
+    // this.value = this.favorite ? 'favourited': 'not favourited';
+       const slot = this.shadowRoot.querySelector('slot');
+       const slottedElements = slot.assignedNodes({ flatten: true });
+       const svg = slottedElements.find(node =>
+        node.nodeType === Node.ELEMENT_NODE && node.classList.contains('icon-star')
+      );
+       if (svg) {
+        if (svg.classList.contains('selected')) {
+          svg.classList.remove('selected'); // Remove the class
+        } else {
+          svg.classList.add('selected'); // Add the class
+        }
+       };
       this.dispatchEvent(event);
-
+      this.requestUpdate();
+    }
     };
+
+
 
   _dismiss() {
     this.hide = true;
   }
 
-  render() {
+  render(e) {
     if (this.hide) {
       return html``;
     }
 
+    const buttonClasses = {
+      ...this.classes,
+      // 'selected': this.favorite,
+    };
+
+    // this.value = this.favorite ? 'favourited': 'not favourited';
     if (this.href) {
       return html`
         <a
           name=${this.name}
-          class=${classMap(this.classes)}
+          class=${classMap(buttonClasses)}
           href=${this.href}
           title=${this.title}
           type=${this.type}
-          @click=${() => this.handleClick()}
+          @click=${this.handleClick}
         >
           <div>
             <slot></slot>
@@ -238,8 +322,7 @@ export class DtButton extends DtBase {
     return html`
 
       <button
-        name=${this.name}
-        class=${classMap(this.classes)}
+        class=${classMap(buttonClasses)}
         title=${this.title}
         type=${this.type}
         .value=${this.value}

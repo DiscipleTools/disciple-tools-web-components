@@ -32,7 +32,7 @@ export default class ComponentService {
       'dt-button',
     ];
 
-    this.dynamicLoadComponents = ['dt-connection', 'dt-tags', 'dt-modal'];
+    this.dynamicLoadComponents = ['dt-connection', 'dt-tags', 'dt-modal', 'dt-button'];
   }
 
   /**
@@ -60,11 +60,11 @@ export default class ComponentService {
         element.tagName.toLowerCase() === 'dt-modal' &&
         element.classList.contains('duplicate-detected')
     );
+
     // calling the function to check duplicates
     if (filteredElements) {
       this.checkDuplicates(elements, filteredElements);
     }
-
     if (elements) {
       elements.forEach(el =>
         el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this))
@@ -122,8 +122,17 @@ export default class ComponentService {
       const { field, query, onSuccess, onError } = details;
       try {
         const component = event.target.tagName.toLowerCase();
-        let values = [];
+        let values = []
         switch (component) {
+          case 'dt-button': {
+            const contactApiData = await this.api.getContactInfo(
+              this.postType,
+              this.postId
+            );
+            values = contactApiData.favorite;
+            break;
+          };
+
           case 'dt-connection': {
             const postType = details.postType || this.postType;
             const connectionResponse = await this.api.listPostsCompact(
@@ -171,21 +180,27 @@ export default class ComponentService {
   async onClick(event) {
     const details = event.detail;
     if (details) {
-      const { field } = details;
-      const component = event.target.tagName.toLowerCase();
-
+      const { field, favorite } = details;
       event.target.setAttribute('loading', true);
       let apiValue;
-      if (field === 'follow') {
-        apiValue = {
-          follow: { values: [{ value: '1', delete: false }] },
-          unfollow: { values: [{ value: '1', delete: true }] },
-        };
-      } else {
-        apiValue = {
-          follow: { values: [{ value: '1', delete: true }] },
-          unfollow: { values: [{ value: '1', delete: false }] },
-        };
+      switch (field) {
+        case 'favorite-button':
+          apiValue =  { favorite }
+          break;
+        // case 'follow':
+        //   apiValue = {
+        //     follow: { values: [{ value: '1', delete: true }] },
+        //     unfollow: { values: [{ value: '1', delete: false }] },
+        //   };
+        //   break;
+        // case 'unfollow':
+        //   apiValue = {
+        //     follow: { values: [{ value: '1', delete: false }] },
+        //     unfollow: { values: [{ value: '1', delete: true }] },
+        //   };
+        //   break;
+        default:
+          break;
       }
 
       // Update post via API
@@ -195,15 +210,6 @@ export default class ComponentService {
           this.postId,
           apiValue
         );
-
-        // Sending response to update value
-        if (component === 'dt-button') {
-          details.onSuccess(apiResponse);
-        }
-
-        event.target.removeAttribute('loading');
-        event.target.setAttribute('error', '');
-        event.target.setAttribute('saved', true);
       } catch (error) {
         console.error(error);
         event.target.removeAttribute('loading');
@@ -270,8 +276,6 @@ export default class ComponentService {
 
     // Convert component value format into what the API expects
     if (value) {
-      console.log('value', value);
-      console.log('component', component);
       switch (component) {
         case 'dt-toggle':
           if (typeof value === 'string') {
