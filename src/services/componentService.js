@@ -104,7 +104,7 @@ export default class ComponentService {
       allElements.forEach(el => {
         el.addEventListener('change', this.handleChangeEvent.bind(this));
         if (el.tagName.toLowerCase() === 'dt-button') {
-          el.addEventListener('click', this.onClick.bind(this));
+          el.addEventListener('customClick', this.handleCustomClickEvent.bind(this));
         }
       });
     }
@@ -129,7 +129,7 @@ export default class ComponentService {
               this.postType,
               this.postId
             );
-            values = contactApiData.favorite;
+            values = contactApiData;
             break;
           };
 
@@ -177,39 +177,36 @@ export default class ComponentService {
     }
   }
 
-  async onClick(event) {
+  async handleCustomClickEvent(event) {
     const details = event.detail;
     if (details) {
-      const { field, favorite } = details;
+      const { field, toggleState } = details;
       event.target.setAttribute('loading', true);
       let apiValue;
       switch (field) {
         case 'favorite-button':
-          apiValue =  { favorite }
+          apiValue =  { favorite: toggleState }
+          break
+        case 'following-button':
+        case 'follow-button':
+          apiValue = {
+            follow: { values: [{ value: '1', delete: toggleState }] },
+            unfollow: { values: [{ value: '1', delete: !toggleState }] },
+          };
           break;
-        // case 'follow':
-        //   apiValue = {
-        //     follow: { values: [{ value: '1', delete: true }] },
-        //     unfollow: { values: [{ value: '1', delete: false }] },
-        //   };
-        //   break;
-        // case 'unfollow':
-        //   apiValue = {
-        //     follow: { values: [{ value: '1', delete: false }] },
-        //     unfollow: { values: [{ value: '1', delete: true }] },
-        //   };
-        //   break;
-        default:
+            default:
           break;
       }
 
       // Update post via API
       try {
+        console.log(this.postId, this.postType, apiValue);
         const apiResponse = await this.api.updatePost(
           this.postType,
           this.postId,
           apiValue
         );
+        console.log('apiResponse', apiResponse);
       } catch (error) {
         console.error(error);
         event.target.removeAttribute('loading');

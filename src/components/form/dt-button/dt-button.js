@@ -167,7 +167,7 @@ export class DtButton extends DtBase {
 
   static get properties() {
     return {
-      name: { type: String },
+      label: { type: String },
       context: { type: String },
       type: { type: String },
       outline: { type: Boolean },
@@ -203,27 +203,48 @@ export class DtButton extends DtBase {
   connectedCallback() {
     // Code that runs after the component's initial render
     super.connectedCallback();
-    if (this.id === 'favorite-button') {
+    if (this.id === 'favorite-button' || this.id === 'follow-button' || this.id === 'following-button') {
       window.addEventListener('load', async () => {
-        this.loading = true;
       const event = await new CustomEvent('dt:get-data', {
         bubbles: true,
         detail: {
           field: this.id,
           postType: this.postType,
           onSuccess: result => {
-            this.favorite = result; // Updated state
-            const slot = this.shadowRoot.querySelector('slot');
-            const slottedElements = slot.assignedNodes({ flatten: true });
-            const svg = slottedElements.find(node =>
-             node.nodeType === Node.ELEMENT_NODE && node.classList.contains('icon-star')
-           );
-           if(this.favorite && this.favorite) {
-              svg.classList.add('selected'); // Add the class
-           } else {
-             svg.classList.remove('selected'); // Remove the class
-           }
-            this.requestUpdate();
+            const key = Object.keys(result).find( item => ['favorite', 'unfollow', 'follow'].includes(item));
+            switch (key) {
+              case 'favorite': {
+                this.favorite = result.favorite; // Updated state
+                const slot = this.shadowRoot.querySelector('slot');
+                const slottedElements = slot.assignedNodes({ flatten: true });
+                const svg = slottedElements.find(node =>
+                 node.nodeType === Node.ELEMENT_NODE && node.classList.contains('icon-star')
+               );
+                if(this.favorite) {
+                    svg.classList.add('selected');// Add the class
+                } else {
+                  svg.classList.remove('selected'); // Remove the class
+                }
+                this.requestUpdate();
+              }
+              break;
+
+              case 'follow':
+                this.following = true; // Updated state
+                this.requestUpdate();
+              break;
+
+              case 'unfollow':
+              this.following = false;
+              this.requestUpdate();
+              break;
+
+              default:
+                console.log('No matching Key found!');
+              break;
+                // this.requestUpdate();
+
+            }
           },
           onError: error => {
             console.warn(error);
@@ -246,9 +267,9 @@ export class DtButton extends DtBase {
     }
     if (this.onClick) {
       e.preventDefault();
-      // if (this.id === 'favorite-button') {
+      if (this.id === 'favorite-button' || this.id === 'follow-button' || this.id === 'following-button') {
         this.onClick(e);
-      // }
+      }
     } else {
       const form = this.closest('form');
       if (form) {
@@ -261,14 +282,13 @@ export class DtButton extends DtBase {
   onClick(e){
     e.preventDefault();
     if (this.id === 'favorite-button') {
-     const event = new CustomEvent('click', {
+     const event = new CustomEvent('customClick', {
       detail: {
         field: this.id,
-        favorite: !this.favorite,
+        toggleState: !this.favorite,
       }
     });
     this.favorite = !this.favorite;
-    // this.value = this.favorite ? 'favourited': 'not favourited';
        const slot = this.shadowRoot.querySelector('slot');
        const slottedElements = slot.assignedNodes({ flatten: true });
        const svg = slottedElements.find(node =>
@@ -283,10 +303,32 @@ export class DtButton extends DtBase {
        };
       this.dispatchEvent(event);
       this.requestUpdate();
-    }
+    } else if (this.id === 'follow-button' || this.id === 'following-button') {
+      const toggleState = this.following;
+      const event = new CustomEvent('customClick', {
+        detail: {
+          field: this.id,
+          toggleState,
+        }
+      });
+      this.id = this.id === 'follow-button' ? 'following-button' : 'follow-button';
+      this.label= this.label === 'Follow' ? 'Following' : 'Follow';
+      this.outline = !this.outline;
+      this.following = !this.following;
+      this.requestUpdate();
+      this.dispatchEvent(event);
     };
 
+  }
 
+  _getSVGIcon() {
+    return this.id === 'follow-button' || this.id === 'following-button'
+      ? html`<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+      <path fill="currentColor"
+          d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5" />
+  </svg>`
+      : '';
+  }
 
   _dismiss() {
     this.hide = true;
@@ -299,14 +341,12 @@ export class DtButton extends DtBase {
 
     const buttonClasses = {
       ...this.classes,
-      // 'selected': this.favorite,
     };
-
-    // this.value = this.favorite ? 'favourited': 'not favourited';
+    const slotContent = ((this.id ==='follow-button' || this.id === 'following-button') && this.label)? this.label  : html`<slot></slot>`;
     if (this.href) {
       return html`
         <a
-          name=${this.name}
+          id=${this.name}
           class=${classMap(buttonClasses)}
           href=${this.href}
           title=${this.title}
@@ -314,7 +354,7 @@ export class DtButton extends DtBase {
           @click=${this.handleClick}
         >
           <div>
-            <slot></slot>
+          ${slotContent}${this._getSVGIcon()}
           </div>
         </a>
       `;
@@ -329,7 +369,7 @@ export class DtButton extends DtBase {
         @click=${this.handleClick}
       >
         <div>
-          <slot></slot>
+        ${slotContent}${this._getSVGIcon()}
         </div>
       </button>
     `;
