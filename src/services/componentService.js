@@ -29,12 +29,14 @@ export default class ComponentService {
       'dt-toggle',
       'dt-comm-channel',
       'dt-multiselect-buttons-group',
+      'dt-list'
     ];
 
     this.dynamicLoadComponents = [
       'dt-connection',
       'dt-tags',
-      'dt-modal'
+      'dt-modal',
+      'dt-list'
     ]
   }
 
@@ -117,6 +119,11 @@ export default class ComponentService {
         const component = event.target.tagName.toLowerCase();
         let values = [];
         switch (component) {
+          case 'dt-list': {
+            const listResponse = await this.api.fetchContactsList('contacts')
+            values = listResponse.posts
+          }
+          break;
           case 'dt-connection': {
             const postType = details.postType || this.postType;
             const connectionResponse = await this.api.listPostsCompact(postType, query);

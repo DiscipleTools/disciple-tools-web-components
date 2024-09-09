@@ -311,7 +311,7 @@ export class DtList extends DtBase {
     return {
       postType: { type: String },
       postTypeLabel: { type: String },
-      postTypeSettings: { type: Object, attribute: true },
+      posttypesettings: { type: Object, attribute: true },
       posts: { type: Array },
       total: { type: Number },
       columns: { type: Array },
@@ -331,26 +331,37 @@ export class DtList extends DtBase {
   }
 
   firstUpdated() {
-    if (this.nonce && !this.api) {
-      this.api = new ApiService(this.nonce);
-    }
+    this.postTypeSettings  = window.post_type_fields;
   }
 
-  async _getPosts(offset = 0, sortBy = 'name', sortOrder = 'desc') {
-    this.loading = true;
-    this.filteredOptions = [];
-    const sort = `${sortOrder === 'desc' ? '-' : ''}${sortBy}`;
-    const URLParams = encodeURI(
-      `?offset=${offset}&sortBy=${sort}&offset=${offset}${this.columns
-        .map(column => `&fields_to_return=${column}`)
-        .join('')}`
-    );
-    const response = await this.api.makeRequestOnPosts(
-      'GET',
-      `${this.postType}${URLParams}`
-    );
-
-    return response;
+  async _getPosts() {
+    // this.loading = true;
+    // this.filteredOptions = [];
+    // const sort = `${sortOrder === 'desc' ? '-' : ''}${sortBy}`;
+    // const URLParams = encodeURI(
+    //   `?offset=${offset}&sortBy=${sort}&offset=${offset}${this.columns
+    //     .map(column => `&fields_to_return=${column}`)
+    //     .join('')}`
+    // );
+    // const response = await this.api.makeRequestOnPosts(
+    //   'GET',
+    //   `${this.postType}${URLParams}`
+    // );
+    const event = new CustomEvent('dt:get-data', {
+      bubbles: true,
+      detail: {
+        field: this.name,
+        postType: this.postType,
+        onSuccess: result => {
+          this.posts = result;
+          this.total = result.length;
+        },
+        onError: error => {
+          console.warn(error);
+        },
+      },
+    });
+    this.dispatchEvent(event);
   }
 
   _headerClick(e) {
@@ -388,6 +399,7 @@ export class DtList extends DtBase {
     // const classes = {
     //   sortedBy: this.sortedBy,
     // };
+    if(this.postTypeSettings){
     return html`
       <thead>
         <tr>
@@ -428,28 +440,35 @@ export class DtList extends DtBase {
         </tr>
       </thead>
     `;
+        }
   }
 
-  _rowTemplate() {
-    return map(this.posts, (post, i) => {
-      if (
-        this.showArchived ||
-        (!this.showArchived && post.overall_status.key !== 'closed')
-      ) {
-        return html`
-          <tr class="dnd-moved" data-link="${this.posts.permalink}">
-            <td class="bulk_edit_checkbox no-title">
-              <input type="checkbox" name="bulk_edit_id" .value="${post.ID}" />
-            </td>
-            <td class="no-title line-count">${i + 1}.</td>
+    _rowTemplate() {
+      if (this.posts && Array.isArray(this.posts)) {
+        const rows = this.posts.map((post, i) => {
+          if (
+            this.showArchived ||
+            (!this.showArchived && post.overall_status !== 'closed')
+          ) {
 
-            ${this._cellTemplate(post)}
-          </tr>
-        `;
+            return html`
+              <tr class="dnd-moved" data-link="${post.permalink}">
+                <td class="bulk_edit_checkbox no-title">
+                  <input type="checkbox" name="bulk_edit_id" .value="${post.ID}" />
+                </td>
+                <td class="no-title line-count">${i + 1}.</td>
+                ${this._cellTemplate(post)}
+              </tr>
+            `;
+          }
+        });
+
+        return rows.length > 0 ? rows : html`<p>No contacts available</p>`;
       }
       return null;
-    });
-  }
+    }
+
+
 
   _cellTemplate(post) {
     return map(this.columns, column => {
@@ -460,7 +479,7 @@ export class DtList extends DtBase {
       ) {
         return html` <td
           dir="auto"
-          title="${this.postTypeSettings[column].name}"
+          title="${this.postTypeSettings[column]}"
         >
           <a href="${post[column]}" title="test">${post[column]}</a>
         </td>`;
@@ -694,7 +713,7 @@ export class DtList extends DtBase {
 
   connectedCallback() {
     super.connectedCallback();
-    if (!this.posts) {
+        if (!this.posts) {
       this._getPosts().then(posts => {
         this.posts = posts;
       });
@@ -734,7 +753,7 @@ export class DtList extends DtBase {
             >
           </div>
           <span class="filter-result-text"
-            >${msg(str`Showing 1 of ${this.total}`)}</span
+            >${msg(str`Showing ${this.total} of ${this.total}`)}</span
           >
 
           <button
@@ -761,9 +780,10 @@ export class DtList extends DtBase {
             @click=${this._toggleShowArchived}
           ></dt-toggle>
         </div>
+
         ${this._fieldsSelectorTemplate()} ${this._bulkSelectorTemplate()}
         <table class=${classMap(bulkEditClass)}>
-          ${this._headerTemplate()}
+        ${this._headerTemplate()}
           ${this.posts ? this._rowTemplate() : msg('Loading')}
         </table>
       </div>

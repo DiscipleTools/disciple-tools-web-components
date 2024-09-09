@@ -89,6 +89,15 @@ export default class ApiService {
     return this.makeRequestOnPosts('POST', postType, fields);
   }
 
+    /**
+   * Fetch contacts list via API
+   * @param {string} postType
+   * @returns {Promise<any>}
+   */
+  async fetchContactsList(postType) {
+    return this.makeRequestOnPosts('POST', `${postType}/list`);
+  }
+
   /**
    * Update Post via API
    * @param {string} postType
