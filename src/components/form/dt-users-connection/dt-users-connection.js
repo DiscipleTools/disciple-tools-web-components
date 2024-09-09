@@ -95,6 +95,7 @@ export class DtUsersConnection extends DtTags {
         detail: {
           field: this.name,
           oldValue: this.value,
+          remove: true,
         },
       });
       this.value = (this.value || []).map(i => {
@@ -180,12 +181,12 @@ export class DtUsersConnection extends DtTags {
           <div class="selected-option">
             <a
               href="${opt.link}"
-              style="border-inline-start-color: ${opt.status_color
-                ? opt.status_color
+              style="border-inline-start-color: ${opt.status
+                ? opt.status
                 : ''}"
               ?disabled="${this.disabled}"
-              title="${opt.name}"
-              >${opt.name}</a
+              title="${opt.label}"
+              >${opt.label}</a
             >
             <button
               @click="${this._remove}"
@@ -201,7 +202,7 @@ export class DtUsersConnection extends DtTags {
 
   _renderOption(opt, idx) {
     return html`
-      <li tabindex="-1" style="border-inline-start-color:${opt.status_color}">
+      <li tabindex="-1" style="border-inline-start-color:${opt.status}">
         <button
           value="${opt.id}"
           type="button"
@@ -216,8 +217,8 @@ export class DtUsersConnection extends DtTags {
             ? 'active'
             : ''}"
         >
-          <span class="avatar"><img src="${opt.avatar}" alt="${opt.name}"/></span>
-          <span class="connection-id">${opt.name}</span>
+          <span class="avatar"><img src="${opt.avatar}" alt="${opt.label}"/></span> &nbsp;
+          <span class="connection-id">${opt.label}</span>
         </button>
       </li>
     `;

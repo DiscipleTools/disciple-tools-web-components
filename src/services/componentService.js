@@ -145,9 +145,9 @@ export default class ComponentService {
 
             values= connectionResponse.map(value=>({
               id:value.ID,
-              name:value.name,
+              label:value.name,
               avatar:value.avatar,
-              status_color:value.status_color,
+              status:value.status_color,
             }));
           break;
 
@@ -182,7 +182,7 @@ export default class ComponentService {
   async handleChangeEvent(event) {
     const details = event.detail;
     if (details) {
-      const { field, newValue, oldValue} = details;
+      const { field, newValue, oldValue, remove} = details;
       const component = event.target.tagName.toLowerCase();
       const apiValue = ComponentService.convertValue(component, newValue, oldValue);
 
@@ -191,24 +191,27 @@ export default class ComponentService {
       // Update post via API
       try {
 //         var apiResponse;
-// switch(component){
-//   case 'dt-users-connection':{
-//      apiResponse= await this.api.deleteFilter(this.postType,this.postId,{
-
-//     })
-//   }
-
-//   default:{
+switch(component){
+  case 'dt-users-connection':{
+    if(remove === true){
+      const apiResponse =await this.api.removePostShare(this.postType,this.postId,apiValue);
+      break;
+    }
+    const apiResponse= await this.api.addPostShare(this.postType,this.postId,apiValue)
+    break;
+  }
+  default:{
      const apiResponse= await this.api.updatePost(this.postType, this.postId, {
         [field]: apiValue,
       });
-  // }
-// }
 
+      if(component==='dt-comm-channel' && details.onSuccess){
+        details.onSuccess(apiResponse);
+      }
+    break;
+  }
+}
         // Sending response to update value
-        if(component==='dt-comm-channel' && details.onSuccess){
-          details.onSuccess(apiResponse);
-        }
 
         event.target.removeAttribute('loading');
         event.target.setAttribute('error', '');
@@ -258,38 +261,70 @@ export default class ComponentService {
             force_values: false,
           };
           break;
-        //seperate case for dt-user
+
+        //seperate case for dt-users-connection
         case 'dt-users-connection':
+           // Initialize an empty array to hold the differences found.
+            const userDataDifferences=[];
+            // Create a Map from oldValue for quick lookups by ID.
+            const oldUsersMap = new Map(oldValue.map(user => [user.id,user]));
 
-            returnValue=[
-              {
-                id: value,
-              },
-            ];
+            for (const newUserObj of returnValue) {
+            // Retrieve the corresponding old object from the map using the ID.
+              const oldUserObj = oldUsersMap.get(newUserObj.id);
+              const diff = { id: newUserObj.id, changes: {} };
 
-          break;
-        case 'dt-connection':
-        case 'dt-location':
-          if (typeof value === 'string') {
-            returnValue = [
-              {
-                id: value,
-              },
-            ];
-          }
-          returnValue = {
-            values: returnValue.map(item => {
-              const ret = {
-                value: item.id,
-              };
-              if (item.delete) {
-                ret.delete = item.delete;
+            // Check if the old object exists (i.e., the current new object may be new).
+              if (!oldUserObj) {
+                  // New object added
+                  diff.changes = { ...newUserObj }; // Store all properties of the new object as changes.
+                  userDataDifferences.push(diff);
+                  break;
+              } else {
+                 
+                // Existing object found; we need to compare their properties.
+                  let hasDiff = false;
+                  const allKeys = new Set([...Object.keys(oldUserObj), ...Object.keys(newUserObj)]);
+      
+                  // Iterate through all keys to compare values.
+                  for (const key of allKeys) {
+                      if (newUserObj[key] !== oldUserObj[key]) {
+                          diff.changes[key] = newUserObj.hasOwnProperty(key) ? newUserObj[key] : undefined;
+                          // Set the hasDiff flag to true as a difference was found.
+                          hasDiff = true;
+                      }
+                  }
+                  if (hasDiff){ userDataDifferences.push(diff);
+                  break;
+                }
               }
-              return ret;
-            }),
-            force_values: false,
-          };
+          }
+          
+          returnValue = userDataDifferences[0].id;
           break;
+
+    case 'dt-connection':
+            case 'dt-location':
+              if (typeof value === 'string') {
+                returnValue = [
+                  {
+                    id: value,
+                  },
+                ];
+              }
+              returnValue = {
+                values: returnValue.map(item => {
+                  const ret = {
+                    value: item.id,
+                  };
+                  if (item.delete) {
+                    ret.delete = item.delete;
+                  }
+                  return ret;
+                }),
+                force_values: false,
+              };
+            break;
 
         case 'dt-multiselect-buttons-group':
           if (typeof value === 'string') {
