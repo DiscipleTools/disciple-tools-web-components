@@ -141,7 +141,7 @@ export default class ComponentService {
           //for getting the list from the api
           case 'dt-users-connection': {
             const postType = details.postType || this.postType;
-            const connectionResponse = await this.api.searchUsers(`&post_type=${postType}`);
+            const connectionResponse = await this.api.searchUsers(query,postType);
 
             values= connectionResponse.map(value=>({
               id:value.ID,

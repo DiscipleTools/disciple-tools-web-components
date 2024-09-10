@@ -135,7 +135,7 @@ export class DtUsersConnection extends DtTags {
         opt =>
           !selectedValues.includes(opt.id) &&
           (!this.query ||
-            opt.name
+            opt.label
               .toLocaleLowerCase()
               .includes(this.query.toLocaleLowerCase()))
       );
