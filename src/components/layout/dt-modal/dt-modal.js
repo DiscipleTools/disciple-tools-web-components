@@ -158,6 +158,10 @@ export class DtModal extends DtBase {
         filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
         height: 15px;
       }
+      .button img {
+      height: 15px;
+      width: 15px;
+      }
     `;
   }
 
@@ -186,13 +190,10 @@ export class DtModal extends DtBase {
     this.addEventListener('close', () => this._closeModal());
   }
 
-  _openModal() {
-    console.log('style',this.buttonStyle);
-
-    this.isOpen = true;
-    this.shadowRoot.querySelector('dialog').showModal();
-
-    document.querySelector('body').style.overflow = "hidden"
+ _openModal() {
+  this.isOpen = true;
+ this.shadowRoot.querySelector('dialog').showModal();
+ document.querySelector('body').style.overflow = "hidden"
   }
 // to format title coming from backend
 
