@@ -218,13 +218,10 @@ export class DtModal extends DtBase {
     this.addEventListener('close', () => this._closeModal());
   }
 
-  _openModal() {
-    console.log('style',this.buttonStyle);
-
-    this.isOpen = true;
-    this.shadowRoot.querySelector('dialog').showModal();
-
-    document.querySelector('body').style.overflow = "hidden"
+ _openModal() {
+  this.isOpen = true;
+ this.shadowRoot.querySelector('dialog').showModal();
+ document.querySelector('body').style.overflow = "hidden"
   }
   // to format title coming from backend
 

@@ -2,6 +2,8 @@ import { html, css, LitElement } from 'lit';
 import '../dt-button/dt-button.js';
 import '../../layout/dt-modal/dt-modal.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { classMap } from 'lit/directives/class-map.js';
+
 
 export class DtDropdown extends LitElement {
   static get styles() {
@@ -16,9 +18,7 @@ export class DtDropdown extends LitElement {
         cursor: pointer;
         border-radius: 5px;
       }
-      button:hover {
-        background-color: var(--button-hover-color, #2980b9);
-      }
+      
       slot {
         display: none;
         min-width: 200px;
@@ -48,10 +48,19 @@ export class DtDropdown extends LitElement {
         position: relative;
         display: inline-block;
       }
+      button.dt-dropdown{
+        padding:8px;
+        border:none;
+        background-color:#00897B;
+        color:white !important;
+        border-radius:4px;
+        }
+        
 
       .dropdown ul {
-        // position: absolute;
+        position: absolute;
         z-index: 999;
+        min-width:200px;
         display: none;
         // left: -100vw;
         // top: calc(1.5em + 14px);
@@ -112,21 +121,32 @@ export class DtDropdown extends LitElement {
       label: { type: String },
       isModal: { type: Boolean },
       buttonStyle: { type: Object },
-      selectedOptionLabel: { type: String },
+      default: { type : Boolean },
+      context:{ type: String },
     };
+  }
+
+  get classes() {
+    const classes = {
+      'dt-dropdown': true,
+    };
+    const contextClass = `dt-dropdown--${this.context}`;
+    classes[contextClass] = true;
+    return classes;
   }
 
   render() {
     return html`
     <div class="dropdown">
     <button
+    class=${classMap(this.classes)}
     style=${styleMap(this.buttonStyle || {})}
     @mouseover=${this._handleHover}
     @mouseleave=${this._handleMouseLeave}
     @focus=${this._handleHover}
     >
 
-    ${this.selectedOptionLabel} \u25BC
+    ${this.label} \u25BC
 
     </button>
     <ul
@@ -144,11 +164,13 @@ export class DtDropdown extends LitElement {
                 <dt-modal
                   class="list-style"
                   dropdownListImg=${option.icon}
-                  buttonLabel="${option.label}"
-                  buttonClass="{}"
+                  buttonLabel="${option.label.replace(/-/g, ' ')}"
+                  buttonClass='{}'
                   buttonStyle=${JSON.stringify({
                     color: '#3f729b',
                     background: 'none',
+                    fontSize:'12px',
+                    textAlign: 'left',
                     border: 'none',
                     '--hover-color': 'white',
                   })}
@@ -159,7 +181,7 @@ export class DtDropdown extends LitElement {
           : html`
               <li class="list-style">
                 <button
-                  style=" background : none ; border : none; --hover-color:white"
+                  style=" background : none ; border : none; --hover-color:white; font-size:12px;text-align:left"
                   @click="${() => this._redirectToHref(option.href)}"
                 >
                   <img
@@ -167,7 +189,7 @@ export class DtDropdown extends LitElement {
                     style="width: 15px; height: 15px"
                     alt=${option.label}
                   />
-                  ${option.label}
+                  ${option.label.replace(/-/g, ' ')}
                 </button>
               </li>
             `}
