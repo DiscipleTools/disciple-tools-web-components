@@ -42,6 +42,15 @@ export default class ComponentService {
     if (this.postId) {
       this.enableAutoSave();
     }
+    /*
+    This is explicitly created to handle custom event send by "Create New Contact form - Save Button" with empty postId
+    as "enableautoSave" is to only work On Edit page(where there is some postId).
+    */
+    const createPostButton = document.querySelector('dt-button#create-post-button');
+    if(createPostButton) {
+      createPostButton.addEventListener('send-data', this.processFormSubmission.bind(this));
+    }
+    // this.processFormSubmission();
     this.attachLoadEvents();
   }
 
@@ -107,6 +116,33 @@ export default class ComponentService {
           el.addEventListener('customClick', this.handleCustomClickEvent.bind(this));
         }
       });
+    }
+  }
+
+ /**
+   * Handle Post creation on new contact form
+   *
+   */
+  async processFormSubmission(event){
+    // const createPostButton = document.querySelector('dt-button#create-post-button');
+    const details = event.detail;
+    const { newValue } = details;
+
+    try {
+      const apiResponse = await this.api.createPost(
+        this.postType, newValue.el
+      );
+      if (apiResponse) {
+        window.location = apiResponse.permalink;
+      }
+      event.target.removeAttribute('loading');
+      event.target.setAttribute('error', '');
+      event.target.setAttribute('saved', true);
+    } catch (error) {
+      console.error(error);
+      event.target.removeAttribute('loading');
+      event.target.setAttribute('invalid', true); // this isn't hooked up yet
+      event.target.setAttribute('error', error.message || error.toString());
     }
   }
 
@@ -178,9 +214,12 @@ export default class ComponentService {
   }
 
   async handleCustomClickEvent(event) {
+
     const details = event.detail;
     if (details) {
       const { field, toggleState } = details;
+
+
       event.target.setAttribute('loading', true);
       let apiValue;
       switch (field) {
@@ -200,13 +239,11 @@ export default class ComponentService {
 
       // Update post via API
       try {
-        console.log(this.postId, this.postType, apiValue);
         const apiResponse = await this.api.updatePost(
           this.postType,
           this.postId,
           apiValue
         );
-        console.log('apiResponse', apiResponse);
       } catch (error) {
         console.error(error);
         event.target.removeAttribute('loading');
@@ -231,10 +268,9 @@ export default class ComponentService {
       const apiValue = ComponentService.convertValue(
         component,
         newValue,
-        oldValue
+        oldValue,
       );
       event.target.setAttribute('loading', true);
-
       // Update post via API
       try {
         const apiResponse = await this.api.updatePost(

@@ -265,19 +265,65 @@ export class DtButton extends DtBase {
         return;
       }
     }
-    if (this.onClick) {
+    if (this.id === 'favorite-button' || this.id === 'follow-button' || this.id === 'following-button') {
       e.preventDefault();
-      if (this.id === 'favorite-button' || this.id === 'follow-button' || this.id === 'following-button') {
-        this.onClick(e);
+      this.onClick(e);
+    } else if (this.id === 'create-post-button') {
+      const form = this.closest('form');
+    if (!form) {
+      console.error('Form not found!');
+    } else {
+      console.log('Form found', form);
+    }
+      const formData = new FormData(form);
+      const data = {
+        form: {},
+        el: {
+          type: 'access',
+        },
+      };
+    formData.forEach((value, key) => {
+      data.form[key] = value;
+    });
+
+    Array.from(form.elements).forEach((el) => {
+      if (
+        el.localName.startsWith('dt-') &&
+        el.value &&
+        String(el.value).trim() !== ''
+      ) {
+        if (el.localName.startsWith('dt-comm')) {
+          // For 'dt-comm' elements, store filtered values
+          const filteredValues = el.value.map(item => ({ value: item.value }));
+          data.el[el.name] = filteredValues;
+        } else if (el.localName.startsWith('dt-multi') || el.localName.startsWith('dt-tags')) {
+          // Handle multi and tags elements
+          const filteredValues = el.value.map(item => ({ value: item }));
+          data.el[el.name] = { values: filteredValues };
+        } else if (el.localName.startsWith('dt-connection')) {
+          // Handle connection elements
+          const filteredValues = el.value.map(item => ({ value: item.label }));
+          data.el[el.name] = { values: filteredValues };
+        } else {
+          // Store other dt-* element values
+          data.el[el.name] = el.value;
+        }
       }
+    });
+      const event = new CustomEvent('send-data', {
+        detail: {
+          field: this.id,
+          newValue: data
+        },
+      });
+      this.dispatchEvent(event);
     } else {
       const form = this.closest('form');
       if (form) {
-        form.submit();
+        // form.submit();
       }
     }
   }
-
 
   onClick(e){
     e.preventDefault();
