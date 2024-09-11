@@ -159,15 +159,15 @@ export class DtModal extends DtBase {
         height: 15px;
       }
         .dt-modal.header-blue-bg {
-          padding: 0; 
+          padding: 0;
         }
-        .dt-modal.header-blue-bg header {   
+        .dt-modal.header-blue-bg header {
           background-color: #3f729b;
           color: #fff;
           text-align: center;
           padding-top: 10px;
         }
-        .dt-modal.header-blue-bg header #modal-field-title {   
+        .dt-modal.header-blue-bg header #modal-field-title {
           font-size: 1.5rem;
           width: 100%;
         }
