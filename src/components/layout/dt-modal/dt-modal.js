@@ -158,33 +158,37 @@ export class DtModal extends DtBase {
         filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
         height: 15px;
       }
-        .dt-modal.header-blue-bg {
-          padding: 0;
-        }
-        .dt-modal.header-blue-bg header {
-          background-color: #3f729b;
-          color: #fff;
-          text-align: center;
-          padding-top: 10px;
-        }
-        .dt-modal.header-blue-bg header #modal-field-title {
-          font-size: 1.5rem;
-          width: 100%;
-        }
-        .dt-modal.header-blue-bg article {
-          padding: 10px 0;
-        }
-        .dt-modal.header-blue-bg footer {
-          padding-left: .7rem;
-          padding-right: .7rem;
-          justify-content: flex-end;
-        }
-        .dt-modal.header-blue-bg footer .button {
-          padding: 12px 14px;
-        }
-        .dt-modal.header-blue-bg form {
-          grid-template-rows: 52px auto 85px;
-              }
+      .dt-modal.header-blue-bg {
+        padding: 0;
+      }
+      .dt-modal.header-blue-bg header {
+        background-color: #3f729b;
+        color: #fff;
+        text-align: center;
+        padding-top: 10px;
+      }
+      .dt-modal.header-blue-bg header #modal-field-title {
+        font-size: 1.5rem;
+        width: 100%;
+      }
+      .dt-modal.header-blue-bg article {
+        padding: 10px 0;
+      }
+      .dt-modal.header-blue-bg footer {
+        padding-left: .7rem;
+        padding-right: .7rem;
+        justify-content: flex-end;
+      }
+      .dt-modal.header-blue-bg footer .button {
+        padding: 12px 14px;
+      }
+      .dt-modal.header-blue-bg form {
+        grid-template-rows: 52px auto 85px;
+      }
+      .button img {
+        height: 15px;
+        width: 15px;
+      }
     `;
   }
 
