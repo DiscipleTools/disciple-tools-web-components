@@ -32,7 +32,13 @@ export default class ComponentService {
       'dt-button',
     ];
 
-    this.dynamicLoadComponents = ['dt-connection', 'dt-tags', 'dt-modal', 'dt-button'];
+    this.dynamicLoadComponents = [
+      'dt-connection',
+      'dt-tags',
+      'dt-users-connection',
+      'dt-modal',
+      'dt-button',
+    ]
   }
 
   /**
@@ -193,6 +199,20 @@ export default class ComponentService {
             }
             break;
           }
+          // for getting the list from the api
+          case 'dt-users-connection': {
+            const postType = details.postType || this.postType;
+            const connectionResponse = await this.api.searchUsers(`&post_type=${postType}`);
+
+            values= connectionResponse.map(value=>({
+              id:value.ID,
+              name:value.name,
+              avatar:value.avatar,
+              status_color:value.status_color,
+            }));
+          break;
+
+          }
           case 'dt-tags':
           default:
             values = await this.api.getMultiSelectValues(
@@ -333,7 +353,16 @@ export default class ComponentService {
             force_values: false,
           };
           break;
+        // seperate case for dt-user
+        case 'dt-users-connection':
 
+            returnValue=[
+              {
+                id: value,
+              },
+            ];
+
+          break;
         case 'dt-connection':
         case 'dt-location':
           if (typeof value === 'string') {
