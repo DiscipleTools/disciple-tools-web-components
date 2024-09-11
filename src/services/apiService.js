@@ -427,6 +427,10 @@ export default class ApiService {
     return this.makeRequestOnPosts('GET', `${postType}/${postId}/duplicates`);
   }
 
+  async getContactInfo(postType,postId){
+    return this.makeRequestOnPosts('GET', `${postType}/${postId}/`);
+  }
+
   /**
    * Create user
    * @param {Object} user

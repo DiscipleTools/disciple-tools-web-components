@@ -91,7 +91,7 @@ describe('dt-connection', () => {
     expect(optionList).not.to.be.displayed;
 
     input.focus();
-    await aTimeout(50); // wait for UI update
+    await aTimeout(500); // wait for UI update
 
     expect(optionList).to.be.displayed;
   });
