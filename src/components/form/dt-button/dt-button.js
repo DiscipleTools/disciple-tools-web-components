@@ -173,7 +173,7 @@ export class DtButton extends DtBase {
       outline: { type: Boolean },
       href: { type: String },
       title: { type: String },
-      onClick: { type: Function },
+      onClick: { attribute: false },
       rounded: { type: Boolean },
       confirm: { type: String },
       buttonClass: { type: String },
@@ -260,6 +260,7 @@ export class DtButton extends DtBase {
   handleClick(e) {
     e.preventDefault();
       if (this.confirm) {
+      // eslint-disable-next-line no-restricted-globals, no-alert
       if (!confirm(this.confirm)) {
         e.preventDefault();
         return;
@@ -380,7 +381,7 @@ export class DtButton extends DtBase {
     this.hide = true;
   }
 
-  render(e) {
+  render() {
     if (this.hide) {
       return html``;
     }
