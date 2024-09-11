@@ -13,17 +13,17 @@ const options = [
 describe('dt-dropdown', () => {
 
   it('set label', async () => {
-    const selectedOptionLabel = 'Custom Label';
+    const label = 'Custom Label';
 
 
     const dtDropdown = await fixture(html`
       <dt-dropdown
-        selectedOptionLabel=${selectedOptionLabel} >
+        label=${label} >
       </dt-dropdown>
     `);
     const button = dtDropdown.shadowRoot.querySelector('button');
     const buttonText = button.textContent.trim(); // Trim leading and trailing whitespace
-    expect(buttonText).to.equal(`${selectedOptionLabel} \u25BC`);
+    expect(buttonText).to.equal(`${label} \u25BC`);
   });
 
 
