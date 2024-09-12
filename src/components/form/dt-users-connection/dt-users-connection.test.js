@@ -88,19 +88,23 @@ describe('dt-users-connection', () => {
   });
 
   it('opens option list on input focus', async () => {
-    const el = await fixture(
-      html`<dt-users-connection options="${JSON.stringify(options)}"></dt-users-connection>`
-    );
-    const input = el.shadowRoot.querySelector('input');
-    const optionList = el.shadowRoot.querySelector('.option-list');
+      const el = await fixture(
+        html`<dt-users-connection options="${JSON.stringify(options)}"></dt-users-connection>`
+      );
+      const input = el.shadowRoot.querySelector('input');
+      const optionList = el.shadowRoot.querySelector('.option-list');
 
-    expect(optionList).not.to.be.displayed;
+      if (!input || !optionList) {
+        throw new Error('Input or Option List not found');
+      }
 
-    input.focus();
-    await aTimeout(1000); // wait for UI update
+      expect(optionList).not.to.be.displayed;
 
-    expect(optionList).to.be.displayed;
-  });
+      input.focus();
+      await aTimeout(1000); // wait for UI update
+
+      expect(optionList).to.be.displayed;
+    });
 
   it('selects option via mouse', async () => {
     const el = await fixture(
