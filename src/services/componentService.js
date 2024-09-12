@@ -30,6 +30,7 @@ export default class ComponentService {
       'dt-comm-channel',
       'dt-multiselect-buttons-group',
       'dt-button',
+      'dt-users-connection',
     ];
 
     this.dynamicLoadComponents = [
@@ -386,11 +387,11 @@ switch(component){
                   userDataDifferences.push(diff);
                   break;
               } else {
-                 
+
                 // Existing object found; we need to compare their properties.
                   let hasDiff = false;
                   const allKeys = new Set([...Object.keys(oldUserObj), ...Object.keys(newUserObj)]);
-      
+
                   // Iterate through all keys to compare values.
                   for (const key of allKeys) {
                       if (newUserObj[key] !== oldUserObj[key]) {
@@ -404,7 +405,7 @@ switch(component){
                 }
               }
           }
-          
+
           returnValue = userDataDifferences[0].id;
           break;
 
