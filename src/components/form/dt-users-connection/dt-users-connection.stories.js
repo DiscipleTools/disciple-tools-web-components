@@ -5,14 +5,14 @@ import './dt-users-connection.js';
 
 const basicOptions =[
     {
-        name: "Bp",
+        label: "Bp",
         id: 2,
         avatar: "https:\/\/2.gravatar.com\/avatar\/2373ee570d59db06102d14feb50a4291?s=16&d=mm&r=g",
         contact_id: 10,
-        status_color: "#4caf50",
+        status: "#4caf50",
     },
     {
-        name: "root",
+        label: "root",
         id: 1,
         avatar: "https:\/\/0.gravatar.com\/avatar\/3f009d72559f51e7e454b16e5d0687a1?s=16&d=mm&r=g",
         contact_id: 6,
@@ -28,15 +28,15 @@ export default {
       options: Object.keys(themes),
       defaultValue: 'default',
     },
-    name: {
+    label: {
       control: 'text',
-      type: { name: 'string', required: true },
+      type: { label: 'string', required: true },
       description:
         'Passed to `change` function to identify which input triggered the event',
     },
     value: {
       control: 'text',
-      type: { name: 'array' },
+      type: { label: 'array' },
       table: {
         type: {
           summary: '{id:string, label:string}[]',
@@ -224,7 +224,7 @@ SelectedValue.args = {
       id: 2,
       avatar: "https:\/\/2.gravatar.com\/avatar\/2373ee570d59db06102d14feb50a4291?s=16&d=mm&r=g",
       contact_id: 10,
-      status_color: "#4caf50",
+      status: "#4caf50",
       update_needed: 0
     },
   ],
@@ -274,7 +274,7 @@ Saved.args = {
         id: 2,
         avatar: "https:\/\/2.gravatar.com\/avatar\/2373ee570d59db06102d14feb50a4291?s=16&d=mm&r=g",
         contact_id: 10,
-        status_color: "#4caf50",
+        status: "#4caf50",
         update_needed: 0
     },
   ],
@@ -309,7 +309,7 @@ LocalizeRTL.args = {
       id: 2,
       avatar: 'تنكر هؤلاء الرجال المفتونون',
       contact_id: 10,
-      status_color: "#4caf50",
+      status: "#4caf50",
       update_needed: 0
   },
   {
@@ -317,7 +317,7 @@ LocalizeRTL.args = {
     id: 1,
     avatar: 'تنكر هؤلاء الرجال المفتونون',
     contact_id: 10,
-    status_color: "#4caf50",
+    status: "#4caf50",
     update_needed: 0
 },
   ],
