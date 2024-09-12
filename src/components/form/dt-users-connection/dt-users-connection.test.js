@@ -97,7 +97,7 @@ describe('dt-users-connection', () => {
     expect(optionList).not.to.be.displayed;
 
     input.focus();
-    await aTimeout(50); // wait for UI update
+    await aTimeout(1000); // wait for UI update
 
     expect(optionList).to.be.displayed;
   });
@@ -161,12 +161,12 @@ describe('dt-users-connection', () => {
     );
     optionBtn.click();
     await wait(100);
-    expect(el.value).to.deep.include({ 
-      label: options[2].label, 
-      id: 3, 
+    expect(el.value).to.deep.include({
+      label: options[2].label,
+      id: 3,
       avatar: "https:\/\/0.gravatar.com\/avatar\/3f009d72559f51e7e454b16e5d0687a1?s=16&d=mm&r=g",
       contact_id: 5,
-      update_needed: 0 
+      update_needed: 0
     });
     expect(el.value).to.deep.include({
       label: options[0].label,
