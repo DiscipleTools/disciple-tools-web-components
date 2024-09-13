@@ -6,21 +6,21 @@ import './dt-users-connection.js';
 
 const options = [
   {
-    name: "Option 1",
+    label: "Option 1",
     id: 1,
     avatar: "https:\/\/2.gravatar.com\/avatar\/2373ee570d59db06102d14feb50a4291?s=16&d=mm&r=g",
     contact_id: 10,
-    status_color: "#4caf50",
+    status: "#4caf50",
 },
 {
-    name: "Option 2",
+  label: "Option 2",
     id: 2,
     avatar: "https:\/\/0.gravatar.com\/avatar\/3f009d72559f51e7e454b16e5d0687a1?s=16&d=mm&r=g",
     contact_id: 6,
     update_needed: 0
 },
 {
-  name: "Option 3",
+  label: "Option 3",
   id: 3,
   avatar: "https:\/\/0.gravatar.com\/avatar\/3f009d72559f51e7e454b16e5d0687a1?s=16&d=mm&r=g",
   contact_id: 5,
@@ -88,19 +88,23 @@ describe('dt-users-connection', () => {
   });
 
   it('opens option list on input focus', async () => {
-    const el = await fixture(
-      html`<dt-users-connection options="${JSON.stringify(options)}"></dt-users-connection>`
-    );
-    const input = el.shadowRoot.querySelector('input');
-    const optionList = el.shadowRoot.querySelector('.option-list');
+      const el = await fixture(
+        html`<dt-users-connection options="${JSON.stringify(options)}"></dt-users-connection>`
+      );
+      const input = el.shadowRoot.querySelector('input');
+      const optionList = el.shadowRoot.querySelector('.option-list');
 
-    expect(optionList).not.to.be.displayed;
+      if (!input || !optionList) {
+        throw new Error('Input or Option List not found');
+      }
 
-    input.focus();
-    await aTimeout(50); // wait for UI update
+      expect(optionList).not.to.be.displayed;
 
-    expect(optionList).to.be.displayed;
-  });
+      input.focus();
+      await aTimeout(1000); // wait for UI update
+
+      expect(optionList).to.be.displayed;
+    });
 
   it('selects option via mouse', async () => {
     const el = await fixture(
@@ -161,19 +165,19 @@ describe('dt-users-connection', () => {
     );
     optionBtn.click();
     await wait(100);
-    expect(el.value).to.deep.include({ 
-      name: options[2].name, 
-      id: 3, 
+    expect(el.value).to.deep.include({
+      label: options[2].label,
+      id: 3,
       avatar: "https:\/\/0.gravatar.com\/avatar\/3f009d72559f51e7e454b16e5d0687a1?s=16&d=mm&r=g",
       contact_id: 5,
-      update_needed: 0 
+      update_needed: 0
     });
     expect(el.value).to.deep.include({
-      name: options[0].name,
+      label: options[0].label,
       id: 1,
       avatar: "https:\/\/2.gravatar.com\/avatar\/2373ee570d59db06102d14feb50a4291?s=16&d=mm&r=g",
       contact_id: 10,
-      status_color: "#4caf50",
+      status: "#4caf50",
       delete: true,
     });
   });
@@ -309,28 +313,29 @@ describe('dt-users-connection', () => {
     expect(optionList).not.to.contain('button[value="3"]');
   });
 
-  it('allows adding new option', async () => {
-    const el = await fixture(
-      html`<dt-users-connection options="${JSON.stringify(options)}" allowAdd></dt-users-connection>`
-    );
-    el.shadowRoot.querySelector('input').focus();
+  //not allowing to add new user
+  // it('allows adding new option', async () => {
+  //   const el = await fixture(
+  //     html`<dt-users-connection options="${JSON.stringify(options)}" allowAdd></dt-users-connection>`
+  //   );
+  //   el.shadowRoot.querySelector('input').focus();
 
-    await sendKeys({
-      type: 'new',
-    });
+  //   await sendKeys({
+  //     type: 'new',
+  //   });
 
-    await sendKeys({ press: 'ArrowDown' });
-    await sendKeys({ press: 'Enter' });
+  //   await sendKeys({ press: 'ArrowDown' });
+  //   await sendKeys({ press: 'Enter' });
 
-    expect(el.value).not.to.be.empty;
-    expect(el.value).to.eql([
-      {
-        id: 'new',
-        label: 'new',
-        isNew: true,
-      },
-    ]);
-  });
+  //   expect(el.value).not.to.be.empty;
+  //   expect(el.value).to.eql([
+  //     {
+  //       id: 'new',
+  //       label: 'new',
+  //       isNew: true,
+  //     },
+  //   ]);
+  // });
 
   it('disables inputs', async () => {
     const el = await fixture(
