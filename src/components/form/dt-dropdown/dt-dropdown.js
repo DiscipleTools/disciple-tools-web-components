@@ -112,6 +112,12 @@ export class DtDropdown extends LitElement {
       .list-style:hover {
         background-color: var(--button-hover-color, #2980b9);
       }
+
+      .help-icon {
+        -webkit-filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
+        filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
+        height: 15px;
+      }
     `;
   }
 
@@ -161,21 +167,21 @@ export class DtDropdown extends LitElement {
         ${option.isModal
           ? html`
               <li>
-                <dt-modal
-                  class="list-style"
-                  dropdownListImg=${option.icon}
-                  buttonLabel="${option.label.replace(/-/g, ' ')}"
-                  buttonClass='{}'
-                  buttonStyle=${JSON.stringify({
-                    color: '#3f729b',
-                    background: 'none',
-                    fontSize:'12px',
-                    textAlign: 'left',
-                    border: 'none',
-                    '--hover-color': 'white',
-                  })}
+               
+                <button 
+                style="color:#3f729b; background:none; font-size:12px; text-align:left; border:none; --hover-color:white" 
+                @click="${()=>this._openDialog(option.label)}" 
+                class="list-style dt-modal"
                 >
-                </dt-modal>
+                ${option.icon
+               ? html`<img
+                   src="${option.icon}"
+                   alt="${option.label} icon"
+                   class="help-icon"
+                 />`
+               : ''}
+                ${option.label} 
+                </button>
               </li>
             `
           : html`
@@ -209,6 +215,13 @@ export class DtDropdown extends LitElement {
       newHref = `http://${newHref}`;
     }
     window.open(newHref, '_blank');
+  }
+
+  _openDialog(label) {
+    const id=label.replace(/\s/g, '-').toLowerCase();
+    const modal= document.querySelector(`#${id}`);
+    modal.shadowRoot.querySelector('dialog').showModal();
+    document.querySelector('body').style.overflow = "hidden"
   }
 
   _handleHover() {
