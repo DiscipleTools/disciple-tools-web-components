@@ -98,26 +98,35 @@ export class DtDropdown extends LitElement {
 
       .list-style {
         color: #3f729b;
-        padding: 5px 15px 5px 15px;
         font-size: 1rem;
       }
 
       .list-style:hover {
         background-color: var(--button-hover-color, #3f729b);
       }
-
-      :hover {
-        color: var(--hover-color) !important;
-      }
       .list-style:hover {
         background-color: var(--button-hover-color, #2980b9);
       }
 
       .help-icon {
-        -webkit-filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
-        filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
         height: 15px;
       }
+      .pre-list-item {
+        padding: .7rem 1rem;
+      }
+      .pre-list-item button {
+        padding: 0 !important;
+      }
+        .pre-list-item:hover {
+          background-color: #3F729B;
+        }
+        .pre-list-item:hover button {
+          color: #ffffff !important;
+        }
+        .pre-list-item:hover button img {
+          -webkit-filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
+          filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
+        }
     `;
   }
 
@@ -166,7 +175,7 @@ export class DtDropdown extends LitElement {
       option => html`
         ${option.isModal
           ? html`
-              <li>
+              <li class="pre-list-item">
                
                 <button 
                 style="color:#3f729b; background:none; font-size:12px; text-align:left; border:none; --hover-color:white" 
@@ -185,7 +194,7 @@ export class DtDropdown extends LitElement {
               </li>
             `
           : html`
-              <li class="list-style">
+              <li class="list-style pre-list-item">
                 <button
                   style=" background : none ; border : none; --hover-color:white; font-size:12px;text-align:left"
                   @click="${() => this._redirectToHref(option.href)}"
