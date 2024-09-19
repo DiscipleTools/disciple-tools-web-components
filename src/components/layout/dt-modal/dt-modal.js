@@ -112,9 +112,7 @@ export class DtModal extends DtBase {
         cursor: pointer;
         text-decoration: none;
       }
-        :hover {
-        color: var(--hover-color)!important;
-      }
+      
       .button.opener {
         color: var(--dt-modal-button-opener-color,var(--dt-modal-button-color, #fff) );
         background: var(--dt-modal-button-opener-background, var(--dt-modal-button-background, #3f729b) );
@@ -193,6 +191,20 @@ export class DtModal extends DtBase {
       .button img {
         height: 15px;
         width: 15px;
+      }
+      .footer-button {
+        display: flex;
+        gap: 10px;
+      }
+      .footer-button .button {
+        min-height: 34px;
+      }
+      .footer-button .button.small {
+        border-color: #3f729b;
+      }
+      .footer-button .button.small:hover {
+        color: #ffffff !important;
+        background-color: #38668c !important;
       }
       @media screen and (min-width: 40em) {
           .dt-modal.dt-modal--full-width{
