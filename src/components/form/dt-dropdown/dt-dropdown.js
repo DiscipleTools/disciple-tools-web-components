@@ -165,7 +165,7 @@ export class DtDropdown extends LitElement {
 
     </button>
     <ul
-    class="abc"
+    class="dt-dropdown-list"
     @mouseover=${this._handleHover}
     @mouseleave=${this._handleMouseLeave}
     @focus=${this._handleHover}

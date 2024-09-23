@@ -37,7 +37,7 @@ describe('dt-dropdown', () => {
       </dt-dropdown>
       `);
 
-    const dropdownList = dtDropdown.shadowRoot.querySelector('ul.abc');
+    const dropdownList = dtDropdown.shadowRoot.querySelector('ul.dt-dropdown-list');
     expect(dropdownList.querySelectorAll('li')).to.have.lengthOf(options.length);
   })
 
@@ -69,7 +69,7 @@ describe('dt-dropdown', () => {
       `)
 
       const button = dtDropdown.shadowRoot.querySelector('button');
-      const list = dtDropdown.shadowRoot.querySelector('ul.abc');
+      const list = dtDropdown.shadowRoot.querySelector('ul.dt-dropdown-list');
 
       button.dispatchEvent(new MouseEvent('mouseover')); // Simulate mouseover event on the button
       await new Promise(resolve => setTimeout(resolve, 10)); // Wait for the event to trigger the display change
@@ -91,7 +91,7 @@ describe('dt-dropdown', () => {
       </dt-dropdown>
       `)
 
-      const listItems = Array.from(dtDropdown.shadowRoot.querySelectorAll('ul.abc li'));
+      const listItems = Array.from(dtDropdown.shadowRoot.querySelectorAll('ul.dt-dropdown-list li'));
 
       listItems.forEach((item,index) => {
         const option = options[index];
