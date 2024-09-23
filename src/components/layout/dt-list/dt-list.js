@@ -5,7 +5,6 @@ import { repeat } from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DtBase from '../../dt-base.js';
-import ApiService from '../../../services/apiService.js';
 import '../../icons/dt-star.js';
 
 export class DtList extends DtBase {
@@ -118,6 +117,14 @@ export class DtList extends DtBase {
           );
       }
 
+      table.table-contacts {
+        display: table !important;
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 0;
+        margin-bottom: 1rem;
+      }
+
       table td:last-child {
         border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
         padding-bottom: 2rem;
@@ -128,9 +135,21 @@ export class DtList extends DtBase {
       tr {
         display: contents;
       }
-
+      table.table-contacts thead {
+        display: table-header-group;
+      }
+      table.table-contacts tr {
+        display: table-row;
+      }
+      table.table-contacts tbody {
+        display: table-row-group;
+      }
       tr {
         cursor: pointer;
+      }
+
+      table.table-contacts  tr:nth-child(2n + 1) {
+        background: #fefefe;
       }
 
       tr:nth-child(2n + 1) {
@@ -138,7 +157,7 @@ export class DtList extends DtBase {
       }
 
       tr:hover {
-        background-color: var(--dt-list-hover-background-color, #ecf5fc);
+        background-color: #ecf5fc;
       }
 
       tr a {
@@ -149,21 +168,27 @@ export class DtList extends DtBase {
         display: none;
       }
 
+        table.table-contacts th {
+          display: table-cell;
+        }
+
       .column-name {
         pointer-events: none;
+        font-size: 15px;
+        font-weight: 700;
       }
       #sort-arrows {
         grid-template-columns: 4fr 1fr;
         display: flex;
         flex-direction: column;
-        height: 1.5em;
+        height: 1em;
         justify-content: space-evenly;
       }
       th.all span.sort-arrow-up {
         border-color: transparent transparent
           var(--dt-list-sort-arrow-color, #808080) transparent;
         border-style: solid;
-        border-width: 0 0.5em 0.5em 0.5em;
+        border-width: 0 0.30em 0.30em 0.30em;
       }
 
       th.all span.sort-arrow-down {
@@ -171,7 +196,7 @@ export class DtList extends DtBase {
         border-color: var(--dt-list-sort-arrow-color, #808080) transparent
           transparent;
         border-style: solid;
-        border-width: 0.5em 0.5em 0;
+        border-width: 0.30em 0.30em 0;
       }
 
       th.all span.sort-arrow-up.sortedBy {
@@ -243,6 +268,9 @@ export class DtList extends DtBase {
       input[type='checkbox'] {
         margin: 1rem;
       }
+      table thead th, table tr td {
+        padding: .5333333333rem .6666666667rem .6666666667rem;
+      }
       @container (min-width: 650px) {
         .fieldsList {
           column-count: 2;
@@ -268,17 +296,17 @@ export class DtList extends DtBase {
           font-size: 1.1rem;
           color: var(--dt-list-header-color, #0a0a0a);
           white-space: pre-wrap;
-          display: grid;
-          place-items: center;
-          grid-template-columns: 2fr 1fr;
+        }
+        th .th-flex {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
         }
 
         th:last-child {
           border: 0;
         }
         td {
-          display: flex;
-          align-items: center;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -287,7 +315,6 @@ export class DtList extends DtBase {
           padding-inline-start: 0;
           color: var(--text-color-mid);
           border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
-          grid-column: auto;
         }
         td::before {
           content: '';
@@ -322,6 +349,7 @@ export class DtList extends DtBase {
       showFieldsSelector: { type: Boolean, default: false },
       showBulkEditSelector: { type: Boolean, default: false },
       nonce: { type: String },
+      payload: {type: Object},
     };
   }
 
@@ -332,26 +360,36 @@ export class DtList extends DtBase {
 
   firstUpdated() {
     this.postTypeSettings  = window.post_type_fields;
+    this.sortedColumns = this.columns.includes('favorite')
+    ? ['favorite', ...this.columns.filter(col => col !== 'favorite')]
+    : this.columns;
   }
 
-  async _getPosts() {
-    // this.loading = true;
-    // this.filteredOptions = [];
-    // const sort = `${sortOrder === 'desc' ? '-' : ''}${sortBy}`;
-    // const URLParams = encodeURI(
-    //   `?offset=${offset}&sortBy=${sort}&offset=${offset}${this.columns
-    //     .map(column => `&fields_to_return=${column}`)
-    //     .join('')}`
-    // );
-    // const response = await this.api.makeRequestOnPosts(
-    //   'GET',
-    //   `${this.postType}${URLParams}`
-    // );
+
+
+  async _getPosts(payload) {
+   // -- * --- STARTS HERE  -- * ---
+    /* "THIS CODE IS COMMENTED FOR NOW, WOULD BE UPDATED WHEN WORKED ON 'LOAD MORE' FUNCTIONALITY."
+    this.loading = true;
+    this.filteredOptions = [];
+    const sort = `${sortOrder === 'desc' ? '-' : ''}${sortBy}`;
+    const URLParams = encodeURI(
+      `?offset=${offset}&sortBy=${sort}&offset=${offset}${this.columns
+        .map(column => `&fields_to_return=${column}`)
+        .join('')}`
+    );
+    const response = await this.api.makeRequestOnPosts(
+      'GET',
+      `${this.postType}${URLParams}`
+    ) */
+  // -- * --- ENDS HERE  -- * ---
+
     const event = new CustomEvent('dt:get-data', {
       bubbles: true,
       detail: {
         field: this.name,
         postType: this.postType,
+        query : payload,
         onSuccess: result => {
           this.posts = result;
           this.total = result.length;
@@ -366,10 +404,24 @@ export class DtList extends DtBase {
 
   _headerClick(e) {
     const column = e.target.dataset.id;
-    this._getPosts(this.offset ? this.offset : 0, column).then(response => {
-      this.posts = response;
-      this.sortedBy = column;
-    });
+    this.payload = {
+          "sort": column,
+          "overall_status": [
+              "-closed"
+          ],
+          "fields_to_return": this.columns
+      }
+      this._getPosts(this.payload)
+
+    // " THIS CODE IS COMMENTED FOR NOW, WOULD BE UPDATED WHEN WORKED ON 'LOAD MORE' FUNCTIONALITY "
+    // this._getPosts(this.offset ? this.offset : 0, column).then(response => {
+    //   this.posts = response;
+    //   this.sortedBy = column;
+    // });
+  }
+
+  _rowClick(permalink){
+    window.open(permalink, '_self');
   }
 
   _bulkEdit() {
@@ -396,9 +448,6 @@ export class DtList extends DtBase {
   }
 
   _headerTemplate() {
-    // const classes = {
-    //   sortedBy: this.sortedBy,
-    // };
     if(this.postTypeSettings){
     return html`
       <thead>
@@ -415,17 +464,20 @@ export class DtList extends DtBase {
           <th></th>
 
           ${map(
-            this.columns,
-            column =>
-              html`<th
+            this.sortedColumns,
+            column => {
+              const isFavoriteColumn = column === 'favorite';
+              return html`<th
                 class="all"
                 data-id="${this._sortArrowsToggle(column)}"
                 @click=${this._headerClick}
               >
+              <div class="th-flex">
                 <span class="column-name"
-                  >${this.postTypeSettings[column].name}</span
+                  >${isFavoriteColumn ? null : this.postTypeSettings[column].name}</span
                 >
-                <span id="sort-arrows">
+                ${!isFavoriteColumn ?
+                html `<span id="sort-arrows">
                   <span
                     class="sort-arrow-up ${this._sortArrowsClass(`-${column}`)}"
                     data-id="-${column}"
@@ -434,8 +486,13 @@ export class DtList extends DtBase {
                     class="sort-arrow-down ${this._sortArrowsClass(column)}"
                     data-id="${column}"
                   ></span>
-                </span>
-              </th>`
+                </span>` : ''
+                }
+              </div>
+
+
+              </th>`;
+            }
           )}
         </tr>
       </thead>
@@ -452,7 +509,7 @@ export class DtList extends DtBase {
           ) {
 
             return html`
-              <tr class="dnd-moved" data-link="${post.permalink}">
+              <tr class="dnd-moved" data-link="${post.permalink}" @click=${() => this._rowClick(post.permalink)}>
                 <td class="bulk_edit_checkbox no-title">
                   <input type="checkbox" name="bulk_edit_id" .value="${post.ID}" />
                 </td>
@@ -468,10 +525,18 @@ export class DtList extends DtBase {
       return null;
     }
 
+  formatDate(dateString) {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(date);
+  }
 
 
   _cellTemplate(post) {
-    return map(this.columns, column => {
+    return map(this.sortedColumns, column => {
       if (
         ['text', 'textarea', 'number'].includes(
           this.postTypeSettings[column].type
@@ -479,18 +544,17 @@ export class DtList extends DtBase {
       ) {
         return html` <td
           dir="auto"
-          title="${this.postTypeSettings[column]}"
+          title="${this.postTypeSettings[column].name}"
         >
-          <a href="${post[column]}" title="test">${post[column]}</a>
+          ${post[column]}
         </td>`;
       }
       if (this.postTypeSettings[column].type === 'date') {
-        // TODO: format date
         return html` <td
           dir="auto"
           title="${this.postTypeSettings[column].name}"
         >
-          ${post[column].formatted}
+          ${this.formatDate(post[column].formatted)}
         </td>`;
       }
       if (
@@ -713,8 +777,15 @@ export class DtList extends DtBase {
 
   connectedCallback() {
     super.connectedCallback();
+    this.payload = {
+      "sort": "-overall_status",
+      "overall_status": [
+          "-closed"
+      ],
+      "fields_to_return": this.columns
+  }
         if (!this.posts) {
-      this._getPosts().then(posts => {
+      this._getPosts(this.payload).then(posts => {
         this.posts = posts;
       });
     }
@@ -782,7 +853,7 @@ export class DtList extends DtBase {
         </div>
 
         ${this._fieldsSelectorTemplate()} ${this._bulkSelectorTemplate()}
-        <table class=${classMap(bulkEditClass)}>
+        <table class="table-contacts ${classMap(bulkEditClass) }">
         ${this._headerTemplate()}
           ${this.posts ? this._rowTemplate() : msg('Loading')}
         </table>
