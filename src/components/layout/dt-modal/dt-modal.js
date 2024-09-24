@@ -212,6 +212,11 @@ export class DtModal extends DtBase {
             width: 90%;
         }
     }
+
+     ::slotted([slot="content"]) {
+      /* Styles for the content inside the named slot */
+      font-size: 15px !important;
+    }
     `;
   }
 
