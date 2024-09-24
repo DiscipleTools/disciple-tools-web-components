@@ -92,10 +92,11 @@ export default class ApiService {
     /**
    * Fetch contacts list via API
    * @param {string} postType
+   * @param {Object} data This would be payload to be send while hitting API
    * @returns {Promise<any>}
    */
-  async fetchContactsList(postType) {
-    return this.makeRequestOnPosts('POST', `${postType}/list`);
+  async fetchContactsList(postType, data) {
+    return this.makeRequestOnPosts('POST', `${postType}/list`, data);
   }
 
   /**

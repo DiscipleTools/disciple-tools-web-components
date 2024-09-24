@@ -186,14 +186,14 @@ export class DtList extends DtBase {
       }
       th.all span.sort-arrow-up {
         border-color: transparent transparent
-          var(--dt-list-sort-arrow-color, #808080) transparent;
+          var(--dt-list-sort-arrow-color, #dcdcdc) transparent;
         border-style: solid;
         border-width: 0 0.30em 0.30em 0.30em;
       }
 
       th.all span.sort-arrow-down {
         content: '';
-        border-color: var(--dt-list-sort-arrow-color, #808080) transparent
+        border-color: var(--dt-list-sort-arrow-color, #dcdcdc) transparent
           transparent;
         border-style: solid;
         border-width: 0.30em 0.30em 0;
@@ -201,11 +201,11 @@ export class DtList extends DtBase {
 
       th.all span.sort-arrow-up.sortedBy {
         border-color: transparent transparent
-          var(--dt-list-sort-arrow-color-highlight, #999999) transparent;
+          var(--dt-list-sort-arrow-color-highlight, #41739c) transparent;
       }
 
       th.all span.sort-arrow-down.sortedBy {
-        border-color: var(--dt-list-sort-arrow-color-highlight, #999999)
+        border-color: var(--dt-list-sort-arrow-color-highlight, #41739c)
           transparent transparent;
       }
 
@@ -356,6 +356,13 @@ export class DtList extends DtBase {
   constructor() {
     super();
     this.sortedBy = 'name';
+    this.payload = {
+      "sort": this.sortedBy,
+      "overall_status": [
+          "-closed"
+      ],
+      "fields_to_return": this.sortedColumns
+  }
   }
 
   firstUpdated() {
@@ -403,9 +410,9 @@ export class DtList extends DtBase {
   }
 
   _headerClick(e) {
-    const column = e.target.dataset.id;
+    this.sortedBy =  e.target.dataset.id
     this.payload = {
-          "sort": column,
+          "sort": this.sortedBy,
           "overall_status": [
               "-closed"
           ],
@@ -777,14 +784,14 @@ export class DtList extends DtBase {
 
   connectedCallback() {
     super.connectedCallback();
-    this.payload = {
-      "sort": "-overall_status",
+   this.payload = {
+      "sort": this.sortedBy,
       "overall_status": [
           "-closed"
       ],
       "fields_to_return": this.columns
   }
-        if (!this.posts) {
+      if (!this.posts) {
       this._getPosts(this.payload).then(posts => {
         this.posts = posts;
       });
