@@ -120,7 +120,7 @@ export default class ComponentService {
         let values = [];
         switch (component) {
           case 'dt-list': {
-            const listResponse = await this.api.fetchContactsList('contacts', query )
+            const listResponse = await this.api.fetchPostsList('contacts', query )
             values = listResponse.posts
           }
           break;
