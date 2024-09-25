@@ -410,7 +410,22 @@ export class DtList extends DtBase {
   }
 
   _headerClick(e) {
-    this.sortedBy =  e.target.dataset.id
+  const column = e.target.dataset.id;
+  const currentSort = this.sortedBy;
+  if (currentSort === column) {
+    // If already ascending, switch to descending
+    if(column.startsWith('-')){
+      this.sortedBy = column.replace('-', '');
+    } else {
+      this.sortedBy = `-${column}`;
+    }
+  }
+  else {
+    // If sorting a new column, default to ascending
+    this.sortedBy = column;
+  }
+
+
     this.payload = {
           "sort": this.sortedBy,
           "overall_status": [
@@ -445,8 +460,11 @@ export class DtList extends DtBase {
 
   _sortArrowsClass(column) {
     return this.sortedBy === column ? 'sortedBy' : '';
-  }
+}
 
+  /* The above code appears to be a comment block in JavaScript. It includes a function name
+  "_sortArrowsToggle" and a question asking what the code is doing. However, the function
+  implementation or any other code logic is not provided within the comment block. */
   _sortArrowsToggle(column) {
     if (this.sortedBy !== `-${column}`) {
       return `-${column}`;
@@ -486,18 +504,16 @@ export class DtList extends DtBase {
                 ${!isFavoriteColumn ?
                 html `<span id="sort-arrows">
                   <span
-                    class="sort-arrow-up ${this._sortArrowsClass(`-${column}`)}"
-                    data-id="-${column}"
+                    class="sort-arrow-up ${this._sortArrowsClass(column)}"
+                    data-id="${column}"
                   ></span>
                   <span
-                    class="sort-arrow-down ${this._sortArrowsClass(column)}"
-                    data-id="${column}"
+                    class="sort-arrow-down ${this._sortArrowsClass(`-${column}`)}"
+                    data-id="-${column}"
                   ></span>
                 </span>` : ''
                 }
               </div>
-
-
               </th>`;
             }
           )}
