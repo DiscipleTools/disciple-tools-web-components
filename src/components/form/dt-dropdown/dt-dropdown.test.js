@@ -53,7 +53,7 @@ describe('dt-dropdown', () => {
   button.click();
   await dtDropdown.updateComplete;
 
-  const modalElement = dtDropdown.shadowRoot.querySelector('dt-modal');
+  const modalElement = dtDropdown.shadowRoot.querySelector('.dt-dropdown-list li button.dt-modal')
   expect(modalElement).to.exist;
 
 
@@ -97,7 +97,7 @@ describe('dt-dropdown', () => {
         const option = options[index];
 
         if(option.isModal) {
-          expect(item.querySelector('dt-modal')).to.exist; // Check if dt-modal component exists
+          expect(item.querySelector('button.dt-modal')).to.exist; // Check if dt-modal component exists
         }else{
           expect(item.querySelector('button')).to.exist; // Check if button exists for non-modal options
         }
