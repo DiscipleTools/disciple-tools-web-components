@@ -497,6 +497,7 @@ export class DtList extends DtBase {
                 data-id="${this._sortArrowsToggle(column)}"
                 @click=${this._headerClick}
               >
+
               <div class="th-flex">
                 <span class="column-name"
                   >${isFavoriteColumn ? null : this.postTypeSettings[column].name}</span
