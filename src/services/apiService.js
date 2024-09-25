@@ -418,13 +418,20 @@ export default class ApiService {
    * @param {string} query
    * @returns {Promise<any>}
    */
-  async searchUsers(query) {
-    return this.makeRequest('GET', `users/get_users?s=${query}`);
+  async searchUsers(query='',postType) {
+    const params = new URLSearchParams({
+      s: query
+    });
+    return this.makeRequest('GET', `users/get_users?${params}&post_type=${postType}`);
   }
 
   // Duplicate Users
   async checkDuplicateUsers(postType,postId){
     return this.makeRequestOnPosts('GET', `${postType}/${postId}/duplicates`);
+  }
+
+  async getContactInfo(postType,postId){
+    return this.makeRequestOnPosts('GET', `${postType}/${postId}/`);
   }
 
   /**

@@ -112,6 +112,9 @@ export class DtModal extends DtBase {
         cursor: pointer;
         text-decoration: none;
       }
+        :hover {
+        color: var(--hover-color)!important;
+      }
       .button.opener {
         color: var(--dt-modal-button-opener-color,var(--dt-modal-button-color, #fff) );
         background: var(--dt-modal-button-opener-background, var(--dt-modal-button-background, #3f729b) );
@@ -157,6 +160,36 @@ export class DtModal extends DtBase {
       }
       .dt-modal.dt-modal--contact-type form {
         grid-template-rows: 52px auto 65px;
+      .dt-modal.header-blue-bg {
+        padding: 0;
+      }
+      .dt-modal.header-blue-bg header {
+        background-color: #3f729b;
+        color: #fff;
+        text-align: center;
+        padding-top: 10px;
+      }
+      .dt-modal.header-blue-bg header #modal-field-title {
+        font-size: 1.5rem;
+        width: 100%;
+      }
+      .dt-modal.header-blue-bg article {
+        padding: 10px 0;
+      }
+      .dt-modal.header-blue-bg footer {
+        padding-left: .7rem;
+        padding-right: .7rem;
+        justify-content: flex-end;
+      }
+      .dt-modal.header-blue-bg footer .button {
+        padding: 12px 14px;
+      }
+      .dt-modal.header-blue-bg form {
+        grid-template-rows: 52px auto 85px;
+      }
+      .button img {
+        height: 15px;
+        width: 15px;
       }
     `;
   }
@@ -171,11 +204,12 @@ export class DtModal extends DtBase {
       hideButton: { type: Boolean },
       buttonClass: { type: Object },
       buttonStyle: { type: Object },
+      headerClass: { type: Object },
       imageSrc: {type: String},
       imageStyle: {type:Object},
       tileLabel: {type:String},
       buttonLabel:{type: String},
-      dialogClass: {type: Object}
+      dropdownListImg: {type: String},
     };
   }
 
@@ -186,13 +220,12 @@ export class DtModal extends DtBase {
     this.addEventListener('close', () => this._closeModal());
   }
 
-  _openModal() {
-    this.isOpen = true;
-    this.shadowRoot.querySelector('dialog').showModal();
-
-    document.querySelector('body').style.overflow = "hidden"
+ _openModal() {
+  this.isOpen = true;
+ this.shadowRoot.querySelector('dialog').showModal();
+ document.querySelector('body').style.overflow = "hidden"
   }
-// to format title coming from backend
+  // to format title coming from backend
 
   get formattedTitle() {
     if (!this.title) return '';
@@ -300,7 +333,7 @@ export class DtModal extends DtBase {
     return html`
       <dialog
         id=""
-        class="dt-modal dt-modal--width  ${classMap(this.dialogClass || {})}"
+        class="dt-modal dt-modal--width ${classMap(this.headerClass || {})}"
         @click=${this._dialogClick}
         @keypress=${this._dialogKeypress}
       >
@@ -325,7 +358,7 @@ export class DtModal extends DtBase {
       </dialog>
 
       ${!this.hideButton
-      ? html`
+        ? html`
       <button
         class="button small opener ${classMap(this.buttonClass || {})}"
         data-open=""
@@ -334,16 +367,17 @@ export class DtModal extends DtBase {
         @click="${this._openModal}"
         style=${styleMap(this.buttonStyle || {})}
       >
+      ${this.dropdownListImg ? html`<img src=${this.dropdownListImg} alt="" style="width = 15px; height : 15px">`:''}
       ${this.imageSrc
-               ? html`<img
+            ? html`<img
                    src="${this.imageSrc}"
                    alt="${this.buttonLabel} icon"
                    class="help-icon"
                    style=${styleMap(this.imageStyle || {})}
                  />`
-               : ''}
+            : ''}
       ${this.buttonLabel
-      ?html`${this.buttonLabel}`:''}
+            ? html`${this.buttonLabel}` : ''}
       </button>
       ` : null}
     `;
