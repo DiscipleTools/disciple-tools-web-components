@@ -158,6 +158,8 @@ export class DtModal extends DtBase {
         filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
         height: 15px;
       }
+      .dt-modal.dt-modal--contact-type form {
+        grid-template-rows: 52px auto 65px;
       .dt-modal.header-blue-bg {
         padding: 0;
       }
