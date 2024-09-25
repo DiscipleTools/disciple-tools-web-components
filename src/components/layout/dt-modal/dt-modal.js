@@ -112,9 +112,7 @@ export class DtModal extends DtBase {
         cursor: pointer;
         text-decoration: none;
       }
-        :hover {
-        color: var(--hover-color)!important;
-      }
+      
       .button.opener {
         color: var(--dt-modal-button-opener-color,var(--dt-modal-button-color, #fff) );
         background: var(--dt-modal-button-opener-background, var(--dt-modal-button-background, #3f729b) );
@@ -143,6 +141,11 @@ export class DtModal extends DtBase {
         align-items: flex-start;
         padding-top: 18px;
         border-top: 1px solid #ccc;
+      }
+
+      footer.footer-button{
+      justify-content: flex-start;
+      
       }
 
       .help-more h5 {
@@ -191,6 +194,31 @@ export class DtModal extends DtBase {
         height: 15px;
         width: 15px;
       }
+      .footer-button {
+        display: flex;
+        gap: 10px;
+      }
+      .footer-button .button {
+        min-height: 34px;
+      }
+      .footer-button .button.small {
+        border-color: #3f729b;
+      }
+      .footer-button .button.small:hover {
+        color: #ffffff !important;
+        background-color: #38668c !important;
+      }
+      @media screen and (min-width: 40em) {
+          .dt-modal.dt-modal--full-width{
+            max-width: 80rem;
+            width: 90%;
+        }
+    }
+
+     ::slotted([slot="content"]) {
+      /* Styles for the content inside the named slot */
+      font-size: 15px !important;
+    }
     `;
   }
 
@@ -210,6 +238,8 @@ export class DtModal extends DtBase {
       tileLabel: {type:String},
       buttonLabel:{type: String},
       dropdownListImg: {type: String},
+      submitButton: {type:Boolean},
+      closeButton: {type:Boolean},
     };
   }
 
@@ -229,7 +259,8 @@ export class DtModal extends DtBase {
 
   get formattedTitle() {
     if (!this.title) return '';
-    return this.title.charAt(0).toUpperCase() + this.title.slice(1);
+    const formattedTitle = this.title.replace(/_/g, ' ');
+    return formattedTitle.charAt(0).toUpperCase() + formattedTitle.slice(1);
   }
 
   _dialogHeader(svg) {
@@ -343,6 +374,8 @@ export class DtModal extends DtBase {
             <slot name="content"></slot>
           </article>
           <footer>
+          <div class=footer-button>
+          ${this.closeButton ? html`
             <button
               class="button small"
               data-close=""
@@ -351,7 +384,14 @@ export class DtModal extends DtBase {
               @click=${this._onButtonClick}
             >
               <slot name="close-button">${msg('Close')}</slot>
-            </button>
+              </button>
+            
+            `:''}
+              ${this.submitButton ? html`
+                <slot name="submit-button"></span>
+                
+                `:''}
+              </div>
             ${this._helpMore()}
           </footer>
         </form>

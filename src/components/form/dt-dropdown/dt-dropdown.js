@@ -98,20 +98,35 @@ export class DtDropdown extends LitElement {
 
       .list-style {
         color: #3f729b;
-        padding: 5px 15px 5px 15px;
         font-size: 1rem;
       }
 
       .list-style:hover {
         background-color: var(--button-hover-color, #3f729b);
       }
-
-      :hover {
-        color: var(--hover-color) !important;
-      }
       .list-style:hover {
         background-color: var(--button-hover-color, #2980b9);
       }
+
+      .help-icon {
+        height: 15px;
+      }
+      .pre-list-item {
+        padding: .7rem 1rem;
+      }
+      .pre-list-item button {
+        padding: 0 !important;
+      }
+        .pre-list-item:hover {
+          background-color: #3F729B;
+        }
+        .pre-list-item:hover button {
+          color: #ffffff !important;
+        }
+        .pre-list-item:hover button img {
+          -webkit-filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
+          filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
+        }
     `;
   }
 
@@ -150,7 +165,7 @@ export class DtDropdown extends LitElement {
 
     </button>
     <ul
-    class="abc"
+    class="dt-dropdown-list"
     @mouseover=${this._handleHover}
     @mouseleave=${this._handleMouseLeave}
     @focus=${this._handleHover}
@@ -160,26 +175,26 @@ export class DtDropdown extends LitElement {
       option => html`
         ${option.isModal
           ? html`
-              <li>
-                <dt-modal
-                  class="list-style"
-                  dropdownListImg=${option.icon}
-                  buttonLabel="${option.label.replace(/-/g, ' ')}"
-                  buttonClass='{}'
-                  buttonStyle=${JSON.stringify({
-                    color: '#3f729b',
-                    background: 'none',
-                    fontSize:'12px',
-                    textAlign: 'left',
-                    border: 'none',
-                    '--hover-color': 'white',
-                  })}
+              <li class="pre-list-item">
+               
+                <button 
+                style="color:#3f729b; background:none; font-size:12px; text-align:left; border:none; --hover-color:white" 
+                @click="${()=>this._openDialog(option.label)}" 
+                class="list-style dt-modal"
                 >
-                </dt-modal>
+                ${option.icon
+               ? html`<img
+                   src="${option.icon}"
+                   alt="${option.label} icon"
+                   class="help-icon"
+                 />`
+               : ''}
+                ${option.label} 
+                </button>
               </li>
             `
           : html`
-              <li class="list-style">
+              <li class="list-style pre-list-item">
                 <button
                   style=" background : none ; border : none; --hover-color:white; font-size:12px;text-align:left"
                   @click="${() => this._redirectToHref(option.href)}"
@@ -209,6 +224,13 @@ export class DtDropdown extends LitElement {
       newHref = `http://${newHref}`;
     }
     window.open(newHref, '_blank');
+  }
+
+  _openDialog(label) {
+    const id=label.replace(/\s/g, '-').toLowerCase();
+    const modal= document.querySelector(`#${id}`);
+    modal.shadowRoot.querySelector('dialog').showModal();
+    document.querySelector('body').style.overflow = "hidden"
   }
 
   _handleHover() {
