@@ -95,7 +95,7 @@ export default class ApiService {
    * @param {Object} data This would be payload to be send while hitting API
    * @returns {Promise<any>}
    */
-  async fetchContactsList(postType, data) {
+  async fetchPostsList(postType, data) {
     return this.makeRequestOnPosts('POST', `${postType}/list`, data);
   }
 
@@ -428,7 +428,7 @@ export default class ApiService {
    * @param {string} query
    * @returns {Promise<any>}
    */
-  async searchUsers(query='',postType) {
+  async searchUsers(query='', postType) {
     const params = new URLSearchParams({
       s: query
     });
