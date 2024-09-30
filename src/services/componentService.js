@@ -294,18 +294,18 @@ export default class ComponentService {
       event.target.setAttribute('loading', true);
       // Update post via API
       try {
-//         var apiResponse;
+        let apiResponse;
 switch(component){
   case 'dt-users-connection':{
     if(remove === true){
-      const apiResponse =await this.api.removePostShare(this.postType,this.postId,apiValue);
+      apiResponse =await this.api.removePostShare(this.postType,this.postId,apiValue);
       break;
     }
-    const apiResponse= await this.api.addPostShare(this.postType,this.postId,apiValue)
+    apiResponse= await this.api.addPostShare(this.postType,this.postId,apiValue)
     break;
   }
   default:{
-     const apiResponse= await this.api.updatePost(this.postType, this.postId, {
+     apiResponse= await this.api.updatePost(this.postType, this.postId, {
         [field]: apiValue,
       });
 
