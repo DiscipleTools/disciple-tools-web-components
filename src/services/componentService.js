@@ -29,14 +29,16 @@ export default class ComponentService {
       'dt-toggle',
       'dt-comm-channel',
       'dt-multiselect-buttons-group',
-      'dt-list'
+      'dt-list',
+      'dt-button'
     ];
 
     this.dynamicLoadComponents = [
       'dt-connection',
       'dt-tags',
       'dt-modal',
-      'dt-list'
+      'dt-list',
+      'dt-button'
     ]
   }
 
@@ -47,6 +49,23 @@ export default class ComponentService {
     if (this.postId) {
       this.enableAutoSave();
     }
+    /*
+    This is explicitly created to handle custom event send by "Create New Contact form - Save Button" with empty postId
+    as "enableautoSave" is to only work On Edit page(where there is some postId).
+    */
+    const createPostButton = document.querySelector('dt-button#create-post-button');
+    if(createPostButton) {
+      createPostButton.addEventListener('send-data', this.processFormSubmission.bind(this));
+    }
+
+    // Handling click event of dt-button (favorite-button) which is inside DT-List
+    const dtListComponent = document.querySelector('dt-list');
+      if (dtListComponent) {
+          if (dtListComponent.tagName.toLowerCase() === 'dt-list') {
+            dtListComponent.addEventListener('customClick', this.handleCustomClickEvent.bind(this));
+            }
+          }
+
     this.attachLoadEvents();
   }
 
@@ -59,6 +78,8 @@ export default class ComponentService {
     const elements = document.querySelectorAll(
       selector || this.dynamicLoadComponents.join(',')
     );
+
+
     // check if there is dt-modal and duplicate-detected class with it on DOM.
     const filteredElements = Array.from(elements).filter(element => element.tagName.toLowerCase() === 'dt-modal' && element.classList.contains('duplicate-detected'));
     // calling the function to check duplicates
@@ -99,11 +120,79 @@ export default class ComponentService {
       selector || this.autoSaveComponents.join(',')
     );
     if (allElements) {
-      allElements.forEach(el =>
+      allElements.forEach(el =>{
+        if (el.tagName.toLowerCase() === 'dt-button') {
+          el.addEventListener('customClick', this.handleCustomClickEvent.bind(this));
+        }
         el.addEventListener('change', this.handleChangeEvent.bind(this))
-      );
+      });
     }
   }
+
+  async handleCustomClickEvent(event) {
+    const details = event.detail;
+    if (details) {
+      const { field, toggleState } = details;
+      event.target.setAttribute('loading', true);
+      let apiValue;
+      if (field.startsWith('favorite-button')) {
+        apiValue = { favorite: toggleState };
+        if (/\d$/.test(field)) {
+          this.postId = field.split('-').pop()
+        }
+      } else if (field.startsWith('following-button') || field.startsWith('follow-button')) {
+        apiValue = {
+          follow: { values: [{ value: '1', delete: toggleState }] },
+          unfollow: { values: [{ value: '1', delete: !toggleState }] }
+        };
+      } else {
+        // Add other conditions for field starts with
+        console.log('No match found for the field');
+      }
+
+      // Update post via API
+      try {
+        const apiResponse = await this.api.updatePost(
+          this.postType,
+          this.postId ,
+          apiValue
+        );
+      } catch (error) {
+        console.error(error);
+        event.target.removeAttribute('loading');
+        event.target.setAttribute('invalid', true); // this isn't hooked up yet
+        event.target.setAttribute('error', error.message || error.toString());
+      }
+    }
+  }
+
+ /**
+   * Handle Post creation on new contact form
+   *
+   */
+ async processFormSubmission(event){
+  // const createPostButton = document.querySelector('dt-button#create-post-button');
+  const details = event.detail;
+  const { newValue } = details;
+
+  try {
+    const apiResponse = await this.api.createPost(
+      this.postType, newValue.el
+    );
+    if (apiResponse) {
+      window.location = apiResponse.permalink;
+    }
+    event.target.removeAttribute('loading');
+    event.target.setAttribute('error', '');
+    event.target.setAttribute('saved', true);
+  } catch (error) {
+    console.error(error);
+    event.target.removeAttribute('loading');
+    event.target.setAttribute('invalid', true); // this isn't hooked up yet
+    event.target.setAttribute('error', error.message || error.toString());
+  }
+}
+
 
   /**
    * Event listener for load events.
@@ -119,8 +208,16 @@ export default class ComponentService {
         const component = event.target.tagName.toLowerCase();
         let values = [];
         switch (component) {
+          case 'dt-button': {
+            const contactApiData = await this.api.getContactInfo(
+              this.postType,
+              this.postId
+            );
+            values = contactApiData;
+          };
+            break;
           case 'dt-list': {
-            const listResponse = await this.api.fetchPostsList('contacts', query )
+            const listResponse = await this.api.fetchPostsList(this.postType, query)
             values = listResponse.posts
           }
           break;
