@@ -325,12 +325,14 @@ export class DtList extends DtBase {
         fill: #c7c6c1 !important;
       }
 
-      .icon-star {
-        fill: #c7c6c1; /* Default to gray (non-favorite) */
-      }
-      .icon-star.selected {
-        fill: #ffc105; /* Favorite state in yellow */
-      }
+
+
+    .icon-star {
+      fill:  #c7c6c1 ; /* Default to gray (non-favorite) */
+    }
+    .icon-star.selected {
+      fill: #ffc105; /* Favorite state in yellow */
+    }
       @container (min-width: 950px) {
         .fieldsList {
           column-count: 3;
@@ -359,10 +361,11 @@ export class DtList extends DtBase {
       showFieldsSelector: { type: Boolean, default: false },
       showBulkEditSelector: { type: Boolean, default: false },
       nonce: { type: String },
-      payload: { type: Object },
-      favorite: { type: Boolean },
+      payload: {type: Object},
+      favorite: {type: Boolean}
     };
   }
+
 
   constructor() {
     super();
@@ -525,36 +528,29 @@ export class DtList extends DtBase {
     }
   }
 
-  _rowTemplate() {
-    if (this.posts && Array.isArray(this.posts)) {
-      const rows = this.posts.map((post, i) => {
-        if (
-          this.showArchived ||
-          (!this.showArchived && post.overall_status !== 'closed')
-        ) {
-          return html`
-            <tr
-              class="dnd-moved"
-              data-link="${post.permalink}"
-              @click=${() => this._rowClick(post.permalink)}
-            >
-              <td class="bulk_edit_checkbox no-title">
-                <input
-                  type="checkbox"
-                  name="bulk_edit_id"
-                  .value="${post.ID}"
-                />
-              </td>
-              <td class="no-title line-count">${i + 1}.</td>
-              ${this._cellTemplate(post)}
-            </tr>
-          `;
-        }
-      });
+    _rowTemplate() {
+      if (this.posts && Array.isArray(this.posts)) {
+        const rows = this.posts.map((post, i) => {
+          if (
+            this.showArchived ||
+            (!this.showArchived && post.overall_status !== 'closed')
+          ) {
+            return html`
+              <tr class="dnd-moved" data-link="${post.permalink}" @click=${() => this._rowClick(post.permalink)}>
+                <td class="bulk_edit_checkbox no-title">
+                  <input type="checkbox" name="bulk_edit_id" .value="${post.ID}" />
+                </td>
+                <td class="no-title line-count">${i + 1}.</td>
+                ${this._cellTemplate(post)}
+              </tr>
+            `;
+          }
+        });
 
-      return rows.length > 0 ? rows : html`<p>No contacts available</p>`;
+        return rows.length > 0 ? rows : html`<p>No contacts available</p>`;
+      }
+      return null;
     }
-    return null;
   }
 
   formatDate(dateString) {

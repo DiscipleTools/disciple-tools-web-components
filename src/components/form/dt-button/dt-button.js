@@ -204,43 +204,32 @@ export class DtButton extends DtBase {
   connectedCallback() {
     // Code that runs after the component's initial render
     super.connectedCallback();
-    if (
-      this.id.startsWith('favorite') ||
-      this.id === 'follow-button' ||
-      this.id === 'following-button'
-    ) {
+    if (this.id.startsWith('favorite') || this.id === 'follow-button' || this.id === 'following-button') {
       window.addEventListener('load', async () => {
-        const event = await new CustomEvent('   dt:get-data', {
-          bubbles: true,
-          detail: {
-            field: this.id,
-            postType: this.postType,
-            onSuccess: result => {
-              // We are finding keys from the object as these particluar keys are send by API without any value.
-              const key = Object.keys(result).find(item =>
-                ['favorite', 'unfollow', 'follow'].includes(item)
-              );
-              switch (key) {
-                case 'favorite':
-                  {
-                    this.favorite = result.favorite;
-                    const slot = this.shadowRoot.querySelector('slot');
-                    const slottedElements = slot.assignedNodes({
-                      flatten: true,
-                    });
-                    const svg = slottedElements.find(
-                      node =>
-                        node.nodeType === Node.ELEMENT_NODE &&
-                        node.classList.contains('icon-star')
-                    );
-                    if (this.favorite) {
-                      svg.classList.add('selected'); // Add the class
-                    } else {
-                      svg.classList.remove('selected'); // Remove the class
-                    }
-                    this.requestUpdate();
-                  }
-                  break;
+      const event = await new CustomEvent('   dt:get-data', {
+        bubbles: true,
+        detail: {
+          field: this.id,
+          postType: this.postType,
+          onSuccess: result => {
+            // We are finding keys from the object as these particluar keys are send by API without any value.
+            const key = Object.keys(result).find( item => ['favorite', 'unfollow', 'follow'].includes(item));
+            switch (key) {
+              case 'favorite': {
+                this.favorite = result.favorite;
+                const slot = this.shadowRoot.querySelector('slot');
+                const slottedElements = slot.assignedNodes({ flatten: true });
+                const svg = slottedElements.find(node =>
+                 node.nodeType === Node.ELEMENT_NODE && node.classList.contains('icon-star')
+               );
+                if(this.favorite) {
+                    svg.classList.add('selected');// Add the class
+                } else {
+                    svg.classList.remove('selected'); // Remove the class
+                }
+                this.requestUpdate();
+              }
+              break;
 
                 case 'follow':
                   this.following = true; // Updated state
@@ -277,11 +266,7 @@ export class DtButton extends DtBase {
         return;
       }
     }
-    if (
-      this.id.startsWith('favorite') ||
-      this.id === 'follow-button' ||
-      this.id === 'following-button'
-    ) {
+    if (this.id.startsWith('favorite') || this.id === 'follow-button' || this.id === 'following-button') {
       e.preventDefault();
       this.onClick(e);
     } else if (this.id === 'create-post-button') {
@@ -351,26 +336,24 @@ export class DtButton extends DtBase {
   onClick(e) {
     e.preventDefault();
     e.stopPropagation();
-    if (this.favorited) {
-      this.favorite = this.favorited;
+    if(this.favorited) {
+      this.favorite = this.favorited
     }
     if (this.id.startsWith('favorite')) {
-      const event = new CustomEvent('customClick', {
-        detail: {
-          field: this.id,
-          toggleState: !this.favorite,
-        },
-        bubbles: true,
-        composed: true,
-      });
+     const event = new CustomEvent('customClick', {
+      detail: {
+        field: this.id,
+        toggleState: !this.favorite,
+      },
+      bubbles: true,
+      composed: true
+    });
 
-      this.favorite = !this.favorite;
-      const slot = this.shadowRoot.querySelector('slot');
-      const slottedElements = slot.assignedNodes({ flatten: true });
-      const svg = slottedElements.find(
-        node =>
-          node.nodeType === Node.ELEMENT_NODE &&
-          node.classList.contains('icon-star')
+    this.favorite = !this.favorite;
+       const slot = this.shadowRoot.querySelector('slot');
+       const slottedElements = slot.assignedNodes({ flatten: true });
+       const svg = slottedElements.find(node =>
+        node.nodeType === Node.ELEMENT_NODE && node.classList.contains('icon-star')
       );
       if (svg) {
         if (svg.classList.contains('selected')) {

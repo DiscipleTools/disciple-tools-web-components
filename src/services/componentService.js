@@ -30,7 +30,7 @@ export default class ComponentService {
       'dt-comm-channel',
       'dt-multiselect-buttons-group',
       'dt-list',
-      'dt-button',
+      'dt-button'
     ];
 
     this.dynamicLoadComponents = [
@@ -38,8 +38,8 @@ export default class ComponentService {
       'dt-tags',
       'dt-modal',
       'dt-list',
-      'dt-button',
-    ];
+      'dt-button'
+    ]
   }
 
   /**
@@ -134,14 +134,11 @@ export default class ComponentService {
       selector || this.autoSaveComponents.join(',')
     );
     if (allElements) {
-      allElements.forEach(el => {
+      allElements.forEach(el =>{
         if (el.tagName.toLowerCase() === 'dt-button') {
-          el.addEventListener(
-            'customClick',
-            this.handleCustomClickEvent.bind(this)
-          );
+          el.addEventListener('customClick', this.handleCustomClickEvent.bind(this));
         }
-        el.addEventListener('change', this.handleChangeEvent.bind(this));
+        el.addEventListener('change', this.handleChangeEvent.bind(this))
       });
     }
   }
@@ -155,15 +152,12 @@ export default class ComponentService {
       if (field.startsWith('favorite-button')) {
         apiValue = { favorite: toggleState };
         if (/\d$/.test(field)) {
-          this.postId = field.split('-').pop();
+          this.postId = field.split('-').pop()
         }
-      } else if (
-        field.startsWith('following-button') ||
-        field.startsWith('follow-button')
-      ) {
+      } else if (field.startsWith('following-button') || field.startsWith('follow-button')) {
         apiValue = {
           follow: { values: [{ value: '1', delete: toggleState }] },
-          unfollow: { values: [{ value: '1', delete: !toggleState }] },
+          unfollow: { values: [{ value: '1', delete: !toggleState }] }
         };
       } else {
         // Add other conditions for field starts with
@@ -174,7 +168,7 @@ export default class ComponentService {
       try {
         const apiResponse = await this.api.updatePost(
           this.postType,
-          this.postId,
+          this.postId ,
           apiValue
         );
       } catch (error) {
@@ -186,30 +180,33 @@ export default class ComponentService {
     }
   }
 
-  /**
+ /**
    * Handle Post creation on new contact form
    *
    */
-  async processFormSubmission(event) {
-    // const createPostButton = document.querySelector('dt-button#create-post-button');
-    const details = event.detail;
-    const { newValue } = details;
+ async processFormSubmission(event){
+  // const createPostButton = document.querySelector('dt-button#create-post-button');
+  const details = event.detail;
+  const { newValue } = details;
 
-    try {
-      const apiResponse = await this.api.createPost(this.postType, newValue.el);
-      if (apiResponse) {
-        window.location = apiResponse.permalink;
-      }
-      event.target.removeAttribute('loading');
-      event.target.setAttribute('error', '');
-      event.target.setAttribute('saved', true);
-    } catch (error) {
-      console.error(error);
-      event.target.removeAttribute('loading');
-      event.target.setAttribute('invalid', true); // this isn't hooked up yet
-      event.target.setAttribute('error', error.message || error.toString());
+  try {
+    const apiResponse = await this.api.createPost(
+      this.postType, newValue.el
+    );
+    if (apiResponse) {
+      window.location = apiResponse.permalink;
     }
+    event.target.removeAttribute('loading');
+    event.target.setAttribute('error', '');
+    event.target.setAttribute('saved', true);
+  } catch (error) {
+    console.error(error);
+    event.target.removeAttribute('loading');
+    event.target.setAttribute('invalid', true); // this isn't hooked up yet
+    event.target.setAttribute('error', error.message || error.toString());
   }
+}
+
 
   /**
    * Event listener for load events.
@@ -225,24 +222,19 @@ export default class ComponentService {
         const component = event.target.tagName.toLowerCase();
         let values = [];
         switch (component) {
-          case 'dt-button':
-            {
-              const contactApiData = await this.api.getContactInfo(
-                this.postType,
-                this.postId
-              );
-              values = contactApiData;
-            }
+          case 'dt-button': {
+            const contactApiData = await this.api.getContactInfo(
+              this.postType,
+              this.postId
+            );
+            values = contactApiData;
+          };
             break;
-          case 'dt-list':
-            {
-              const listResponse = await this.api.fetchPostsList(
-                this.postType,
-                query
-              );
-              values = listResponse.posts;
-            }
-            break;
+          case 'dt-list': {
+            const listResponse = await this.api.fetchPostsList(this.postType, query)
+            values = listResponse.posts
+          }
+          break;
           case 'dt-connection': {
             const postType = details.postType || this.postType;
             const connectionResponse = await this.api.listPostsCompact(
