@@ -186,14 +186,14 @@ export class DtList extends DtBase {
       }
       th.all span.sort-arrow-up {
         border-color: transparent transparent
-          var(--dt-list-sort-arrow-color, #808080) transparent;
+          var(--dt-list-sort-arrow-color, #dcdcdc) transparent;
         border-style: solid;
         border-width: 0 0.30em 0.30em 0.30em;
       }
 
       th.all span.sort-arrow-down {
         content: '';
-        border-color: var(--dt-list-sort-arrow-color, #808080) transparent
+        border-color: var(--dt-list-sort-arrow-color, #dcdcdc) transparent
           transparent;
         border-style: solid;
         border-width: 0.30em 0.30em 0;
@@ -201,11 +201,11 @@ export class DtList extends DtBase {
 
       th.all span.sort-arrow-up.sortedBy {
         border-color: transparent transparent
-          var(--dt-list-sort-arrow-color-highlight, #999999) transparent;
+          var(--dt-list-sort-arrow-color-highlight, #41739c) transparent;
       }
 
       th.all span.sort-arrow-down.sortedBy {
-        border-color: var(--dt-list-sort-arrow-color-highlight, #999999)
+        border-color: var(--dt-list-sort-arrow-color-highlight, #41739c)
           transparent transparent;
       }
 
@@ -356,6 +356,13 @@ export class DtList extends DtBase {
   constructor() {
     super();
     this.sortedBy = 'name';
+    this.payload = {
+      "sort": this.sortedBy,
+      "overall_status": [
+          "-closed"
+      ],
+      "fields_to_return": this.sortedColumns
+  }
   }
 
   firstUpdated() {
@@ -403,9 +410,24 @@ export class DtList extends DtBase {
   }
 
   _headerClick(e) {
-    const column = e.target.dataset.id;
+  const column = e.target.dataset.id;
+  const currentSort = this.sortedBy;
+  if (currentSort === column) {
+    // If already ascending, switch to descending
+    if(column.startsWith('-')){
+      this.sortedBy = column.replace('-', '');
+    } else {
+      this.sortedBy = `-${column}`;
+    }
+  }
+  else {
+    // If sorting a new column, default to ascending
+    this.sortedBy = column;
+  }
+
+
     this.payload = {
-          "sort": column,
+          "sort": this.sortedBy,
           "overall_status": [
               "-closed"
           ],
@@ -438,8 +460,11 @@ export class DtList extends DtBase {
 
   _sortArrowsClass(column) {
     return this.sortedBy === column ? 'sortedBy' : '';
-  }
+}
 
+  /* The above code appears to be a comment block in JavaScript. It includes a function name
+  "_sortArrowsToggle" and a question asking what the code is doing. However, the function
+  implementation or any other code logic is not provided within the comment block. */
   _sortArrowsToggle(column) {
     if (this.sortedBy !== `-${column}`) {
       return `-${column}`;
@@ -472,6 +497,7 @@ export class DtList extends DtBase {
                 data-id="${this._sortArrowsToggle(column)}"
                 @click=${this._headerClick}
               >
+
               <div class="th-flex">
                 <span class="column-name"
                   >${isFavoriteColumn ? null : this.postTypeSettings[column].name}</span
@@ -479,18 +505,16 @@ export class DtList extends DtBase {
                 ${!isFavoriteColumn ?
                 html `<span id="sort-arrows">
                   <span
-                    class="sort-arrow-up ${this._sortArrowsClass(`-${column}`)}"
-                    data-id="-${column}"
+                    class="sort-arrow-up ${this._sortArrowsClass(column)}"
+                    data-id="${column}"
                   ></span>
                   <span
-                    class="sort-arrow-down ${this._sortArrowsClass(column)}"
-                    data-id="${column}"
+                    class="sort-arrow-down ${this._sortArrowsClass(`-${column}`)}"
+                    data-id="-${column}"
                   ></span>
                 </span>` : ''
                 }
               </div>
-
-
               </th>`;
             }
           )}
@@ -777,14 +801,14 @@ export class DtList extends DtBase {
 
   connectedCallback() {
     super.connectedCallback();
-    this.payload = {
-      "sort": "-overall_status",
+   this.payload = {
+      "sort": this.sortedBy,
       "overall_status": [
           "-closed"
       ],
       "fields_to_return": this.columns
   }
-        if (!this.posts) {
+      if (!this.posts) {
       this._getPosts(this.payload).then(posts => {
         this.posts = posts;
       });
