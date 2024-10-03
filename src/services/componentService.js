@@ -318,11 +318,6 @@ switch(component){
     break;
   }
 }
-        // Sending response to update value
-        if (component === 'dt-comm-channel' && details.onSuccess) {
-          // eslint-disable-next-line no-undef
-          details.onSuccess(apiResponse);
-        }
 
         event.target.removeAttribute('loading');
         event.target.setAttribute('error', '');
