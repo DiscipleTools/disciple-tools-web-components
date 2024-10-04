@@ -80,7 +80,7 @@ export class DtModal extends DtBase {
         display: grid;
         height: fit-content;
         grid-template-columns: 1fr;
-        grid-template-rows: 52px auto 50px;
+        grid-template-rows: 2.5em auto 3em;
         grid-template-areas:
           'header'
           'main'
@@ -138,7 +138,7 @@ export class DtModal extends DtBase {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        padding-top: 18px;
+        padding-block-start: 1rem;
         border-top: 1px solid #ccc;
       }
 
@@ -158,10 +158,10 @@ export class DtModal extends DtBase {
       .help-icon {
         -webkit-filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
         filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
-        height: 15px;
+        height: 1rem;
       }
       .dt-modal.dt-modal--contact-type form {
-        grid-template-rows: 52px auto 65px;
+        grid-template-rows: 2.5em auto 4.5em;
       .dt-modal.header-blue-bg {
         padding: 0;
       }
@@ -169,36 +169,35 @@ export class DtModal extends DtBase {
         background-color: #3f729b;
         color: #fff;
         text-align: center;
-        padding-top: 10px;
+        padding-top: .75rem;
       }
       .dt-modal.header-blue-bg header #modal-field-title {
         font-size: 1.5rem;
         width: 100%;
       }
       .dt-modal.header-blue-bg article {
-        padding: 10px 0;
+        padding: .75rem 0;
       }
       .dt-modal.header-blue-bg footer {
-        padding-left: .7rem;
-        padding-right: .7rem;
+        padding-inline: .7rem;
         justify-content: flex-end;
       }
       .dt-modal.header-blue-bg footer .button {
         padding: 12px 14px;
       }
       .dt-modal.header-blue-bg form {
-        grid-template-rows: 52px auto 85px;
+        grid-template-rows: 2.5em auto 3em;
       }
       .button img {
-        height: 15px;
-        width: 15px;
+        height: .66em;
+        width: .66em;
       }
       .footer-button {
         display: flex;
-        gap: 10px;
+        gap: .5rem;
       }
       .footer-button .button {
-        min-height: 34px;
+        min-height: 2.25rem;
       }
       .footer-button .button.small {
         border-color: #3f729b;
@@ -216,7 +215,7 @@ export class DtModal extends DtBase {
 
      ::slotted([slot="content"]) {
       /* Styles for the content inside the named slot */
-      font-size: 15px !important;
+      font-size: 15px;;
     }
     `;
   }
