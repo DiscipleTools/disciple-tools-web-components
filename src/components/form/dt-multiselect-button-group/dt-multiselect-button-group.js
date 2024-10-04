@@ -5,12 +5,11 @@ import DtFormBase from '../dt-form-base.js';
 export class DtMultiSelectButtonGroup extends DtFormBase {
   static get styles() {
   return css`
-  :host {
-      margin-bottom: 5px;
+    :host {
     }
     .icon img {
-      width: 15px !important;
-      height: 15px !important;
+      width: 1rem;
+      height: 1rem;
       display: inline;
     }
   `

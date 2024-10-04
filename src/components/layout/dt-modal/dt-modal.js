@@ -19,8 +19,8 @@ export class DtModal extends DtBase {
         display: block;
         background: var(--dt-modal-background-color, #fff);
         color: var(--dt-modal-color, #000);
-        max-inline-size: min(90vw, 100%);
-        max-block-size: min(80vh, 100%);
+        max-inline-size: min(90dvw, 100%);
+        max-block-size: min(80dvh, 100%);
         max-block-size: min(80dvb, 100%);
         margin: auto;
         height: fit-content;
@@ -34,8 +34,7 @@ export class DtModal extends DtBase {
         transition: opacity 0.1s ease-in-out;
       }
       .dt-modal.dt-modal--width {
-        max-width: 80rem;
-        width: 600px;
+        width: 80dvw;
         background-color: #fefefe;
         border: 1px solid #cacaca;
         border-radius: 10px;
@@ -112,7 +111,7 @@ export class DtModal extends DtBase {
         cursor: pointer;
         text-decoration: none;
       }
-      
+
       .button.opener {
         color: var(--dt-modal-button-opener-color,var(--dt-modal-button-color, #fff) );
         background: var(--dt-modal-button-opener-background, var(--dt-modal-button-background, #3f729b) );
@@ -145,7 +144,7 @@ export class DtModal extends DtBase {
 
       footer.footer-button{
       justify-content: flex-start;
-      
+
       }
 
       .help-more h5 {
@@ -385,11 +384,11 @@ export class DtModal extends DtBase {
             >
               <slot name="close-button">${msg('Close')}</slot>
               </button>
-            
+
             `:''}
               ${this.submitButton ? html`
                 <slot name="submit-button"></span>
-                
+
                 `:''}
               </div>
             ${this._helpMore()}
