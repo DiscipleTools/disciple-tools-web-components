@@ -321,7 +321,7 @@ export class DtButton extends DtBase {
     } else {
       const form = this.closest('form');
       if (form) {
-        // form.submit();
+        form.submit();
       }
     }
   }
