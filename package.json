@@ -4,7 +4,7 @@
   "author": "disciple.tools",
   "license": "GPL-2.0-or-later",
   "homepage": "https://github.com/DiscipleTools/disciple-tools-web-components",
-  "version": "0.6.7",
+  "version": "0.6.8",
   "main": "index.js",
   "module": "index.js",
   "engines": {
@@ -22,7 +22,8 @@
     "storybook:build": "npm run analyze -- --exclude dist --exclude samples --exclude documentation && build-storybook && cp -r assets/ storybook-static/assets && cp netlify.toml storybook-static",
     "build": "rollup -c && rollup -c rollup.services.config.js && rm -rf ./samples/html/js && cp -R ./dist ./samples/html/js",
     "localize:extract": "lit-localize extract",
-    "localize:build": "lit-localize build"
+    "localize:build": "lit-localize build",
+    "publish": "npm run build && npm publish"
   },
   "dependencies": {
     "@lit/localize": "^0.11.4",
