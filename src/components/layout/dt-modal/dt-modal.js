@@ -189,8 +189,8 @@ export class DtModal extends DtBase {
         grid-template-rows: 2.5em auto 3em;
       }
       .button img {
-        height: .66em;
-        width: .66em;
+        height: 1em;
+        width: 1em;
       }
       .footer-button {
         display: flex;
