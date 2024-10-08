@@ -7,14 +7,14 @@ export default class ComponentService {
    * @param postId - ID of current post
    * @param nonce - WordPress nonce for authentication
    * @param apiRoot - Root of API (default: wp-json) (i.e. the part before dt/v1/ or dt-posts/v2/)
-  */
- constructor(postType, postId, nonce, apiRoot = 'wp-json') {
-   this.postType = postType;
-   this.postId = postId;
-   this.nonce = nonce;
-   this.apiRoot = `${apiRoot}/`.replace('//', '/'); // ensure it ends with /
+   */
+  constructor(postType, postId, nonce, apiRoot = 'wp-json') {
+    this.postType = postType;
+    this.postId = postId;
+    this.nonce = nonce;
+    this.apiRoot = `${apiRoot}/`.replace('//', '/'); // ensure it ends with /
 
-   this.api = new ApiService(this.nonce, this.apiRoot);
+    this.api = new ApiService(this.nonce, this.apiRoot);
 
     this.autoSaveComponents = [
       'dt-connection',
@@ -30,7 +30,7 @@ export default class ComponentService {
       'dt-comm-channel',
       'dt-multiselect-buttons-group',
       'dt-list',
-      'dt-button'
+      'dt-button',
     ];
 
     this.dynamicLoadComponents = [
@@ -38,8 +38,8 @@ export default class ComponentService {
       'dt-tags',
       'dt-modal',
       'dt-list',
-      'dt-button'
-    ]
+      'dt-button',
+    ];
   }
 
   /**
@@ -53,18 +53,26 @@ export default class ComponentService {
     This is explicitly created to handle custom event send by "Create New Contact form - Save Button" with empty postId
     as "enableautoSave" is to only work On Edit page(where there is some postId).
     */
-    const createPostButton = document.querySelector('dt-button#create-post-button');
-    if(createPostButton) {
-      createPostButton.addEventListener('send-data', this.processFormSubmission.bind(this));
+    const createPostButton = document.querySelector(
+      'dt-button#create-post-button'
+    );
+    if (createPostButton) {
+      createPostButton.addEventListener(
+        'send-data',
+        this.processFormSubmission.bind(this)
+      );
     }
 
     // Handling click event of dt-button (favorite-button) which is inside DT-List
     const dtListComponent = document.querySelector('dt-list');
-      if (dtListComponent) {
-          if (dtListComponent.tagName.toLowerCase() === 'dt-list') {
-            dtListComponent.addEventListener('customClick', this.handleCustomClickEvent.bind(this));
-            }
-          }
+    if (dtListComponent) {
+      if (dtListComponent.tagName.toLowerCase() === 'dt-list') {
+        dtListComponent.addEventListener(
+          'customClick',
+          this.handleCustomClickEvent.bind(this)
+        );
+      }
+    }
 
     this.attachLoadEvents();
   }
@@ -79,36 +87,42 @@ export default class ComponentService {
       selector || this.dynamicLoadComponents.join(',')
     );
 
-
     // check if there is dt-modal and duplicate-detected class with it on DOM.
-    const filteredElements = Array.from(elements).filter(element => element.tagName.toLowerCase() === 'dt-modal' && element.classList.contains('duplicate-detected'));
+    const filteredElements = Array.from(elements).filter(
+      element =>
+        element.tagName.toLowerCase() === 'dt-modal' &&
+        element.classList.contains('duplicate-detected')
+    );
     // calling the function to check duplicates
-    if(filteredElements){
-      this.checkDuplicates(elements,filteredElements)
+    if (filteredElements) {
+      this.checkDuplicates(elements, filteredElements);
     }
 
     if (elements) {
       elements.forEach(el =>
         el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this))
-      )
+      );
     }
-
   }
 
- async checkDuplicates(elements,filteredElements){
-   const dtModal = document.querySelector('dt-modal.duplicate-detected');
-   const button= dtModal.shadowRoot.querySelector('.duplicates-detected-button');
-   if(button){
-    button.style.display='none'
-  }
-    const duplicates=await this.api.checkDuplicateUsers(this.postType,this.postId)
+  async checkDuplicates(elements, filteredElements) {
+    const dtModal = document.querySelector('dt-modal.duplicate-detected');
+    const button = dtModal.shadowRoot.querySelector(
+      '.duplicates-detected-button'
+    );
+    if (button) {
+      button.style.display = 'none';
+    }
+    const duplicates = await this.api.checkDuplicateUsers(
+      this.postType,
+      this.postId
+    );
     // showing the button to show duplicates
-    if(filteredElements && duplicates.ids.length>0){
-      if(button){
-        button.style.display='block'
+    if (filteredElements && duplicates.ids.length > 0) {
+      if (button) {
+        button.style.display = 'block';
       }
     }
-
   }
 
   /**
@@ -120,11 +134,14 @@ export default class ComponentService {
       selector || this.autoSaveComponents.join(',')
     );
     if (allElements) {
-      allElements.forEach(el =>{
+      allElements.forEach(el => {
         if (el.tagName.toLowerCase() === 'dt-button') {
-          el.addEventListener('customClick', this.handleCustomClickEvent.bind(this));
+          el.addEventListener(
+            'customClick',
+            this.handleCustomClickEvent.bind(this)
+          );
         }
-        el.addEventListener('change', this.handleChangeEvent.bind(this))
+        el.addEventListener('change', this.handleChangeEvent.bind(this));
       });
     }
   }
@@ -138,12 +155,15 @@ export default class ComponentService {
       if (field.startsWith('favorite-button')) {
         apiValue = { favorite: toggleState };
         if (/\d$/.test(field)) {
-          this.postId = field.split('-').pop()
+          this.postId = field.split('-').pop();
         }
-      } else if (field.startsWith('following-button') || field.startsWith('follow-button')) {
+      } else if (
+        field.startsWith('following-button') ||
+        field.startsWith('follow-button')
+      ) {
         apiValue = {
           follow: { values: [{ value: '1', delete: toggleState }] },
-          unfollow: { values: [{ value: '1', delete: !toggleState }] }
+          unfollow: { values: [{ value: '1', delete: !toggleState }] },
         };
       } else {
         // Add other conditions for field starts with
@@ -154,7 +174,7 @@ export default class ComponentService {
       try {
         const apiResponse = await this.api.updatePost(
           this.postType,
-          this.postId ,
+          this.postId,
           apiValue
         );
       } catch (error) {
@@ -166,33 +186,30 @@ export default class ComponentService {
     }
   }
 
- /**
+  /**
    * Handle Post creation on new contact form
    *
    */
- async processFormSubmission(event){
-  // const createPostButton = document.querySelector('dt-button#create-post-button');
-  const details = event.detail;
-  const { newValue } = details;
+  async processFormSubmission(event) {
+    // const createPostButton = document.querySelector('dt-button#create-post-button');
+    const details = event.detail;
+    const { newValue } = details;
 
-  try {
-    const apiResponse = await this.api.createPost(
-      this.postType, newValue.el
-    );
-    if (apiResponse) {
-      window.location = apiResponse.permalink;
+    try {
+      const apiResponse = await this.api.createPost(this.postType, newValue.el);
+      if (apiResponse) {
+        window.location = apiResponse.permalink;
+      }
+      event.target.removeAttribute('loading');
+      event.target.setAttribute('error', '');
+      event.target.setAttribute('saved', true);
+    } catch (error) {
+      console.error(error);
+      event.target.removeAttribute('loading');
+      event.target.setAttribute('invalid', true); // this isn't hooked up yet
+      event.target.setAttribute('error', error.message || error.toString());
     }
-    event.target.removeAttribute('loading');
-    event.target.setAttribute('error', '');
-    event.target.setAttribute('saved', true);
-  } catch (error) {
-    console.error(error);
-    event.target.removeAttribute('loading');
-    event.target.setAttribute('invalid', true); // this isn't hooked up yet
-    event.target.setAttribute('error', error.message || error.toString());
   }
-}
-
 
   /**
    * Event listener for load events.
@@ -208,37 +225,47 @@ export default class ComponentService {
         const component = event.target.tagName.toLowerCase();
         let values = [];
         switch (component) {
-          case 'dt-button': {
-            const contactApiData = await this.api.getContactInfo(
-              this.postType,
-              this.postId
-            );
-            values = contactApiData;
-          };
+          case 'dt-button':
+            {
+              const contactApiData = await this.api.getContactInfo(
+                this.postType,
+                this.postId
+              );
+              values = contactApiData;
+            }
             break;
-          case 'dt-list': {
-            const listResponse = await this.api.fetchPostsList(this.postType, query)
-            values = listResponse.posts
-          }
-          break;
+          case 'dt-list':
+            {
+              const listResponse = await this.api.fetchPostsList(
+                this.postType,
+                query
+              );
+              values = listResponse.posts;
+            }
+            break;
           case 'dt-connection': {
             const postType = details.postType || this.postType;
-            const connectionResponse = await this.api.listPostsCompact(postType, query);
+            const connectionResponse = await this.api.listPostsCompact(
+              postType,
+              query
+            );
             // for filtering the user itself from the response.
             const filteredConnectionResponse = {
               ...connectionResponse,
-              posts: connectionResponse.posts.filter(post => post.ID !== parseInt(this.postId, 10))
-          };
+              posts: connectionResponse.posts.filter(
+                post => post.ID !== parseInt(this.postId, 10)
+              ),
+            };
 
-          if (filteredConnectionResponse?.posts) {
-            values = filteredConnectionResponse?.posts.map(value => ({
-              id: value.ID,
-              label: value.name,
-              link: value.permalink,
-              status: value.status,
-            }));
-          }
-          break;
+            if (filteredConnectionResponse?.posts) {
+              values = filteredConnectionResponse?.posts.map(value => ({
+                id: value.ID,
+                label: value.name,
+                link: value.permalink,
+                status: value.status,
+              }));
+            }
+            break;
           }
           case 'dt-tags':
           default:
@@ -270,20 +297,28 @@ export default class ComponentService {
   async handleChangeEvent(event) {
     const details = event.detail;
     if (details) {
-      const { field, newValue, oldValue} = details;
+      const { field, newValue, oldValue } = details;
       const component = event.target.tagName.toLowerCase();
-      const apiValue = ComponentService.convertValue(component, newValue, oldValue);
+      const apiValue = ComponentService.convertValue(
+        component,
+        newValue,
+        oldValue
+      );
 
       event.target.setAttribute('loading', true);
 
       // Update post via API
       try {
-      const apiResponse= await this.api.updatePost(this.postType, this.postId, {
-          [field]: apiValue,
-        });
+        const apiResponse = await this.api.updatePost(
+          this.postType,
+          this.postId,
+          {
+            [field]: apiValue,
+          }
+        );
 
         // Sending response to update value
-        if(component==='dt-comm-channel' && details.onSuccess){
+        if (component === 'dt-comm-channel' && details.onSuccess) {
           details.onSuccess(apiResponse);
         }
 
@@ -318,7 +353,7 @@ export default class ComponentService {
           break;
 
         case 'dt-multi-select':
-          case 'dt-tags':
+        case 'dt-tags':
           if (typeof value === 'string') {
             returnValue = [value];
           }
@@ -376,28 +411,30 @@ export default class ComponentService {
                   delete: true,
                 };
               }
-                return item;
-              }),
-              force_values: false,
+              return item;
+            }),
+            force_values: false,
           };
           break;
         case 'dt-comm-channel': {
           const valueLength = value.length;
           // case: Delete
-           if(oldValue && oldValue.delete===true){
-            returnValue=[oldValue];
+          if (oldValue && oldValue.delete === true) {
+            returnValue = [oldValue];
           }
           // case: Add
-           else if(value[valueLength-1].key==='' || value[valueLength-1].key.startsWith('new-contact')){
-              returnValue=[]
-              value.forEach(obj=>{
-                returnValue.push({value : obj.value})
-                })
-              }
-            // case: Edit
-              else{
-                returnValue=value;
-
+          else if (
+            value[valueLength - 1].key === '' ||
+            value[valueLength - 1].key.startsWith('new-contact')
+          ) {
+            returnValue = [];
+            value.forEach(obj => {
+              returnValue.push({ value: obj.value });
+            });
+          }
+          // case: Edit
+          else {
+            returnValue = value;
           }
           break;
         }
