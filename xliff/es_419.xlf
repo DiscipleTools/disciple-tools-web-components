@@ -1,81 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-<file target-language="es_419" source-language="en" original="lit-localize-inputs" datatype="plaintext">
-<body>
-<trans-unit id="sb1bd536b63e9e995">
-  <source>Private Field: Only I can see its content</source>
-  <target>Campo Privado: Solo yo puedo ver su contenido</target>
-</trans-unit>
-<trans-unit id="s04ceadb276bbe149">
-  <source>Loading options...</source>
-  <target>Cargando opciones...</target>
-</trans-unit>
-<trans-unit id="sd2e180dab4fbcfb9">
-  <source>No Data Available</source>
-</trans-unit>
-<trans-unit id="sf9aee319a006c9b4">
-  <source>Add</source>
-  <target>Agregar</target>
-</trans-unit>
-<trans-unit id="sbf1ca928ec1deb62">
-  <source>Need more help?</source>
-  <target>¿Necesitas más ayuda?</target>
-</trans-unit>
-<trans-unit id="s226be12a5b1a27e8">
-  <source>Read the documentation</source>
-  <target>Leer la documentación</target>
-</trans-unit>
-<trans-unit id="s5e8250fb85d64c23">
-  <source>Close</source>
-  <target>Cerrar</target>
-</trans-unit>
-<trans-unit id="s29e25f5e4622f847">
-  <source>Open Dialog</source>
-  <target>Abrir Diálogo</target>
-</trans-unit>
-<trans-unit id="s33f85f24c0f5f008">
-  <source>Save</source>
-  <target>Guardar</target>
-</trans-unit>
-<trans-unit id="s49730f3d5751a433">
-  <source>Loading...</source>
-</trans-unit>
-<trans-unit id="s625ad019db843f94">
-  <source>Use</source>
-  <target>Usar</target>
-</trans-unit>
-<trans-unit id="sd1a8dc951b2b6a98">
-  <source>Choose which fields to display as columns in the list</source>
-  <target>Elige qué campos mostrar como columnas en el listado</target>
-</trans-unit>
-<trans-unit id="scb9a1ff437efbd2a">
-  <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
-  <target>Selecciona todos los <x id="0" equiv-text="${this.postType}"/> que quieras actualizar del listado y actualízalos debajo</target>
-</trans-unit>
-<trans-unit id="sac83d7f9358b43db">
-  <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
-  <target><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> Lista</target>
-</trans-unit>
-<trans-unit id="seafe6ef133ede7da">
-  <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
-  <target>Mostrando 1 de <x id="0" equiv-text="${this.total}"/></target>
-</trans-unit>
-<trans-unit id="s41cb4006238ebd3b">
-  <source>Bulk Edit</source>
-  <target>Edición masiva</target>
-</trans-unit>
-<trans-unit id="s36cb242ac90353bc">
-  <source>Fields</source>
-  <target>Campos</target>
-</trans-unit>
-<trans-unit id="s9d51bfd93b5dbeca">
-  <source>Show Archived</source>
-  <target>Mostrar archivado</target>
-</trans-unit>
-<trans-unit id="sb59d68ed12d46377">
-  <source>Loading</source>
-  <target>Cargando</target>
-</trans-unit>
-</body>
-</file>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file target-language="es_419" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+    <body>
+      <trans-unit id="sb1bd536b63e9e995">
+        <source>Private Field: Only I can see its content</source>
+        <target>Campo Privado: Solo yo puedo ver su contenido</target>
+      </trans-unit>
+      <trans-unit id="s04ceadb276bbe149">
+        <source>Loading options...</source>
+        <target>Cargando opciones...</target>
+      </trans-unit>
+      <trans-unit id="sd2e180dab4fbcfb9" xml:space="preserve">
+        <source>No Data Available</source>
+        <target state="translated">No hay datos disponibles</target>
+      </trans-unit>
+      <trans-unit id="sf9aee319a006c9b4">
+        <source>Add</source>
+        <target>Agregar</target>
+      </trans-unit>
+      <trans-unit id="sbf1ca928ec1deb62">
+        <source>Need more help?</source>
+        <target>¿Necesitas más ayuda?</target>
+      </trans-unit>
+      <trans-unit id="s226be12a5b1a27e8">
+        <source>Read the documentation</source>
+        <target>Leer la documentación</target>
+      </trans-unit>
+      <trans-unit id="s5e8250fb85d64c23">
+        <source>Close</source>
+        <target>Cerrar</target>
+      </trans-unit>
+      <trans-unit id="s29e25f5e4622f847">
+        <source>Open Dialog</source>
+        <target>Abrir Diálogo</target>
+      </trans-unit>
+      <trans-unit id="s33f85f24c0f5f008">
+        <source>Save</source>
+        <target>Guardar</target>
+      </trans-unit>
+      <trans-unit id="s49730f3d5751a433" xml:space="preserve">
+        <source>Loading...</source>
+        <target state="translated">Cargando...</target>
+      </trans-unit>
+      <trans-unit id="s625ad019db843f94">
+        <source>Use</source>
+        <target>Usar</target>
+      </trans-unit>
+      <trans-unit id="sd1a8dc951b2b6a98">
+        <source>Choose which fields to display as columns in the list</source>
+        <target>Elige qué campos mostrar como columnas en el listado</target>
+      </trans-unit>
+      <trans-unit id="scb9a1ff437efbd2a">
+        <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
+        <target>Selecciona todos los <x id="0" equiv-text="${this.postType}"/> que quieras actualizar del listado y actualízalos debajo</target>
+      </trans-unit>
+      <trans-unit id="sac83d7f9358b43db">
+        <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
+        <target><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> Lista</target>
+      </trans-unit>
+      <trans-unit id="seafe6ef133ede7da">
+        <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
+        <target>Mostrando 1 de <x id="0" equiv-text="${this.total}"/></target>
+      </trans-unit>
+      <trans-unit id="s41cb4006238ebd3b">
+        <source>Bulk Edit</source>
+        <target>Edición masiva</target>
+      </trans-unit>
+      <trans-unit id="s36cb242ac90353bc">
+        <source>Fields</source>
+        <target>Campos</target>
+      </trans-unit>
+      <trans-unit id="s9d51bfd93b5dbeca">
+        <source>Show Archived</source>
+        <target>Mostrar archivado</target>
+      </trans-unit>
+      <trans-unit id="sb59d68ed12d46377">
+        <source>Loading</source>
+        <target>Cargando</target>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

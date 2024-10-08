@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import ApiService from './apiService.js';
 
 export default class ComponentService {
@@ -78,7 +79,7 @@ export default class ComponentService {
     );
 
     // calling the function to check duplicates
-    if (filteredElements) {
+    if (filteredElements.length > 0) {
       this.checkDuplicates(elements, filteredElements);
     }
     if (elements) {
@@ -90,20 +91,22 @@ export default class ComponentService {
 
   async checkDuplicates(elements, filteredElements) {
     const dtModal = document.querySelector('dt-modal.duplicate-detected');
-    const button = dtModal.shadowRoot.querySelector(
-      '.duplicates-detected-button'
-    );
-    if (button) {
-      button.style.display = 'none';
-    }
-    const duplicates = await this.api.checkDuplicateUsers(
-      this.postType,
-      this.postId
-    );
-    // showing the button to show duplicates
-    if (filteredElements && duplicates.ids.length > 0) {
+    if (dtModal) {
+      const button = dtModal.shadowRoot.querySelector(
+        '.duplicates-detected-button'
+      );
       if (button) {
-        button.style.display = 'block';
+        button.style.display = 'none';
+      }
+      const duplicates = await this.api.checkDuplicateUsers(
+        this.postType,
+        this.postId
+      );
+      // showing the button to show duplicates
+      if (filteredElements && duplicates.ids.length > 0) {
+        if (button) {
+          button.style.display = 'block';
+        }
       }
     }
   }
@@ -315,10 +318,6 @@ switch(component){
     break;
   }
 }
-        // Sending response to update value
-        if (component === 'dt-comm-channel' && details.onSuccess) {
-          details.onSuccess(apiResponse);
-        }
 
         event.target.removeAttribute('loading');
         event.target.setAttribute('error', '');
@@ -368,8 +367,8 @@ switch(component){
           };
           break;
 
-        //seperate case for dt-users-connection
-        case 'dt-users-connection':
+        // seperate case for dt-users-connection
+        case 'dt-users-connection': {
            // Initialize an empty array to hold the differences found.
             const userDataDifferences=[];
             // Create a Map from oldValue for quick lookups by ID.
@@ -395,7 +394,7 @@ switch(component){
                   // Iterate through all keys to compare values.
                   for (const key of allKeys) {
                       if (newUserObj[key] !== oldUserObj[key]) {
-                          diff.changes[key] = newUserObj.hasOwnProperty(key) ? newUserObj[key] : undefined;
+                          diff.changes[key] = Object.prototype.hasOwnProperty.call(newUserObj, key) ? newUserObj[key] : undefined;
                           // Set the hasDiff flag to true as a difference was found.
                           hasDiff = true;
                       }
@@ -408,7 +407,7 @@ switch(component){
 
           returnValue = userDataDifferences[0].id;
           break;
-
+        }
     case 'dt-connection':
             case 'dt-location':
               if (typeof value === 'string') {

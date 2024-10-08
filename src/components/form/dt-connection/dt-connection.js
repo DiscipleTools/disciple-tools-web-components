@@ -32,9 +32,9 @@ export class DtConnection extends DtTags {
         }
 
         li button svg {
-          width: 20px;
+          width: 1.5em;
           height: auto;
-          margin-bottom: -4px;
+          margin-bottom: -.25em;
         }
         li button svg use {
           fill: var(--dt-connection-icon-fill, var(--primary-color));
