@@ -462,6 +462,14 @@ export class DtList extends DtBase {
 
   _toggleShowArchived() {
     this.showArchived = !this.showArchived;
+    this.headerClick = true;
+    if(this.showArchived){
+      const { overall_status, ...filteredPayload } = this.payload;
+      this.payload = filteredPayload; // Assign the new payload without overall_status
+    }else{
+      this.payload.overall_status = ["-closed"];
+    }
+    this._getPosts(this.payload);
   }
 
   _sortArrowsClass(column) {
