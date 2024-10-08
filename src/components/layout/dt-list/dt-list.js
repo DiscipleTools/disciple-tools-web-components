@@ -476,6 +476,7 @@ export class DtList extends DtBase {
   }
 
   _headerTemplate() {
+    console.log('this')
     if (this.postTypeSettings) {
       return html`
         <thead>
