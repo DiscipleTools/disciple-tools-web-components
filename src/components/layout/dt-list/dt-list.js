@@ -551,7 +551,6 @@ export class DtList extends DtBase {
       }
       return null;
     }
-  }
 
   formatDate(dateString) {
     const date = new Date(dateString);
@@ -671,7 +670,8 @@ export class DtList extends DtBase {
               type="button"
               posttype="contacts"
               context="star"
-              favorited=${post.favorite ? post.favorite : false}
+              .favorited=${post.favorite ? post.favorite : false}
+              .listButton=${true}
             >
               <svg
                 class="${classMap({
