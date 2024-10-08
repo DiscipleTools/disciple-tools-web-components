@@ -488,9 +488,6 @@ export class DtList extends DtBase {
                 id="bulk_edit_master_checkbox"
               />
             </th>
-
-            <th></th>
-
             ${map(this.sortedColumns, column => {
               const isFavoriteColumn = column === 'favorite';
               return html`<th
