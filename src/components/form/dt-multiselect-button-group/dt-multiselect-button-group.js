@@ -33,7 +33,6 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       value: { type: Array, reflect: true },
       icon: { type: String },
       isModal: { type: Array },
-      icon: { type: String },
     };
   }
 
@@ -60,7 +59,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     super.connectedCallback();
     this.selectedButtons = this.value ? this.value.map(button => ({ value: button })) : [];
   }
-  
+
 
   _handleButtonClick(event, label) {
     const buttonValue = event.target.value;
