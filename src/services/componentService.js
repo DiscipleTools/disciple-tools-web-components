@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import ApiService from './apiService.js';
 
 export default class ComponentService {
@@ -94,7 +95,7 @@ export default class ComponentService {
         element.classList.contains('duplicate-detected')
     );
     // calling the function to check duplicates
-    if (filteredElements) {
+    if (filteredElements.length > 0) {
       this.checkDuplicates(elements, filteredElements);
     }
 
@@ -107,20 +108,22 @@ export default class ComponentService {
 
   async checkDuplicates(elements, filteredElements) {
     const dtModal = document.querySelector('dt-modal.duplicate-detected');
-    const button = dtModal.shadowRoot.querySelector(
-      '.duplicates-detected-button'
-    );
-    if (button) {
-      button.style.display = 'none';
-    }
-    const duplicates = await this.api.checkDuplicateUsers(
-      this.postType,
-      this.postId
-    );
-    // showing the button to show duplicates
-    if (filteredElements && duplicates.ids.length > 0) {
+    if (dtModal) {
+      const button = dtModal.shadowRoot.querySelector(
+        '.duplicates-detected-button'
+      );
       if (button) {
-        button.style.display = 'block';
+        button.style.display = 'none';
+      }
+      const duplicates = await this.api.checkDuplicateUsers(
+        this.postType,
+        this.postId
+      );
+      // showing the button to show duplicates
+      if (filteredElements && duplicates.ids.length > 0) {
+        if (button) {
+          button.style.display = 'block';
+        }
       }
     }
   }
@@ -363,27 +366,68 @@ export default class ComponentService {
           };
           break;
 
-        case 'dt-connection':
-        case 'dt-location':
-          if (typeof value === 'string') {
-            returnValue = [
-              {
-                id: value,
-              },
-            ];
-          }
-          returnValue = {
-            values: returnValue.map(item => {
-              const ret = {
-                value: item.id,
-              };
-              if (item.delete) {
-                ret.delete = item.delete;
+        // seperate case for dt-users-connection
+        case 'dt-users-connection': {
+           // Initialize an empty array to hold the differences found.
+            const userDataDifferences=[];
+            // Create a Map from oldValue for quick lookups by ID.
+            const oldUsersMap = new Map(oldValue.map(user => [user.id,user]));
+
+            for (const newUserObj of returnValue) {
+            // Retrieve the corresponding old object from the map using the ID.
+              const oldUserObj = oldUsersMap.get(newUserObj.id);
+              const diff = { id: newUserObj.id, changes: {} };
+
+            // Check if the old object exists (i.e., the current new object may be new).
+              if (!oldUserObj) {
+                  // New object added
+                  diff.changes = { ...newUserObj }; // Store all properties of the new object as changes.
+                  userDataDifferences.push(diff);
+                  break;
+              } else {
+
+                // Existing object found; we need to compare their properties.
+                  let hasDiff = false;
+                  const allKeys = new Set([...Object.keys(oldUserObj), ...Object.keys(newUserObj)]);
+
+                  // Iterate through all keys to compare values.
+                  for (const key of allKeys) {
+                      if (newUserObj[key] !== oldUserObj[key]) {
+                          diff.changes[key] = Object.prototype.hasOwnProperty.call(newUserObj, key) ? newUserObj[key] : undefined;
+                          // Set the hasDiff flag to true as a difference was found.
+                          hasDiff = true;
+                      }
+                  }
+                  if (hasDiff){ userDataDifferences.push(diff);
+                  break;
+                }
               }
-              return ret;
-            }),
-            force_values: false,
-          };
+          }
+
+          returnValue = userDataDifferences[0].id;
+          break;
+        }
+    case 'dt-connection':
+            case 'dt-location':
+              if (typeof value === 'string') {
+                returnValue = [
+                  {
+                    id: value,
+                  },
+                ];
+              }
+              returnValue = {
+                values: returnValue.map(item => {
+                  const ret = {
+                    value: item.id,
+                  };
+                  if (item.delete) {
+                    ret.delete = item.delete;
+                  }
+                  return ret;
+                }),
+                force_values: false,
+              };
           break;
 
         case 'dt-multiselect-buttons-group':

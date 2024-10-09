@@ -15,7 +15,7 @@ export class DtButton extends DtBase {
       .dt-button {
         cursor: pointer;
         display: flex;
-        margin: 5px;
+        margin: var(--dt-button-margin, 5px);
         padding: var(--dt-button-padding-y, 10px)
           var(--dt-button-padding-x, 10px);
         font-family: var(--dt-button-font-family);
@@ -149,7 +149,7 @@ export class DtButton extends DtBase {
         padding: 0;
       }
       ::slotted(svg) {
-        margin: 2px !important;
+        margin: 1.5em;
         vertical-align: middle !important;
       }
 
@@ -347,7 +347,7 @@ export class DtButton extends DtBase {
     } else {
       const form = this.closest('form');
       if (form) {
-        // form.submit();
+        form.submit();
       }
     }
   }

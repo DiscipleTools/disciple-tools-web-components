@@ -15,7 +15,7 @@ export class DtCopyText extends DtBase {
         display: flex;
         align-items: center;
         position: relative;
-        width: calc(100% + 20px);
+        width: calc(100% + 1.5em);
       }
 
       .copy-text__input {
@@ -24,14 +24,14 @@ export class DtCopyText extends DtBase {
 
       .copy_icon {
         cursor: copy;
-        font-size: 16px;
+        font-size: 1em;
         display: block;
-        transform: translate(-24px, -5px);
-        width: 20px;
+        transform: translate(-1.5em, -0.3125em);
+        width: 1.25em;
       }
 
       :host([dir='rtl']) .copy_icon {
-        transform: translate(24px, -5px);
+        transform: translate(1.5em, -0.3125em);
       }
     `;
   }

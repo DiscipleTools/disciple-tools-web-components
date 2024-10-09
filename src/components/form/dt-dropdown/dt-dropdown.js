@@ -18,77 +18,46 @@ export class DtDropdown extends LitElement {
         cursor: pointer;
         border-radius: 5px;
       }
-      
-      slot {
-        display: none;
-        min-width: 200px;
-        position: absolute;
-        top: calc(100% + 0px); /* Position below the button */
-        left: 0;
-        z-index: 1000; /* Set the z-index high to appear above other elements */
-        border: 1px solid gray;
-        padding: 10px;
-        background-color: white;
-      }
-      button:hover + slot {
-        display: block;
-      }
-      .btnn {
-        display: inline-block;
-        position: relative;
-      }
-      .btnn:hover slot {
-        display: block;
-      }
-      .dropdown-icon {
-        margin-left: 5px; /* Adjust the margin as needed */
-      }
 
       .dropdown {
         position: relative;
         display: inline-block;
       }
       button.dt-dropdown{
-        padding:8px;
+        padding:.5em;
         border:none;
-        background-color:#00897B;
-        color:white !important;
+        background-color: var(--dropdown-button-color, #00897B);
+        color: var(--dropdown-button-text-color, #ffffff);
         border-radius:4px;
         }
-        
+
 
       .dropdown ul {
         position: absolute;
         z-index: 999;
-        min-width:200px;
+        min-width: 15rem;
         display: none;
-        // left: -100vw;
-        // top: calc(1.5em + 14px);
-        border: 0.5px solid #3f729b;
+        border: 0.5px solid var(--primary-color,#3f729b);
         background: #fff;
-        padding: 6px 0;
+        padding: .4rem 0;
         margin: 0;
         list-style: none;
         width: 100%;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
         border-radius: 3px;
-        -webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-        -moz-box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
       }
 
       .dropdown ul button {
         display: block;
-        padding: 6px 15px;
+        padding: .4rem 1em;
         text-decoration: none;
-        color: #3f729b;
+        color: var(--primary-color,#3f729b);
         font-size: 1rem;
         border-radius: 0.25em;
         padding: 0.25rem 0.5rem;
         cursor: pointer;
         text-decoration: none;
-        background: node;
+        background: none;
         border: none;
       }
 
@@ -97,33 +66,33 @@ export class DtDropdown extends LitElement {
       }
 
       .list-style {
-        color: #3f729b;
+        color: var(--primary-color,#3f729b);
         font-size: 1rem;
       }
 
       .list-style:hover {
         background-color: var(--button-hover-color, #3f729b);
       }
-      .list-style:hover {
-        background-color: var(--button-hover-color, #2980b9);
-      }
 
-      .help-icon {
-        height: 15px;
+      .icon {
+        height: 1em;
       }
       .pre-list-item {
         padding: .7rem 1rem;
       }
-      .pre-list-item button {
-        padding: 0 !important;
+      .dropdown ul .pre-list-item button {
+        padding: 0;
+        font-size: .8em
       }
         .pre-list-item:hover {
-          background-color: #3F729B;
+          background-color: var(--primary-color,#3f729b);
         }
         .pre-list-item:hover button {
-          color: #ffffff !important;
+          color: var(--surface-1, #ffffff);
         }
         .pre-list-item:hover button img {
+          width: 1em;
+          height: 1em;
           -webkit-filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
           filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
         }
@@ -175,34 +144,43 @@ export class DtDropdown extends LitElement {
       option => html`
         ${option.isModal
           ? html`
-              <li class="pre-list-item">
-               
-                <button 
-                style="color:#3f729b; background:none; font-size:12px; text-align:left; border:none; --hover-color:white" 
-                @click="${()=>this._openDialog(option.label)}" 
+              <li
+                class="pre-list-item"
+                @click="${()=>this._openDialog(option.label)}"
+                @keydown="${()=>this._openDialog(option.label)}"
+              >
+
+                <button
+                style=""
+                @click="${()=>this._openDialog(option.label)}"
                 class="list-style dt-modal"
                 >
                 ${option.icon
                ? html`<img
                    src="${option.icon}"
                    alt="${option.label} icon"
-                   class="help-icon"
+                   class="icon"
                  />`
                : ''}
-                ${option.label} 
+                ${option.label}
                 </button>
               </li>
             `
           : html`
-              <li class="list-style pre-list-item">
+              <li
+                class="list-style pre-list-item"
+                @click="${() => this._redirectToHref(option.href)}"
+                @keydown="${() => this._redirectToHref(option.href)}"
+              >
+
                 <button
-                  style=" background : none ; border : none; --hover-color:white; font-size:12px;text-align:left"
+                  style=""
                   @click="${() => this._redirectToHref(option.href)}"
                 >
                   <img
                     src=${option.icon}
-                    style="width: 15px; height: 15px"
                     alt=${option.label}
+                    class="icon"
                   />
                   ${option.label.replace(/-/g, ' ')}
                 </button>

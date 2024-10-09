@@ -51,7 +51,16 @@ export class DtSingleSelect extends DtFormBase {
             2.5em 0.5em;
         }
         select.color-select {
-          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: white'></polygon></svg>");
+          background-image: linear-gradient(
+              45deg,
+              transparent 50%,
+              currentColor 50%
+            ),
+            linear-gradient(
+              135deg,
+              currentColor 50%,
+              transparent 50%
+            );
           background-color: var(--dt-form-border-color, #cacaca);
           border: none;
           border-radius: 10px;
