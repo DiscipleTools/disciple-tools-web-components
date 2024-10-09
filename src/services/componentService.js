@@ -292,7 +292,7 @@ export default class ComponentService {
   async handleChangeEvent(event) {
     const details = event.detail;
     if (details) {
-      const { field, newValue, oldValue } = details;
+      const { field, newValue, oldValue, remove } = details;
       const component = event.target.tagName.toLowerCase();
       const apiValue = ComponentService.convertValue(
         component,
@@ -304,18 +304,28 @@ export default class ComponentService {
 
       // Update post via API
       try {
-        const apiResponse = await this.api.updatePost(
-          this.postType,
-          this.postId,
-          {
-            [field]: apiValue,
+        let apiResponse;
+      switch(component){
+        case 'dt-users-connection':{
+          if(remove === true){
+            apiResponse =await this.api.removePostShare(this.postType,this.postId,apiValue);
+            break;
           }
-        );
+          apiResponse= await this.api.addPostShare(this.postType,this.postId,apiValue)
+          break;
+        }
+        default:{
+          apiResponse= await this.api.updatePost(this.postType, this.postId, {
+              [field]: apiValue,
+            });
 
         // Sending response to update value
-        if (component === 'dt-comm-channel' && details.onSuccess) {
+        if(component==='dt-comm-channel' && details.onSuccess){
           details.onSuccess(apiResponse);
         }
+      break;
+    }
+  }
 
         event.target.removeAttribute('loading');
         event.target.setAttribute('error', '');

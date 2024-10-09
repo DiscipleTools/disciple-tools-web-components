@@ -4,24 +4,36 @@ import DtFormBase from '../dt-form-base.js';
 
 export class DtMultiSelectButtonGroup extends DtFormBase {
   static get styles() {
-  return css`
-    :host {
-    }
-    .icon img {
-      width: 1rem;
-      height: 1rem;
-      display: inline;
-    }
+    return css`
+   :host {
+        margin-bottom: 5px;
+      }
+      span .icon {
+        vertical-align: middle;
+        padding: 0 2px;
+      }
+      .icon img {
+        width: 15px !important;
+        height: 15px !important;
+        margin-right: 1px !important;
+        vertical-align: sub;
+      }
+      .button-group {
+        display: inline-flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
   `
-   };
+  };
 
   static get properties() {
     return {
       buttons: { type: Array },
       selectedButtons: { type: Array },
       value: { type: Array, reflect: true },
-      icon: { type: String }
-      };
+      icon: { type: String },
+      isModal: { type: Array },
+    };
   }
 
   get classes() {
@@ -37,9 +49,10 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
 
   constructor() {
     super();
-    this.buttons= [];
+    this.buttons = [];
     this.selectedButtons = [];
     this.value = [];
+    this.custom = true;
   }
 
   connectedCallback() {
@@ -47,8 +60,14 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     this.selectedButtons = this.value ? this.value.map(button => ({ value: button })) : [];
   }
 
-  _handleButtonClick(event) {
+
+  _handleButtonClick(event, label) {
     const buttonValue = event.target.value;
+    if (buttonValue === "milestone_baptized" && this.isModal && this.isModal.includes(label) && !this.value?.includes("milestone_baptized")) {
+      const modal = document.querySelector(`#baptized-modal`);
+      modal.shadowRoot.querySelector('dialog').showModal();
+      document.querySelector('body').style.overflow = "hidden"
+    }
     const index = this.selectedButtons.findIndex(
       button => button.value === buttonValue
     );
@@ -60,7 +79,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     }
     this.value = this.selectedButtons.filter(button => !button.value.startsWith('-')).map(button => button.value);
 
-     this.dispatchEvent(new CustomEvent('change', {
+    this.dispatchEvent(new CustomEvent('change', {
       detail: {
         field: this.name,
         oldValue: this.value,
@@ -72,15 +91,15 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
   }
 
   _inputKeyDown(e) {
-      const keycode = e.keyCode || e.which;
-      switch (keycode) {
-        case 13: // enter
-          this._handleButtonClick(e);
-          break;
-        default:
-          // handle other keycodes here
-          break;
-      }
+    const keycode = e.keyCode || e.which;
+    switch (keycode) {
+      case 13: // enter
+        this._handleButtonClick(e);
+        break;
+      default:
+        // handle other keycodes here
+        break;
+    }
   }
 
 
@@ -88,12 +107,12 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     return html`
        ${this.labelTemplate()}
        ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
+        ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
+        : null}
         ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
-       <div>
+        ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
+        : null}
+       <div class="button-group">
         ${this.buttons.map(buttonSet => {
           const items = Object.keys(buttonSet);
           return items.map(item => {
@@ -104,18 +123,19 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
 
             return html`
             <dt-button
+            custom
               id=${item}
               type="success"
               context=${context}
               .value=${item || this.value}
-              @click="${this._handleButtonClick}"
+              @click="${(e) => this._handleButtonClick(e, buttonSet[item].label)}"
               @keydown="${this._inputKeyDown}"
               role="button"
               >
                <span class="icon">
                 ${buttonSet[item].icon
-                  ? html`<img src="${buttonSet[item].icon}" alt="${this.iconAltText}" />`
-                  : null}
+                ? html`<img src="${buttonSet[item].icon}" alt="${this.iconAltText}" />`
+                : null}
             </span>
              ${buttonSet[item].label}</dt-button>
           `;
