@@ -49,9 +49,9 @@ export class DtStar extends LitElement {
         @keyup="${this._keyUp}"
         tabindex="0"
         id="star"
-        height="32"
+        height="15"
         viewBox="0 0 32 32"
-        width="32"
+        width="15"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path

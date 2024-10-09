@@ -30,16 +30,16 @@ export default class ComponentService {
       'dt-toggle',
       'dt-comm-channel',
       'dt-multiselect-buttons-group',
-      'dt-button',
-      'dt-users-connection',
+      'dt-list',
+      'dt-button'
     ];
 
     this.dynamicLoadComponents = [
       'dt-connection',
       'dt-tags',
-      'dt-users-connection',
       'dt-modal',
-      'dt-button',
+      'dt-list',
+      'dt-button'
     ]
   }
 
@@ -54,11 +54,27 @@ export default class ComponentService {
     This is explicitly created to handle custom event send by "Create New Contact form - Save Button" with empty postId
     as "enableautoSave" is to only work On Edit page(where there is some postId).
     */
-    const createPostButton = document.querySelector('dt-button#create-post-button');
-    if(createPostButton) {
-      createPostButton.addEventListener('send-data', this.processFormSubmission.bind(this));
+    const createPostButton = document.querySelector(
+      'dt-button#create-post-button'
+    );
+    if (createPostButton) {
+      createPostButton.addEventListener(
+        'send-data',
+        this.processFormSubmission.bind(this)
+      );
     }
-    // this.processFormSubmission();
+
+    // Handling click event of dt-button (favorite-button) which is inside DT-List
+    const dtListComponent = document.querySelector('dt-list');
+    if (dtListComponent) {
+      if (dtListComponent.tagName.toLowerCase() === 'dt-list') {
+        dtListComponent.addEventListener(
+          'customClick',
+          this.handleCustomClickEvent.bind(this)
+        );
+      }
+    }
+
     this.attachLoadEvents();
   }
 
@@ -71,17 +87,18 @@ export default class ComponentService {
     const elements = document.querySelectorAll(
       selector || this.dynamicLoadComponents.join(',')
     );
+
     // check if there is dt-modal and duplicate-detected class with it on DOM.
     const filteredElements = Array.from(elements).filter(
       element =>
         element.tagName.toLowerCase() === 'dt-modal' &&
         element.classList.contains('duplicate-detected')
     );
-
     // calling the function to check duplicates
     if (filteredElements.length > 0) {
       this.checkDuplicates(elements, filteredElements);
     }
+
     if (elements) {
       elements.forEach(el =>
         el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this))
@@ -120,12 +137,49 @@ export default class ComponentService {
       selector || this.autoSaveComponents.join(',')
     );
     if (allElements) {
-      allElements.forEach(el => {
-        el.addEventListener('change', this.handleChangeEvent.bind(this));
+      allElements.forEach(el =>{
         if (el.tagName.toLowerCase() === 'dt-button') {
           el.addEventListener('customClick', this.handleCustomClickEvent.bind(this));
         }
+        el.addEventListener('change', this.handleChangeEvent.bind(this))
       });
+    }
+  }
+
+  async handleCustomClickEvent(event) {
+    const details = event.detail;
+    if (details) {
+      const { field, toggleState } = details;
+      event.target.setAttribute('loading', true);
+      let apiValue;
+      if (field.startsWith('favorite-button')) {
+        apiValue = { favorite: toggleState };
+        if (/\d$/.test(field)) {
+          this.postId = field.split('-').pop()
+        }
+      } else if (field.startsWith('following-button') || field.startsWith('follow-button')) {
+        apiValue = {
+          follow: { values: [{ value: '1', delete: toggleState }] },
+          unfollow: { values: [{ value: '1', delete: !toggleState }] }
+        };
+      } else {
+        // Add other conditions for field starts with
+        console.log('No match found for the field');
+      }
+
+      // Update post via API
+      try {
+        const apiResponse = await this.api.updatePost(
+          this.postType,
+          this.postId ,
+          apiValue
+        );
+      } catch (error) {
+        console.error(error);
+        event.target.removeAttribute('loading');
+        event.target.setAttribute('invalid', true); // this isn't hooked up yet
+        event.target.setAttribute('error', error.message || error.toString());
+      }
     }
   }
 
@@ -133,28 +187,29 @@ export default class ComponentService {
    * Handle Post creation on new contact form
    *
    */
-  async processFormSubmission(event){
-    // const createPostButton = document.querySelector('dt-button#create-post-button');
-    const details = event.detail;
-    const { newValue } = details;
+ async processFormSubmission(event){
+  // const createPostButton = document.querySelector('dt-button#create-post-button');
+  const details = event.detail;
+  const { newValue } = details;
 
-    try {
-      const apiResponse = await this.api.createPost(
-        this.postType, newValue.el
-      );
-      if (apiResponse) {
-        window.location = apiResponse.permalink;
-      }
-      event.target.removeAttribute('loading');
-      event.target.setAttribute('error', '');
-      event.target.setAttribute('saved', true);
-    } catch (error) {
-      console.error(error);
-      event.target.removeAttribute('loading');
-      event.target.setAttribute('invalid', true); // this isn't hooked up yet
-      event.target.setAttribute('error', error.message || error.toString());
+  try {
+    const apiResponse = await this.api.createPost(
+      this.postType, newValue.el
+    );
+    if (apiResponse) {
+      window.location = apiResponse.permalink;
     }
+    event.target.removeAttribute('loading');
+    event.target.setAttribute('error', '');
+    event.target.setAttribute('saved', true);
+  } catch (error) {
+    console.error(error);
+    event.target.removeAttribute('loading');
+    event.target.setAttribute('invalid', true); // this isn't hooked up yet
+    event.target.setAttribute('error', error.message || error.toString());
   }
+}
+
 
   /**
    * Event listener for load events.
@@ -168,7 +223,7 @@ export default class ComponentService {
       const { field, query, onSuccess, onError } = details;
       try {
         const component = event.target.tagName.toLowerCase();
-        let values = []
+        let values = [];
         switch (component) {
           case 'dt-button': {
             const contactApiData = await this.api.getContactInfo(
@@ -176,9 +231,13 @@ export default class ComponentService {
               this.postId
             );
             values = contactApiData;
-            break;
           };
-
+            break;
+          case 'dt-list': {
+            const listResponse = await this.api.fetchPostsList(this.postType, query)
+            values = listResponse.posts
+          }
+          break;
           case 'dt-connection': {
             const postType = details.postType || this.postType;
             const connectionResponse = await this.api.listPostsCompact(
@@ -203,20 +262,6 @@ export default class ComponentService {
             }
             break;
           }
-          // for getting the list from the api
-          case 'dt-users-connection': {
-            const postType = details.postType || this.postType;
-            const connectionResponse = await this.api.searchUsers(query,postType);
-
-            values= connectionResponse.map(value=>({
-              id:value.ID,
-              label:value.name,
-              avatar:value.avatar,
-              status:value.status_color,
-            }));
-          break;
-
-          }
           case 'dt-tags':
           default:
             values = await this.api.getMultiSelectValues(
@@ -237,46 +282,6 @@ export default class ComponentService {
     }
   }
 
-  async handleCustomClickEvent(event) {
-
-    const details = event.detail;
-    if (details) {
-      const { field, toggleState } = details;
-
-
-      event.target.setAttribute('loading', true);
-      let apiValue;
-      switch (field) {
-        case 'favorite-button':
-          apiValue =  { favorite: toggleState }
-          break
-        case 'following-button':
-        case 'follow-button':
-          apiValue = {
-            follow: { values: [{ value: '1', delete: toggleState }] },
-            unfollow: { values: [{ value: '1', delete: !toggleState }] },
-          };
-          break;
-            default:
-          break;
-      }
-
-      // Update post via API
-      try {
-        const apiResponse = await this.api.updatePost(
-          this.postType,
-          this.postId,
-          apiValue
-        );
-      } catch (error) {
-        console.error(error);
-        event.target.removeAttribute('loading');
-        event.target.setAttribute('invalid', true); // this isn't hooked up yet
-        event.target.setAttribute('error', error.message || error.toString());
-      }
-    }
-  }
-
   /**
    * Event listener for change events.
    * Will set loading property, attempt to save value via API,
@@ -287,37 +292,30 @@ export default class ComponentService {
   async handleChangeEvent(event) {
     const details = event.detail;
     if (details) {
-      const { field, newValue, oldValue, remove} = details;
+      const { field, newValue, oldValue } = details;
       const component = event.target.tagName.toLowerCase();
       const apiValue = ComponentService.convertValue(
         component,
         newValue,
-        oldValue,
+        oldValue
       );
+
       event.target.setAttribute('loading', true);
+
       // Update post via API
       try {
-//         var apiResponse;
-switch(component){
-  case 'dt-users-connection':{
-    if(remove === true){
-      const apiResponse =await this.api.removePostShare(this.postType,this.postId,apiValue);
-      break;
-    }
-    const apiResponse= await this.api.addPostShare(this.postType,this.postId,apiValue)
-    break;
-  }
-  default:{
-     const apiResponse= await this.api.updatePost(this.postType, this.postId, {
-        [field]: apiValue,
-      });
+        const apiResponse = await this.api.updatePost(
+          this.postType,
+          this.postId,
+          {
+            [field]: apiValue,
+          }
+        );
 
-      if(component==='dt-comm-channel' && details.onSuccess){
-        details.onSuccess(apiResponse);
-      }
-    break;
-  }
-}
+        // Sending response to update value
+        if (component === 'dt-comm-channel' && details.onSuccess) {
+          details.onSuccess(apiResponse);
+        }
 
         event.target.removeAttribute('loading');
         event.target.setAttribute('error', '');
@@ -348,6 +346,7 @@ switch(component){
             returnValue = value.toLowerCase() === 'true';
           }
           break;
+
         case 'dt-multi-select':
         case 'dt-tags':
           if (typeof value === 'string') {
@@ -429,7 +428,7 @@ switch(component){
                 }),
                 force_values: false,
               };
-            break;
+          break;
 
         case 'dt-multiselect-buttons-group':
           if (typeof value === 'string') {

@@ -89,6 +89,16 @@ export default class ApiService {
     return this.makeRequestOnPosts('POST', postType, fields);
   }
 
+    /**
+   * Fetch contacts list via API
+   * @param {string} postType
+   * @param {Object} data This would be payload to be send while hitting API
+   * @returns {Promise<any>}
+   */
+  async fetchPostsList(postType, data) {
+    return this.makeRequestOnPosts('POST', `${postType}/list`, data);
+  }
+
   /**
    * Update Post via API
    * @param {string} postType
@@ -418,7 +428,7 @@ export default class ApiService {
    * @param {string} query
    * @returns {Promise<any>}
    */
-  async searchUsers(query='',postType) {
+  async searchUsers(query='', postType) {
     const params = new URLSearchParams({
       s: query
     });
