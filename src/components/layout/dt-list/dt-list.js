@@ -269,6 +269,7 @@ export class DtList extends DtBase {
 
       .icon-star {
         fill: var(--fav-star-not-selected-color, #c7c6c1); /* Default to gray (non-favorite) */
+        margin: 0;
       }
       .icon-star.selected {
         fill: var(--fav-star-selected-color, #ffc105); /* Favorite state in yellow */
@@ -543,6 +544,7 @@ export class DtList extends DtBase {
     this.showArchived = !this.showArchived;
     this.headerClick = true;
     if(this.showArchived){
+      // eslint-disable-next-line camelcase
       const { overall_status,offset, ...filteredPayload } = this.payload;
       this.payload = filteredPayload; // Assign the new payload without overall_status
     }else{
@@ -639,6 +641,7 @@ export class DtList extends DtBase {
       return null;
     }
 
+  // eslint-disable-next-line class-methods-use-this
   formatDate(dateString) {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('en-US', {
@@ -937,6 +940,7 @@ export class DtList extends DtBase {
     }
     this.loadMore = true;
     this._getPosts(this.payload).then(posts => {
+      console.log(posts);
     });
   }
 
