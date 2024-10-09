@@ -63,8 +63,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
 
   _handleButtonClick(event, label) {
     const buttonValue = event.target.value;
-    if (buttonValue === "milestone_baptized" && this.isModal && this.isModal.includes(label) && !this.value.includes("milestone_baptized")) {
-      const id = label.replace(/\s/g, '-').toLowerCase();
+    if (buttonValue === "milestone_baptized" && this.isModal && this.isModal.includes(label) && !this.value?.includes("milestone_baptized")) {
       const modal = document.querySelector(`#baptized-modal`);
       modal.shadowRoot.querySelector('dialog').showModal();
       document.querySelector('body').style.overflow = "hidden"
