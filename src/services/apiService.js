@@ -95,7 +95,7 @@ export default class ApiService {
    * @param {Object} data This would be payload to be send while hitting API
    * @returns {Promise<any>}
    */
-  async fetchContactsList(postType, data) {
+  async fetchPostsList(postType, data) {
     return this.makeRequestOnPosts('POST', `${postType}/list`, data);
   }
 
@@ -428,13 +428,20 @@ export default class ApiService {
    * @param {string} query
    * @returns {Promise<any>}
    */
-  async searchUsers(query) {
-    return this.makeRequest('GET', `users/get_users?s=${query}`);
+  async searchUsers(query='', postType) {
+    const params = new URLSearchParams({
+      s: query
+    });
+    return this.makeRequest('GET', `users/get_users?${params}&post_type=${postType}`);
   }
 
   // Duplicate Users
   async checkDuplicateUsers(postType,postId){
     return this.makeRequestOnPosts('GET', `${postType}/${postId}/duplicates`);
+  }
+
+  async getContactInfo(postType,postId){
+    return this.makeRequestOnPosts('GET', `${postType}/${postId}/`);
   }
 
   /**
