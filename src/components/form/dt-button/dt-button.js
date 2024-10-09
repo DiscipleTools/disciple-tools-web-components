@@ -1,6 +1,7 @@
 import { html, css } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import DtBase from '../../dt-base.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
 export class DtButton extends DtBase {
   static get styles() {
@@ -181,6 +182,7 @@ export class DtButton extends DtBase {
       favorite: { type: Boolean, reflect: true },
       favorited: { type: String },
       listButton: { type: Boolean },
+      buttonStyle: { type: Object },
     };
   }
 
@@ -451,6 +453,7 @@ export class DtButton extends DtBase {
       <button
         class=${classMap(buttonClasses)}
         title=${this.title}
+        style=${styleMap(this.buttonStyle || {})}
         type=${this.type}
         .value=${this.value}
         @click=${this.handleClick}

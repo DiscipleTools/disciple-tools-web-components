@@ -212,7 +212,7 @@ export class DtList extends DtBase {
       }
 
       td.no-title {
-        grid-column: auto;
+        grid-column: 1 / span 3;
       }
 
       td.line-count {
@@ -336,6 +336,46 @@ export class DtList extends DtBase {
           content: '';
           display: none;
         }
+
+        td.no-title {
+          grid: 1;
+        }
+      }
+
+        .btn {
+        -webkit-appearance: none;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        cursor: pointer;
+        display: inline-block;
+        font-family: inherit;
+        font-size: .9rem;
+        line-height: 1;
+        margin: 0 !important;
+        text-align: center;
+        -webkit-transition: background-color .25s ease-out, color .25s ease-out;
+        transition: background-color .25s ease-out, color .25s ease-out;
+        vertical-align: middle;
+      }
+
+      .btn.btn-primary {
+        background-color: #3f729b;
+        color: #fefefe;
+        border-radius: 5px;
+      }
+
+      .btn.btn-primary:hover, .btn.btn-primary:focus {
+        background-color: #366184;
+        color: #fefefe;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .btn.btn-primary .dt-button {
+        margin: 0;
+        border-radius: 5px;
       }
 
 
@@ -369,7 +409,10 @@ export class DtList extends DtBase {
       showBulkEditSelector: { type: Boolean, default: false },
       nonce: { type: String },
       payload: {type: Object},
-      favorite: {type: Boolean}
+      favorite: {type: Boolean},
+      initialLoadPost: { type: Boolean, default: false },
+      loadMore: { type: Boolean, default: false },
+      headerClick: { type: Boolean, default: false },
     };
   }
 
@@ -378,11 +421,18 @@ export class DtList extends DtBase {
     super();
     this.sortedBy = 'name';
     this.payload = {
-      sort: this.sortedBy,
-      overall_status: ['-closed'],
-      fields_to_return: this.sortedColumns,
-    };
+      "sort": this.sortedBy,
+      "overall_status": [
+        "-closed"
+      ],
+      "fields_to_return": this.sortedColumns
+    }
+    this.initalLoadPost = false;
+    if (!this.initalLoadPost) {
+      this.posts = [];
+      this.limit=100;
   }
+}
 
   firstUpdated() {
     this.postTypeSettings = window.post_type_fields;
@@ -410,14 +460,32 @@ export class DtList extends DtBase {
     ) */
     // -- * --- ENDS HERE  -- * ---
 
-    const event = new CustomEvent('dt:get-data', {
+    const event = await new CustomEvent('dt:get-data', {
       bubbles: true,
       detail: {
         field: this.name,
         postType: this.postType,
         query: payload,
         onSuccess: result => {
-          this.posts = result;
+          if (this.initalLoadPost && this.loadMore) {
+            this.posts = [...this.posts, ...result];
+
+            this.postsLength=this.posts.length;
+            this.total = result.length;
+            this.loadMore=false;
+          }
+          if (!this.initalLoadPost) {
+            this.posts = [...result];
+            this.offset = this.posts.length;
+            this.initalLoadPost = true;
+            this.total = result.length;
+          }
+          if (this.headerClick){
+            this.posts = result;
+
+            this.offset = this.posts.length;
+            this.headerClick=false;
+          }
           this.total = result.length;
         },
         onError: error => {
@@ -444,12 +512,14 @@ export class DtList extends DtBase {
     }
 
     this.payload = {
-      sort: this.sortedBy,
-      overall_status: ['-closed'],
-      fields_to_return: this.columns,
-    };
-    this._getPosts(this.payload);
-
+      "sort": this.sortedBy,
+       "overall_status": [
+        "-closed"
+      ],'limit':this.limit,
+      "fields_to_return": this.columns
+    }
+    this.headerClick=true;
+    this._getPosts(this.payload)
     // " THIS CODE IS COMMENTED FOR NOW, WOULD BE UPDATED WHEN WORKED ON 'LOAD MORE' FUNCTIONALITY "
     // this._getPosts(this.offset ? this.offset : 0, column).then(response => {
     //   this.posts = response;
@@ -473,8 +543,7 @@ export class DtList extends DtBase {
     this.showArchived = !this.showArchived;
     this.headerClick = true;
     if(this.showArchived){
-      // eslint-disable-next-line camelcase
-      const { overall_status, ...filteredPayload } = this.payload;
+      const { overall_status,offset, ...filteredPayload } = this.payload;
       this.payload = filteredPayload; // Assign the new payload without overall_status
     }else{
       this.payload.overall_status = ["-closed"];
@@ -849,12 +918,26 @@ export class DtList extends DtBase {
       overall_status: ['-closed'],
       fields_to_return: this.columns,
     };
-    console.log(this.posts);
-    if (!this.posts) {
+    if (this.posts.length===0) {
       this._getPosts(this.payload).then(posts => {
         this.posts = posts;
       });
     }
+  }
+
+  _handleLoadMore() {
+    this.limit=500;
+    this.payload = {
+      "sort": this.sortedBy,
+      "overall_status": [
+        "-closed"
+      ],
+      "fields_to_return": this.columns,
+      "offset": this.offset, "limit": this.limit
+    }
+    this.loadMore = true;
+    this._getPosts(this.payload).then(posts => {
+    });
   }
 
   render() {
@@ -862,6 +945,9 @@ export class DtList extends DtBase {
       bulk_editing: this.showBulkEditSelector,
       hidden: false,
     };
+    if(this.posts){
+      this.total = this.posts.length;
+    }
 
     // prettier-ignore
     const bulkEditSvg = html`
@@ -923,6 +1009,9 @@ export class DtList extends DtBase {
           ${this._headerTemplate()}
           ${this.posts ? this._rowTemplate() : msg('Loading')}
         </table>
+          ${this.total >= 100 ?
+          html`<div class="text-center"><dt-button buttonStyle=${JSON.stringify({"margin":"0"})} class="loadMoreButton btn btn-primary" @click=${this._handleLoadMore}>Load More</dt-button></div>`
+          : ''}
       </div>
     `;
   }
