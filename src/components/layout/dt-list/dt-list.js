@@ -110,10 +110,7 @@ export class DtList extends DtBase {
         border-top: 0;
         border-collapse: collapse;
         min-width: 100%;
-        grid-template-columns: minmax(32px, 0.1fr) minmax(32px, 0.1fr) minmax(
-            50px,
-            0.8fr
-          );
+        grid-template-columns: 1fr;
       }
 
       /* table.table-contacts {
@@ -129,10 +126,13 @@ export class DtList extends DtBase {
         padding-bottom: 2rem;
       }
 
-      thead,
       tbody,
       tr {
         display: contents;
+      }
+
+      thead {
+        display: none;
       }
       /* table.table-contacts thead {
         display: table-header-group;
@@ -162,14 +162,6 @@ export class DtList extends DtBase {
       tr a {
         color: var(--dt-list-link-color, var(--primary-color));
       }
-
-      th {
-        display: none;
-      }
-
-      /* table.table-contacts th {
-        display: table-cell;
-      } */
 
       .column-name {
         pointer-events: none;
@@ -228,10 +220,6 @@ export class DtList extends DtBase {
         padding-inline-start: 1em;
       }
 
-      td.bulk_edit_checkbox {
-        grid-column: 1 / auto;
-      }
-
       td.no-title::before {
         content: '';
         padding-inline-end: 0.25em;
@@ -239,18 +227,21 @@ export class DtList extends DtBase {
 
       th.bulk_edit_checkbox,
       td.bulk_edit_checkbox {
-        grid-column: none;
+        grid-column: 1 / auto;
+        padding: 0;
+        width: 0; /* Initially no width */
       }
 
       .bulk_edit_checkbox input {
         display: none;
+        margin: 0;
       }
 
-      .bulk_editing th.bulk_edit_checkbox,
-      .bulk_editing td.bulk_edit_checkbox {
+      .bulk_editing .bulk_edit_checkbox {
         grid-column: 1 / auto;
+        padding: 0;
+        width: auto; /* Width when parent has .bulk_editing */
       }
-
       .bulk_editing .bulk_edit_checkbox input {
         display: initial;
       }
@@ -271,16 +262,40 @@ export class DtList extends DtBase {
       table tr td {
         padding: 0.5333333333rem 0.6666666667rem 0.6666666667rem;
       }
-      @container (min-width: 650px) {
+
+      ::slotted(svg) {
+        fill: var(--fav-star-not-selected-color, #c7c6c1);
+      }
+
+      .icon-star {
+        fill: var(--fav-star-not-selected-color, #c7c6c1); /* Default to gray (non-favorite) */
+      }
+      .icon-star.selected {
+        fill: var(--fav-star-selected-color, #ffc105); /* Favorite state in yellow */
+      }
+
+      @media (min-width: 650px) {
         .fieldsList {
           column-count: 2;
         }
         table {
           grid-template-columns:
-            minmax(32px, 0.5fr)
-            minmax(32px, 0.5fr)
-            minmax(32px, 0.5fr)
-            repeat(var(--number-of-columns, 7), minmax(50px, 1fr));
+            minmax(0px, 0fr)
+            minmax(32px, 0.25fr)
+            minmax(32px, 0.25fr)
+            repeat(var(--number-of-columns, 6), minmax(50px, 1fr));
+        }
+
+        table.bulk_editing {
+          grid-template-columns:
+            minmax(32px, 0.25fr)
+            minmax(32px, 0.25fr)
+            minmax(32px, 0.25fr)
+            repeat(var(--number-of-columns, 6), minmax(50px, 1fr));
+        }
+
+        thead {
+          display: contents;
         }
 
         th {
@@ -322,24 +337,15 @@ export class DtList extends DtBase {
           display: none;
         }
       }
-      ::slotted(svg) {
-        fill: var(--fav-star-not-selected-color, #c7c6c1);
-      }
 
 
-
-    .icon-star {
-      fill: var(--fav-star-not-selected-color, #c7c6c1); /* Default to gray (non-favorite) */
-    }
-    .icon-star.selected {
-      fill: var(--fav-star-selected-color, #ffc105); /* Favorite state in yellow */
-    }
-      @container (min-width: 950px) {
+      @media (min-width: 950px) {
         .fieldsList {
           column-count: 3;
         }
       }
-      @container (min-width: 1500px) {
+
+      @media (min-width: 1500px) {
         .fieldsList {
           column-count: 4;
         }
@@ -383,7 +389,9 @@ export class DtList extends DtBase {
     this.sortedColumns = this.columns.includes('favorite')
       ? ['favorite', ...this.columns.filter(col => col !== 'favorite')]
       : this.columns;
-  }
+
+      this.style.setProperty('--number-of-columns', this.columns.length - 1);
+    }
 
   async _getPosts(payload) {
     // -- * --- STARTS HERE  -- * ---
@@ -449,7 +457,7 @@ export class DtList extends DtBase {
     // });
   }
 
-  _rowClick(permalink) {
+  static _rowClick(permalink) {
     window.open(permalink, '_self');
   }
 
@@ -465,6 +473,7 @@ export class DtList extends DtBase {
     this.showArchived = !this.showArchived;
     this.headerClick = true;
     if(this.showArchived){
+      // eslint-disable-next-line camelcase
       const { overall_status, ...filteredPayload } = this.payload;
       this.payload = filteredPayload; // Assign the new payload without overall_status
     }else{
@@ -501,15 +510,20 @@ export class DtList extends DtBase {
               />
             </th>
             <th class="no-title line-count"></th>
-            ${map(this.sortedColumns, column => html`<th
+            ${map(this.sortedColumns, column => {
+              const isFavoriteColumn = column === 'favorite';
+              return html`<th
                 class="all"
                 data-id="${this._sortArrowsToggle(column)}"
                 @click=${this._headerClick}
               >
                   <span class="column-name"
-                    >${this.postTypeSettings[column].name}</span
+                     >${isFavoriteColumn
+                      ? null
+                      : this.postTypeSettings[column].name}</span
                   >
-                  <span id="sort-arrows">
+                  ${!isFavoriteColumn
+                    ? html`<span id="sort-arrows">
                         <span
                           class="sort-arrow-up ${this._sortArrowsClass(column)}"
                           data-id="${column}"
@@ -520,12 +534,15 @@ export class DtList extends DtBase {
                           )}"
                           data-id="-${column}"
                         ></span>
-                      </span>
-              </th>`)}
+                      </span>`
+                    : ''}
+              </th>`;
+            })}
           </tr>
         </thead>
       `;
     }
+    return null;
   }
 
     _rowTemplate() {
@@ -545,7 +562,8 @@ export class DtList extends DtBase {
               </tr>
             `;
           }
-        });
+          return null;
+        }).filter(row => row !== null);
 
         return rows.length > 0 ? rows : html`<p>No contacts available</p>`;
       }
@@ -831,6 +849,7 @@ export class DtList extends DtBase {
       overall_status: ['-closed'],
       fields_to_return: this.columns,
     };
+    console.log(this.posts);
     if (!this.posts) {
       this._getPosts(this.payload).then(posts => {
         this.posts = posts;
