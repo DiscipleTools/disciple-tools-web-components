@@ -5,8 +5,6 @@ import { repeat } from 'lit/directives/repeat.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { classMap } from 'lit/directives/class-map.js';
 import DtBase from '../../dt-base.js';
-import ApiService from '../../../services/apiService.js';
-import '../../icons/dt-star.js';
 
 export class DtList extends DtBase {
   static get styles() {
@@ -112,26 +110,46 @@ export class DtList extends DtBase {
         border-top: 0;
         border-collapse: collapse;
         min-width: 100%;
-        grid-template-columns: minmax(32px, 0.1fr) minmax(32px, 0.1fr) minmax(
-            50px,
-            0.8fr
-          );
+        grid-template-columns: 1fr;
       }
+
+      /* table.table-contacts {
+        display: table !important;
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 0;
+        margin-bottom: 1rem;
+      } */
 
       table td:last-child {
         border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
         padding-bottom: 2rem;
       }
 
-      thead,
       tbody,
       tr {
         display: contents;
       }
 
+      thead {
+        display: none;
+      }
+      /* table.table-contacts thead {
+        display: table-header-group;
+      }
+      table.table-contacts tr {
+        display: table-row;
+      }
+      table.table-contacts tbody {
+        display: table-row-group;
+      } */
       tr {
         cursor: pointer;
       }
+
+      /* table.table-contacts tr:nth-child(2n + 1) {
+        background: #fefefe;
+      } */
 
       tr:nth-child(2n + 1) {
         background: #f1f1f1;
@@ -145,42 +163,40 @@ export class DtList extends DtBase {
         color: var(--dt-list-link-color, var(--primary-color));
       }
 
-      th {
-        display: none;
-      }
-
       .column-name {
         pointer-events: none;
+        font-size: 15px;
+        font-weight: 700;
       }
       #sort-arrows {
         grid-template-columns: 4fr 1fr;
         display: flex;
         flex-direction: column;
-        height: 1.5em;
+        height: 1em;
         justify-content: space-evenly;
       }
       th.all span.sort-arrow-up {
         border-color: transparent transparent
-          var(--dt-list-sort-arrow-color, #808080) transparent;
+          var(--dt-list-sort-arrow-color, #dcdcdc) transparent;
         border-style: solid;
-        border-width: 0 0.5em 0.5em 0.5em;
+        border-width: 0 0.3em 0.3em 0.3em;
       }
 
       th.all span.sort-arrow-down {
         content: '';
-        border-color: var(--dt-list-sort-arrow-color, #808080) transparent
+        border-color: var(--dt-list-sort-arrow-color, #dcdcdc) transparent
           transparent;
         border-style: solid;
-        border-width: 0.5em 0.5em 0;
+        border-width: 0.3em 0.3em 0;
       }
 
       th.all span.sort-arrow-up.sortedBy {
         border-color: transparent transparent
-          var(--dt-list-sort-arrow-color-highlight, #999999) transparent;
+          var(--dt-list-sort-arrow-color-highlight, #41739c) transparent;
       }
 
       th.all span.sort-arrow-down.sortedBy {
-        border-color: var(--dt-list-sort-arrow-color-highlight, #999999)
+        border-color: var(--dt-list-sort-arrow-color-highlight, #41739c)
           transparent transparent;
       }
 
@@ -196,16 +212,12 @@ export class DtList extends DtBase {
       }
 
       td.no-title {
-        grid-column: auto;
+        grid-column: 1 / span 3;
       }
 
       td.line-count {
         padding-block-start: 0.8em;
         padding-inline-start: 1em;
-      }
-
-      td.bulk_edit_checkbox {
-        grid-column: 1 / auto;
       }
 
       td.no-title::before {
@@ -215,18 +227,21 @@ export class DtList extends DtBase {
 
       th.bulk_edit_checkbox,
       td.bulk_edit_checkbox {
-        grid-column: none;
+        grid-column: 1 / auto;
+        padding: 0;
+        width: 0; /* Initially no width */
       }
 
       .bulk_edit_checkbox input {
         display: none;
+        margin: 0;
       }
 
-      .bulk_editing th.bulk_edit_checkbox,
-      .bulk_editing td.bulk_edit_checkbox {
+      .bulk_editing .bulk_edit_checkbox {
         grid-column: 1 / auto;
+        padding: 0;
+        width: auto; /* Width when parent has .bulk_editing */
       }
-
       .bulk_editing .bulk_edit_checkbox input {
         display: initial;
       }
@@ -243,16 +258,45 @@ export class DtList extends DtBase {
       input[type='checkbox'] {
         margin: 1rem;
       }
-      @container (min-width: 650px) {
+      table thead th,
+      table tr td {
+        padding: 0.5333333333rem 0.6666666667rem 0.6666666667rem;
+      }
+
+      ::slotted(svg) {
+        fill: var(--fav-star-not-selected-color, #c7c6c1);
+      }
+
+      .icon-star {
+        fill: var(--fav-star-not-selected-color, #c7c6c1); /* Default to gray (non-favorite) */
+        margin: 0;
+      }
+      .icon-star.selected {
+        fill: var(--fav-star-selected-color, #ffc105); /* Favorite state in yellow */
+      }
+
+      @media (min-width: 650px) {
         .fieldsList {
           column-count: 2;
         }
         table {
           grid-template-columns:
-            minmax(32px, 0.5fr)
-            minmax(32px, 0.5fr)
-            minmax(32px, 0.5fr)
-            repeat(var(--number-of-columns, 7), minmax(50px, 1fr));
+            minmax(0px, 0fr)
+            minmax(32px, 0.25fr)
+            minmax(32px, 0.25fr)
+            repeat(var(--number-of-columns, 6), minmax(50px, 1fr));
+        }
+
+        table.bulk_editing {
+          grid-template-columns:
+            minmax(32px, 0.25fr)
+            minmax(32px, 0.25fr)
+            minmax(32px, 0.25fr)
+            repeat(var(--number-of-columns, 6), minmax(50px, 1fr));
+        }
+
+        thead {
+          display: contents;
         }
 
         th {
@@ -279,6 +323,7 @@ export class DtList extends DtBase {
         td {
           display: flex;
           align-items: center;
+          grid-column: auto;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -287,19 +332,61 @@ export class DtList extends DtBase {
           padding-inline-start: 0;
           color: var(--text-color-mid);
           border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
-          grid-column: auto;
         }
         td::before {
           content: '';
           display: none;
         }
+
+        td.no-title {
+          grid-column: auto;
+        }
       }
-      @container (min-width: 950px) {
+
+        .btn {
+        -webkit-appearance: none;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        cursor: pointer;
+        display: inline-block;
+        font-family: inherit;
+        font-size: .9rem;
+        line-height: 1;
+        margin: 0 !important;
+        text-align: center;
+        -webkit-transition: background-color .25s ease-out, color .25s ease-out;
+        transition: background-color .25s ease-out, color .25s ease-out;
+        vertical-align: middle;
+      }
+
+      .btn.btn-primary {
+        background-color: #3f729b;
+        color: #fefefe;
+        border-radius: 5px;
+      }
+
+      .btn.btn-primary:hover, .btn.btn-primary:focus {
+        background-color: #366184;
+        color: #fefefe;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .btn.btn-primary .dt-button {
+        margin: 0;
+        border-radius: 5px;
+      }
+
+
+      @media (min-width: 950px) {
         .fieldsList {
           column-count: 3;
         }
       }
-      @container (min-width: 1500px) {
+
+      @media (min-width: 1500px) {
         .fieldsList {
           column-count: 4;
         }
@@ -311,7 +398,7 @@ export class DtList extends DtBase {
     return {
       postType: { type: String },
       postTypeLabel: { type: String },
-      postTypeSettings: { type: Object, attribute: true },
+      posttypesettings: { type: Object, attribute: true },
       posts: { type: Array },
       total: { type: Number },
       columns: { type: Array },
@@ -322,21 +409,44 @@ export class DtList extends DtBase {
       showFieldsSelector: { type: Boolean, default: false },
       showBulkEditSelector: { type: Boolean, default: false },
       nonce: { type: String },
+      payload: {type: Object},
+      favorite: {type: Boolean},
+      initialLoadPost: { type: Boolean, default: false },
+      loadMore: { type: Boolean, default: false },
+      headerClick: { type: Boolean, default: false },
     };
   }
+
 
   constructor() {
     super();
     this.sortedBy = 'name';
+    this.payload = {
+      "sort": this.sortedBy,
+      "overall_status": [
+        "-closed"
+      ],
+      "fields_to_return": this.sortedColumns
+    }
+    this.initalLoadPost = false;
+    if (!this.initalLoadPost) {
+      this.posts = [];
+      this.limit=100;
   }
+}
 
   firstUpdated() {
-    if (this.nonce && !this.api) {
-      this.api = new ApiService(this.nonce);
-    }
-  }
+    this.postTypeSettings = window.post_type_fields;
+    this.sortedColumns = this.columns.includes('favorite')
+      ? ['favorite', ...this.columns.filter(col => col !== 'favorite')]
+      : this.columns;
 
-  async _getPosts(offset = 0, sortBy = 'name', sortOrder = 'desc') {
+      this.style.setProperty('--number-of-columns', this.columns.length - 1);
+    }
+
+  async _getPosts(payload) {
+    // -- * --- STARTS HERE  -- * ---
+    /* "THIS CODE IS COMMENTED FOR NOW, WOULD BE UPDATED WHEN WORKED ON 'LOAD MORE' FUNCTIONALITY."
     this.loading = true;
     this.filteredOptions = [];
     const sort = `${sortOrder === 'desc' ? '-' : ''}${sortBy}`;
@@ -348,17 +458,78 @@ export class DtList extends DtBase {
     const response = await this.api.makeRequestOnPosts(
       'GET',
       `${this.postType}${URLParams}`
-    );
+    ) */
+    // -- * --- ENDS HERE  -- * ---
 
-    return response;
+    const event = await new CustomEvent('dt:get-data', {
+      bubbles: true,
+      detail: {
+        field: this.name,
+        postType: this.postType,
+        query: payload,
+        onSuccess: result => {
+          if (this.initalLoadPost && this.loadMore) {
+            this.posts = [...this.posts, ...result];
+
+            this.postsLength=this.posts.length;
+            this.total = result.length;
+            this.loadMore=false;
+          }
+          if (!this.initalLoadPost) {
+            this.posts = [...result];
+            this.offset = this.posts.length;
+            this.initalLoadPost = true;
+            this.total = result.length;
+          }
+          if (this.headerClick){
+            this.posts = result;
+
+            this.offset = this.posts.length;
+            this.headerClick=false;
+          }
+          this.total = result.length;
+        },
+        onError: error => {
+          console.warn(error);
+        },
+      },
+    });
+    this.dispatchEvent(event);
   }
 
   _headerClick(e) {
     const column = e.target.dataset.id;
-    this._getPosts(this.offset ? this.offset : 0, column).then(response => {
-      this.posts = response;
+    const currentSort = this.sortedBy;
+    if (currentSort === column) {
+      // If already ascending, switch to descending
+      if (column.startsWith('-')) {
+        this.sortedBy = column.replace('-', '');
+      } else {
+        this.sortedBy = `-${column}`;
+      }
+    } else {
+      // If sorting a new column, default to ascending
       this.sortedBy = column;
-    });
+    }
+
+    this.payload = {
+      "sort": this.sortedBy,
+       "overall_status": [
+        "-closed"
+      ],'limit':this.limit,
+      "fields_to_return": this.columns
+    }
+    this.headerClick=true;
+    this._getPosts(this.payload)
+    // " THIS CODE IS COMMENTED FOR NOW, WOULD BE UPDATED WHEN WORKED ON 'LOAD MORE' FUNCTIONALITY "
+    // this._getPosts(this.offset ? this.offset : 0, column).then(response => {
+    //   this.posts = response;
+    //   this.sortedBy = column;
+    // });
+  }
+
+  static _rowClick(permalink) {
+    window.open(permalink, '_self');
   }
 
   _bulkEdit() {
@@ -371,12 +542,24 @@ export class DtList extends DtBase {
 
   _toggleShowArchived() {
     this.showArchived = !this.showArchived;
+    this.headerClick = true;
+    if(this.showArchived){
+      // eslint-disable-next-line camelcase
+      const { overall_status,offset, ...filteredPayload } = this.payload;
+      this.payload = filteredPayload; // Assign the new payload without overall_status
+    }else{
+      this.payload.overall_status = ["-closed"];
+    }
+    this._getPosts(this.payload);
   }
 
   _sortArrowsClass(column) {
     return this.sortedBy === column ? 'sortedBy' : '';
   }
 
+  /* The above code appears to be a comment block in JavaScript. It includes a function name
+  "_sortArrowsToggle" and a question asking what the code is doing. However, the function
+  implementation or any other code logic is not provided within the comment block. */
   _sortArrowsToggle(column) {
     if (this.sortedBy !== `-${column}`) {
       return `-${column}`;
@@ -385,74 +568,91 @@ export class DtList extends DtBase {
   }
 
   _headerTemplate() {
-    // const classes = {
-    //   sortedBy: this.sortedBy,
-    // };
-    return html`
-      <thead>
-        <tr>
-          <th id="bulk_edit_master" class="bulk_edit_checkbox">
-            <input
-              type="checkbox"
-              name="bulk_send_app_id"
-              value=""
-              id="bulk_edit_master_checkbox"
-            />
-          </th>
-
-          <th></th>
-
-          ${map(
-            this.columns,
-            column =>
-              html`<th
+    if (this.postTypeSettings) {
+      return html`
+        <thead>
+          <tr>
+            <th id="bulk_edit_master" class="bulk_edit_checkbox">
+              <input
+                type="checkbox"
+                name="bulk_send_app_id"
+                value=""
+                id="bulk_edit_master_checkbox"
+              />
+            </th>
+            <th class="no-title line-count"></th>
+            ${map(this.sortedColumns, column => {
+              const isFavoriteColumn = column === 'favorite';
+              return html`<th
                 class="all"
                 data-id="${this._sortArrowsToggle(column)}"
                 @click=${this._headerClick}
               >
-                <span class="column-name"
-                  >${this.postTypeSettings[column].name}</span
-                >
-                <span id="sort-arrows">
-                  <span
-                    class="sort-arrow-up ${this._sortArrowsClass(`-${column}`)}"
-                    data-id="-${column}"
-                  ></span>
-                  <span
-                    class="sort-arrow-down ${this._sortArrowsClass(column)}"
-                    data-id="${column}"
-                  ></span>
-                </span>
-              </th>`
-          )}
-        </tr>
-      </thead>
-    `;
+                  <span class="column-name"
+                     >${isFavoriteColumn
+                      ? null
+                      : this.postTypeSettings[column].name}</span
+                  >
+                  ${!isFavoriteColumn
+                    ? html`<span id="sort-arrows">
+                        <span
+                          class="sort-arrow-up ${this._sortArrowsClass(column)}"
+                          data-id="${column}"
+                        ></span>
+                        <span
+                          class="sort-arrow-down ${this._sortArrowsClass(
+                            `-${column}`
+                          )}"
+                          data-id="-${column}"
+                        ></span>
+                      </span>`
+                    : ''}
+              </th>`;
+            })}
+          </tr>
+        </thead>
+      `;
+    }
+    return null;
   }
 
-  _rowTemplate() {
-    return map(this.posts, (post, i) => {
-      if (
-        this.showArchived ||
-        (!this.showArchived && post.overall_status.key !== 'closed')
-      ) {
-        return html`
-          <tr class="dnd-moved" data-link="${this.posts.permalink}">
-            <td class="bulk_edit_checkbox no-title">
-              <input type="checkbox" name="bulk_edit_id" .value="${post.ID}" />
-            </td>
-            <td class="no-title line-count">${i + 1}.</td>
+    _rowTemplate() {
+      if (this.posts && Array.isArray(this.posts)) {
+        const rows = this.posts.map((post, i) => {
+          if (
+            this.showArchived ||
+            (!this.showArchived && post.overall_status !== 'closed')
+          ) {
+            return html`
+              <tr class="dnd-moved" data-link="${post.permalink}" @click=${() => this._rowClick(post.permalink)}>
+                <td class="bulk_edit_checkbox no-title">
+                  <input type="checkbox" name="bulk_edit_id" .value="${post.ID}" />
+                </td>
+                <td class="no-title line-count">${i + 1}.</td>
+                ${this._cellTemplate(post)}
+              </tr>
+            `;
+          }
+          return null;
+        }).filter(row => row !== null);
 
-            ${this._cellTemplate(post)}
-          </tr>
-        `;
+        return rows.length > 0 ? rows : html`<p>No contacts available</p>`;
       }
       return null;
-    });
+    }
+
+  // eslint-disable-next-line class-methods-use-this
+  formatDate(dateString) {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(date);
   }
 
   _cellTemplate(post) {
-    return map(this.columns, column => {
+    return map(this.sortedColumns, column => {
       if (
         ['text', 'textarea', 'number'].includes(
           this.postTypeSettings[column].type
@@ -462,16 +662,15 @@ export class DtList extends DtBase {
           dir="auto"
           title="${this.postTypeSettings[column].name}"
         >
-          <a href="${post[column]}" title="test">${post[column]}</a>
+          ${post[column]}
         </td>`;
       }
       if (this.postTypeSettings[column].type === 'date') {
-        // TODO: format date
         return html` <td
           dir="auto"
           title="${this.postTypeSettings[column].name}"
         >
-          ${post[column].formatted}
+          ${this.formatDate(post[column].formatted)}
         </td>`;
       }
       if (
@@ -549,12 +748,35 @@ export class DtList extends DtBase {
       }
       if (this.postTypeSettings[column].type === 'boolean') {
         if (column === 'favorite') {
+
           return html`<td
             dir="auto"
             title="${this.postTypeSettings[column].name}"
             class=""
           >
-            <dt-star postID=${post.ID} ?selected=${post.favorite}></dt-star>
+            <dt-button
+              id="favorite-button-${post.ID}"
+              label="favorite"
+              title="favorite"
+              type="button"
+              posttype="contacts"
+              context="star"
+              .favorited=${post.favorite ? post.favorite : false}
+              .listButton=${true}
+            >
+              <svg
+                class="${classMap({
+                  'icon-star': true,
+                  selected: post.favorite,
+                })}"
+                height="15"
+                viewBox="0 0 32 32"
+              >
+                <path
+                  d="M 31.916 12.092 C 31.706 11.417 31.131 10.937 30.451 10.873 L 21.215 9.996 L 17.564 1.077 C 17.295 0.423 16.681 0 16 0 C 15.318 0 14.706 0.423 14.435 1.079 L 10.784 9.996 L 1.546 10.873 C 0.868 10.937 0.295 11.417 0.084 12.092 C -0.126 12.769 0.068 13.51 0.581 13.978 L 7.563 20.367 L 5.503 29.83 C 5.354 30.524 5.613 31.245 6.165 31.662 C 6.462 31.886 6.811 32 7.161 32 C 7.463 32 7.764 31.915 8.032 31.747 L 16 26.778 L 23.963 31.747 C 24.546 32.113 25.281 32.08 25.834 31.662 C 26.386 31.243 26.645 30.524 26.494 29.83 L 24.436 20.367 L 31.417 13.978 C 31.931 13.51 32.127 12.769 31.916 12.092 Z M 31.916 12.092"
+                />
+              </svg>
+            </dt-button>
           </td>`;
         }
         if (this.postTypeSettings[column] === true) {
@@ -694,11 +916,32 @@ export class DtList extends DtBase {
 
   connectedCallback() {
     super.connectedCallback();
-    if (!this.posts) {
-      this._getPosts().then(posts => {
+    this.payload = {
+      sort: this.sortedBy,
+      overall_status: ['-closed'],
+      fields_to_return: this.columns,
+    };
+    if (this.posts.length===0) {
+      this._getPosts(this.payload).then(posts => {
         this.posts = posts;
       });
     }
+  }
+
+  _handleLoadMore() {
+    this.limit=500;
+    this.payload = {
+      "sort": this.sortedBy,
+      "overall_status": [
+        "-closed"
+      ],
+      "fields_to_return": this.columns,
+      "offset": this.offset, "limit": this.limit
+    }
+    this.loadMore = true;
+    this._getPosts(this.payload).then(posts => {
+      console.log(posts);
+    });
   }
 
   render() {
@@ -706,6 +949,9 @@ export class DtList extends DtBase {
       bulk_editing: this.showBulkEditSelector,
       hidden: false,
     };
+    if(this.posts){
+      this.total = this.posts.length;
+    }
 
     // prettier-ignore
     const bulkEditSvg = html`
@@ -734,7 +980,7 @@ export class DtList extends DtBase {
             >
           </div>
           <span class="filter-result-text"
-            >${msg(str`Showing 1 of ${this.total}`)}</span
+            >${msg(str`Showing ${this.total} of ${this.total}`)}</span
           >
 
           <button
@@ -761,11 +1007,15 @@ export class DtList extends DtBase {
             @click=${this._toggleShowArchived}
           ></dt-toggle>
         </div>
+
         ${this._fieldsSelectorTemplate()} ${this._bulkSelectorTemplate()}
-        <table class=${classMap(bulkEditClass)}>
+        <table class="table-contacts ${classMap(bulkEditClass)}">
           ${this._headerTemplate()}
           ${this.posts ? this._rowTemplate() : msg('Loading')}
         </table>
+          ${this.total >= 100 ?
+          html`<div class="text-center"><dt-button buttonStyle=${JSON.stringify({"margin":"0"})} class="loadMoreButton btn btn-primary" @click=${this._handleLoadMore}>Load More</dt-button></div>`
+          : ''}
       </div>
     `;
   }

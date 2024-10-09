@@ -89,7 +89,7 @@ describe('dt-multi-select', () => {
     expect(optionList).not.to.be.displayed;
 
     input.focus();
-    await wait(100); // wait for UI update
+    await wait(500); // wait for UI update
 
     expect(optionList).to.be.displayed;
   });
@@ -146,7 +146,7 @@ describe('dt-multi-select', () => {
     await clickOption(el, 'opt1');
 
     await wait(100);
-    
+
     expect(el).to.have.attr('value', JSON.stringify(['opt1']));
   });
 

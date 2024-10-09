@@ -36,6 +36,7 @@ const Template = args => {
     <dt-button
       .context="${args.context}"
       type="${args.type}"
+      buttonStyle="${args.buttonStyle}"
       ?outline="${args.outline}"
       ?rounded="${args.rounded}"
       .href="${args.href}"

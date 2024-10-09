@@ -51,8 +51,9 @@ export class DtCommChannel extends DtText {
         }
 
         .delete-button svg {
-          width: 100%;
-          height: 20px;
+          width: 1.5em;
+          height: 1.5em;
+          cursor: pointer;
         }
 
         .icon-overlay {

@@ -4,8 +4,7 @@
   "author": "disciple.tools",
   "license": "GPL-2.0-or-later",
   "homepage": "https://github.com/DiscipleTools/disciple-tools-web-components",
-  "version": "0.7.0-beta.2",
-  "type": "module",
+  "version": "0.6.8",
   "main": "index.js",
   "module": "index.js",
   "engines": {
@@ -37,7 +36,8 @@
     "build": "vite build",
     "postbuild": "rm -rf ./samples/html/js && cp -R ./dist ./samples/html/js",
     "localize:extract": "lit-localize extract",
-    "localize:build": "lit-localize build"
+    "localize:build": "lit-localize build",
+    "publish": "npm run build && npm publish"
   },
   "dependencies": {
     "@lit/localize": "^0.12.1",

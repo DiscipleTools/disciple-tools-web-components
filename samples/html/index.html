@@ -44,6 +44,17 @@
       label="Connection Field"
       options='[{"id":"1","label":"John Doe"},{"id":"2","label":"Jane Smith","user":true},{"id":"3","label":"Trevor Virtue","user":true},{"id":"4","label":"Jane Meldrum"}]'
     ></dt-connection>
+
+    <dt-dropdown
+      label="dropdown Field"
+      options="${JSON.stringify(posts)}"
+    ></dt-dropdown>
+
+    <dt-users-connection
+    label="Connection Field"
+    options="${JSON.stringify(posts)}"
+  ></dt-users-connection>
+
   </dt-tile>
 </body>
 </html>

@@ -15,864 +15,863 @@ const defaultColumns = [
 ];
 
 const defaultPostTypeSettings = {
-  name: {
-    name: 'Name',
-    type: 'text',
-    tile: 'details',
-    in_create_form: true,
-    required: true,
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/name.svg',
-    show_in_table: 5,
+  "name": {
+      "name": "Name",
+      "type": "text",
+      "tile": "details",
+      "in_create_form": true,
+      "required": true,
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/name.svg",
+      "show_in_table": 5
   },
-  last_modified: {
-    name: 'Last Modified',
-    type: 'date',
-    default: 0,
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-range.svg',
-    customizable: false,
-    show_in_table: 100,
+  "record_picture": {
+      "name": "Picture",
+      "type": "image",
+      "show_in_table": 1,
+      "hidden": true
   },
-  post_date: {
-    name: 'Creation Date',
-    type: 'date',
-    default: 0,
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-plus.svg',
-    customizable: false,
+  "last_modified": {
+      "name": "Last Modified",
+      "type": "date",
+      "default": 0,
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-range.svg",
+      "customizable": false,
+      "show_in_table": 100
   },
-  favorite: {
-    name: 'Favorite',
-    type: 'boolean',
-    default: false,
-    private: true,
-    show_in_table: 6,
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/star.svg',
+  "post_date": {
+      "name": "Creation Date",
+      "type": "date",
+      "default": 0,
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-plus.svg",
+      "customizable": false
   },
-  tags: {
-    name: 'Tags',
-    description: 'A useful way to group related items.',
-    type: 'tags',
-    default: [],
-    tile: 'other',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/tag.svg',
+  "favorite": {
+      "name": "Favorite",
+      "type": "boolean",
+      "default": false,
+      "private": true,
+      "show_in_table": 6,
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/star.svg"
   },
-  follow: {
-    name: 'Follow',
-    type: 'multi_select',
-    default: [],
-    hidden: true,
+  "tags": {
+      "name": "Tags",
+      "description": "A useful way to group related items.",
+      "type": "tags",
+      "default": [],
+      "tile": "other",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/tag.svg"
   },
-  unfollow: {
-    name: 'Un-Follow',
-    type: 'multi_select',
-    default: [],
-    hidden: true,
+  "follow": {
+      "name": "Follow",
+      "type": "multi_select",
+      "default": [],
+      "hidden": true
   },
-  tasks: {
-    name: 'Tasks',
-    type: 'task',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-clock.svg',
-    private: true,
+  "unfollow": {
+      "name": "Un-Follow",
+      "type": "multi_select",
+      "default": [],
+      "hidden": true
   },
-  nickname: {
-    name: 'Nickname',
-    type: 'text',
-    tile: 'details',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/nametag.svg?v=2',
+  "tasks": {
+      "name": "Tasks",
+      "type": "task",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-clock.svg",
+      "private": true
   },
-  type: {
-    name: 'Contact Type',
-    type: 'key_select',
-    default: {
-      user: {
-        label: 'User',
-        description: 'Representing a User in the system',
-        color: '#3F729B',
-        hidden: true,
-        in_create_form: false,
-      },
-      personal: {
-        label: 'Private Contact',
-        color: '#9b379b',
-        description: 'A friend, family member or acquaintance',
-        visibility: 'Only me',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/locked.svg?v=2',
-        order: 50,
-        hidden: false,
-      },
-      placeholder: {
-        label: 'Private Connection',
-        color: '#FF9800',
-        description: 'Connected to a contact, or generational fruit',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/locked.svg?v=2',
-        order: 40,
-        visibility: 'Only me',
-        in_create_form: false,
-        hidden: false,
-      },
-      access: {
-        label: 'Standard Contact',
-        color: '#2196F3',
-        description: 'A contact to collaborate on',
-        visibility: 'Me and project leadership',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/share.svg?v=2',
-        order: 20,
-        default: true,
-      },
-      access_placeholder: {
-        label: 'Connection',
-        color: '#FF9800',
-        description: 'Connected to a contact, or generational fruit',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/share.svg?v=2',
-        order: 40,
-        visibility: 'Collaborators',
-        in_create_form: false,
-      },
-    },
-    description:
-      'See full documentation here: https://disciple.tools/user-docs/getting-started-info/contacts/contact-types',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/circle-square-triangle.svg?v=2',
-    customizable: false,
+  "notes": {
+      "name": "Notes",
+      "type": "array",
+      "hidden": true
   },
-  duplicate_data: {
-    name: 'Duplicates',
-    type: 'array',
-    default: [],
-    hidden: true,
+  "location_grid": {
+      "name": "Locations",
+      "description": "The general location where this record is located.",
+      "type": "location",
+      "mapbox": false,
+      "in_create_form": true,
+      "tile": "details",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/location.svg?v=2"
   },
-  duplicate_of: {
-    name: 'Duplicate of',
-    type: 'text',
-    hidden: true,
+  "location_grid_meta": {
+      "name": "Locations or Address",
+      "type": "location_meta",
+      "tile": "details",
+      "mapbox": false,
+      "hidden": true,
+      "in_create_form": true,
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/map-marker-multiple.svg?v=2"
   },
-  languages: {
-    name: 'Languages',
-    type: 'multi_select',
-    default: {
-      en: {
-        label: 'English',
-      },
-      fr: {
-        label: 'French',
-      },
-      es: {
-        label: 'Spanish',
-      },
-    },
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/languages.svg?v=2',
-    tile: 'no_tile',
+  "nickname": {
+      "name": "Nickname",
+      "type": "text",
+      "tile": "details",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/nametag.svg?v=2"
   },
-  contact_phone: {
-    name: 'Phone',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/phone.svg?v=2',
-    type: 'communication_channel',
-    tile: 'details',
-    customizable: false,
-    in_create_form: true,
-    messagingServices: {
-      Signal: {
-        name: 'Signal',
-        link: 'https://signal.me/#p/PHONE_NUMBER',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/signal.svg',
+  "type": {
+      "name": "Contact Type",
+      "type": "key_select",
+      "default": {
+          "user": {
+              "label": "User",
+              "description": "Representing a User in the system",
+              "color": "#3F729B",
+              "hidden": true,
+              "in_create_form": false
+          },
+          "personal": {
+              "label": "Private Contact",
+              "color": "#9b379b",
+              "description": "A friend, family member or acquaintance",
+              "visibility": "Only me",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/locked.svg?v=2",
+              "order": 50,
+              "hidden": true,
+              "default": false
+          },
+          "access": {
+              "label": "Standard Contact",
+              "color": "#2196F3",
+              "description": "A contact to collaborate on",
+              "visibility": "Me and project leadership",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/share.svg?v=2",
+              "order": 20,
+              "default": true
+          },
+          "access_placeholder": {
+              "label": "Connection",
+              "color": "#FF9800",
+              "description": "Connected to a contact, or generational fruit",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/share.svg?v=2",
+              "order": 40,
+              "visibility": "Collaborators",
+              "in_create_form": false
+          },
+          "placeholder": {
+              "label": "Private Connection",
+              "color": "#FF9800",
+              "description": "Connected to a contact, or generational fruit",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/locked.svg?v=2",
+              "order": 40,
+              "visibility": "Only me",
+              "in_create_form": false,
+              "hidden": true
+          }
       },
-      Viber: {
-        name: 'Viber',
-        link: 'viber://chat?number=PHONE_NUMBER',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/viber.svg',
-      },
-      Whatsapp: {
-        name: 'Whatsapp',
-        link: 'https://api.whatsapp.com/send?phone=PHONE_NUMBER_NO_PLUS',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/signal.svg',
-      },
-    },
+      "description": "See full documentation here: https://disciple.tools/user-docs/getting-started-info/contacts/contact-types",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/circle-square-triangle.svg?v=2",
+      "customizable": false
   },
-  contact_email: {
-    name: 'Email',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/email.svg?v=2',
-    type: 'communication_channel',
-    tile: 'details',
-    customizable: false,
-    in_create_form: ['access'],
+  "duplicate_data": {
+      "name": "Duplicates",
+      "type": "array",
+      "default": [],
+      "hidden": true
   },
-  location_grid: {
-    name: 'Locations',
-    description: 'The general location where this contact is located.',
-    type: 'location',
-    mapbox: false,
-    in_create_form: true,
-    tile: 'details',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/location.svg?v=2',
+  "duplicate_of": {
+      "name": "Duplicate of",
+      "type": "text",
+      "hidden": true
   },
-  location_grid_meta: {
-    name: 'Locations or Address',
-    type: 'location_meta',
-    tile: 'details',
-    mapbox: false,
-    hidden: true,
-    in_create_form: true,
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/map-marker-multiple.svg?v=2',
+  "languages": {
+      "name": "Languages",
+      "type": "multi_select",
+      "default": {
+          "en": {
+              "label": "English"
+          },
+          "fr": {
+              "label": "French"
+          },
+          "es": {
+              "label": "Spanish"
+          }
+      },
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/languages.svg?v=2",
+      "tile": "no_tile"
   },
-  contact_address: {
-    name: 'Address',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/house.svg?v=2',
-    type: 'communication_channel',
-    tile: 'details',
-    mapbox: false,
-    customizable: false,
-    in_create_form: ['access'],
+  "contact_phone": {
+      "name": "Phone",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/phone.svg?v=2",
+      "type": "communication_channel",
+      "tile": "details",
+      "customizable": false,
+      "in_create_form": true,
+      "messagingServices": {
+          "Signal": {
+              "name": "Signal",
+              "link": "https://signal.me/#p/PHONE_NUMBER",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/signal.svg"
+          },
+          "Viber": {
+              "name": "Viber",
+              "link": "viber://chat?number=PHONE_NUMBER",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/viber.svg"
+          },
+          "Whatsapp": {
+              "name": "WhatsApp",
+              "link": "https://api.whatsapp.com/send?phone=PHONE_NUMBER_NO_PLUS",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/whatsapp.svg"
+          }
+      }
   },
-  contact_facebook: {
-    name: 'Facebook',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/facebook.svg?v=2',
-    hide_domain: true,
-    type: 'communication_channel',
-    tile: 'details',
-    customizable: false,
+  "contact_email": {
+      "name": "Email",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/email.svg?v=2",
+      "type": "communication_channel",
+      "tile": "details",
+      "customizable": false,
+      "in_create_form": [
+          "access"
+      ]
   },
-  contact_twitter: {
-    name: 'Twitter',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/twitter.svg?v=2',
-    hide_domain: true,
-    type: 'communication_channel',
-    tile: 'details',
-    customizable: false,
+  "contact_address": {
+      "name": "Address",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/house.svg?v=2",
+      "type": "communication_channel",
+      "tile": "details",
+      "mapbox": false,
+      "customizable": false,
+      "in_create_form": [
+          "access"
+      ]
   },
-  contact_other: {
-    name: 'Other Social Links',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/chat.svg?v=2',
-    hide_domain: false,
-    type: 'communication_channel',
-    tile: 'details',
-    customizable: false,
+  "contact_facebook": {
+      "name": "Facebook",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/facebook.svg?v=2",
+      "hide_domain": true,
+      "type": "communication_channel",
+      "tile": "details",
+      "customizable": false
   },
-  relation: {
-    name: 'Connections to other Contacts',
-    description:
-      'Relationship this contact has with another contact in the system.',
-    type: 'connection',
-    post_type: 'contacts',
-    p2p_direction: 'any',
-    p2p_key: 'contacts_to_relation',
-    tile: 'other',
-    in_create_form: ['placeholder'],
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/connection-people.svg?v=2',
+  "contact_twitter": {
+      "name": "Twitter",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/twitter.svg?v=2",
+      "hide_domain": true,
+      "type": "communication_channel",
+      "tile": "details",
+      "customizable": false
   },
-  gender: {
-    name: 'Gender',
-    type: 'key_select',
-    default: {
-      male: {
-        label: 'Male',
-      },
-      female: {
-        label: 'Female',
-      },
-    },
-    tile: 'details',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/gender-male-female.svg',
+  "contact_other": {
+      "name": "Other Social Links",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/chat.svg?v=2",
+      "hide_domain": false,
+      "type": "communication_channel",
+      "tile": "details",
+      "customizable": false
   },
-  age: {
-    name: 'Age',
-    type: 'key_select',
-    default: {
-      'not-set': {
-        label: '',
-      },
-      '<19': {
-        label: 'Under 18 years old',
-      },
-      '<26': {
-        label: '18-25 years old',
-      },
-      '<41': {
-        label: '26-40 years old',
-      },
-      '>41': {
-        label: 'Over 40 years old',
-      },
-    },
-    tile: 'details',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/contact-age.svg?v=2',
-    select_cannot_be_empty: true,
+  "relation": {
+      "name": "Connections to other Contacts",
+      "description": "Relationship this contact has with another contact in the system.",
+      "type": "connection",
+      "post_type": "contacts",
+      "p2p_direction": "any",
+      "p2p_key": "contacts_to_relation",
+      "tile": "other",
+      "in_create_form": [
+          "placeholder"
+      ],
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/connection-people.svg?v=2"
   },
-  requires_update: {
-    name: 'Requires Update',
-    type: 'boolean',
-    default: false,
+  "gender": {
+      "name": "Gender",
+      "type": "key_select",
+      "default": {
+          "male": {
+              "label": "Male"
+          },
+          "female": {
+              "label": "Female"
+          }
+      },
+      "tile": "details",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/gender-male-female.svg"
   },
-  overall_status: {
-    name: 'Contact Status',
-    description:
-      'The Contact Status describes the progress in communicating with the contact.',
-    type: 'key_select',
-    default: {
-      new: {
-        label: 'New Contact',
-        description: 'The contact is new in the system.',
-        color: '#F43636',
+  "age": {
+      "name": "Age",
+      "type": "key_select",
+      "default": {
+          "not-set": {
+              "label": ""
+          },
+          "<19": {
+              "label": "Under 18 years old"
+          },
+          "<26": {
+              "label": "18-25 years old"
+          },
+          "<41": {
+              "label": "26-40 years old"
+          },
+          ">41": {
+              "label": "Over 40 years old"
+          }
       },
-      unassignable: {
-        label: 'Not Ready',
-        description:
-          'There is not enough information to move forward with the contact at this time.',
-        color: '#FF9800',
-      },
-      unassigned: {
-        label: 'Dispatch Needed',
-        description: 'This contact needs to be assigned to a multiplier.',
-        color: '#F43636',
-      },
-      assigned: {
-        label: 'Waiting to be accepted',
-        description:
-          'The contact has been assigned to someone, but has not yet been accepted by that person.',
-        color: '#FF9800',
-      },
-      active: {
-        label: 'Active',
-        description:
-          'The contact is progressing and/or continually being updated.',
-        color: '#4CAF50',
-      },
-      paused: {
-        label: 'Paused',
-        description:
-          'This contact is currently on hold (i.e. on vacation or not responding).',
-        color: '#FF9800',
-      },
-      closed: {
-        label: 'Archived',
-        color: '#808080',
-        description:
-          'This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.',
-      },
-    },
-    default_color: '#366184',
-    tile: 'status',
-    customizable: 'add_only',
-    custom_display: true,
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/status.svg?v=2',
-    show_in_table: 10,
-    only_for_types: ['access'],
-    select_cannot_be_empty: true,
+      "tile": "details",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/contact-age.svg?v=2",
+      "select_cannot_be_empty": true
   },
-  milestones: {
-    name: 'Faith Milestones',
-    description:
-      'Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.',
-    type: 'multi_select',
-    default: {
-      milestone_has_bible: {
-        label: 'Has Bible',
-        description: '',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/bible.svg?v=2',
-      },
-      milestone_reading_bible: {
-        label: 'Reading Bible',
-        description: '',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/reading.svg?v=2',
-      },
-      milestone_belief: {
-        label: 'States Belief',
-        description: '',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/speak.svg?v=2',
-      },
-      milestone_can_share: {
-        label: 'Can Share Gospel/Testimony',
-        description: '',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/hand-heart.svg?v=2',
-      },
-      milestone_sharing: {
-        label: 'Sharing Gospel/Testimony',
-        description: '',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/account-voice.svg?v=2',
-      },
-      milestone_baptized: {
-        label: 'Baptized',
-        description: '',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/baptism.svg?v=2',
-      },
-      milestone_baptizing: {
-        label: 'Baptizing',
-        description: '',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/child.svg?v=2',
-      },
-      milestone_in_group: {
-        label: 'In Church/Group',
-        description: '',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/group-type.svg?v=2',
-      },
-      milestone_planting: {
-        label: 'Starting Churches',
-        description: '',
-        icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/stream.svg?v=2',
-      },
-    },
-    customizable: 'add_only',
-    tile: 'faith',
-    show_in_table: 20,
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/bible.svg?v=2',
+  "requires_update": {
+      "name": "Requires Update",
+      "type": "boolean",
+      "default": false
   },
-  faith_status: {
-    name: 'Faith Status',
-    description: '',
-    type: 'key_select',
-    default: {
-      seeker: {
-        label: 'Seeker',
+  "overall_status": {
+      "name": "Contact Status",
+      "description": "The Contact Status describes the progress in communicating with the contact.",
+      "type": "key_select",
+      "default": {
+          "new": {
+              "label": "New Contact",
+              "description": "The contact is new in the system.",
+              "color": "#F43636"
+          },
+          "unassignable": {
+              "label": "Not Ready",
+              "description": "There is not enough information to move forward with the contact at this time.",
+              "color": "#FF9800"
+          },
+          "unassigned": {
+              "label": "Dispatch Needed",
+              "description": "This contact needs to be assigned to a multiplier.",
+              "color": "#F43636"
+          },
+          "assigned": {
+              "label": "Waiting to be accepted",
+              "description": "The contact has been assigned to someone, but has not yet been accepted by that person.",
+              "color": "#FF9800"
+          },
+          "active": {
+              "label": "Active",
+              "description": "The contact is progressing and/or continually being updated.",
+              "color": "#4CAF50"
+          },
+          "paused": {
+              "label": "Paused",
+              "description": "This contact is currently on hold (i.e. on vacation or not responding).",
+              "color": "#FF9800"
+          },
+          "closed": {
+              "label": "Archived",
+              "color": "#808080",
+              "description": "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+          }
       },
-      believer: {
-        label: 'Believer',
-      },
-      leader: {
-        label: 'Leader',
-      },
-    },
-    tile: 'status',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/cross.svg?v=2',
-    in_create_form: true,
+      "default_color": "#366184",
+      "tile": "status",
+      "customizable": "add_only",
+      "custom_display": true,
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/status.svg?v=2",
+      "show_in_table": 10,
+      "only_for_types": [
+          "access"
+      ],
+      "select_cannot_be_empty": true
   },
-  subassigned: {
-    name: 'Sub-assigned to',
-    description:
-      'Contact or User assisting the Assigned To user to follow up with the contact.',
-    type: 'connection',
-    post_type: 'contacts',
-    p2p_direction: 'to',
-    p2p_key: 'contacts_to_subassigned',
-    tile: 'status',
-    custom_display: false,
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/subassigned.svg?v=2',
+  "milestones": {
+      "name": "Faith Milestones",
+      "description": "Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order.",
+      "type": "multi_select",
+      "default": {
+          "milestone_has_bible": {
+              "label": "Has Bible",
+              "description": "",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/bible.svg?v=2"
+          },
+          "milestone_reading_bible": {
+              "label": "Reading Bible",
+              "description": "",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/reading.svg?v=2"
+          },
+          "milestone_belief": {
+              "label": "States Belief",
+              "description": "",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/speak.svg?v=2"
+          },
+          "milestone_can_share": {
+              "label": "Can Share Gospel/Testimony",
+              "description": "",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/hand-heart.svg?v=2"
+          },
+          "milestone_sharing": {
+              "label": "Sharing Gospel/Testimony",
+              "description": "",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/account-voice.svg?v=2"
+          },
+          "milestone_baptized": {
+              "label": "Baptized",
+              "description": "",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/baptism.svg?v=2"
+          },
+          "milestone_baptizing": {
+              "label": "Baptizing",
+              "description": "",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/child.svg?v=2"
+          },
+          "milestone_in_group": {
+              "label": "In Church/Group",
+              "description": "",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/group-type.svg?v=2"
+          },
+          "milestone_planting": {
+              "label": "Starting Churches",
+              "description": "",
+              "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/stream.svg?v=2"
+          }
+      },
+      "customizable": "add_only",
+      "tile": "faith",
+      "show_in_table": 20,
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/bible.svg?v=2"
   },
-  subassigned_on: {
-    name: 'Sub-assigned on other Contacts',
-    description: 'Contacts this contacts is subassigned on',
-    type: 'connection',
-    post_type: 'contacts',
-    p2p_direction: 'from',
-    p2p_key: 'contacts_to_subassigned',
-    tile: 'no_tile',
-    custom_display: false,
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/subassigned.svg?v=2',
+  "faith_status": {
+      "name": "Faith Status",
+      "description": "",
+      "type": "key_select",
+      "default": {
+          "seeker": {
+              "label": "Seeker"
+          },
+          "believer": {
+              "label": "Believer"
+          },
+          "leader": {
+              "label": "Leader"
+          }
+      },
+      "tile": "status",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/cross.svg?v=2",
+      "in_create_form": true
   },
-  coaching: {
-    name: 'Is Coaching',
-    description: 'Who is this contact coaching',
-    type: 'connection',
-    post_type: 'contacts',
-    p2p_direction: 'to',
-    p2p_key: 'contacts_to_contacts',
-    tile: 'other',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/coaching.svg?v=2',
+  "subassigned": {
+      "name": "Sub-assigned to",
+      "description": "Contact or User assisting the Assigned To user to follow up with the contact.",
+      "type": "connection",
+      "post_type": "contacts",
+      "p2p_direction": "to",
+      "p2p_key": "contacts_to_subassigned",
+      "tile": "status",
+      "custom_display": false,
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/subassigned.svg?v=2"
   },
-  baptism_date: {
-    name: 'Baptism Date',
-    description: '',
-    type: 'date',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-heart.svg?v=2',
-    tile: 'details',
+  "subassigned_on": {
+      "name": "Sub-assigned on other Contacts",
+      "description": "Contacts this contacts is subassigned on",
+      "type": "connection",
+      "post_type": "contacts",
+      "p2p_direction": "from",
+      "p2p_key": "contacts_to_subassigned",
+      "tile": "no_tile",
+      "custom_display": false,
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/subassigned.svg?v=2"
   },
-  baptism_generation: {
-    name: 'Baptism Generation',
-    type: 'number',
-    default: '',
+  "coaching": {
+      "name": "Is Coaching",
+      "description": "Who is this contact coaching",
+      "type": "connection",
+      "post_type": "contacts",
+      "p2p_direction": "to",
+      "p2p_key": "contacts_to_contacts",
+      "tile": "other",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/coaching.svg?v=2"
   },
-  coached_by: {
-    name: 'Coached by',
-    description: 'Who is coaching this contact',
-    type: 'connection',
-    post_type: 'contacts',
-    p2p_direction: 'from',
-    p2p_key: 'contacts_to_contacts',
-    tile: 'status',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/coach.svg?v=2',
+  "baptism_date": {
+      "name": "Baptism Date",
+      "description": "",
+      "type": "date",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-heart.svg?v=2",
+      "tile": "details"
   },
-  baptized_by: {
-    name: 'Baptized by',
-    description: 'Who baptized this contact',
-    type: 'connection',
-    post_type: 'contacts',
-    p2p_direction: 'from',
-    p2p_key: 'baptizer_to_baptized',
-    tile: 'faith',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/baptism.svg?v=2',
+  "baptism_generation": {
+      "name": "Baptism Generation",
+      "type": "number",
+      "default": ""
   },
-  baptized: {
-    name: 'Baptized',
-    description: 'Who this contact has baptized',
-    type: 'connection',
-    post_type: 'contacts',
-    p2p_direction: 'to',
-    p2p_key: 'baptizer_to_baptized',
-    tile: 'faith',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/child.svg?v=2',
+  "coached_by": {
+      "name": "Coached by",
+      "description": "Who is coaching this contact",
+      "type": "connection",
+      "post_type": "contacts",
+      "p2p_direction": "from",
+      "p2p_key": "contacts_to_contacts",
+      "tile": "status",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/coach.svg?v=2"
   },
-  people_groups: {
-    name: 'People Groups',
-    description: 'The people groups represented by this contact.',
-    type: 'connection',
-    post_type: 'peoplegroups',
-    p2p_direction: 'from',
-    p2p_key: 'contacts_to_peoplegroups',
-    tile: 'details',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/people-group.svg?v=2',
+  "baptized_by": {
+      "name": "Baptized by",
+      "description": "Who baptized this contact",
+      "type": "connection",
+      "post_type": "contacts",
+      "p2p_direction": "from",
+      "p2p_key": "baptizer_to_baptized",
+      "tile": "faith",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/baptism.svg?v=2"
   },
-  quick_button_no_answer: {
-    name: 'No Answer',
-    description: '',
-    type: 'number',
-    default: 0,
-    section: 'quick_buttons',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/account-voice-off.svg?v=2',
-    customizable: false,
+  "baptized": {
+      "name": "Baptized",
+      "description": "Who this contact has baptized",
+      "type": "connection",
+      "post_type": "contacts",
+      "p2p_direction": "to",
+      "p2p_key": "baptizer_to_baptized",
+      "tile": "faith",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/child.svg?v=2"
   },
-  quick_button_contact_established: {
-    name: 'Contact Established',
-    description: '',
-    type: 'number',
-    default: 0,
-    section: 'quick_buttons',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/account-voice.svg?v=2',
-    customizable: false,
+  "people_groups": {
+      "name": "People Groups",
+      "description": "The people groups represented by this contact.",
+      "type": "connection",
+      "post_type": "peoplegroups",
+      "p2p_direction": "from",
+      "p2p_key": "contacts_to_peoplegroups",
+      "tile": "details",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/people-group.svg?v=2",
+      "connection_count_field": {
+          "post_type": "peoplegroups",
+          "field_key": "contact_count",
+          "connection_field": "contacts"
+      }
   },
-  quick_button_meeting_scheduled: {
-    name: 'Meeting Scheduled',
-    description: '',
-    type: 'number',
-    default: 0,
-    section: 'quick_buttons',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-plus.svg?v=2',
-    customizable: false,
+  "quick_button_no_answer": {
+      "name": "No Answer",
+      "description": "",
+      "type": "number",
+      "default": 0,
+      "section": "quick_buttons",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/account-voice-off.svg?v=2",
+      "customizable": false
   },
-  quick_button_meeting_complete: {
-    name: 'Meeting Complete',
-    description: '',
-    type: 'number',
-    default: 0,
-    section: 'quick_buttons',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-check.svg?v=2',
-    customizable: false,
+  "quick_button_contact_established": {
+      "name": "Contact Established",
+      "description": "",
+      "type": "number",
+      "default": 0,
+      "section": "quick_buttons",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/account-voice.svg?v=2",
+      "customizable": false
   },
-  quick_button_no_show: {
-    name: 'Meeting No-show',
-    description: '',
-    type: 'number',
-    default: 0,
-    section: 'quick_buttons',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-remove.svg?v=2',
-    customizable: false,
+  "quick_button_meeting_scheduled": {
+      "name": "Meeting Scheduled",
+      "description": "",
+      "type": "number",
+      "default": 0,
+      "section": "quick_buttons",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-plus.svg?v=2",
+      "customizable": false
   },
-  groups: {
-    name: 'Groups',
-    description: 'Groups this contact is a member of.',
-    type: 'connection',
-    post_type: 'groups',
-    p2p_direction: 'from',
-    p2p_key: 'contacts_to_groups',
-    tile: 'other',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/group-type.svg?v=2',
-    'create-icon':
-      'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/add-group.svg?v=2',
-    show_in_table: 35,
-    connection_count_field: {
-      post_type: 'groups',
-      field_key: 'member_count',
-      connection_field: 'members',
-    },
+  "quick_button_meeting_complete": {
+      "name": "Meeting Complete",
+      "description": "",
+      "type": "number",
+      "default": 0,
+      "section": "quick_buttons",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-check.svg?v=2",
+      "customizable": false
   },
-  group_leader: {
-    name: 'Leader of Group',
-    type: 'connection',
-    p2p_direction: 'to',
-    p2p_key: 'groups_to_leaders',
-    post_type: 'groups',
-    tile: 'no_tile',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/foot.svg?v=2',
-    connection_count_field: {
-      post_type: 'groups',
-      field_key: 'leader_count',
-      connection_field: 'leaders',
-    },
+  "quick_button_no_show": {
+      "name": "Meeting No-show",
+      "description": "",
+      "type": "number",
+      "default": 0,
+      "section": "quick_buttons",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/calendar-remove.svg?v=2",
+      "customizable": false
   },
-  group_coach: {
-    name: 'Coach of Group',
-    type: 'connection',
-    p2p_direction: 'to',
-    p2p_key: 'groups_to_coaches',
-    post_type: 'groups',
-    tile: 'no_tile',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/coach.svg?v=2',
+  "groups": {
+      "name": "Groups",
+      "description": "Groups this contact is a member of.",
+      "type": "connection",
+      "post_type": "groups",
+      "p2p_direction": "from",
+      "p2p_key": "contacts_to_groups",
+      "tile": "other",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/group-type.svg?v=2",
+      "create-icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/add-group.svg?v=2",
+      "show_in_table": 35,
+      "connection_count_field": {
+          "post_type": "groups",
+          "field_key": "member_count",
+          "connection_field": "members"
+      }
   },
-  meetings: {
-    name: 'Meetings',
-    type: 'connection',
-    p2p_direction: 'to',
-    post_type: 'meetings',
-    tile: 'disciple_tools_meetings',
-    p2p_key: 'meetings_to_contacts',
+  "group_leader": {
+      "name": "Leader of Group",
+      "type": "connection",
+      "p2p_direction": "to",
+      "p2p_key": "groups_to_leaders",
+      "post_type": "groups",
+      "tile": "no_tile",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/foot.svg?v=2",
+      "connection_count_field": {
+          "post_type": "groups",
+          "field_key": "leader_count",
+          "connection_field": "leaders"
+      }
   },
-  meetings_led: {
-    name: 'Leader of meetings',
-    type: 'connection',
-    p2p_direction: 'from',
-    post_type: 'meetings',
-    tile: 'disciple_tools_meetings',
-    p2p_key: 'meetings_to_leaders',
+  "group_coach": {
+      "name": "Coach of Group",
+      "type": "connection",
+      "p2p_direction": "to",
+      "p2p_key": "groups_to_coaches",
+      "post_type": "groups",
+      "tile": "no_tile",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/coach.svg?v=2"
   },
-  starter_app_page_magic_key: {
-    name: 'Starter App',
-    type: 'hash',
-    hidden: true,
+  "corresponds_to_user": {
+      "name": "Corresponds to user",
+      "description": "The id of the user this contact corresponds to",
+      "type": "number",
+      "default": 0,
+      "customizable": false,
+      "hidden": true
   },
-  starter_app_map_magic_key: {
-    name: 'Starter App Map',
-    type: 'hash',
-    hidden: true,
+  "corresponds_to_user_name": {
+      "name": "Corresponds to user_name",
+      "description": "Field used in the multisite invite process",
+      "type": "text",
+      "customizable": false,
+      "hidden": true
   },
-  corresponds_to_user: {
-    name: 'Corresponds to user',
-    description: 'The id of the user this contact corresponds to',
-    type: 'number',
-    default: 0,
-    customizable: false,
-    hidden: true,
+  "assigned_to": {
+      "name": "Assigned To",
+      "description": "Select the main person who is responsible for reporting on this contact.",
+      "type": "user_select",
+      "default": "",
+      "tile": "status",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/assigned-to.svg?v=2",
+      "show_in_table": 25,
+      "only_for_types": [
+          "access",
+          "user"
+      ],
+      "custom_display": false
   },
-  corresponds_to_user_name: {
-    name: 'Corresponds to user_name',
-    description: 'Field used in the multisite invite process',
-    type: 'text',
-    customizable: false,
-    hidden: true,
+  "seeker_path": {
+      "name": "Seeker Path",
+      "description": "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward.",
+      "type": "key_select",
+      "default": {
+          "none": {
+              "label": "Contact Attempt Needed",
+              "description": ""
+          },
+          "attempted": {
+              "label": "Contact Attempted",
+              "description": ""
+          },
+          "established": {
+              "label": "Contact Established",
+              "description": ""
+          },
+          "scheduled": {
+              "label": "First Meeting Scheduled",
+              "description": ""
+          },
+          "met": {
+              "label": "First Meeting Complete",
+              "description": ""
+          },
+          "ongoing": {
+              "label": "Ongoing Meetings",
+              "description": ""
+          },
+          "coaching": {
+              "label": "Being Coached",
+              "description": ""
+          }
+      },
+      "customizable": "add_only",
+      "tile": "followup",
+      "show_in_table": 15,
+      "only_for_types": [
+          "access"
+      ],
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/sign-post.svg?v=2"
   },
-  assigned_to: {
-    name: 'Assigned To',
-    description:
-      'Select the main person who is responsible for reporting on this contact.',
-    type: 'user_select',
-    default: '',
-    tile: 'status',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/assigned-to.svg?v=2',
-    show_in_table: 25,
-    only_for_types: ['access', 'user'],
-    custom_display: true,
+  "reason_unassignable": {
+      "name": "Reason Not Ready",
+      "description": "The main reason the contact is not ready to be assigned to a user.",
+      "type": "key_select",
+      "default": {
+          "none": {
+              "label": ""
+          },
+          "insufficient": {
+              "label": "Insufficient Contact Information"
+          },
+          "location": {
+              "label": "Unknown Location"
+          },
+          "media": {
+              "label": "Only wants media"
+          },
+          "outside_area": {
+              "label": "Outside Area"
+          },
+          "needs_review": {
+              "label": "Needs Review"
+          },
+          "awaiting_confirmation": {
+              "label": "Waiting for Confirmation"
+          }
+      },
+      "customizable": "all",
+      "only_for_types": [
+          "access"
+      ]
   },
-  seeker_path: {
-    name: 'Seeker Path',
-    description:
-      'Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward.',
-    type: 'key_select',
-    default: {
-      none: {
-        label: 'Contact Attempt Needed',
-        description: '',
+  "reason_paused": {
+      "name": "Reason Paused",
+      "description": "A paused contact is one you are not currently interacting with but expect to in the future.",
+      "type": "key_select",
+      "default": {
+          "none": {
+              "label": ""
+          },
+          "vacation": {
+              "label": "Contact on vacation"
+          },
+          "not_responding": {
+              "label": "Contact not responding"
+          },
+          "not_available": {
+              "label": "Contact not available"
+          },
+          "little_interest": {
+              "label": "Contact has little interest/hunger"
+          },
+          "no_initiative": {
+              "label": "Contact shows no initiative"
+          },
+          "questionable_motives": {
+              "label": "Contact has questionable motives"
+          },
+          "ball_in_their_court": {
+              "label": "Ball is in the contact's court"
+          },
+          "wait_and_see": {
+              "label": "We want to see if/how the contact responds to automated text messages"
+          }
       },
-      attempted: {
-        label: 'Contact Attempted',
-        description: '',
-      },
-      established: {
-        label: 'Contact Established',
-        description: '',
-      },
-      scheduled: {
-        label: 'First Meeting Scheduled',
-        description: '',
-      },
-      met: {
-        label: 'First Meeting Complete',
-        description: '',
-      },
-      ongoing: {
-        label: 'Ongoing Meetings',
-        description: '',
-      },
-      coaching: {
-        label: 'Being Coached',
-        description: '',
-      },
-    },
-    customizable: 'add_only',
-    tile: 'followup',
-    show_in_table: 15,
-    only_for_types: ['access'],
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/sign-post.svg?v=2',
+      "customizable": "all",
+      "only_for_types": [
+          "access"
+      ]
   },
-  reason_unassignable: {
-    name: 'Reason Not Ready',
-    description:
-      'The main reason the contact is not ready to be assigned to a user.',
-    type: 'key_select',
-    default: {
-      none: {
-        label: '',
+  "reason_closed": {
+      "name": "Reason Archived",
+      "description": "A closed contact is one you can't or don't wish to interact with.",
+      "type": "key_select",
+      "default": {
+          "none": {
+              "label": ""
+          },
+          "duplicate": {
+              "label": "Duplicate"
+          },
+          "insufficient": {
+              "label": "Insufficient contact info"
+          },
+          "denies_submission": {
+              "label": "Denies submitting contact request"
+          },
+          "hostile_self_gain": {
+              "label": "Hostile, playing games or self gain"
+          },
+          "apologetics": {
+              "label": "Only wants to argue or debate"
+          },
+          "media_only": {
+              "label": "Just wanted media or book"
+          },
+          "no_longer_interested": {
+              "label": "No longer interested"
+          },
+          "no_longer_responding": {
+              "label": "No longer responding"
+          },
+          "already_connected": {
+              "label": "Already in church or connected with others"
+          },
+          "transfer": {
+              "label": "Transferred contact to partner"
+          },
+          "martyred": {
+              "label": "Martyred"
+          },
+          "moved": {
+              "label": "Moved or relocated"
+          },
+          "gdpr": {
+              "label": "GDPR request"
+          },
+          "unknown": {
+              "label": "Unknown"
+          }
       },
-      insufficient: {
-        label: 'Insufficient Contact Information',
-      },
-      location: {
-        label: 'Unknown Location',
-      },
-      media: {
-        label: 'Only wants media',
-      },
-      outside_area: {
-        label: 'Outside Area',
-      },
-      needs_review: {
-        label: 'Needs Review',
-      },
-      awaiting_confirmation: {
-        label: 'Waiting for Confirmation',
-      },
-    },
-    customizable: 'all',
-    only_for_types: ['access'],
+      "customizable": "all",
+      "only_for_types": [
+          "access"
+      ]
   },
-  reason_paused: {
-    name: 'Reason Paused',
-    description:
-      'A paused contact is one you are not currently interacting with but expect to in the future.',
-    type: 'key_select',
-    default: {
-      none: {
-        label: '',
-      },
-      vacation: {
-        label: 'Contact on vacation',
-      },
-      not_responding: {
-        label: 'Contact not responding',
-      },
-      not_available: {
-        label: 'Contact not available',
-      },
-      little_interest: {
-        label: 'Contact has little interest/hunger',
-      },
-      no_initiative: {
-        label: 'Contact shows no initiative',
-      },
-      questionable_motives: {
-        label: 'Contact has questionable motives',
-      },
-      ball_in_their_court: {
-        label: "Ball is in the contact's court",
-      },
-      wait_and_see: {
-        label:
-          'We want to see if/how the contact responds to automated text messages',
-      },
-    },
-    customizable: 'all',
-    only_for_types: ['access'],
+  "accepted": {
+      "name": "Accepted",
+      "type": "boolean",
+      "default": false,
+      "hidden": true,
+      "only_for_types": [
+          "access"
+      ]
   },
-  reason_closed: {
-    name: 'Reason Archived',
-    description:
-      "A closed contact is one you can't or don't wish to interact with.",
-    type: 'key_select',
-    default: {
-      none: {
-        label: '',
+  "sources": {
+      "name": "Sources",
+      "description": "The website, event or location this contact came from.",
+      "type": "multi_select",
+      "default": {
+          "personal": {
+              "label": "Personal",
+              "key": "personal"
+          },
+          "web": {
+              "label": "Web",
+              "key": "web"
+          },
+          "facebook": {
+              "label": "Facebook",
+              "key": "facebook"
+          },
+          "twitter": {
+              "label": "Twitter",
+              "key": "twitter"
+          },
+          "transfer": {
+              "label": "Transfer",
+              "key": "transfer",
+              "description": "Contacts transferred from a partnership with another Disciple.Tools site."
+          }
       },
-      duplicate: {
-        label: 'Duplicate',
-      },
-      insufficient: {
-        label: 'Insufficient contact info',
-      },
-      denies_submission: {
-        label: 'Denies submitting contact request',
-      },
-      hostile_self_gain: {
-        label: 'Hostile, playing games or self gain',
-      },
-      apologetics: {
-        label: 'Only wants to argue or debate',
-      },
-      media_only: {
-        label: 'Just wanted media or book',
-      },
-      no_longer_interested: {
-        label: 'No longer interested',
-      },
-      no_longer_responding: {
-        label: 'No longer responding',
-      },
-      already_connected: {
-        label: 'Already in church or connected with others',
-      },
-      transfer: {
-        label: 'Transferred contact to partner',
-      },
-      martyred: {
-        label: 'Martyred',
-      },
-      moved: {
-        label: 'Moved or relocated',
-      },
-      gdpr: {
-        label: 'GDPR request',
-      },
-      unknown: {
-        label: 'Unknown',
-      },
-    },
-    customizable: 'all',
-    only_for_types: ['access'],
+      "tile": "details",
+      "customizable": "all",
+      "display": "typeahead",
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/arrow-collapse-all.svg?v=2",
+      "only_for_types": [
+          "access"
+      ],
+      "in_create_form": [
+          "access"
+      ]
   },
-  accepted: {
-    name: 'Accepted',
-    type: 'boolean',
-    default: false,
-    hidden: true,
-    only_for_types: ['access'],
-  },
-  sources: {
-    name: 'Sources',
-    description: 'The website, event or location this contact came from.',
-    type: 'multi_select',
-    default: {
-      personal: {
-        label: 'Personal',
-        key: 'personal',
-      },
-      web: {
-        label: 'Web',
-        key: 'web',
-      },
-      facebook: {
-        label: 'Facebook',
-        key: 'facebook',
-      },
-      twitter: {
-        label: 'Twitter',
-        key: 'twitter',
-      },
-      transfer: {
-        label: 'Transfer',
-        key: 'transfer',
-        description:
-          'Contacts transferred from a partnership with another Disciple.Tools site.',
-      },
-    },
-    tile: 'details',
-    customizable: 'all',
-    display: 'typeahead',
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/arrow-collapse-all.svg?v=2',
-    only_for_types: ['access'],
-    in_create_form: ['access'],
-  },
-  campaigns: {
-    name: 'Campaigns',
-    description:
-      'Marketing campaigns or access activities that this contact interacted with.',
-    tile: 'details',
-    type: 'tags',
-    default: [],
-    icon: 'https://rsdt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/megaphone.svg?v=2',
-    only_for_types: ['access'],
-  },
+  "campaigns": {
+      "name": "Campaigns",
+      "description": "Marketing campaigns or access activities that this contact interacted with.",
+      "tile": "details",
+      "type": "tags",
+      "default": [],
+      "icon": "https://dt.local/wp-content/themes/disciple-tools-theme/dt-assets/images/megaphone.svg?v=2",
+      "only_for_types": [
+          "access"
+      ]
+  }
 };
 
 const arabicDefaultPostTypeSettings = {
@@ -1732,118 +1731,194 @@ const arabicDefaultPostTypeSettings = {
 
 const defaultPosts = [
   {
-    ID: '1',
-    post_title: 'test',
-    post_type: 'contacts',
-    post_date: {
-      timestamp: 1660333623,
-      formatted: '2022-08-12',
+    "ID": "11",
+    "post_title": "Jim Doe",
+    "post_type": "contacts",
+    "post_date": {
+        "timestamp": 1726725912,
+        "formatted": "2024-09-19"
     },
-    groups: [
-      {
-        ID: '2',
-        post_type: 'groups',
-        post_date_gmt: '2022-08-10 13:14:40',
-        post_date: '2022-08-10 13:14:40',
-        post_title: 'Group 1',
-        permalink: 'https://rsdt.local/groups/5/',
-        status: {
-          key: 'active',
-          label: 'Active',
-          color: '#4CAF50',
-        },
-      },
+    "groups": [],
+    "last_modified": {
+        "timestamp": 1728453091,
+        "formatted": "2024-10-09"
+    },
+    "seeker_path": {
+        "key": "none",
+        "label": "Contact Attempt Needed"
+    },
+    "overall_status": {
+        "key": "active",
+        "label": "Active"
+    },
+    "milestones": [
+        "milestone_has_bible",
+        "milestone_reading_bible",
+        "milestone_belief",
+        "milestone_can_share",
+        "milestone_baptized",
+        "milestone_baptizing"
     ],
-    last_modified: {
-      timestamp: 1660333623,
-      formatted: '2022-08-12',
+    "assigned_to": {
+        "id": "1",
+        "type": "user",
+        "display": "micahmills",
+        "assigned-to": "user-1"
     },
-    seeker_path: {
-      key: 'none',
-      label: 'Contact Attempt Needed',
+    "favorite": true,
+    "permalink": "https://dt.local/contacts/11",
+    "name": "Jim Doe"
+},
+{
+    "ID": "7",
+    "post_title": "John Doe",
+    "post_type": "contacts",
+    "post_date": {
+        "timestamp": 1726658637,
+        "formatted": "2024-09-18"
     },
-    overall_status: {
-      key: 'active',
-      label: 'Active',
+    "groups": [],
+    "last_modified": {
+        "timestamp": 1728452753,
+        "formatted": "2024-10-09"
     },
-    milestones: [
-      'milestone_has_bible',
-      'milestone_reading_bible',
-      'milestone_belief',
-      'milestone_can_share',
-      'milestone_baptized',
+    "seeker_path": {
+        "key": "none",
+        "label": "Contact Attempt Needed"
+    },
+    "overall_status": {
+        "key": "active",
+        "label": "Active"
+    },
+    "assigned_to": {
+        "id": "2",
+        "type": "user",
+        "display": "testuser",
+        "assigned-to": "user-2"
+    },
+    "milestones": [
+        "milestone_has_bible"
     ],
-    assigned_to: {
-      id: '3',
-      type: 'user',
-      display: 'johndoe',
-      'assigned-to': 'user-1',
+    "favorite": "",
+    "permalink": "https://dt.local/contacts/7",
+    "name": "John Doe"
+},
+{
+    "ID": "5",
+    "post_title": "micahmills",
+    "post_type": "contacts",
+    "post_date": {
+        "timestamp": 1726658529,
+        "formatted": "2024-09-18"
     },
-    permalink: 'https://rsdt.local/contacts/16',
-    name: 'test',
-    age: {
-      key: '<19',
-      label: 'Under 18 years old',
+    "groups": [],
+    "last_modified": {
+        "timestamp": 1728040260,
+        "formatted": "2024-10-04"
     },
-  },
-  {
-    ID: '17',
-    post_title: 'archived',
-    post_type: 'contacts',
-    post_date: {
-      timestamp: 1660924474,
-      formatted: '2022-08-19',
+    "permalink": "https://dt.local/contacts/5",
+    "name": "micahmills"
+},
+{
+    "ID": "22",
+    "post_title": "Test12",
+    "post_type": "contacts",
+    "post_date": {
+        "timestamp": 1727944669,
+        "formatted": "2024-10-03"
     },
-    groups: [],
-    last_modified: {
-      timestamp: 1660924616,
-      formatted: '2022-08-19',
+    "groups": [],
+    "last_modified": {
+        "timestamp": 1728262870,
+        "formatted": "2024-10-07"
     },
-    seeker_path: {
-      key: 'none',
-      label: 'Contact Attempt Needed',
+    "overall_status": {
+        "key": "active",
+        "label": "Active"
     },
-    overall_status: {
-      key: 'closed',
-      label: 'Archived',
+    "seeker_path": {
+        "key": "none",
+        "label": "Contact Attempt Needed"
     },
-    assigned_to: {
-      id: '1',
-      type: 'user',
-      display: 'micahmills',
-      'assigned-to': 'user-1',
+    "assigned_to": {
+        "id": "1",
+        "type": "user",
+        "display": "micahmills",
+        "assigned-to": "user-1"
     },
-    permalink: 'https://rsdt.local/contacts/17',
-    name: 'archived',
-    age: {
-      key: '<19',
-      label: 'Under 18 years old',
+    "permalink": "https://dt.local/contacts/22",
+    "name": "Test12"
+},
+{
+    "ID": "23",
+    "post_title": "Test12",
+    "post_type": "contacts",
+    "post_date": {
+        "timestamp": 1727946058,
+        "formatted": "2024-10-03"
     },
-  },
-  {
-    ID: '4',
-    post_title: 'johndoe',
-    post_type: 'contacts',
-    post_date: {
-      timestamp: 1660155962,
-      formatted: '2022-08-10',
+    "groups": [],
+    "last_modified": {
+        "timestamp": 1728033072,
+        "formatted": "2024-10-04"
     },
-    groups: [],
-    last_modified: {
-      timestamp: 1660155962,
-      formatted: '2022-08-10',
+    "overall_status": {
+        "key": "assigned",
+        "label": "Waiting to be accepted"
     },
-    overall_status: {
-      key: 'active',
-      label: 'Active',
+    "seeker_path": {
+        "key": "none",
+        "label": "Contact Attempt Needed"
     },
-    permalink: 'https://dt.local/contacts/15',
-    name: 'johndoe',
-    age: {
-      key: '<19',
-      label: 'Under 18 years old',
+    "assigned_to": {
+        "id": "2",
+        "type": "user",
+        "display": "testuser",
+        "assigned-to": "user-2"
     },
-  },
+    "permalink": "https://dt.local/contacts/23",
+    "name": "Test12"
+},
+{
+    "ID": "25",
+    "post_title": "test22",
+    "post_type": "contacts",
+    "post_date": {
+        "timestamp": 1728048297,
+        "formatted": "2024-10-04"
+    },
+    "groups": [],
+    "last_modified": {
+        "timestamp": 1728386746,
+        "formatted": "2024-10-08"
+    },
+    "overall_status": {
+        "key": "active",
+        "label": "Active"
+    },
+    "seeker_path": {
+        "key": "none",
+        "label": "Contact Attempt Needed"
+    },
+    "permalink": "https://dt.local/contacts/25",
+    "name": "test22"
+},
+{
+    "ID": "8",
+    "post_title": "testuser",
+    "post_type": "contacts",
+    "post_date": {
+        "timestamp": 1726725040,
+        "formatted": "2024-09-19"
+    },
+    "groups": [],
+    "last_modified": {
+        "timestamp": 1728304940,
+        "formatted": "2024-10-07"
+    },
+    "permalink": "https://dt.local/contacts/8",
+    "name": "testuser"
+}
 ];
 
 const arabicDefaultPosts = [

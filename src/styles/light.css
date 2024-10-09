@@ -81,7 +81,7 @@ html {
     --dt-list-hover-background-color,
     #ecf5fc
   );
-  --dt-list-sort-arrow-color: #808080;
+  --dt-list-sort-arrow-color: #dcdcdc;
 
   --dt-alert-text-color-light: #fff;
   --dt-alert-text-color-dark: #000;
