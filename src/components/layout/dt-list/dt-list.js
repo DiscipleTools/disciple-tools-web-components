@@ -338,7 +338,7 @@ export class DtList extends DtBase {
         }
 
         td.no-title {
-          grid: 1;
+          grid-column: auto;
         }
       }
 
