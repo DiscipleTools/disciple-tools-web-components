@@ -116,13 +116,13 @@ export class DtList extends DtBase {
           );
       }
 
-      table.table-contacts {
+      /* table.table-contacts {
         display: table !important;
         width: 100%;
         border-collapse: collapse;
         border-radius: 0;
         margin-bottom: 1rem;
-      }
+      } */
 
       table td:last-child {
         border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
@@ -134,7 +134,7 @@ export class DtList extends DtBase {
       tr {
         display: contents;
       }
-      table.table-contacts thead {
+      /* table.table-contacts thead {
         display: table-header-group;
       }
       table.table-contacts tr {
@@ -142,21 +142,21 @@ export class DtList extends DtBase {
       }
       table.table-contacts tbody {
         display: table-row-group;
-      }
+      } */
       tr {
         cursor: pointer;
       }
 
-      table.table-contacts tr:nth-child(2n + 1) {
+      /* table.table-contacts tr:nth-child(2n + 1) {
         background: #fefefe;
-      }
+      } */
 
       tr:nth-child(2n + 1) {
         background: #f1f1f1;
       }
 
       tr:hover {
-        background-color: #ecf5fc;
+        background-color: var(--dt-list-hover-background-color, #ecf5fc);
       }
 
       tr a {
@@ -167,9 +167,9 @@ export class DtList extends DtBase {
         display: none;
       }
 
-      table.table-contacts th {
+      /* table.table-contacts th {
         display: table-cell;
-      }
+      } */
 
       .column-name {
         pointer-events: none;
@@ -296,17 +296,18 @@ export class DtList extends DtBase {
           font-size: 1.1rem;
           color: var(--dt-list-header-color, #0a0a0a);
           white-space: pre-wrap;
-        }
-        th .th-flex {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
+          display: grid;
+          place-items: center;
+          grid-template-columns: 2fr 1fr;
         }
 
         th:last-child {
           border: 0;
         }
         td {
+          display: flex;
+          align-items: center;
+          grid-column: auto;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -322,16 +323,16 @@ export class DtList extends DtBase {
         }
       }
       ::slotted(svg) {
-        fill: #c7c6c1 !important;
+        fill: var(--fav-star-not-selected-color, #c7c6c1);
       }
 
 
 
     .icon-star {
-      fill:  #c7c6c1 ; /* Default to gray (non-favorite) */
+      fill: var(--fav-star-not-selected-color, #c7c6c1); /* Default to gray (non-favorite) */
     }
     .icon-star.selected {
-      fill: #ffc105; /* Favorite state in yellow */
+      fill: var(--fav-star-selected-color, #ffc105); /* Favorite state in yellow */
     }
       @container (min-width: 950px) {
         .fieldsList {
@@ -487,7 +488,6 @@ export class DtList extends DtBase {
   }
 
   _headerTemplate() {
-    console.log('this')
     if (this.postTypeSettings) {
       return html`
         <thead>
@@ -500,21 +500,16 @@ export class DtList extends DtBase {
                 id="bulk_edit_master_checkbox"
               />
             </th>
-            ${map(this.sortedColumns, column => {
-              const isFavoriteColumn = column === 'favorite';
-              return html`<th
+            <th class="no-title line-count"></th>
+            ${map(this.sortedColumns, column => html`<th
                 class="all"
                 data-id="${this._sortArrowsToggle(column)}"
                 @click=${this._headerClick}
               >
-                <div class="th-flex">
                   <span class="column-name"
-                    >${isFavoriteColumn
-                      ? null
-                      : this.postTypeSettings[column].name}</span
+                    >${this.postTypeSettings[column].name}</span
                   >
-                  ${!isFavoriteColumn
-                    ? html`<span id="sort-arrows">
+                  <span id="sort-arrows">
                         <span
                           class="sort-arrow-up ${this._sortArrowsClass(column)}"
                           data-id="${column}"
@@ -525,11 +520,8 @@ export class DtList extends DtBase {
                           )}"
                           data-id="-${column}"
                         ></span>
-                      </span>`
-                    : ''}
-                </div>
-              </th>`;
-            })}
+                      </span>
+              </th>`)}
           </tr>
         </thead>
       `;
@@ -666,6 +658,7 @@ export class DtList extends DtBase {
       }
       if (this.postTypeSettings[column].type === 'boolean') {
         if (column === 'favorite') {
+
           return html`<td
             dir="auto"
             title="${this.postTypeSettings[column].name}"
