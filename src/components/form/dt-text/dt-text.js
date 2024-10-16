@@ -151,7 +151,7 @@ export class DtText extends DtFormBase {
           ?required=${this.required}
           class="${classMap(this.classes)}"
           .value="${this.value || ''}"
-          @change=${this._change}
+          @input=${this._change}
           novalidate
           @keyup="${this.implicitFormSubmit}"
         />
