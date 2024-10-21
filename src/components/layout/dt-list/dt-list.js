@@ -497,6 +497,10 @@ export class DtList extends DtBase {
     this.dispatchEvent(event);
   }
 
+  _rowClick(permalink) {
+    window.open(permalink, '_self');
+  }
+
   _headerClick(e) {
     const column = e.target.dataset.id;
     const currentSort = this.sortedBy;
