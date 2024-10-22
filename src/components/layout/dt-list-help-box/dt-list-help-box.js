@@ -7,8 +7,8 @@ import { classMap } from 'lit/directives/class-map.js';
 import DtBase from '../../dt-base.js';
 
 export class DtListHelpBox extends DtBase {
-    static get styles() {
-        return css`
+  static get styles() {
+    return css`
       :host {
         --number-of-columns: 7;
         font-family: var(--dt-list-font-family, var(--font-family));
@@ -57,65 +57,65 @@ export class DtListHelpBox extends DtBase {
         line-height: 1;
         padding: 0;
       }
-        .accordion {
-            background: #fefefe;
-            list-style-type: none;
-            margin: 10px 0 15px 0;
-            border: 1px solid #e6e6e6;
-        }
-            .accordion  li {
-                margin-bottom: 0;
-                border-bottom: 1px solid #e6e6e6;
-            }
-            .accordion  li:last-child {
-                border-bottom: none;
-            }
-            .accordion  li.active .accordion-title {
-               background-color: #3f729b;
-                color: #fff;
-            }
-        .accordion .accordion-title {
-            font-weight: 700;
-            padding: .5rem 1rem;
-            font-size: 15px;
-            border-bottom: 0;
-            color: #3f729b;
-            display: block;
-            position: relative;
-            text-decoration: none;
-        }
-            .accordion .accordion-title::before {
-                content: "+";
-                margin-top: -.5rem;
-                position: absolute;
-                right: 1rem;
-                top: 50%;
-            }
-                .accordion li.active .accordion-title::before {
-                content: "-";
-            }
-             .accordion .accordion-title:hover,  .accordion .accordion-title:focus {
-                background-color: #e6e6e6;
-             }
-            .accordion .accordion-content {
-                background-color: #fefefe;
-                border-bottom: 0;
-                color: #0a0a0a;
-                display: none;
-                padding: 1rem;
-            }
-                .accordion .accordion-content .list-view span {
-                font-size: 14px;
-            }
-            .accordion .accordion-content .list-view:hover span {
-               color: #2196f3;
-            }
-            a {
-                color: #3f729b;
-                cursor: pointer;
-                line-height: inherit;
-                text-decoration: none;
-            }
+      .accordion {
+        background: #fefefe;
+        list-style-type: none;
+        margin: 10px 0 15px 0;
+        border: 1px solid #e6e6e6;
+      }
+      .accordion  li {
+          margin-bottom: 0;
+          border-bottom: 1px solid #e6e6e6;
+      }
+      .accordion  li:last-child {
+          border-bottom: none;
+      }
+      .accordion  li.active .accordion-title {
+          background-color: #3f729b;
+          color: #fff;
+      }
+      .accordion .accordion-title {
+          font-weight: 700;
+          padding: .5rem 1rem;
+          font-size: 15px;
+          border-bottom: 0;
+          color: #3f729b;
+          display: block;
+          position: relative;
+          text-decoration: none;
+      }
+      .accordion .accordion-title::before {
+          content: "+";
+          margin-top: -.5rem;
+          position: absolute;
+          right: 1rem;
+          top: 50%;
+      }
+      .accordion li.active .accordion-title::before {
+          content: "-";
+      }
+      .accordion .accordion-title:hover,  .accordion .accordion-title:focus {
+        background-color: #e6e6e6;
+      }
+      .accordion .accordion-content {
+          background-color: #fefefe;
+          border-bottom: 0;
+          color: #0a0a0a;
+          display: none;
+          padding: 1rem;
+      }
+      .accordion .accordion-content .list-view span {
+          font-size: 14px;
+      }
+      .accordion .accordion-content .list-view:hover span {
+          color: #2196f3;
+      }
+      a {
+          color: #3f729b;
+          cursor: pointer;
+          line-height: inherit;
+          text-decoration: none;
+      }
 
       .toggleButton {
         color: var(--dt-list-header-color, var(--primary-color));
@@ -137,7 +137,7 @@ export class DtListHelpBox extends DtBase {
       }
 
       .list_action_section {
-        background-color: var(
+          background-color: var(
           --dt-list-action-section-background-color,
           #ecf5fc
         );
@@ -514,475 +514,461 @@ export class DtListHelpBox extends DtBase {
         }
       }
     `;
+  }
+
+  static get properties() {
+    return {
+      postType: { type: String },
+      postTypeLabel: { type: String },
+      posttypesettings: { type: Object, attribute: true },
+      posts: { type: Array },
+      total: { type: Number },
+      columns: { type: Array },
+      sortedBy: { type: String },
+      loading: { type: Boolean, default: true },
+      offset: { type: Number },
+      showArchived: { type: Boolean, default: false },
+      showFieldsSelector: { type: Boolean, default: false },
+      showBulkEditSelector: { type: Boolean, default: false },
+      nonce: { type: String },
+      payload: { type: Object },
+      favorite: { type: Boolean },
+      initialLoadPost: { type: Boolean, default: false },
+      loadMore: { type: Boolean, default: false },
+      headerClick: { type: Boolean, default: false },
+      listFiltersTab: { type: Boolean, default: false },
+      selectedValue: { type: Object },
+      sectionBodyVisible: { type: Boolean, default: false }
+    };
+  }
+
+
+  constructor() {
+    super();
+  }
+
+  firstUpdated() {
+    if (window.post_type_fields) {
+      this.postTypeSettings = window.post_type_fields;
     }
 
-    static get properties() {
-        return {
-            postType: { type: String },
-            postTypeLabel: { type: String },
-            posttypesettings: { type: Object, attribute: true },
-            posts: { type: Array },
-            total: { type: Number },
-            columns: { type: Array },
-            sortedBy: { type: String },
-            loading: { type: Boolean, default: true },
-            offset: { type: Number },
-            showArchived: { type: Boolean, default: false },
-            showFieldsSelector: { type: Boolean, default: false },
-            showBulkEditSelector: { type: Boolean, default: false },
-            nonce: { type: String },
-            payload: { type: Object },
-            favorite: { type: Boolean },
-            initialLoadPost: { type: Boolean, default: false },
-            loadMore: { type: Boolean, default: false },
-            headerClick: { type: Boolean, default: false },
-            listFiltersTab: { type: Boolean, default: false },
-            selectedValue: { type: Object },
-            sectionBodyVisible: { type: Boolean, default: false }
-        };
-    }
 
 
-    constructor() {
-        super();
-    }
+  }
 
-    firstUpdated() {
-        if (window.post_type_fields) {
-            this.postTypeSettings = window.post_type_fields;
-        }
+  handleRadioSelection(query) {
+    //from here the query will be send to dt-list component to update the list values.
 
+  }
 
+  toggleList(event) {
+    // Prevent the default link behavior
+    event.preventDefault();
 
-    }
+    const listItem = event.target.closest('li');
+    listItem.classList.toggle('active');
 
-    handleRadioSelection(query) {
-        //from here the query will be send to dt-list component to update the list values.
+    // Find the accordion content to show/hide
+    const accordionContent = listItem.querySelector('.accordion-content');
 
-    }
+    const allAccordions = this.shadowRoot.querySelectorAll('.accordion-content');
+    allAccordions.forEach(accordion => {
+      if (accordion !== accordionContent) {
+        accordion.classList.remove('show');
+        accordion.closest('li').classList.remove('active');
+      }
+    });
 
-    toggleList(event) {
-        // Prevent the default link behavior
-        event.preventDefault();
+    // Toggle the 'show' class on the accordion-content
+    accordionContent.classList.toggle('show');
 
-        // Find the parent <li> and toggle the .show class on the list-view elements inside it
-        // const listItem = event.target.closest('li');
-        // const listViews = listItem.querySelectorAll('.list-view');
+    // Optionally, change the text of the <a> link based on visibility
+    const toggleLink = event.target;
+    const isVisible = accordionContent.classList.contains('show');
 
+  }
 
+  toggleSection(event) {
+    // Toggle the visibility of the section-body
+    event.preventDefault();
 
-        // listViews.forEach(view => {
-        //     view.classList.toggle('show');
-        // });
+    this.sectionBodyVisible = !this.sectionBodyVisible;
+  }
 
-        const listItem = event.target.closest('li');
-        listItem.classList.toggle('active');
+  openDialog(e, label) {
+    e.preventDefault();
+    const id = label.replace(/\s/g, '-').toLowerCase();
 
-        // Find the accordion content to show/hide
-        const accordionContent = listItem.querySelector('.accordion-content');
-
-        const allAccordions = this.shadowRoot.querySelectorAll('.accordion-content');
-        allAccordions.forEach(accordion => {
-            if (accordion !== accordionContent) {
-                accordion.classList.remove('show');
-                accordion.closest('li').classList.remove('active');
-            }
-        });
-
-        // Toggle the 'show' class on the accordion-content
-        accordionContent.classList.toggle('show');
-
-        // Optionally, change the text of the <a> link based on visibility
-        const toggleLink = event.target;
-        const isVisible = accordionContent.classList.contains('show');
-
-        // Change the inner HTML of the <a> based on visibility
-        // toggleLink.innerHTML = isVisible 
-        // ? `${toggleLink.textContent.trim().slice(0, -1)} -` // Remove the last character (the +)
-        // : `${toggleLink.textContent.trim().slice(0, -1)} +`; // Remove the last character (the -)
-    }
-
-    toggleSection(event) {
-        // Toggle the visibility of the section-body
-        event.preventDefault();
-
-        this.sectionBodyVisible = !this.sectionBodyVisible;
-    }
-
-    openDialog(e,label){
-        e.preventDefault();
-        const id=label.replace(/\s/g, '-').toLowerCase();
-
-//if we want to keep this inside st-list-help-box
-        const dtListHelpBox = document.querySelector('dt-list-help-box');
-        const modalll= dtListHelpBox.shadowRoot.querySelector(`#${id}`)
-        modalll.shadowRoot.querySelector('dialog').showModal();
+    //if we want to keep this inside st-list-help-box
+    const dtListHelpBox = document.querySelector('dt-list-help-box');
+    const modalll = dtListHelpBox.shadowRoot.querySelector(`#${id}`)
+    modalll.shadowRoot.querySelector('dialog').showModal();
     document.querySelector('body').style.overflow = "hidden"
-        
-//if we want to keep this inside dt-theme around dt-list-help-box
+
+    //if we want to keep this inside dt-theme around dt-list-help-box
 
     // const modal= document.querySelector(`#${id}`);
     // console.log('open dialog', modal);
-    
+
     // modal.shadowRoot.querySelector('dialog').showModal();
     // document.querySelector('body').style.overflow = "hidden"
+  }
+
+  render() {
+    if (this.posts) {
+      this.total = this.posts.length;
     }
+    let filterTabs = [
+      {
+        "key": "default",
+        "label": "Default Filters",
+        "order": 7
+      },
+      {
+        "key": "all_dispatch",
+        "label": "Follow-Up Contacts",
+        "count": 10,
+        "order": 10
+      },
+      {
+        "key": "custom",
+        "label": "Custom Filters",
+        "order": 99
+      }
 
-    render() {
-        if (this.posts) {
-            this.total = this.posts.length;
-        }
-        let filterTabs = [
-            {
-                "key": "default",
-                "label": "Default Filters",
-                "order": 7
-            },
-            {
-                "key": "all_dispatch",
-                "label": "Follow-Up Contacts",
-                "count": 10,
-                "order": 10
-            },
-            {
-                "key": "custom",
-                "label": "Custom Filters",
-                "order": 99
-            }
+    ];
+    let listItems = [
 
-        ];
-        let listItems = [
-
-            {
-                "ID": "my_subassigned",
-                "visible": "1",
-                "type": "default",
-                "tab": "custom",
-                "name": "Subassigned only",
-                "query": {
-                    "subassigned": [
-                        "me"
-                    ],
-                    "sort": "overall_status"
-                },
-                "labels": [
-                    {
-                        "id": "me",
-                        "name": "Subassigned only",
-                        "field": "subassigned"
-                    }
-                ]
-            },
-            {
-                "ID": "favorite",
-                "tab": "default",
-                "name": "Favorite Contacts",
-                "query": {
-                    "fields": {
-                        "favorite": [
-                            "1"
-                        ]
-                    },
-                    "sort": "name"
-                },
-                "labels": [
-                    {
-                        "id": "1",
-                        "name": "Favorite"
-                    }
-                ]
-            },
-            {
-                "ID": "personal",
-                "tab": "default",
-                "name": "Personal",
-                "query": {
-                    "type": [
-                        "personal"
-                    ],
-                    "sort": "name",
-                    "overall_status": [
-                        "-closed"
-                    ]
-                },
-                "count": ""
-            },
-            {
-                "ID": "my_coached",
-                "visible": "1",
-                "type": "default",
-                "tab": "default",
-                "name": "Coached by me",
-                "count": "2",
-                "query": {
-                    "coached_by": [
-                        "me"
-                    ],
-                    "overall_status": [
-                        "-closed"
-                    ],
-                    "sort": "seeker_path"
-                },
-                "labels": [
-                    {
-                        "id": "me",
-                        "name": "Coached by me",
-                        "field": "coached_by"
-                    }
-                ]
-            },
-            {
-                "ID": "my_all",
-                "tab": "default",
-                "name": "My Follow-Up",
-                "query": {
-                    "assigned_to": [
-                        "me"
-                    ],
-                    "subassigned": [
-                        "me"
-                    ],
-                    "combine": [
-                        "subassigned"
-                    ],
-                    "overall_status": [
-                        "-closed"
-                    ],
-                    "type": [
-                        "access"
-                    ],
-                    "sort": "overall_status"
-                },
-                "labels": [
-                    {
-                        "name": "My Follow-Up",
-                        "field": "combine",
-                        "id": "subassigned"
-                    },
-                    {
-                        "name": "Assigned to me",
-                        "field": "assigned_to",
-                        "id": "me"
-                    },
-                    {
-                        "name": "Sub-assigned to me",
-                        "field": "subassigned",
-                        "id": "me"
-                    }
-                ],
-                "count": 10
-            },
-            {
-                "ID": "my_new",
-                "tab": "default",
-                "name": "New Contact",
-                "query": {
-                    "assigned_to": [
-                        "me"
-                    ],
-                    "subassigned": [
-                        "me"
-                    ],
-                    "combine": [
-                        "subassigned"
-                    ],
-                    "type": [
-                        "access"
-                    ],
-                    "overall_status": [
-                        "new"
-                    ],
-                    "sort": "seeker_path"
-                },
-                "labels": [
-                    {
-                        "name": "New Contact"
-                    },
-                    {
-                        "name": "Assigned to me",
-                        "field": "assigned_to",
-                        "id": "me"
-                    },
-                    {
-                        "name": "Sub-assigned to me",
-                        "field": "subassigned",
-                        "id": "me"
-                    }
-                ],
-                "count": 1,
-                "subfilter": 1
-            },
-            {
-                "ID": "my_active",
-                "tab": "default",
-                "name": "Active",
-                "query": {
-                    "assigned_to": [
-                        "me"
-                    ],
-                    "subassigned": [
-                        "me"
-                    ],
-                    "combine": [
-                        "subassigned"
-                    ],
-                    "type": [
-                        "access"
-                    ],
-                    "overall_status": [
-                        "active"
-                    ],
-                    "sort": "seeker_path"
-                },
-                "labels": [
-                    {
-                        "name": "Active"
-                    },
-                    {
-                        "name": "Assigned to me",
-                        "field": "assigned_to",
-                        "id": "me"
-                    },
-                    {
-                        "name": "Sub-assigned to me",
-                        "field": "subassigned",
-                        "id": "me"
-                    }
-                ],
-                "count": 3,
-                "subfilter": 1
-            },
-            {
-                "ID": "my_update_needed",
-                "tab": "default",
-                "name": "Requires Update",
-                "query": {
-                    "assigned_to": [
-                        "me"
-                    ],
-                    "subassigned": [
-                        "me"
-                    ],
-                    "combine": [
-                        "subassigned"
-                    ],
-                    "overall_status": [
-                        "active"
-                    ],
-                    "requires_update": [
-                        true
-                    ],
-                    "type": [
-                        "access"
-                    ],
-                    "sort": "seeker_path"
-                },
-                "labels": [
-                    {
-                        "name": "Requires Update"
-                    },
-                    {
-                        "name": "Assigned to me",
-                        "field": "assigned_to",
-                        "id": "me"
-                    },
-                    {
-                        "name": "Sub-assigned to me",
-                        "field": "subassigned",
-                        "id": "me"
-                    }
-                ],
-                "count": 3,
-                "subfilter": 2
-            },
-            {
-                "ID": "my_none",
-                "tab": "default",
-                "name": "Contact Attempt Needed",
-                "query": {
-                    "assigned_to": [
-                        "me"
-                    ],
-                    "subassigned": [
-                        "me"
-                    ],
-                    "combine": [
-                        "subassigned"
-                    ],
-                    "overall_status": [
-                        "active"
-                    ],
-                    "seeker_path": [
-                        "none"
-                    ],
-                    "type": [
-                        "access"
-                    ],
-                    "sort": "name"
-                },
-                "labels": [
-                    {
-                        "name": "Contact Attempt Needed"
-                    },
-                    {
-                        "name": "Assigned to me",
-                        "field": "assigned_to",
-                        "id": "me"
-                    },
-                    {
-                        "name": "Sub-assigned to me",
-                        "field": "subassigned",
-                        "id": "me"
-                    }
-                ],
-                "count": 3,
-                "subfilter": 2
-            },
-            {
-                "ID": "all_new",
-                "tab": "all_dispatch",
-                "name": "New Contact",
-                "query": {
-                    "overall_status": [
-                        "new"
-                    ],
-                    "type": [
-                        "access"
-                    ],
-                    "sort": "seeker_path"
-                },
-                "count": 1
-            },
-            {
-                "ID": "all_active",
-                "tab": "all_dispatch",
-                "name": "Active",
-                "query": {
-                    "overall_status": [
-                        "active"
-                    ],
-                    "type": [
-                        "access"
-                    ],
-                    "sort": "seeker_path"
-                },
-                "count": 3
-            },
+      {
+        "ID": "my_subassigned",
+        "visible": "1",
+        "type": "default",
+        "tab": "custom",
+        "name": "Subassigned only",
+        "query": {
+          "subassigned": [
+            "me"
+          ],
+          "sort": "overall_status"
+        },
+        "labels": [
+          {
+            "id": "me",
+            "name": "Subassigned only",
+            "field": "subassigned"
+          }
         ]
+      },
+      {
+        "ID": "favorite",
+        "tab": "default",
+        "name": "Favorite Contacts",
+        "query": {
+          "fields": {
+            "favorite": [
+              "1"
+            ]
+          },
+          "sort": "name"
+        },
+        "labels": [
+          {
+            "id": "1",
+            "name": "Favorite"
+          }
+        ]
+      },
+      {
+        "ID": "personal",
+        "tab": "default",
+        "name": "Personal",
+        "query": {
+          "type": [
+            "personal"
+          ],
+          "sort": "name",
+          "overall_status": [
+            "-closed"
+          ]
+        },
+        "count": ""
+      },
+      {
+        "ID": "my_coached",
+        "visible": "1",
+        "type": "default",
+        "tab": "default",
+        "name": "Coached by me",
+        "count": "2",
+        "query": {
+          "coached_by": [
+            "me"
+          ],
+          "overall_status": [
+            "-closed"
+          ],
+          "sort": "seeker_path"
+        },
+        "labels": [
+          {
+            "id": "me",
+            "name": "Coached by me",
+            "field": "coached_by"
+          }
+        ]
+      },
+      {
+        "ID": "my_all",
+        "tab": "default",
+        "name": "My Follow-Up",
+        "query": {
+          "assigned_to": [
+            "me"
+          ],
+          "subassigned": [
+            "me"
+          ],
+          "combine": [
+            "subassigned"
+          ],
+          "overall_status": [
+            "-closed"
+          ],
+          "type": [
+            "access"
+          ],
+          "sort": "overall_status"
+        },
+        "labels": [
+          {
+            "name": "My Follow-Up",
+            "field": "combine",
+            "id": "subassigned"
+          },
+          {
+            "name": "Assigned to me",
+            "field": "assigned_to",
+            "id": "me"
+          },
+          {
+            "name": "Sub-assigned to me",
+            "field": "subassigned",
+            "id": "me"
+          }
+        ],
+        "count": 10
+      },
+      {
+        "ID": "my_new",
+        "tab": "default",
+        "name": "New Contact",
+        "query": {
+          "assigned_to": [
+            "me"
+          ],
+          "subassigned": [
+            "me"
+          ],
+          "combine": [
+            "subassigned"
+          ],
+          "type": [
+            "access"
+          ],
+          "overall_status": [
+            "new"
+          ],
+          "sort": "seeker_path"
+        },
+        "labels": [
+          {
+            "name": "New Contact"
+          },
+          {
+            "name": "Assigned to me",
+            "field": "assigned_to",
+            "id": "me"
+          },
+          {
+            "name": "Sub-assigned to me",
+            "field": "subassigned",
+            "id": "me"
+          }
+        ],
+        "count": 1,
+        "subfilter": 1
+      },
+      {
+        "ID": "my_active",
+        "tab": "default",
+        "name": "Active",
+        "query": {
+          "assigned_to": [
+            "me"
+          ],
+          "subassigned": [
+            "me"
+          ],
+          "combine": [
+            "subassigned"
+          ],
+          "type": [
+            "access"
+          ],
+          "overall_status": [
+            "active"
+          ],
+          "sort": "seeker_path"
+        },
+        "labels": [
+          {
+            "name": "Active"
+          },
+          {
+            "name": "Assigned to me",
+            "field": "assigned_to",
+            "id": "me"
+          },
+          {
+            "name": "Sub-assigned to me",
+            "field": "subassigned",
+            "id": "me"
+          }
+        ],
+        "count": 3,
+        "subfilter": 1
+      },
+      {
+        "ID": "my_update_needed",
+        "tab": "default",
+        "name": "Requires Update",
+        "query": {
+          "assigned_to": [
+            "me"
+          ],
+          "subassigned": [
+            "me"
+          ],
+          "combine": [
+            "subassigned"
+          ],
+          "overall_status": [
+            "active"
+          ],
+          "requires_update": [
+            true
+          ],
+          "type": [
+            "access"
+          ],
+          "sort": "seeker_path"
+        },
+        "labels": [
+          {
+            "name": "Requires Update"
+          },
+          {
+            "name": "Assigned to me",
+            "field": "assigned_to",
+            "id": "me"
+          },
+          {
+            "name": "Sub-assigned to me",
+            "field": "subassigned",
+            "id": "me"
+          }
+        ],
+        "count": 3,
+        "subfilter": 2
+      },
+      {
+        "ID": "my_none",
+        "tab": "default",
+        "name": "Contact Attempt Needed",
+        "query": {
+          "assigned_to": [
+            "me"
+          ],
+          "subassigned": [
+            "me"
+          ],
+          "combine": [
+            "subassigned"
+          ],
+          "overall_status": [
+            "active"
+          ],
+          "seeker_path": [
+            "none"
+          ],
+          "type": [
+            "access"
+          ],
+          "sort": "name"
+        },
+        "labels": [
+          {
+            "name": "Contact Attempt Needed"
+          },
+          {
+            "name": "Assigned to me",
+            "field": "assigned_to",
+            "id": "me"
+          },
+          {
+            "name": "Sub-assigned to me",
+            "field": "subassigned",
+            "id": "me"
+          }
+        ],
+        "count": 3,
+        "subfilter": 2
+      },
+      {
+        "ID": "all_new",
+        "tab": "all_dispatch",
+        "name": "New Contact",
+        "query": {
+          "overall_status": [
+            "new"
+          ],
+          "type": [
+            "access"
+          ],
+          "sort": "seeker_path"
+        },
+        "count": 1
+      },
+      {
+        "ID": "all_active",
+        "tab": "all_dispatch",
+        "name": "Active",
+        "query": {
+          "overall_status": [
+            "active"
+          ],
+          "type": [
+            "access"
+          ],
+          "sort": "seeker_path"
+        },
+        "count": 3
+      },
+    ]
 
-        if (window.list_settings) {
-            filterTabs = window.list_settings.filters.tabs;
-            listItems = window.list_settings.filters.filters;
-        }
-        const groupedItems = {};
-        listItems.forEach(item => {
-            if (!groupedItems[item.tab]) {
-                groupedItems[item.tab] = [];
-            }
-            groupedItems[item.tab].push(item);
-        });
+    if (window.list_settings) {
+      filterTabs = window.list_settings.filters.tabs;
+      listItems = window.list_settings.filters.filters;
+    }
+    const groupedItems = {};
+    listItems.forEach(item => {
+      if (!groupedItems[item.tab]) {
+        groupedItems[item.tab] = [];
+      }
+      groupedItems[item.tab].push(item);
+    });
 
-        const upperArrowSVG = html`<svg fill="#3f729b" height="20px" width="20px" version="1.1" 
+    const upperArrowSVG = html`<svg fill="#3f729b" height="20px" width="20px" version="1.1" 
                          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                          viewBox="0 0 330 330" xml:space="preserve">
                         <path id="XMLID_224_" 
@@ -993,21 +979,21 @@ export class DtListHelpBox extends DtBase {
                               C331.464,244.748,331.464,235.251,325.606,229.393z"/>
                     </svg>`;
 
-        const downArrowSVG = html`<svg fill="#3f729b" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-	 viewBox="0 0 330 330" xml:space="preserve">
-<path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393
-	c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393
-	s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"/>
-</svg>`;
+    const downArrowSVG = html`<svg fill="#3f729b" height="20px" width="20px" version="1.1" 
+                          id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                    viewBox="0 0 330 330" xml:space="preserve">
+                  <path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393
+                    c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393
+                    s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"/>
+                  </svg>`;
 
-        const circlePlusSVG = html`
-<svg fill="#3f729b" height="17px" width="17px"  viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <path d="M7.011,0.024C10.875,0.024 14.011,3.16 14.011,7.024C14.011,10.887 10.875,14.024 7.011,14.024C3.148,14.024 0.011,10.887 0.011,7.024C0.011,3.16 3.148,0.024 7.011,0.024ZM7.702,6.294L7.702,2.998L6.298,2.998L6.298,6.294L3.002,6.294L3.002,7.681L6.298,7.681L6.298,11.002L7.702,11.002L7.702,7.681L10.998,7.681L10.998,6.294L7.702,6.294Z" style="fill:000000;"/>
-</svg>
+    const circlePlusSVG = html`
+                  <svg fill="#3f729b" height="17px" width="17px"  viewBox="0 0 14 14" version="1.1" 
+                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                      <path d="M7.011,0.024C10.875,0.024 14.011,3.16 14.011,7.024C14.011,10.887 10.875,14.024 7.011,14.024C3.148,14.024 0.011,10.887 0.011,7.024C0.011,3.16 3.148,0.024 7.011,0.024ZM7.702,6.294L7.702,2.998L6.298,2.998L6.298,6.294L3.002,6.294L3.002,7.681L6.298,7.681L6.298,11.002L7.702,11.002L7.702,7.681L10.998,7.681L10.998,6.294L7.702,6.294Z" style="fill:000000;"/>
+                  </svg>`;
 
-`;
-
-        return html`
+    return html`
       <div class="section">
         <div class="header">
           <div class="section-header">
@@ -1064,7 +1050,7 @@ export class DtListHelpBox extends DtBase {
         `: ''}
 
         <div class="custom_filter">
-        <a @click=${(e) => this.openDialog(e,'create-custom-filter')} class="custom-filters-link">${circlePlusSVG} Create Custom Filter</a>
+        <a @click=${(e) => this.openDialog(e, 'create-custom-filter')} class="custom-filters-link">${circlePlusSVG} Create Custom Filter</a>
         </div>
 
         <div class="custom-filters">
@@ -1078,7 +1064,7 @@ export class DtListHelpBox extends DtBase {
         </dt-modal>
       </div>
     `;
-    }
+  }
 }
 
 window.customElements.define('dt-list-help-box', DtListHelpBox);
