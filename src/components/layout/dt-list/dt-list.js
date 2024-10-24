@@ -532,9 +532,6 @@ export class DtList extends DtBase {
     // });
   }
 
-  static _rowClick(permalink) {
-    window.open(permalink, '_self');
-  }
 
   _bulkEdit() {
     this.showBulkEditSelector = !this.showBulkEditSelector;
