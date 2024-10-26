@@ -352,9 +352,7 @@ export class DtButton extends DtBase {
     if (this.type === 'submit') {
       const form = this.closest('form');
       if (form) {
-        if (this.type === 'submit') {
-          form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-        }
+        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
       }
     }
   }
