@@ -61,8 +61,8 @@ describe('DT-Button', () => {
   it('Check the button click submit event', async () => {
     const el = await fixture(html`<form><input type="text" value="test"/><dt-button type="submit">Button</dt-button></form>`);
 
-    wait(50);
-    const buttonComponent = document.querySelector('dt-button');
+    await wait(100);
+    const buttonComponent = el.querySelector('dt-button');
     const listener = oneEvent(el, 'submit');
 
     buttonComponent.shadowRoot.querySelector('button').click();
