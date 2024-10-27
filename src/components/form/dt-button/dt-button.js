@@ -1,7 +1,7 @@
 import { html, css } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import DtBase from '../../dt-base.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+import DtBase from '../../dt-base.js';
 
 export class DtButton extends DtBase {
   static get styles() {
@@ -281,6 +281,7 @@ export class DtButton extends DtBase {
         return;
       }
     }
+
     if (
       this.id.startsWith('favorite') ||
       this.id === 'follow-button' ||
@@ -288,7 +289,9 @@ export class DtButton extends DtBase {
     ) {
       e.preventDefault();
       this.onClick(e);
-    } else if (this.id === 'create-post-button') {
+    }
+
+    if (this.id === 'create-post-button') {
       const form = this.closest('form');
       if (!form) {
         console.error('Form not found!');
@@ -344,10 +347,12 @@ export class DtButton extends DtBase {
         },
       });
       this.dispatchEvent(event);
-    } else {
+    }
+
+    if (this.type === 'submit') {
       const form = this.closest('form');
       if (form) {
-        form.submit();
+        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
       }
     }
   }

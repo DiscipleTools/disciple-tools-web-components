@@ -1,7 +1,13 @@
 import { html } from 'lit';
-import { fixture, expect } from '@open-wc/testing';
+import { fixture, expect, oneEvent } from '@open-wc/testing';
 
 import './dt-button.js';
+
+async function wait(ms) {
+  return new Promise(r => {
+    setTimeout(r, ms);
+  });
+}
 
 describe('DT-Button', () => {
   it('Check the label slot', async () => {
@@ -41,4 +47,26 @@ describe('DT-Button', () => {
     expect(el.type).to.equal('submit');
   });
 
+  it('Check the button click event', async () => {
+    const el = await fixture(html`<dt-button>Button</dt-button>`);
+    const listener = oneEvent(el, 'click');
+
+    el.shadowRoot.querySelector('button').click();
+
+    const event = await listener;
+
+    expect(event).to.exist;
+  });
+
+  it('Check the button click submit event', async () => {
+    const el = await fixture(html`<form><input type="text" value="test"/><dt-button type="submit">Button</dt-button></form>`);
+
+    await wait(100);
+    const buttonComponent = el.querySelector('dt-button');
+    const listener = oneEvent(el, 'submit');
+
+    buttonComponent.shadowRoot.querySelector('button').click();
+    const event = await listener;
+    expect(event).to.exist;
+  });
 });
