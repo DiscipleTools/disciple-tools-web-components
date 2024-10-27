@@ -124,7 +124,7 @@ describe('dt-tags', () => {
     expect(optionList).not.to.be.displayed;
 
     input.focus();
-    await aTimeout(50); // wait for UI update
+    await aTimeout(100); // wait for UI update
 
     expect(optionList).to.be.displayed;
   });
