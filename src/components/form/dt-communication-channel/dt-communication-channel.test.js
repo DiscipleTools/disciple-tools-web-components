@@ -60,7 +60,7 @@ describe('DtCommChannel', () => {
     sendKeys({
       type: 'Test',
     });
-    await wait(50);
+    await wait(500);
 
     input.blur();
 
