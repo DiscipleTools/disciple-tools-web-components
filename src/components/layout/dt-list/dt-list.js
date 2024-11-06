@@ -917,6 +917,8 @@ export class DtList extends DtBase {
 
   connectedCallback() {
     super.connectedCallback();
+    this._handleRadioSelection = this._handleRadioSelection.bind(this);  // Ensure binding
+    document.addEventListener('query-updated', this._handleRadioSelection);
     this.payload = {
       sort: this.sortedBy,
       overall_status: ['-closed'],
@@ -943,6 +945,11 @@ export class DtList extends DtBase {
     this._getPosts(this.payload).then(posts => {
       console.log(posts);
     });
+  }
+
+  _handleRadioSelection(event){
+    //here will get the query inside event.detail and update the list accordingly
+console.log('event in dt-list',event);
   }
 
   render() {

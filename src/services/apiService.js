@@ -99,6 +99,10 @@ export default class ApiService {
     return this.makeRequestOnPosts('POST', `${postType}/list`, data);
   }
 
+  async fetchSplitByPosts(postType,data){
+    return this.makeRequestOnPosts('POST',`${postType}/split_by`,data)
+  }
+
   /**
    * Update Post via API
    * @param {string} postType

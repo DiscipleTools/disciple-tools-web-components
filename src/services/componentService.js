@@ -39,7 +39,8 @@ export default class ComponentService {
       'dt-tags',
       'dt-modal',
       'dt-list',
-      'dt-button'
+      'dt-button',
+      'dt-list-filters'
     ]
   }
 
@@ -183,32 +184,32 @@ export default class ComponentService {
     }
   }
 
- /**
-   * Handle Post creation on new contact form
-   *
-   */
- async processFormSubmission(event){
-  // const createPostButton = document.querySelector('dt-button#create-post-button');
-  const details = event.detail;
-  const { newValue } = details;
+  /**
+    * Handle Post creation on new contact form
+    *
+    */
+  async processFormSubmission(event){
+    // const createPostButton = document.querySelector('dt-button#create-post-button');
+    const details = event.detail;
+    const { newValue } = details;
 
-  try {
-    const apiResponse = await this.api.createPost(
-      this.postType, newValue.el
-    );
-    if (apiResponse) {
-      window.location = apiResponse.permalink;
+    try {
+      const apiResponse = await this.api.createPost(
+        this.postType, newValue.el
+      );
+      if (apiResponse) {
+        window.location = apiResponse.permalink;
+      }
+      event.target.removeAttribute('loading');
+      event.target.setAttribute('error', '');
+      event.target.setAttribute('saved', true);
+    } catch (error) {
+      console.error(error);
+      event.target.removeAttribute('loading');
+      event.target.setAttribute('invalid', true); // this isn't hooked up yet
+      event.target.setAttribute('error', error.message || error.toString());
     }
-    event.target.removeAttribute('loading');
-    event.target.setAttribute('error', '');
-    event.target.setAttribute('saved', true);
-  } catch (error) {
-    console.error(error);
-    event.target.removeAttribute('loading');
-    event.target.setAttribute('invalid', true); // this isn't hooked up yet
-    event.target.setAttribute('error', error.message || error.toString());
   }
-}
 
 
   /**
@@ -233,11 +234,18 @@ export default class ComponentService {
             values = contactApiData;
           };
             break;
+          case 'dt-list-filters': {
+            const listResponse = await this.api.fetchSplitByPosts(this.postType, query);
+            // console.log('dt-list-filters responsessssss', listResponse);
+            values = listResponse;
+
+          }
+            break;
           case 'dt-list': {
             const listResponse = await this.api.fetchPostsList(this.postType, query)
             values = listResponse.posts
           }
-          break;
+            break;
           case 'dt-connection': {
             const postType = details.postType || this.postType;
             const connectionResponse = await this.api.listPostsCompact(
@@ -305,27 +313,27 @@ export default class ComponentService {
       // Update post via API
       try {
         let apiResponse;
-      switch(component){
-        case 'dt-users-connection':{
-          if(remove === true){
-            apiResponse =await this.api.removePostShare(this.postType,this.postId,apiValue);
+        switch (component) {
+          case 'dt-users-connection': {
+            if (remove === true) {
+              apiResponse = await this.api.removePostShare(this.postType, this.postId, apiValue);
+              break;
+            }
+            apiResponse = await this.api.addPostShare(this.postType, this.postId, apiValue)
             break;
           }
-          apiResponse= await this.api.addPostShare(this.postType,this.postId,apiValue)
-          break;
-        }
-        default:{
-          apiResponse= await this.api.updatePost(this.postType, this.postId, {
+          default: {
+            apiResponse = await this.api.updatePost(this.postType, this.postId, {
               [field]: apiValue,
             });
 
-        // Sending response to update value
-        if(component==='dt-comm-channel' && details.onSuccess){
-          details.onSuccess(apiResponse);
+            // Sending response to update value
+            if (component === 'dt-comm-channel' && details.onSuccess) {
+              details.onSuccess(apiResponse);
+            }
+            break;
+          }
         }
-      break;
-    }
-  }
 
         event.target.removeAttribute('loading');
         event.target.setAttribute('error', '');
@@ -378,66 +386,67 @@ export default class ComponentService {
 
         // seperate case for dt-users-connection
         case 'dt-users-connection': {
-           // Initialize an empty array to hold the differences found.
-            const userDataDifferences=[];
-            // Create a Map from oldValue for quick lookups by ID.
-            const oldUsersMap = new Map(oldValue.map(user => [user.id,user]));
+          // Initialize an empty array to hold the differences found.
+          const userDataDifferences = [];
+          // Create a Map from oldValue for quick lookups by ID.
+          const oldUsersMap = new Map(oldValue.map(user => [user.id, user]));
 
-            for (const newUserObj of returnValue) {
+          for (const newUserObj of returnValue) {
             // Retrieve the corresponding old object from the map using the ID.
-              const oldUserObj = oldUsersMap.get(newUserObj.id);
-              const diff = { id: newUserObj.id, changes: {} };
+            const oldUserObj = oldUsersMap.get(newUserObj.id);
+            const diff = { id: newUserObj.id, changes: {} };
 
             // Check if the old object exists (i.e., the current new object may be new).
-              if (!oldUserObj) {
-                  // New object added
-                  diff.changes = { ...newUserObj }; // Store all properties of the new object as changes.
-                  userDataDifferences.push(diff);
-                  break;
-              } else {
+            if (!oldUserObj) {
+              // New object added
+              diff.changes = { ...newUserObj }; // Store all properties of the new object as changes.
+              userDataDifferences.push(diff);
+              break;
+            } else {
 
-                // Existing object found; we need to compare their properties.
-                  let hasDiff = false;
-                  const allKeys = new Set([...Object.keys(oldUserObj), ...Object.keys(newUserObj)]);
+              // Existing object found; we need to compare their properties.
+              let hasDiff = false;
+              const allKeys = new Set([...Object.keys(oldUserObj), ...Object.keys(newUserObj)]);
 
-                  // Iterate through all keys to compare values.
-                  for (const key of allKeys) {
-                      if (newUserObj[key] !== oldUserObj[key]) {
-                          diff.changes[key] = Object.prototype.hasOwnProperty.call(newUserObj, key) ? newUserObj[key] : undefined;
-                          // Set the hasDiff flag to true as a difference was found.
-                          hasDiff = true;
-                      }
-                  }
-                  if (hasDiff){ userDataDifferences.push(diff);
-                  break;
+              // Iterate through all keys to compare values.
+              for (const key of allKeys) {
+                if (newUserObj[key] !== oldUserObj[key]) {
+                  diff.changes[key] = Object.prototype.hasOwnProperty.call(newUserObj, key) ? newUserObj[key] : undefined;
+                  // Set the hasDiff flag to true as a difference was found.
+                  hasDiff = true;
                 }
               }
+              if (hasDiff) {
+                userDataDifferences.push(diff);
+                break;
+              }
+            }
           }
 
           returnValue = userDataDifferences[0].id;
           break;
         }
-    case 'dt-connection':
-            case 'dt-location':
-              if (typeof value === 'string') {
-                returnValue = [
-                  {
-                    id: value,
-                  },
-                ];
-              }
-              returnValue = {
-                values: returnValue.map(item => {
-                  const ret = {
-                    value: item.id,
-                  };
-                  if (item.delete) {
-                    ret.delete = item.delete;
-                  }
-                  return ret;
-                }),
-                force_values: false,
+        case 'dt-connection':
+        case 'dt-location':
+          if (typeof value === 'string') {
+            returnValue = [
+              {
+                id: value,
+              },
+            ];
+          }
+          returnValue = {
+            values: returnValue.map(item => {
+              const ret = {
+                value: item.id,
               };
+              if (item.delete) {
+                ret.delete = item.delete;
+              }
+              return ret;
+            }),
+            force_values: false,
+          };
           break;
 
         case 'dt-multiselect-buttons-group':
