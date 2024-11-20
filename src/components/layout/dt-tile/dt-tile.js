@@ -43,7 +43,7 @@ export class DtTile extends DtBase {
 
       .section-body {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: var(--dt-tile-body-grid-template-columns, repeat(auto-fill, minmax(200px, 1fr)));
         column-gap: 1.4rem;
         transition: height 1s ease 0s;
         height: auto;
@@ -128,7 +128,7 @@ export class DtTile extends DtBase {
     return html`
       <section>
         ${this.renderHeading()}
-        <div class="section-body ${this.collapsed ? 'collapsed' : null}">
+        <div part="body" class="section-body ${this.collapsed ? 'collapsed' : null}">
           <slot></slot>
         </div>
       </section>
