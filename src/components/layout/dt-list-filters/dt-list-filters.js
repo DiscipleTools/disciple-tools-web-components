@@ -280,6 +280,18 @@ export class DtListHelpBox extends DtBase {
       .field-group .btn {
         margin-left: 12px !important;
       }
+
+      .remove-filter{
+      background: #ecf5fc;
+      border: 1px solid #c2e0ff;
+      border-radius: 2px;
+      font-size: .875rem;
+      margin-bottom: .375rem;
+      margin-right: 4px;
+      padding: 4px 4px 4px 4px;
+      position: relative;
+      margin-left: -4px;
+      }
       .btn {
        -webkit-appearance: none;
         border: 1px solid transparent;
@@ -342,15 +354,16 @@ export class DtListHelpBox extends DtBase {
       listFiltersTab: { type: Boolean, default: false },
       splitBy: { type: Boolean, default: false },
       selectedValue: { type: Object },
-      sectionBodyVisible: { type: Boolean, default: false },
+      sectionBodyVisible: { type: Boolean, default: true },
       splitByFields: { type: Array },
       selectedSplitByField: { type: Array },
       selectedField: { type: String },
-      query: {type: String,state: true,},
-      listItems:{ type : Array },
-      field:{ type: String},
-      currentFilterList:{ type: Array },
-      filterTabs:{ type: Array },
+      query: { type: String, state: true, },
+      listItems: { type: Array },
+      field: { type: String },
+      currentFilterList: { type: Array },
+      filterTabs: { type: Array },
+      removeCurrentFilterList: { type: Boolean }
     };
   }
 
@@ -359,64 +372,107 @@ export class DtListHelpBox extends DtBase {
     super();
     this.splitByFields = [];
     this.selectedSplitByField = [];
-    this.selectedField ='';
+    this.selectedField = '';
     this.getSplitByFields();
     this.currentFilterList = [];
+    this.sectionBodyVisible = true;
+    this.removeCurrentFilterList = false;
   }
 
   getSplitByFields() {
     // Simulate fetching options from an array (can be API call in real scenario)
 
     if (window.list_settings) {
-      // console.log('what are the filter in window objecttttt??',window.list_settings.post_type_settings.fields);
-      // console.log('typpee??',typeof(window.list_settings.post_type_settings.fields));
-
       for (const key in window.list_settings.post_type_settings.fields) {
         if (window.list_settings.post_type_settings.fields.hasOwnProperty(key)) {
-          this.splitByFields.push({
-            key: key,
-            label: window.list_settings.post_type_settings.fields[key].name
-          });
+          const field = window.list_settings.post_type_settings.fields[key];
+
+          // Check if the field type is one of the allowed types
+          const allowedTypes = ['multi_select', 'key_select', 'tags', 'user_select', 'location', 'boolean', 'connection'];
+
+          if (allowedTypes.includes(field.type)) {
+            // Check if the field is not private
+            if (!field.private || field.private === false) {
+              // Push the field to splitByFields if it meets the criteria
+              this.splitByFields.push({
+                key: key,
+                label: field.name
+              });
+            }
+          }
         }
       }
-      
-      // this.splitByFields = window.list_settings.post_type_settings.fields;
+
+
     }
   }
 
   firstUpdated() {
+
     if (window.post_type_fields) {
       this.postTypeSettings = window.post_type_fields;
     }
 
-    // console.log('this is window object??????',window.list_settings.filters);
-    this.currentFilterList=window.list_settings.filters.filters.filter(item =>
-      item.type ==="default" && item.tab === "default" && !item.visible
-      
-    ).map(item => item.name);
+    //to pre-set the default filters
+    this.currentFilterList = window.list_settings.filters.filters.filter(item =>
+      item.type === "default" && item.tab === "default" && !item.visible
 
-    // console.log(this.currentFilterList,'this is current filter list');
+    ).map(item => item.labels ? item.labels.map(label => label) : item.name);
+
+    // console.log(this.currentFilterList, 'this is current filter list');
   }
 
-  handleRadioSelection(query,item) {
-    // console.log('query',query);
-    
-    this.currentFilterList=item.labels.map(label=>label.name);
+  connectedCallback() {
+    super.connectedCallback();
+    this._handleCurrentFilterList = this._handleCurrentFilterList.bind(this);  // Ensure binding
+    document.addEventListener('updated_current_filter_list', this._handleCurrentFilterList);
+  }
+
+  _handleCurrentFilterList(event) {
+    //to update the current filter list for components like splitby in the DOM.
+    this.currentFilterList = [event.detail.list];
+    this.requestUpdate();
+  }
+
+  handleRadioSelection(item) {
+
+    if (this.removeCurrentFilterList) {
+      //here the remove filter functionlity will come..
+    } else {
+      this.query = this.splitBy ? { [this.selectedField]: [item.value] } : item.query;
+      this.currentFilterList = item.labels ? item.labels.map(label => label) : [item];
+    }
+
+    if (!this.splitBy) {
+
+      const updateCurrdentFilterList = new CustomEvent('updated_current_filter_list', {
+        detail: {
+          list: this.currentFilterList,
+        },
+        bubbles: true,
+        composed: true,
+      })
+      this.dispatchEvent(updateCurrdentFilterList);
+    }
+
     //from here the query will be send to dt-list component to update the list values.
 
-    const event = new CustomEvent('query-updated',{
+    const event = new CustomEvent('query-updated', {
       detail: {
-        query:query,
-        onSuccess:result=>{
+        query: this.query,
+        splitBy: this.splitBy,
+        onSuccess: result => {
           console.log(result);
-          
+
         },
       },
       bubbles: true,
       composed: true,
     })
 
+    this.removeCurrentFilterList = false;
     this.dispatchEvent(event);
+
 
   }
 
@@ -456,7 +512,7 @@ export class DtListHelpBox extends DtBase {
 
   handleSelection(event) {
     this.selectedField = event.target.value;
-    
+
   }
 
   openDialog(e, label) {
@@ -472,31 +528,20 @@ export class DtListHelpBox extends DtBase {
   }
 
   _onFilterSubmit() {
-    // console.log('Selected field:', this.selectedField);
 
     // Add logic to handle filtering based on selectedField
 
 
-    this.query = {"field_id":this.selectedField,"filters":{"sort":"name","fields_to_return":["name","favorite","overall_status","seeker_path","milestones","assigned_to","groups","last_modified"]}}
+    this.query = { "field_id": this.selectedField, "filters": { "sort": "name", "fields_to_return": ["name", "favorite", "overall_status", "seeker_path", "milestones", "assigned_to", "groups", "last_modified"] } }
 
-    // console.log('this.query???',this.query);
-    
-    const event = new CustomEvent('dt:get-data',{
+    const event = new CustomEvent('dt:get-data', {
       detail: {
         field: this.name,
         postType: this.postType,
         query: this.query,
         onSuccess: result => {
-          console.log('this is get Data result>>>>>>>>',result);
+          this.selectedSplitByField = [...result];
 
-          this.selectedSplitByField=[...result];
-          
-          self.loading = false;
-
-          // filter out selected values from list
-          self.filteredOptions = result.filter(
-            opt => !selectedValues.includes(opt.id)
-          );
         },
         onError: error => {
           console.warn(error);
@@ -509,19 +554,13 @@ export class DtListHelpBox extends DtBase {
     this.dispatchEvent(event);
   }
 
-  _handleFilter(){
+  removeFilter(target, innerArray) {
 
+    // this.removeCurrentFilterList = true;
+    const assignedToMeItem = innerArray.find(item => item.name === target);
 
-    const event = CustomEvent('filter',{
-      detail:{
-        query:this.query,
-        listData:this.posts,
-        onSuccess: (result)=>{
-          console.log(console.log('inside dt-list event',result));
-        }
-
-      }
-    })
+    //call the handleRadioSelection with the updated query to remove the filter.
+    // this.handleRadioSelection(assignedToMeItem);
   }
 
   render() {
@@ -529,12 +568,14 @@ export class DtListHelpBox extends DtBase {
       this.total = this.posts.length;
     }
 
+
     if (window.list_settings) {
       this.filterTabs = window.list_settings.filters.tabs;
       this.listItems = window.list_settings.filters.filters;
     }
+
     const groupedItems = {};
-    
+
     this.listItems.forEach(item => {
       if (!groupedItems[item.tab]) {
         groupedItems[item.tab] = [];
@@ -543,16 +584,20 @@ export class DtListHelpBox extends DtBase {
     });
 
 
-    const upperArrowSVG = html`<svg fill="#3f729b" height="20px" width="20px" version="1.1" 
-                         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                         viewBox="0 0 330 330" xml:space="preserve">
-                        <path id="XMLID_224_" 
-                              d="M325.606,229.393l-150.004-150C172.79,76.58,168.974,75,164.996,75
-                              c-3.979,0-7.794,1.581-10.607,4.394l-149.996,150c-5.858,5.858-5.858,15.355,0,21.213
-                              c5.857,5.857,15.355,5.858,21.213,0l139.39-139.393l139.397,139.393
-                              C307.322,253.536,311.161,255,315,255c3.839,0,7.678-1.464,10.607-4.394
-                              C331.464,244.748,331.464,235.251,325.606,229.393z"/>
-                    </svg>`;
+    const upperArrowSVG = html`<svg fill="#3f729b" 
+    height="20px" width="20px" version="1.1" 
+    xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 330 330" 
+    xml:space="preserve"
+    >
+    <path id="XMLID_224_" 
+          d="M325.606,229.393l-150.004-150C172.79,76.58,168.974,75,164.996,75
+          c-3.979,0-7.794,1.581-10.607,4.394l-149.996,150c-5.858,5.858-5.858,15.355,0,21.213
+          c5.857,5.857,15.355,5.858,21.213,0l139.39-139.393l139.397,139.393
+          C307.322,253.536,311.161,255,315,255c3.839,0,7.678-1.464,10.607-4.394
+          C331.464,244.748,331.464,235.251,325.606,229.393z"/>
+    </svg>`;
 
     const downArrowSVG = html`<svg fill="#3f729b" height="20px" width="20px" version="1.1" 
                           id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
@@ -567,7 +612,6 @@ export class DtListHelpBox extends DtBase {
                   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                       <path d="M7.011,0.024C10.875,0.024 14.011,3.16 14.011,7.024C14.011,10.887 10.875,14.024 7.011,14.024C3.148,14.024 0.011,10.887 0.011,7.024C0.011,3.16 3.148,0.024 7.011,0.024ZM7.702,6.294L7.702,2.998L6.298,2.998L6.298,6.294L3.002,6.294L3.002,7.681L6.298,7.681L6.298,11.002L7.702,11.002L7.702,7.681L10.998,7.681L10.998,6.294L7.702,6.294Z" style="fill:000000;"/>
                   </svg>`;
-    console.log('this.listFiltersTabthis.listFiltersTabthis.listFiltersTabthis.listFiltersTab', this.listFiltersTab);
 
     return html`
       <div class="section">
@@ -607,16 +651,43 @@ export class DtListHelpBox extends DtBase {
         ${this.listFiltersTab ? html`
         <ul id="list-filter-tabs" class="accordion">
 
-         ${this.filterTabs.map(tab => html`
-                <li>
-                    <a class="accordion-title" href="#" @click=${this.toggleList}>
+         ${this.filterTabs.map((tab, index) => html`
+                <li 
+                class="${index === 0 ? 'active'
+        : ''}"
+                 >
+                    <a 
+                    class="accordion-title" 
+                    href="#" 
+                    @click=${this.toggleList}
+                    >
                     ${tab.label}${tab.count ? ` (${tab.count})` : ''}
                     </a>
-                    <div class="accordion-content">
+                    <div 
+                    class="accordion-content 
+                    ${index === 0 ? 'show' : ''}"
+                    >
                         ${groupedItems[tab.key] ? groupedItems[tab.key].map(item => html`
-                            <div class="list-view ">
-                                <input type="radio" name="selectedItem" @change=${() => this.handleRadioSelection(item.query,item)}>
-                                <span class="list-view__text">${item.name} </span><span class='list-view__count'>${item.count}</span>
+                            <div 
+                            class="list-view "
+                            >
+                                <input 
+                                ?checked=${item.type === 'default' && (item.visible !== '1' && item.visible !== '')} 
+                                type="radio" 
+                                value=${item.ID} 
+                                name="selectedItem" 
+                                @change=${() => this.handleRadioSelection(item)}
+                                >
+                                <span 
+                                class="list-view__text"
+                                >
+                                ${item.name} 
+                                </span>
+                                <span 
+                                class='list-view__count'
+                                >
+                                ${item.count}
+                                </span>
                             </div>
                         `) : ''}
                        
@@ -631,36 +702,88 @@ export class DtListHelpBox extends DtBase {
 
 
         <div id="split_by_current_filter_select_labels" >
-        ${this.currentFilterList ? this.currentFilterList.map(name => html`
-        <span class="current-filter-list">
-        ${name}
-        </span>
-        `)
-        :''}
+        ${this.currentFilterList && this.currentFilterList.length > 0 ?
+          this.currentFilterList.map(innerArray =>
+            innerArray.map(item => html`
+      <div class="current-filter-item">
+        <a class="current-filter-list">
+        ${item ? item.name : item}
+        </a>
+
+        ${item.field ?
+                html`<button 
+          class="current-filter-item 
+          remove-filter" 
+          @click=${() => this.removeFilter(item.name, innerArray)}
+        >
+          x
+        </button>` : ''}
+        
+      </div>
+    `)
+          ) : ''}
+
         </div>
 
-      <div class="field-group">
-        <select @change=${this.handleSelection} id="split_by_current_filter_select">
-          <option value="" disabled selected>Select split by field</option>
+      <div 
+      class="field-group"
+      >
+        <select 
+        @change=${this.handleSelection} 
+        id="split_by_current_filter_select"
+        >
+          <option 
+          value="" 
+          disabled 
+          selected
+          >Select split by field
+          </option>
           ${this.splitByFields.map(field => html`
-            <option value="${field.key}">${field.label} (${field.key})</option>
+            <option 
+            value="${field.key}"
+            >${field.label} (${field.key})
+            </option>
             `)}
             </select>
             
-            <button @click=${this._onFilterSubmit} class="btn btn-primary loader">Go</button>
+            <button 
+            @click=${this._onFilterSubmit} 
+            class="btn btn-primary loader"
+            >Go
+            </button>
       </div>
 
       ${this.selectedSplitByField[0] ? html`
-      <ul id="list-filter-tabs" class="accordion">
+      <ul 
+      id="list-filter-tabs" 
+      class="accordion"
+      >
                 <li>
-                    <a class="accordion-title" href="#" @click=${this.toggleList}>
+                    <a 
+                    class="accordion-title" 
+                    href="#" 
+                    @click=${this.toggleList}
+                    >
                     Summary
                     </a>
-                    <div class="accordion-content">
+                    <div 
+                    class="accordion-content"
+                    >
                         ${this.selectedSplitByField ? this.selectedSplitByField.map(item => html`
                             <div class="list-view ">
-                                <input type="radio" name="selectedItem" @change=${() => this.handleRadioSelection(item.label)}>
-                                <span class="list-view__text">${item.label} </span><span class='list-view__count'>${item.count}</span>
+                                <input 
+                                type="radio" 
+                                name="selectedItem" 
+                                @change=${() => this.handleRadioSelection(item)}
+                                >
+                                <span 
+                                class="list-view__text"
+                                >${item.label} 
+                                </span>
+                                <span 
+                                class='list-view__count'
+                                >${item.count}
+                                </span>
                             </div>
                         `) : ''}
                        
@@ -669,7 +792,10 @@ export class DtListHelpBox extends DtBase {
                 </ul>
                 `: ''}
 
-      <span id="split_by_current_filter_no_results_msg" style="display: none; margin-inline-start: 10px;">
+      <span 
+      id="split_by_current_filter_no_results_msg" 
+      style="display: none; margin-inline-start: 10px;"
+      >
         No results found
       </span>
       
@@ -679,19 +805,31 @@ export class DtListHelpBox extends DtBase {
 
           
 ${this.listFiltersTab ? html`
-        <div class="custom_filter">
-        <a @click=${(e) => this.openDialog(e, 'create-custom-filter')} class="custom-filters-link">${circlePlusSVG} Create Custom Filter</a>
+        <div 
+        class="custom_filter"
+        >
+        <a 
+        @click=${(e) => this.openDialog(e, 'create-custom-filter')} 
+        class="custom-filters-link"
+        >${circlePlusSVG} Create Custom Filter
+        </a>
         </div>
 
-        <div class="custom-filters">
+        <div 
+        class="custom-filters">
         </div>
          `: ''}
 
         </div>
 
 
-       <dt-modal id="create-custom-filter" hidebutton>
-        <span slot="content">
+       <dt-modal 
+       id="create-custom-filter" 
+       hidebutton
+       >
+        <span 
+        slot="content"
+        >
         Test
         </span>
         </dt-modal>

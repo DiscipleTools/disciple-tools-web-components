@@ -236,7 +236,6 @@ export default class ComponentService {
             break;
           case 'dt-list-filters': {
             const listResponse = await this.api.fetchSplitByPosts(this.postType, query);
-            // console.log('dt-list-filters responsessssss', listResponse);
             values = listResponse;
 
           }
