@@ -379,6 +379,26 @@ export class DtList extends DtBase {
         border-radius: 5px;
       }
 
+      .resetBtn{
+      
+    -webkit-appearance: none;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    font-family: inherit;
+    font-size: .9rem;
+    line-height: 1;
+    margin: 0 0 1rem;
+    padding: .85em 1em;
+    text-align: center;
+    -webkit-transition: background-color .25s ease-out, color .25s ease-out;
+    transition: background-color .25s ease-out, color .25s ease-out;
+    vertical-align: middle;
+    background-color: #3f729b;
+    color: #fefefe;
+      }
+
 
       @media (min-width: 950px) {
         .fieldsList {
@@ -878,7 +898,7 @@ export class DtList extends DtBase {
         <ul class="fieldsList">
           ${this._fieldsListTemplate()}
         </ul>
-        <button @click=${this.FieldResetToDefault()}>Reset to default</button>
+        <button class="resetBtn" @click=${this.FieldResetToDefault}>Reset to default</button>
       </div>`;
     }
     return null;
@@ -886,7 +906,6 @@ export class DtList extends DtBase {
 
 
   FieldResetToDefault(){
-// from here the checkbox will set to default values of fields.
     const defaultVaues = [
       "name",
       "favorite",
@@ -896,35 +915,50 @@ export class DtList extends DtBase {
       "assigned_to",
       "groups",
       "last_modified",
-    ]
-    this.payload.fields_to_return =defaultVaues; 
-    this.columns = defaultVaues;
-    // this.headerClick= true;
-    // this._getPosts(this.payload);
-    this._fieldsListTemplate()
+    ];
+    // Remove any fields from this.columns that are not in defaultValues
+  this.columns = this.columns.filter(field => defaultVaues.includes(field));
 
-    // this.requestUpdate();
+  // Add any missing fields from defaultValues that are not in this.columns
+  defaultVaues.forEach(field => {
+    if (!this.columns.includes(field)) {
+      this.columns.push(field);
+    }
+  });
+
+  this.columns = [...this.columns];
+  this.sortedColumns = [...this.columns];
     
-
-
+    this.payload = {
+      ...this.payload,
+      "fields_to_return":this.columns
+    }
+    
+    this.headerClick= true;
+    this._getPosts(this.payload);
+    this.style.setProperty('--number-of-columns', this.columns.length - 1);
+    this.showFieldsSelector=!this.showFieldsSelector;
+    this.requestUpdate();
   }
 
-  _updateFields(e) {
+  async _updateFields(e) {
     const field = e.target.value;
     const viewableColumns = this.columns;
 
     if (!viewableColumns.includes(field)) {
       viewableColumns.push(field);
-      this.sortedColumns.push(field)
+      
     } else {
       viewableColumns.filter(column => column !== field);
       viewableColumns.splice(viewableColumns.indexOf(field), 1);
-      this.sortedColumns.filter(column => column !== field);
-      this.sortedColumns.splice(viewableColumns.indexOf(field), 1);
     }
 
     this.columns = viewableColumns;
-    this.payload["fields_to_return"]=this.columns;
+    this.sortedColumns=[...this.columns]
+    this.payload={
+      ...this.payload,
+      "fields_to_return":this.columns
+    };
     this.headerClick= true;
     this._getPosts(this.payload);
     this.style.setProperty('--number-of-columns', this.columns.length - 1);
