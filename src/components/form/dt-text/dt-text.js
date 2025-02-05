@@ -81,6 +81,11 @@ export class DtText extends DtFormBase {
     };
   }
 
+  _input(e) {
+    this.value = e.target.value;
+    this._setFormValue(this.value);
+  }
+
   _change(e) {
     const event = new CustomEvent('change', {
       bubbles: true,
@@ -151,7 +156,8 @@ export class DtText extends DtFormBase {
           ?required=${this.required}
           class="${classMap(this.classes)}"
           .value="${this.value || ''}"
-          @input=${this._change}
+          @change=${this._change}
+          @input=${this._input}
           novalidate
           @keyup="${this.implicitFormSubmit}"
         />
