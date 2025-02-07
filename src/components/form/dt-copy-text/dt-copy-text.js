@@ -8,10 +8,11 @@ export class DtCopyText extends DtBase {
     return css`
       :root {
         font-size: inherit;
+        --dt-copy-text-color: #575757;
       }
 
       .copy-text {
-        --dt-form-text-color: #575757;
+        --dt-form-text-color: var(--dt-copy-text-color, #575757);
         display: flex;
         align-items: center;
         position: relative;
