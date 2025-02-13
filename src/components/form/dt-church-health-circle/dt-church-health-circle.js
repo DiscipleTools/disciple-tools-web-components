@@ -269,7 +269,8 @@ export class DtChurchHealthCircle extends DtBase {
           icon="https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
           iconalttext="Icon Alt Text"
           privatelabel=""
-          @click="${this.toggleClick}"
+          id="church-commitment"
+          @change="${this.toggleClick}"
           ?checked=${this.isCommited}
         >
         </dt-toggle>
