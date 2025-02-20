@@ -29,6 +29,7 @@ export { default as DtFormBase } from './src/components/form/dt-form-base.js';
 */
 export { DtAlert } from './src/components/layout/dt-alert/dt-alert.js';
 export { DtList } from './src/components/layout/dt-list/dt-list.js';
+export { DtListHelpBox } from './src/components/layout/dt-list-filters/dt-list-filters.js';
 export { DtModal } from './src/components/layout/dt-modal/dt-modal.js';
 export { DtTile } from './src/components/layout/dt-tile/dt-tile.js';
 export { DtIcon } from './src/components/icons/dt-icon.js';

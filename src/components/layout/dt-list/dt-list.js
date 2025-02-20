@@ -379,6 +379,26 @@ export class DtList extends DtBase {
         border-radius: 5px;
       }
 
+      .resetBtn{
+      
+    -webkit-appearance: none;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    font-family: inherit;
+    font-size: .9rem;
+    line-height: 1;
+    margin: 0 0 1rem;
+    padding: .85em 1em;
+    text-align: center;
+    -webkit-transition: background-color .25s ease-out, color .25s ease-out;
+    transition: background-color .25s ease-out, color .25s ease-out;
+    vertical-align: middle;
+    background-color: #3f729b;
+    color: #fefefe;
+      }
+
 
       @media (min-width: 950px) {
         .fieldsList {
@@ -414,6 +434,7 @@ export class DtList extends DtBase {
       initialLoadPost: { type: Boolean, default: false },
       loadMore: { type: Boolean, default: false },
       headerClick: { type: Boolean, default: false },
+      sideFilters: { type: Boolean, default: false },
     };
   }
 
@@ -436,15 +457,19 @@ export class DtList extends DtBase {
 }
 
   firstUpdated() {
+    this.showArchived = false;
     this.postTypeSettings = window.post_type_fields;
+    
     this.sortedColumns = this.columns.includes('favorite')
-      ? ['favorite', ...this.columns.filter(col => col !== 'favorite')]
-      : this.columns;
-
-      this.style.setProperty('--number-of-columns', this.columns.length - 1);
+    
+    ? ['favorite', ...this.columns.filter(col => col !== 'favorite')]
+    : this.columns;
+    
+    this.style.setProperty('--number-of-columns', this.columns.length - 1);
     }
 
   async _getPosts(payload) {
+    
     // -- * --- STARTS HERE  -- * ---
     /* "THIS CODE IS COMMENTED FOR NOW, WOULD BE UPDATED WHEN WORKED ON 'LOAD MORE' FUNCTIONALITY."
     this.loading = true;
@@ -481,6 +506,12 @@ export class DtList extends DtBase {
             this.initalLoadPost = true;
             this.total = result.length;
           }
+          if(this.sideFilters){
+            this.posts = [...result];
+            this.offset = this.posts.length;
+            this.initalLoadPost = true;
+            this.total = result.length;
+          }
           if (this.headerClick){
             this.posts = result;
 
@@ -495,6 +526,10 @@ export class DtList extends DtBase {
       },
     });
     this.dispatchEvent(event);
+  }
+
+  _rowClick(permalink) {
+    window.open(permalink, '_self');
   }
 
   _headerClick(e) {
@@ -528,9 +563,6 @@ export class DtList extends DtBase {
     // });
   }
 
-  static _rowClick(permalink) {
-    window.open(permalink, '_self');
-  }
 
   _bulkEdit() {
     this.showBulkEditSelector = !this.showBulkEditSelector;
@@ -670,8 +702,9 @@ export class DtList extends DtBase {
           dir="auto"
           title="${this.postTypeSettings[column].name}"
         >
-          ${this.formatDate(post[column].formatted)}
-        </td>`;
+           ${ this.formatDate(post[column].formatted) ?  html`
+          ${ifDefined(this.formatDate(post[column].formatted))}
+        `:''}</td>`;
       }
       if (
         this.postTypeSettings[column].type === 'user_select' &&
@@ -734,7 +767,7 @@ export class DtList extends DtBase {
           dir="auto"
           title="${this.postTypeSettings[column].name}"
         >
-          ${ifDefined(post[column].value)}
+          ${ifDefined(post[column])}
         </td>`;
       }
       if (this.postTypeSettings[column].type === 'connection') {
@@ -834,8 +867,7 @@ export class DtList extends DtBase {
                 ?checked=${this.columns.includes(field)}
               />
               ${this._fieldListIconTemplate(field)}
-              ${this.postTypeSettings[field].name}</label
-            >
+              ${this.postTypeSettings[field].name}</label>
           </li> `;
         }
         return null;
@@ -866,23 +898,69 @@ export class DtList extends DtBase {
         <ul class="fieldsList">
           ${this._fieldsListTemplate()}
         </ul>
+        <button class="resetBtn" @click=${this.FieldResetToDefault}>Reset to default</button>
       </div>`;
     }
     return null;
   }
 
-  _updateFields(e) {
+
+  FieldResetToDefault(){
+    const defaultVaues = [
+      "name",
+      "favorite",
+      "overall_status",
+      "seeker_path",
+      "milestones",
+      "assigned_to",
+      "groups",
+      "last_modified",
+    ];
+    // Remove any fields from this.columns that are not in defaultValues
+  this.columns = this.columns.filter(field => defaultVaues.includes(field));
+
+  // Add any missing fields from defaultValues that are not in this.columns
+  defaultVaues.forEach(field => {
+    if (!this.columns.includes(field)) {
+      this.columns.push(field);
+    }
+  });
+
+  this.columns = [...this.columns];
+  this.sortedColumns = [...this.columns];
+    
+    this.payload = {
+      ...this.payload,
+      "fields_to_return":this.columns
+    }
+    
+    this.headerClick= true;
+    this._getPosts(this.payload);
+    this.style.setProperty('--number-of-columns', this.columns.length - 1);
+    this.showFieldsSelector=!this.showFieldsSelector;
+    this.requestUpdate();
+  }
+
+  async _updateFields(e) {
     const field = e.target.value;
     const viewableColumns = this.columns;
 
     if (!viewableColumns.includes(field)) {
       viewableColumns.push(field);
+      
     } else {
       viewableColumns.filter(column => column !== field);
       viewableColumns.splice(viewableColumns.indexOf(field), 1);
     }
 
     this.columns = viewableColumns;
+    this.sortedColumns=[...this.columns]
+    this.payload={
+      ...this.payload,
+      "fields_to_return":this.columns
+    };
+    this.headerClick= true;
+    this._getPosts(this.payload);
     this.style.setProperty('--number-of-columns', this.columns.length - 1);
 
     this.requestUpdate();
@@ -916,6 +994,8 @@ export class DtList extends DtBase {
 
   connectedCallback() {
     super.connectedCallback();
+    this._handleRadioSelection = this._handleRadioSelection.bind(this);  // Ensure binding
+    document.addEventListener('query-updated', this._handleRadioSelection);
     this.payload = {
       sort: this.sortedBy,
       overall_status: ['-closed'],
@@ -940,8 +1020,21 @@ export class DtList extends DtBase {
     }
     this.loadMore = true;
     this._getPosts(this.payload).then(posts => {
-      console.log(posts);
     });
+  }
+
+  _handleRadioSelection(event){
+    //here will get the query inside event.detail and update the list accordingly
+if(event.detail.splitBy){
+  this.payload={...this.payload, ...event.detail.query};
+  
+}else{
+  const { fields,dt_recent,type,coached_by,assigned_to,subassigned,combine,seeker_path,faith_status,requires_update,shared_with, ...restFields}= this.payload
+  this.payload={...restFields,...event.detail.query};
+}
+this.sideFilters=true;
+this._getPosts(this.payload).then(posts=>{
+})
   }
 
   render() {
