@@ -19,3 +19,5 @@ In any HTML page, add a script include like the below either in the `<head>` or 
 ```
 
 Make sure that you are including the files from the `dist` directory as those are transpiled for direct use in the browser.
+
+Besides including the components themselves, you will also have access to the services through `DtWebComponents.ComponentService` and `DtWebComponents.ApiService`.
