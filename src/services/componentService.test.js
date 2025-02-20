@@ -260,6 +260,22 @@ describe('ComponentService', () => {
           force_values: false,
         });
       });
+      it('handles expected: hyphenated tags', async () => {
+        const result = ComponentService.convertValue('dt-tags', [
+          'option-one', 'option-two'
+        ]);
+        expect(result).to.eql({
+          values: [
+            {
+              value: 'option-one',
+            },
+            {
+              value: 'option-two',
+            },
+          ],
+          force_values: false,
+        });
+      });
       it('handles expected: deleted items', () => {
         const result = ComponentService.convertValue('dt-tags', [
           'opt1','-opt2'

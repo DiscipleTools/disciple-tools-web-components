@@ -366,10 +366,11 @@ export default class ComponentService {
             values: returnValue.map(item => {
               if (typeof item === 'string') {
                 const ret = {
-                  value: item.replace('-', ''),
+                  value: item,
                 };
                 if (item.startsWith('-')) {
                   ret.delete = true;
+                  ret.value = item.substring(1);
                 }
                 return ret;
               }
