@@ -1,82 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file target-language="tr_TR" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+  <file target-language="ml" source-language="en" original="lit-localize-inputs" datatype="plaintext">
     <body>
       <trans-unit id="sb1bd536b63e9e995">
         <source>Private Field: Only I can see its content</source>
-        <target>Özel Alan: İçeriğini sadece ben görebilirim</target>
       </trans-unit>
       <trans-unit id="s04ceadb276bbe149">
         <source>Loading options...</source>
-        <target>Seçenekler Yükleniyor...</target>
       </trans-unit>
-      <trans-unit id="sd2e180dab4fbcfb9" xml:space="preserve">
+      <trans-unit id="sd2e180dab4fbcfb9">
         <source>No Data Available</source>
-        <target state="translated">Veri Yok</target>
       </trans-unit>
-      <trans-unit id="sf9aee319a006c9b4">
+      <trans-unit id="sf9aee319a006c9b4" xml:space="preserve">
         <source>Add</source>
-        <target>Ekle</target>
+        <target state="translated">ചേർക്കുക</target>
       </trans-unit>
-      <trans-unit id="sbf1ca928ec1deb62">
+      <trans-unit id="sbf1ca928ec1deb62" xml:space="preserve">
         <source>Need more help?</source>
-        <target>Daha fazla yardıma ihtiyacınız var mı?</target>
+        <target state="translated">കൂടുതൽ സഹായം ആവശ്യമുണ്ടോ?</target>
       </trans-unit>
-      <trans-unit id="s226be12a5b1a27e8">
+      <trans-unit id="s226be12a5b1a27e8" xml:space="preserve">
         <source>Read the documentation</source>
-        <target>Belgeleri oku</target>
+        <target state="translated">ഡോക്യുമെന്റേഷൻ വായിക്കുക</target>
       </trans-unit>
-      <trans-unit id="s5e8250fb85d64c23">
+      <trans-unit id="s5e8250fb85d64c23" xml:space="preserve">
         <source>Close</source>
-        <target>Kapat</target>
+        <target state="translated">അടയ്‌ക്കുക</target>
       </trans-unit>
       <trans-unit id="s29e25f5e4622f847">
         <source>Open Dialog</source>
-        <target>İletişim Kutusunu Aç</target>
       </trans-unit>
-      <trans-unit id="s33f85f24c0f5f008">
+      <trans-unit id="s33f85f24c0f5f008" xml:space="preserve">
         <source>Save</source>
-        <target>Kaydet</target>
+        <target state="translated">രക്ഷിക്കും</target>
       </trans-unit>
       <trans-unit id="s49730f3d5751a433" xml:space="preserve">
         <source>Loading...</source>
-        <target state="translated">Yükleniyor...</target>
+        <target state="translated">ലോഡിംഗ്...</target>
       </trans-unit>
-      <trans-unit id="s625ad019db843f94">
+      <trans-unit id="s625ad019db843f94" xml:space="preserve">
         <source>Use</source>
-        <target>Kullan</target>
+        <target state="translated">ഉപയോഗിക്കുക</target>
       </trans-unit>
-      <trans-unit id="sd1a8dc951b2b6a98">
+      <trans-unit id="sd1a8dc951b2b6a98" xml:space="preserve">
         <source>Choose which fields to display as columns in the list</source>
-        <target>Listede Hangi Alanların Sütun Olarak Görüntüleneceğini Seçin</target>
+        <target state="translated">ലിസ്റ്റിലെ നിരകളായി പ്രദർശിപ്പിക്കേണ്ട ഫീൽഡുകൾ തിരഞ്ഞെടുക്കുക</target>
       </trans-unit>
       <trans-unit id="scb9a1ff437efbd2a">
         <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
-        <target>Listeden güncellemek istediğiniz tüm <x id="0" equiv-text="${this.postType}"/> 'i seçin ve aşağıda güncelleyin</target>
       </trans-unit>
       <trans-unit id="sac83d7f9358b43db">
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
-        <target><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> Listesi</target>
       </trans-unit>
       <trans-unit id="seafe6ef133ede7da">
         <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
-        <target>Gösteriliyor 1 of <x id="0" equiv-text="${this.total}"/></target>
       </trans-unit>
-      <trans-unit id="s41cb4006238ebd3b">
+      <trans-unit id="s41cb4006238ebd3b" xml:space="preserve">
         <source>Bulk Edit</source>
-        <target>Toplu Düzenleme</target>
+        <target state="translated">ബൾക്ക് എഡിറ്റ്</target>
       </trans-unit>
-      <trans-unit id="s36cb242ac90353bc">
+      <trans-unit id="s36cb242ac90353bc" xml:space="preserve">
         <source>Fields</source>
-        <target>Alanlar</target>
+        <target state="translated">ഫീൽഡുകൾ</target>
       </trans-unit>
       <trans-unit id="s9d51bfd93b5dbeca">
         <source>Show Archived</source>
-        <target>Arşivlenmiş Göster</target>
       </trans-unit>
       <trans-unit id="sb59d68ed12d46377">
         <source>Loading</source>
-        <target>Yükleniyor</target>
       </trans-unit>
     </body>
   </file>
