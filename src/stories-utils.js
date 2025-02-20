@@ -9,6 +9,22 @@ export const LocaleDecorator = (story, context) =>
     ${story()}
   </div>`;
 
+export function onAutoSave(event) {
+  if (event?.target) {
+    event.target.setAttribute('loading', true);
+    console.log(
+      'Value changed from ' +
+      JSON.stringify(event.detail.oldValue) +
+      ' to ' +
+      JSON.stringify(event.detail.newValue)
+    );
+    setTimeout(function () {
+      event.target.removeAttribute('loading');
+      event.target.setAttribute('saved', true);
+    }, 1000);
+  }
+}
+
 function onSubmit(event) {
   if (event) {
     event.preventDefault();

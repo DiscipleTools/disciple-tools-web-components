@@ -1,0 +1,53 @@
+import {
+  Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
+} from '@storybook/blocks';
+import * as ComponentStories from './dt-date.stories.js';
+
+
+<Meta name="Docs" of={ComponentStories} />
+
+<Title />
+<Subtitle />
+
+## Overview
+<Description />
+<Primary />
+
+## Parameters
+<Controls />
+
+## Slots
+
+Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slots).
+
+## Events
+
+### `change`
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  oldValue: string, // previous value before current change
+  newValue: string, // updated value
+}
+```
+
+## CSS Properties / Theming
+
+Inherits custom properties from [DtFormBase](?path=/docs/architecture-base-classes--docs#slots).
+
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-form-text-color`  | `#000`  |
+| `--dt-form-background-color`  | `#cecece` |
+| `--dt-form-border-color`  | `#cacaca`   |
+| `--dt-form-input-box-shadow`  | `inset 0 1px 2px hsl(0deg 0% 4% / 10%)`   |
+| `--dt-form-padding`   | `0.5333333333rem`   |
+| `--dt-form-transition` | `box-shadow .5s,border-color .25s ease-in-out`   |
+| `--dt-form-disabled-background-color`   | `#e6e6e6`   |
+| `--alert-color`   | `#cc4b37`   |
+| `--text-color-inverse`|  `#fefefe`  |
+
+## Stories
+<Stories title="" />

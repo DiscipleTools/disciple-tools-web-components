@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { themes, argTypes } from '../../../stories-theme.js';
-import { FormDecorator, LocaleDecorator } from '../../../stories-utils.js';
+import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
 import './dt-text.js';
 
 export default {
@@ -29,6 +29,9 @@ export default {
     saved: { control: 'boolean' },
     ...argTypes,
   },
+  args: {
+    onChange: action('on-change'),
+  },
 };
 
 function Template(args) {
@@ -48,6 +51,7 @@ function Template(args) {
     error,
     slot,
     type,
+    onChange,
   } = args;
   return html`
     <dt-text
@@ -66,7 +70,7 @@ function Template(args) {
       ?loading=${loading}
       ?saved=${saved}
       error="${error}"
-      @change="${action('on-change')}"
+      @change=${onChange}
     >
       ${slot}
     </dt-text>
@@ -74,10 +78,8 @@ function Template(args) {
 }
 
 export const Empty = Template.bind({});
-Empty.decorators = [LocaleDecorator, FormDecorator];
 
 export const SvgIcon = Template.bind({});
-SvgIcon.decorators = [LocaleDecorator, FormDecorator];
 SvgIcon.args = {
   icon: null,
   // prettier-ignore
@@ -85,25 +87,22 @@ SvgIcon.args = {
 };
 
 export const EnteredValue = Template.bind({});
-EnteredValue.decorators = [LocaleDecorator, FormDecorator];
 EnteredValue.args = {
   value: 'Lorem Ipsum',
 };
 
 export const AutoSave = Template.bind({});
 AutoSave.args = {
-  onChange: 'onAutoSave(event)',
+  onChange: onAutoSave,
 };
 
 export const Disabled = Template.bind({});
-Disabled.decorators = [LocaleDecorator, FormDecorator];
 Disabled.args = {
   disabled: true,
   value: 'Lorem Ipsum',
 };
 
 export const privateField = Template.bind({});
-privateField.decorators = [LocaleDecorator, FormDecorator];
 privateField.args = {
   private: true,
   value: 'Lorem Ipsum',
@@ -111,48 +110,42 @@ privateField.args = {
 };
 
 export const Loading = Template.bind({});
-Loading.decorators = [LocaleDecorator, FormDecorator];
 Loading.args = {
   loading: true,
 };
 export const Saved = Template.bind({});
-Saved.decorators = [LocaleDecorator, FormDecorator];
 Saved.args = {
   saved: true,
 };
 export const Error = Template.bind({});
-Error.decorators = [LocaleDecorator, FormDecorator];
 Error.args = {
   error: 'Custom error message',
 };
 
-export const basicForm = Template.bind({});
-basicForm.decorators = [LocaleDecorator, FormDecorator];
-basicForm.args = {
+export const BasicForm = Template.bind({});
+BasicForm.decorators = [FormDecorator];
+BasicForm.args = {
   value: 'Lorem Ipsum',
 };
 
 export const required = Template.bind({});
-required.decorators = [LocaleDecorator, FormDecorator];
 required.args = {
   required: true,
 };
 
 export const password = Template.bind({});
-password.decorators = [LocaleDecorator, FormDecorator];
 password.args = {
   type: 'password',
 };
 
 export const requiredCustomMessage = Template.bind({});
-requiredCustomMessage.decorators = [LocaleDecorator, FormDecorator];
 requiredCustomMessage.args = {
   required: true,
   requiredMessage: 'Custom error message',
 };
 
 export const LocalizeRTL = Template.bind({});
-LocalizeRTL.decorators = [LocaleDecorator, FormDecorator];
+LocalizeRTL.decorators = [LocaleDecorator];
 LocalizeRTL.args = {
   lang: 'ar',
   dir: 'rtl',

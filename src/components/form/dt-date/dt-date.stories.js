@@ -1,32 +1,32 @@
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
+import { themes, argTypes } from '../../../stories-theme.js';
+import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
 import './dt-date.js';
-import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils.js';
 
 export default {
-  title: 'Form/dt-date',
+  title: 'Components/Form/Date',
   component: 'dt-date',
   argTypes: {
-    id: { control: 'text' },
-    name: { control: 'text' },
     theme: {
       control: 'select',
       options: Object.keys(themes),
       defaultValue: 'default',
     },
+    id: { control: 'text' },
+    name: { control: 'text' },
     label: { control: 'text' },
     value: { control: 'number' },
     date: { control: 'text' },
     disabled: { control: 'boolean' },
     icon: { control: 'text' },
-    isPrivate: { control: 'boolean' },
+    private: { control: 'boolean' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
-    onchange: { control: 'text' },
     ...argTypes,
   },
   args: {
-    theme: 'default',
+    onChange: action('on-change'),
   },
 };
 
@@ -39,17 +39,13 @@ function Template(args) {
     timestamp = 0,
     disabled,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
-    isPrivate,
     loading,
     saved,
     error,
-    onChange,
     slot,
+    onChange,
   } = args;
   return html`
-    <style>
-      ${themeCss(args)}
-    </style>
     <dt-date
       id=${id}
       name=${name}
@@ -58,11 +54,11 @@ function Template(args) {
       timestamp=${timestamp}
       ?disabled=${disabled}
       icon=${icon}
-      ?private=${isPrivate}
+      ?private=${args.private}
       ?loading=${loading}
       ?saved=${saved}
       ?error=${error}
-      onchange=${onChange}
+      @change=${onChange}
     >
       ${slot}
     </dt-date>
@@ -101,7 +97,7 @@ Disabled.args = {
 
 export const AutoSave = Template.bind({});
 AutoSave.args = {
-  onChange: 'onAutoSave(event)',
+  onChange: onAutoSave,
 };
 
 export const Loading = Template.bind({});
@@ -115,6 +111,12 @@ Saved.args = {
 export const Error = Template.bind({});
 Error.args = {
   error: true,
+};
+
+export const BasicForm = Template.bind({});
+BasicForm.decorators = [FormDecorator];
+BasicForm.args = {
+  value: '2020-01-01',
 };
 
 export const LocalizeRTL = Template.bind({});
