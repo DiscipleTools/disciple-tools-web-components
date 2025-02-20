@@ -1,10 +1,11 @@
 import { html } from 'lit';
-import './dt-textarea.js';
+import { action } from '@storybook/addon-actions';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils.js';
+import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
+import './dt-textarea.js';
 
 export default {
-  title: 'Form/dt-textarea',
+  title: 'Components/Form/Textarea',
   component: 'dt-textarea',
   argTypes: {
     theme: {
@@ -20,8 +21,10 @@ export default {
     isPrivate: { control: 'boolean' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
-    onchange: { control: 'text' },
     ...argTypes,
+  },
+  args: {
+    onChange: action('on-change'),
   },
 };
 
@@ -36,13 +39,10 @@ function Template(args) {
     isPrivate,
     loading,
     saved,
-    onchange,
+    onChange,
     slot,
   } = args;
   return html`
-    <style>
-      ${themeCss(args)}
-    </style>
     <dt-textarea
       id=${id}
       name=${name}
@@ -52,7 +52,7 @@ function Template(args) {
       ?private=${isPrivate}
       ?loading=${loading}
       ?saved=${saved}
-      onchange=${onchange}
+      @change=${onChange}
       .value=${value}
     >
       ${slot}
@@ -74,6 +74,11 @@ EnteredValue.args = {
   value: 'Lorem Ipsum',
 };
 
+export const AutoSave = Template.bind({});
+AutoSave.args = {
+  onChange: onAutoSave,
+};
+
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
@@ -84,6 +89,30 @@ export const privateField = Template.bind({});
 privateField.args = {
   isPrivate: true,
   value: 'Lorem Ipsum',
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+  loading: true,
+};
+export const Saved = Template.bind({});
+Saved.args = {
+  saved: true,
+};
+export const Error = Template.bind({});
+Error.args = {
+  error: 'Custom error message',
+};
+
+export const BasicForm = Template.bind({});
+BasicForm.decorators = [FormDecorator];
+BasicForm.args = {
+  value: 'Lorem Ipsum',
+};
+
+export const required = Template.bind({});
+required.args = {
+  required: true,
 };
 
 export const LocalizeRTL = Template.bind({});

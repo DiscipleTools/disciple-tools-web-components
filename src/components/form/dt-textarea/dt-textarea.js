@@ -1,5 +1,9 @@
 import { html, css } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import DtFormBase from '../dt-form-base.js';
+import '../../icons/dt-spinner.js';
+import '../../icons/dt-checkmark.js';
+import '../../icons/dt-exclamation-circle.js';
 
 export class DtTextArea extends DtFormBase {
   static get styles() {
@@ -34,6 +38,7 @@ export class DtTextArea extends DtFormBase {
           position: relative;
           outline: 0;
           resize: none;
+          width: 100%;
         }
         input:disabled,
         input[readonly],
@@ -45,6 +50,11 @@ export class DtTextArea extends DtFormBase {
           );
           cursor: not-allowed;
         }
+
+        .icon-overlay {
+          align-items: flex-start;
+          padding-block: 1rem;
+        }
       `,
     ];
   }
@@ -52,19 +62,24 @@ export class DtTextArea extends DtFormBase {
   static get properties() {
     return {
       ...super.properties,
+      /** Element ID */
       id: { type: String },
+      /** Value of field. Reflected back to attribute in order to select from DOM if needed. */
       value: {
         type: String,
         reflect: true,
       },
-      loading: { type: Boolean },
-      saved: { type: Boolean },
-      onchange: { type: String },
     };
   }
 
-  onChange(e) {
+  _input(e) {
+    this.value = e.target.value;
+    this._setFormValue(this.value);
+  }
+
+  _change(e) {
     const event = new CustomEvent('change', {
+      bubbles: true,
       detail: {
         field: this.name,
         oldValue: this.value,
@@ -74,23 +89,55 @@ export class DtTextArea extends DtFormBase {
 
     this.value = e.target.value;
 
+    this._setFormValue(this.value);
+
     this.dispatchEvent(event);
+  }
+
+  get classes() {
+    const classes = {
+      'text-input': true,
+      invalid: this.touched && this.invalid,
+    };
+    return classes;
   }
 
   render() {
     return html`
       ${this.labelTemplate()}
 
-      <textarea
-        id="${this.id}"
-        name="${this.name}"
-        aria-label="${this.label}"
-        type="text"
-        ?disabled=${this.disabled}
-        class="text-input"
-        @change=${this.onChange}
-        .value="${this.value || ''}"
-      ></textarea>
+      <div class="input-group">
+        <textarea
+          id="${this.id}"
+          name="${this.name}"
+          aria-label="${this.label}"
+          ?disabled=${this.disabled}
+          class="${classMap(this.classes)}"
+          .value="${this.value || ''}"
+          @change=${this._change}
+          @input=${this._input}
+        ></textarea>
+
+        ${this.touched && this.invalid
+          ? html`<dt-exclamation-circle
+              class="icon-overlay alert"
+            ></dt-exclamation-circle>`
+          : null}
+        ${this.error
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.error}"
+              size="2rem"
+            ></dt-icon>`
+          : null}
+        ${this.loading
+          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
+          : null}
+        ${this.saved
+          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
+          : null}
+      </div>
     `;
   }
 }
