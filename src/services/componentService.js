@@ -363,14 +363,24 @@ export default class ComponentService {
             returnValue = [value];
           }
           returnValue = {
-            values: returnValue.map(itemId => {
+            values: returnValue.map(item => {
+              if (typeof item === 'string') {
+                const ret = {
+                  value: item.replace('-', ''),
+                };
+                if (item.startsWith('-')) {
+                  ret.delete = true;
+                }
+                return ret;
+              }
               const ret = {
-                value: itemId.replace('-', ''),
+                value: item.id,
               };
-              if (itemId.startsWith('-')) {
-                ret.delete = true;
+              if (item.delete) {
+                ret.delete = item.delete;
               }
               return ret;
+
             }),
             force_values: false,
           };

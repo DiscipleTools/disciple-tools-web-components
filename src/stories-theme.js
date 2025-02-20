@@ -504,8 +504,8 @@ export const argTypes = {
     defaultValue: ['default'],
   },
   lang: { constrol: 'text' },
-  dir: { control: 'text' },
-  primaryColor: { control: 'color' },
+  dir: { control: 'select', options: ['ltr', 'rtl'] },
+  /*primaryColor: { control: 'color' },
   primaryColorLight0: { control: 'color' },
   primaryColorLight1: { control: 'color' },
   gray0: { control: 'color' },
@@ -627,7 +627,7 @@ export const argTypes = {
   modalButtonOpenerBackground: { control: 'color' },
 
   buttonTextColor: 'var(--dt-button-text-color-light)',
-  buttonTextColorDark: 'var(--dt-button-text-color-dark)',
+  buttonTextColorDark: 'var(--dt-button-text-color-dark)',*/
 };
 
 function getArg(storyArgs, argName) {

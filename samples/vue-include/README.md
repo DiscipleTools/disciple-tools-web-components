@@ -5,8 +5,8 @@ Created from the [Vue Quick Start Guide](https://vuejs.org/guide/quick-start.htm
 ## Run in Browser
 
 ```sh
-npm link ../../../[name-of-project-directory]
 npm install
+npm link ../../../[name-of-project-directory]
 npm run dev
 ```
 

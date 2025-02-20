@@ -1,7 +1,7 @@
 <html>
 <head>
   <title>My Custom Elements</title>
-  <script type="module" src="./js/index.js"></script>
+  <script src="./js/index.js"></script>
 </head>
 <body>
   <h1>Form Elements</h1>
@@ -24,25 +24,25 @@
       label="Single Select Field"
       placeholder="Select Item"
       value="opt1"
-      options="${JSON.stringify(options)}"
+      options='[{"id":"opt1","label":"Option 1"},{"id":"opt2","label":"Option 2"},{"id":"opt3","label":"Option 3"},{"id":"opt4","label":"Option 4"},{"id":"opt5","label":"Option 5"}]'
     ></dt-single-select>
 
     <dt-multi-select
       label="Multi Select Field"
       placeholder="Select Items"
-      value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
-      options="${JSON.stringify(options)}"
+      value='["opt1","opt2"]'
+      options='[{"id":"opt1","label":"Option 1"},{"id":"opt2","label":"Option 2"},{"id":"opt3","label":"Option 3"},{"id":"opt4","label":"Option 4"},{"id":"opt5","label":"Option 5"}]'
     ></dt-multi-select>
 
     <dt-tags
       label="Tags Field"
-      value="${JSON.stringify([{id:'personal',label:'Personal'}])}"
-      options="${JSON.stringify(tags)}"
+      value='["personal"]'
+      options='[{"id":"personal","label":"Personal"},{"id":"web","label":"Web"},{"id":"facebook","label":"Facebook"}]'
     ></dt-tags>
 
     <dt-connection
       label="Connection Field"
-      options="${JSON.stringify(posts)}"
+      options='[{"id":"1","label":"John Doe"},{"id":"2","label":"Jane Smith","user":true},{"id":"3","label":"Trevor Virtue","user":true},{"id":"4","label":"Jane Meldrum"}]'
     ></dt-connection>
 
     <dt-dropdown

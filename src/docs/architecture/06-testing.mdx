@@ -1,0 +1,26 @@
+import { Meta, Controls } from '@storybook/blocks';
+
+<Meta title="Architecture/Testing" />
+
+# Testing
+
+Automated and UI test should be created for every component in the library. We depend heavily on
+the infrastructure setup by [Open WC](https://open-wc.org/docs/testing/testing-package/) and
+[Lit](https://lit.dev/docs/tools/testing/) for their testing frameworks, which utilize
+Storybook and Web Test Runner
+
+## Automated Tests
+
+Open WC's testing package is used to write automated test that are run with every code commit
+in order to ensure existing functionality isn't broken and bugs don't return after they are fixed.
+
+## UI Tests
+
+Storybook is used to create different states of each component in order to visually test them
+in an isolated environment.
+
+## See Further Documentation
+- [@open-wc/testing](https://open-wc.org/docs/testing/testing-package/) - Overall testing framework
+- [@web/test-runner-commands](https://modern-web.dev/docs/test-runner/commands/) - simulating keyboard/mouse input
+- [ChaiJS](https://www.chaijs.com/api/bdd/) - Basic assertions
+- [Chai DOM](https://github.com/nathanboktae/chai-dom) - DOM assertions

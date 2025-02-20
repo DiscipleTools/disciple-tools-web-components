@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 import {
   themes,
   themeCss,
@@ -10,7 +10,7 @@ import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-modal.js';
 
 export default {
-  title: 'dt-modal',
+  title: 'Components/Layout/Modal',
   component: 'dt-modal',
   argTypes: {
     theme: {

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Disciple.Tools - Web Components</title>
+    <link rel="stylesheet" href="./src/styles/light.css" />
+    <script type="module" src="/src/components/index.js"></script>
+<!--    <script src="/dist/index.js"></script>-->
+  </head>
+  <body>
+  <h1>Form Elements</h1>
+
+  <dt-tile
+          title="Kitchen Sink Tile"
+          expands: true,
+  >
+    <dt-toggle id="toggleField" name="toggleField" label="Toggle Field"></dt-toggle>
+
+    <dt-text id='textField' name='textField' value='' label="Text Field" private></dt-text>
+
+    <dt-textarea id='textareaField' name='textareaField' value='' label="Textarea Field"></dt-textarea>
+
+    <dt-number id="numberField" name="numberField" label="Number Field" private></dt-number>
+
+    <dt-date id="dateField" name="dateField" label="Date Field"></dt-date>
+
+    <dt-single-select
+            label="Single Select Field"
+            placeholder="Select Item"
+            value="opt1"
+            options='[{"id":"opt1","label":"Option 1"},{"id":"opt2","label":"Option 2"},{"id":"opt3","label":"Option 3"},{"id":"opt4","label":"Option 4"},{"id":"opt5","label":"Option 5"}]'
+    ></dt-single-select>
+
+    <dt-multi-select
+            label="Multi Select Field"
+            placeholder="Select Items"
+            value='["opt1","opt2"]'
+            options='[{"id":"opt1","label":"Option 1"},{"id":"opt2","label":"Option 2"},{"id":"opt3","label":"Option 3"},{"id":"opt4","label":"Option 4"},{"id":"opt5","label":"Option 5"}]'
+    ></dt-multi-select>
+
+    <dt-tags
+            label="Tags Field"
+            value='["personal"]'
+            options='[{"id":"personal","label":"Personal"},{"id":"web","label":"Web"},{"id":"facebook","label":"Facebook"}]'
+    ></dt-tags>
+
+    <dt-connection
+            label="Connection Field"
+            options='[{"id":"1","label":"John Doe"},{"id":"2","label":"Jane Smith","user":true},{"id":"3","label":"Trevor Virtue","user":true},{"id":"4","label":"Jane Meldrum"}]'
+    ></dt-connection>
+  </dt-tile>
+  </body>
+</html>

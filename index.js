@@ -34,3 +34,9 @@ export { DtTile } from './src/components/layout/dt-tile/dt-tile.js';
 export { DtIcon } from './src/components/icons/dt-icon.js';
 
 export { default as DtBase } from './src/components/dt-base.js';
+
+/*
+  Services
+*/
+export { default as ComponentService } from './src/services/componentService.js';
+export { default as ApiService } from './src/services/apiService.js';

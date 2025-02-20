@@ -1,0 +1,197 @@
+---
+sidebar_position: 1
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Intro
+
+Let's discover **Docusaurus in less than 5 minutes**.
+
+## Why Web Components?
+
+HTML custom elements are now widely supported across browsers, and building encapsulated web
+components allows us to package logic and styles for the defined field types within Disciple.Tools.
+By doing this, the main theme doesn't need other javascript dependencies and initialization scripts,
+and PHP developers can stick to writing PHP instead of also needing to figure out complex javascript
+interactions.
+
+## Main Concepts
+
+This web components library was built with a few main concepts in mind that drive the initial and future development:
+
+- **HTML/Framework Support**: Components should work in a standard HTML form, via events and API requests, and by including in other javascript frameworks. Whatever method developers want to use the components should be supported.
+- **Loose Coupling**: Components do not implement specific Disciple.Tools APIs directly within their functionality. Events are dispatched for coupling to APIs or other data sources, and the `ComponentService` provides coupling to standard APIs when needed.
+- **Javascript Events**: Communication outside the components happens by dispatching javascript events
+- **CSS Customization**: Styles default to the main Disciple.Tools styles, but can be customized at various layers via CSS variables/properties. Change styles for all components or for a single component. Styling should be versatile.
+
+## Getting Started
+
+## Install
+### NPM
+
+The easiest way to include the web components is to use NPM. If your project will make use of NPM, you can run:
+
+```bash
+npm i @disciple.tools/web-components
+```
+
+You can then include the library based on the type of project you're working on:
+
+### Manual Build
+
+See [git repo](https://github.com/DiscipleTools/disciple-tools-web-components#build-for-use-in-html) for details on
+how to manually build the components to include in a project without NPM.
+
+## Include Scripts
+
+### Javascript Projects (React, Vue, etc.)
+
+```javascript
+import '@disciple.tools/web-components';
+```
+
+Your framework may need a wrapper component to make these components work, so see the
+specific documentation for your framework.
+
+- [React Sample Documentation](https://github.com/DiscipleTools/disciple-tools-web-components/tree/master/samples/react-include)
+- [Vue Sample Documentation](https://github.com/DiscipleTools/disciple-tools-web-components/tree/master/samples/vue-include)
+
+### Standard HTML
+
+<Tabs>
+  <TabItem value="local" label="Local">
+    ```html
+    <script type="module" src="/path/to/@disciple.tools/web-components/dist/index.js"></script>
+    <script src="/path/to/@disciple.tools/web-components/dist/services.min.js"></script>
+    ```
+  </TabItem>
+  <TabItem value="cdn" label="CDN" default>
+    ```html
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.6.3/src/styles/light.css?ver=0.6.3" type="text/css" media="all">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.6.3/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.6.3/dist/services.min.js"></script>
+    ```
+
+  </TabItem>
+</Tabs>
+
+
+See [HTML Sample Documentation](https://github.com/DiscipleTools/disciple-tools-web-components/tree/master/samples/html)
+
+### WordPress
+
+If you're using the Disciple.Tools theme, the components are all included (only in the `next` branch releases for now)
+and can be used without explicitly including scripts.
+
+If you are writing a Magic Link or other plugin for WordPress that doesn't include the theme files,
+you'll need to include the script files.
+
+<Tabs>
+  <TabItem value="local" label="Local">
+    ```php
+    $path = '../path/to/components/dist/index.js';
+    wp_enqueue_script( 'dt-web-components-js',
+      plugin_dir_url( __FILE__ ) . $path,
+      null,
+      filemtime( plugin_dir_path( __FILE__ ) . $path )
+    );
+
+    $css_path = '../path/to/components/src/styles/light.css';
+    wp_enqueue_style( 'dt-web-components-css',
+      plugin_dir_url( __FILE__ ) . $css_path,
+      null,
+      filemtime( plugin_dir_path( __FILE__ ) . $css_path )
+    );
+
+    add_filter( 'script_loader_tag', [ $this, 'script_loader_tag' ], 10, 2 );
+    public function script_loader_tag( $tag, $handle ) {
+        // add type="module" to web components script tag
+        if ( str_contains( $handle, 'dt-web-components-js' ) ) {
+            $re = '/type=[\'"](.*?)[\'"]/m';
+
+            preg_match_all( $re, $tag, $matches, PREG_SET_ORDER, 0 );
+
+            if ( count( $matches ) > 0 ) {
+                $tag = str_replace( $matches[0][0], 'type="module"', $tag );
+            } else {
+                $tag = str_replace( '<script ', '<script type="module" ', $tag );
+            }
+
+            return $tag;
+        }
+
+        return $tag;
+    }
+    ```
+  </TabItem>
+  <TabItem value="cdn" label="CDN" default>
+    ```php
+
+    $dtwc_version = '0.6.3';
+    wp_enqueue_style( 'dt-web-components-css', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/src/styles/light.css", [], $dtwc_version );
+    wp_enqueue_script( 'dt-web-components-js', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/dist/index.min.js", $dtwc_version );
+    wp_enqueue_script( 'dt-web-components-services-js', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/dist/services.min.js", $dtwc_version );
+
+    $path = '../path/to/components/dist/form/index.js';
+    wp_enqueue_script( 'dtwc-form-components',
+      plugin_dir_url( __FILE__ ) . $path,
+      null,
+      filemtime( plugin_dir_path( __FILE__ ) . $path )
+    );
+
+    $css_path = '../path/to/components/src/styles/light.css';
+    wp_enqueue_style( 'dtwc-light-css',
+      plugin_dir_url( __FILE__ ) . $css_path,
+      null,
+      filemtime( plugin_dir_path( __FILE__ ) . $css_path )
+    );
+
+    add_filter( 'script_loader_tag', [ $this, 'script_loader_tag' ], 10, 2 );
+    public function script_loader_tag( $tag, $handle ) {
+        // add type="module" to web components script tag
+        if ( str_contains( $handle, 'dt-web-components-js' ) ) {
+            $re = '/type=[\'"](.*?)[\'"]/m';
+
+            preg_match_all( $re, $tag, $matches, PREG_SET_ORDER, 0 );
+
+            if ( count( $matches ) > 0 ) {
+                $tag = str_replace( $matches[0][0], 'type="module"', $tag );
+            } else {
+                $tag = str_replace( '<script ', '<script type="module" ', $tag );
+            }
+
+            return $tag;
+        }
+
+        return $tag;
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## Render Components
+
+Once your scripts are included, you can use the components like you would any other standard
+HTML elements when you render your page.
+
+```html
+<html>
+<head>...</head>
+<body>
+  <main>
+    <h1>My Page</h1>
+    <div>
+      <dt-text id='textField' name='textField' label="My Text Field"></dt-text>
+    </div>
+  </main>
+</body>
+</html>
+```
+
+## Next Steps
+
+Learn about the [Component Architecture](category/architecture) in case you want to extend or contribute to the components.
+
+View [All Components](category/components) to learn about how each component works.
