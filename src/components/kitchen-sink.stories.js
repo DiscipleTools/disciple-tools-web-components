@@ -15,7 +15,7 @@ import './form/dt-dropdown/dt-dropdown.js'
 import './form/dt-users-connection/dt-users-connection.js'
 
 export default {
-  title: 'Kitchen Sink',
+  title: 'Components/All',
   argTypes,
   theme: 'default',
 };
@@ -145,4 +145,4 @@ function Template(theme) {
   `;
 }
 
-export const KitchenSink = Template.bind({});
+export const Components = Template.bind({});

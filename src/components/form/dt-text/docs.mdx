@@ -1,0 +1,58 @@
+import {
+  Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
+} from '@storybook/blocks';
+import * as ComponentStories from './dt-text.stories.js';
+
+
+<Meta name="Docs" of={ComponentStories} />
+
+<Title />
+<Subtitle />
+
+## Overview
+<Description />
+<Primary />
+
+## Parameters
+<Controls />
+
+## Slots
+
+Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slots).
+
+## Events
+
+### `change`
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  oldValue: string, // previous value before current change
+  newValue: string, // updated value
+}
+```
+
+## CSS Properties / Theming
+
+Inherits custom properties from [DtFormBase](?path=/docs/architecture-base-classes--docs#slots).
+
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-form-text-color`  | `#000`  |
+| `--dt-text-background-color`  | `#fefefe` |
+| `--dt-text-border-color`  | `#fefefe`   |
+| `--dt-text-border-radius`   | `0`   |
+| `--dt-text-input-box-shadow`  | `--dt-form-input-box-shadow`   |
+| `--dt-form-padding`   | `0.5333333333rem`   |
+| `--dt-form-transition` | `box-shadow .5s,border-color .25s ease-in-out`   |
+| `--dt-text-disabled-background-color`   | `--dt-form-disabled-background-color`   |
+| `--dt-text-placeholder-color` | `#999`  |
+| `--dt-text-placeholder-transform` |  `none`   |
+| `--dt-text-placeholder-font-size`   | `1rem`  |
+|  `--dt-text-placeholder-font-weight`  |  `400`  |
+| `--dt-text-placeholder-letter-spacing`  | `normal`  |
+| `--dt-text-border-color-alert`  | `--alert-color`   |
+
+## Stories
+<Stories title="" />

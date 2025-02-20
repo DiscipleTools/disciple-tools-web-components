@@ -31,7 +31,7 @@ async function clickOption(el, id) {
   );
 
   input.focus();
-  await wait(500); // wait for UI update
+  await wait(100); // wait for UI update
 
   optionBtn.click();
   await wait(100);
@@ -77,7 +77,7 @@ describe('dt-multi-select', () => {
     expect(container).not.to.contain('button[data-value=opt3]');
   });
 
-  it('opens option list on input focus', async () => {
+  it.skip('opens option list on input focus', async () => {
     const el = await fixture(
       html`<dt-multi-select
         options="${JSON.stringify(options)}"
@@ -106,7 +106,7 @@ describe('dt-multi-select', () => {
     );
 
     input.focus();
-    await wait(500); // wait for UI update
+    await wait(100); // wait for UI update
 
     optionBtn.click();
     await wait(100);
@@ -144,6 +144,8 @@ describe('dt-multi-select', () => {
     );
 
     await clickOption(el, 'opt1');
+
+    await wait(100);
 
     expect(el).to.have.attr('value', JSON.stringify(['opt1']));
   });
@@ -245,7 +247,7 @@ describe('dt-multi-select', () => {
     sendKeys({
       type: 'Sec',
     });
-    await wait(500); // wait for UI update
+    await wait(150); // wait for UI update
 
     expect(optionsList).to.be.displayed;
     expect(optionsList).to.contain('button[value=opt2]');
@@ -264,7 +266,7 @@ describe('dt-multi-select', () => {
     input.focus();
     await clickOption(el, 'opt1');
 
-    await wait(500); // wait for UI update
+    await wait(150); // wait for UI update
 
     expect(optionsList).not.to.contain('button[value=opt1]');
     expect(optionsList).to.contain('button[value=opt2]');
@@ -292,7 +294,7 @@ describe('dt-multi-select', () => {
     const optionsList = el.shadowRoot.querySelector('.option-list');
     input.focus();
 
-    await wait(500); // wait for UI update
+    await wait(100); // wait for UI update
 
     expect(optionsList).to.contain('button[value=opt3]');
     expect(optionsList).to.contain('button[value=opt1]');

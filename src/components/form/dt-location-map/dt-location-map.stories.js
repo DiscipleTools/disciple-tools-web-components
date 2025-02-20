@@ -4,8 +4,8 @@ import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-location-map.js';
 import { FormDecorator } from '../../../stories-utils';
 
-const MAPBOX_TOKEN = process.env.STORYBOOK_MAPBOX_TOKEN;
-const GOOGLE_GEOCODE_TOKEN = process.env.STORYBOOK_GOOGLE_GEOCODE_TOKEN;
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
+const GOOGLE_GEOCODE_TOKEN = import.meta.env.VITE_GOOGLE_GEOCODE_TOKEN;
 
 const basicOptions = [
   {

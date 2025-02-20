@@ -18,12 +18,22 @@
 
 # build
 .env
+.env.*
 /_site/
 /dist/
 /out-tsc/
 build
 /samples/html/js
 
-storybook-static
-custom-elements.json
 .history/
+
+# Samples
+/samples/*/node_modules
+/samples/*/yarn.lock
+
+# Storybook
+*storybook.log
+storybook-static
+
+# Custom Elements Manifest
+custom-elements.json

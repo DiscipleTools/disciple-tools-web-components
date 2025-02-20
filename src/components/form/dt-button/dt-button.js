@@ -174,7 +174,7 @@ export class DtButton extends DtBase {
       outline: { type: Boolean },
       href: { type: String },
       title: { type: String },
-      onClick: { attribute: false },
+      // onClick: { attribute: false },
       rounded: { type: Boolean },
       confirm: { type: String },
       buttonClass: { type: String },
