@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { themes, argTypes } from '../../../stories-theme.js';
+import { argTypes } from '../../../stories-theme.js';
 import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
 import './dt-text.js';
 
@@ -8,11 +8,6 @@ export default {
   title: 'Components/Form/Text',
   component: 'dt-text',
   argTypes: {
-    theme: {
-      control: 'select',
-      options: Object.keys(themes),
-      defaultValue: 'default',
-    },
     id: { control: 'text' },
     name: { control: 'text' },
     label: { control: 'text' },

@@ -1,6 +1,7 @@
 import { html } from 'lit';
-import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator, FormDecorator } from '../../../stories-utils.js';
+import { action } from '@storybook/addon-actions';
+import { argTypes } from '../../../stories-theme.js';
+import { LocaleDecorator, FormDecorator, onAutoSave } from '../../../stories-utils.js';
 import './dt-multi-select.js';
 
 const basicOptions = [
@@ -38,84 +39,18 @@ const basicOptions = [
   },
 ];
 export default {
-  title: 'Form/dt-multi-select',
+  title: 'Components/Form/Multi Select',
   component: 'dt-multi-select',
   argTypes: {
-    theme: {
-      control: 'select',
-      options: Object.keys(themes),
-      defaultValue: 'default',
-    },
-    name: {
-      control: 'text',
-      type: { name: 'string', required: true },
-      description:
-        'Passed to `change` function to identify which input triggered the event',
-    },
-    value: {
-      control: 'text',
-      type: { name: 'array' },
-      table: {
-        type: {
-          summary: 'string[]',
-          detail: `['1', '345', '83']`,
-        },
-      },
-      description:
-        'Array of values indicating the selected values. Should be an array of strings converted to a string with `JSON.stringify`. <br/>**Note:** This attribute will be updated on the HTML element when value changes.',
-    },
-    options: {
-      description:
-        'Array of available options to choose.' +
-        '<br/>**Format:** Array of objects with keys `id` and `label`. Convert to string with `JSON.stringify`. ',
-      table: {
-        type: {
-          summary: '{id:string, label:string}[]',
-          detail: `[{id:'1',label:'Item 1'},{id:'345',label:'Item 345'}]`,
-        },
-      },
-    },
-    placeholder: {
-      control: 'text',
-      description: 'String rendered as placeholder text',
-    },
-    loading: {
-      control: 'boolean',
-      description:
-        '(true|false) If attribute is present, the loading spinner will be displayed within the field',
-      table: {
-        type: {
-          summary: 'loading',
-          detail: '<dt-multi-select loading />',
-        },
-      },
-    },
-    saved: {
-      control: 'boolean',
-      description:
-        '(true|false) If attribute is present, the saved checkmark will be displayed within the field',
-      table: {
-        type: {
-          summary: 'saved',
-          detail: '<dt-multi-select saved />',
-        },
-      },
-    },
-    onchange: {
-      control: 'text',
-      description:
-        'Javascript code to be executed when the value of the field changes. Makes available a `event` variable that includes field name, old value, and new value in `event.details`',
-      table: {
-        type: {
-          summary: 'onChange(event)',
-          detail: '<dt-multi-select onchange="onChange(event)" />',
-        },
-      },
-    },
-    locale: {
-      control: 'text',
-    },
+    name: { control: 'text' },
+    value: { control: 'text' },
+    placeholder: { control: 'text' },
+    loading: { control: 'boolean' },
+    saved: { control: 'boolean' },
     ...argTypes,
+  },
+  args: {
+    onChange: action('on-change'),
   },
 };
 
@@ -136,11 +71,9 @@ function Template(args) {
     onchange,
     open,
     slot,
+    onChange,
   } = args;
   return html`
-    <style>
-      ${themeCss(args)}
-    </style>
     <dt-multi-select
       name="${name}"
       label=${label}
@@ -156,6 +89,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
+      @change=${onChange}
     >
       ${slot}
     </dt-multi-select>
@@ -207,7 +141,7 @@ NoOptionsAvailable.args = {
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
-  onchange: 'onAutoSave(event)',
+  onChange: onAutoSave,
 };
 
 export const Disabled = Template.bind({});
@@ -230,7 +164,7 @@ Saved.args = {
 };
 
 export const BasicForm = Template.bind({});
-BasicForm.decorators = [LocaleDecorator, FormDecorator];
+BasicForm.decorators = [FormDecorator];
 BasicForm.args = {
   value: ['opt2'],
   options: basicOptions,

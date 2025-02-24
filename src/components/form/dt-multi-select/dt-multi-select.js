@@ -107,6 +107,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           color: var(--dt-form-text-color, #000);
           flex-grow: 1;
           min-width: 50px;
+          flex-basis: 50px;
           border: 0;
           margin-block-start: 0.375rem;
         }
@@ -168,12 +169,13 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   static get properties() {
     return {
       ...super.properties,
+      /** Placeholder displayed when no value is entered */
       placeholder: { type: String },
+      /** Override height of container **/
       containerHeight: {
         type: Number,
         state: true,
       },
-      onchange: { type: String },
     };
   }
 

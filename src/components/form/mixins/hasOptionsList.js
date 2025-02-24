@@ -13,32 +13,41 @@ export const HasOptionsList = (superClass) => class extends superClass {
   static get properties() {
     return {
       ...super.properties,
+      /** Selected value(s) in the list **/
       value: {
         type: Array,
         reflect: true,
       },
+      /** Search query as typed in input area */
       query: {
         type: String,
         state: true,
       },
+      /** All available options for selection */
       options: { type: Array },
+      /** Available options filtered by search input */
       filteredOptions: { type: Array, state: true },
+      /** Indicates if option list is open */
       open: {
         type: Boolean,
         state: true,
       },
+      /** Indicates if list of available options can be updated */
       canUpdate:{
         type:Boolean,
         state: true
       },
+      /** Index of currently selected value */
       activeIndex: {
         type: Number,
         state: true,
       },
+      /** Override container height */
       containerHeight: {
         type: Number,
         state: true,
       },
+      /** Indicates if loading indicator is displayed */
       loading: { type: Boolean },
     };
   }

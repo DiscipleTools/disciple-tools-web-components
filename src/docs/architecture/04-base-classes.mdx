@@ -143,3 +143,58 @@ Example:
 - `--disabled-color`
 - `--alert-color`
 - `--success-color`
+
+
+## `HasOptionsList`
+This is a mixin that can wrap any other base class in order to add features specific to
+a field that has a dropdown list of options.
+
+### Properties
+
+Inherits all properties from the specified class, along with the following.
+
+| Property | Definition | Description |
+| -------- | ---------- | ----------- |
+| value | `{ type: Array, reflect: true }` | Selected value(s) in the list |
+| query | `{ type: String, state: true }` | Search query as typed in input area |
+| options | `{ type: Array }` | All available options for selection |
+| filteredOptions | `{ type: Array, state: true }` | Available options filtered by search input |
+| open | `{ type: Boolean, state: true }` | Indicates if option list is open |
+| canUpdate | `{ type:Boolean, state: true }` | Indicates if list of available options can be updated |
+| activeIndex | `{ type: Number, state: true }` | Index of currently selected value |
+| containerHeight | `{ type: Number, state: true }` | Override container height |
+| loading | `{ type: Boolean }` | Indicates if loading indicator is displayed |
+
+### Members
+
+#### `willUpdate`
+
+Sets the containerHeight for dropdown positioning if it hasn't been set yet
+
+#### `updated`
+
+Sets container width CSS variable for positioning.
+
+#### `_select()`
+
+Not implemented by default.
+
+This should be overridden to implement logic to determine what the value should be upon selection
+of an option and dispatch the change event.
+
+#### `_scrollOptionListToActive()`
+
+When navigating via keyboard, keep active element within visible area of option list.
+
+#### `_renderOption(option, index)`
+
+Renders an individual option in the list.
+
+#### `_baseRenderOptions()`
+
+Renders the filtered list of options, including a loading message if options aren't yet loaded
+or a message that no data is available if filtered option list is empty.
+
+#### `_renderOptions()`
+
+Uses `_baseRenderOptions()` and adds a button to add a new option if `allowAdd` is true.
