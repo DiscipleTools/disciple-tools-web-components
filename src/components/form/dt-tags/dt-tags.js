@@ -5,8 +5,8 @@ export class DtTags extends DtMultiSelect {
   static get properties() {
     return {
       ...super.properties,
+      /** Indicates if new items can be added to the list that aren't in the options */
       allowAdd: { type: Boolean },
-      onload: { type: String },
     };
   }
 

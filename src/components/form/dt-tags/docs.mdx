@@ -1,0 +1,45 @@
+import {
+  Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
+} from '@storybook/blocks';
+import * as ComponentStories from './dt-tags.stories.js';
+
+
+<Meta name="Docs" of={ComponentStories} />
+
+<Title />
+<Subtitle />
+
+## Overview
+<Description />
+<Primary />
+
+## Parameters
+<Controls />
+
+## Slots
+
+Inherits slots from
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#slots)
+- [DTMultiSelect](?path=/docs/components-form-multi-select--docs#slots)
+
+## Events
+
+### `change`
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  oldValue: string, // previous value before current change
+  newValue: string, // updated value
+}
+```
+
+## CSS Properties / Theming
+
+Inherits custom properties from
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties)
+- [DTMultiSelect](?path=/docs/components-form-multi-select--docs#css-properties--theming)
+
+## Stories
+<Stories title="" />
