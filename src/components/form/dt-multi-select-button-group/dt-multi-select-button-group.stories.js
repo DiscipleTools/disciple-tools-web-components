@@ -1,52 +1,69 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
-import { argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator, FormDecorator, onAutoSave } from '../../../stories-utils.js';
-import './dt-multi-select.js';
+import { argTypes, buttonContexts } from '../../../stories-theme.js';
+import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
+import './dt-multi-select-button-group.js';
 
 const basicOptions = [
   {
     id: 'opt1',
     label: 'Option 1',
+    "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
   },
   {
     id: 'opt2',
     label: 'Option 2',
+    "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
   },
   {
     id: 'opt3',
     label: 'Option 3',
+    "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
   },
   {
     id: 'opt4',
     label: 'Option 4',
+    "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
   },
   {
     id: 'opt5',
     label: 'Option 5',
+    "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
   },
   {
     id: 'opt6',
     label: 'Option 6',
+    "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
   },
   {
     id: 'opt7',
     label: 'Option 7',
+    "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
   },
   {
     id: 'opt8',
     label: 'Option 8',
+    "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
   },
 ];
+
 export default {
-  title: 'Components/Form/Multi Select',
-  component: 'dt-multi-select',
+  title: 'Components/Form/Multi Select - Button Group',
+  component: 'dt-multi-select-button-group',
   argTypes: {
     name: { control: 'text' },
+    label: { control: 'text' },
     value: { control: 'text' },
-    placeholder: { control: 'text' },
+    disabled: { control: 'boolean' },
+    icon: { control: 'text' },
+    private: { control: 'boolean' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
+    context: {
+      control: 'select',
+      options: ['primary', ...buttonContexts],
+      defaultValue: 'primary',
+    },
     ...argTypes,
   },
   args: {
@@ -54,13 +71,15 @@ export default {
   },
 };
 
-function Template(args) {
+const Template = args => {
   const {
     name = 'field-name',
     label = 'Field Name',
     options,
-    placeholder,
-    value,
+    value = '',
+    context,
+    outline = false,
+    rounded = false,
     disabled = false,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     iconAltText = 'Icon Alt Text',
@@ -68,15 +87,16 @@ function Template(args) {
     privateLabel,
     loading = false,
     saved = false,
-    open,
     slot,
     onChange,
   } = args;
   return html`
-    <dt-multi-select
-      name="${name}"
+    <dt-multi-select-button-group
+      name=${name}
       label=${label}
-      placeholder="${placeholder}"
+      context="${context}"
+      ?outline="${outline}"
+      ?rounded="${rounded}"
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
       ?disabled=${disabled}
@@ -86,13 +106,12 @@ function Template(args) {
       privateLabel="${privateLabel}"
       ?loading="${loading}"
       ?saved="${saved}"
-      .open="${open}"
       @change=${onChange}
     >
       ${slot}
-    </dt-multi-select>
+    </dt-multi-select-button-group>
   `;
-}
+};
 
 export const Empty = Template.bind({});
 
@@ -108,9 +127,18 @@ CustomOptions.args = {
   options: basicOptions,
 };
 
-export const CustomPlaceholder = Template.bind({});
-CustomPlaceholder.args = {
-  placeholder: 'Search Options',
+export const Outlined = Template.bind({});
+Outlined.args = {
+  options: basicOptions,
+  value: ['opt2', 'opt3'],
+  outline: true,
+};
+
+export const Rounded = Template.bind({});
+Rounded.args = {
+  options: basicOptions,
+  value: ['opt2', 'opt3'],
+  rounded: true,
 };
 
 export const SelectedValue = Template.bind({});
@@ -118,29 +146,13 @@ SelectedValue.args = {
   value: ['opt2', 'opt3'],
   options: basicOptions,
 };
-export const OptionsWrap = Template.bind({});
-OptionsWrap.args = {
-  value: ['opt1', 'opt2', 'opt3', 'opt4', 'opt5', 'opt6', 'opt7'],
-  options: basicOptions,
-};
-export const OptionsOpen = Template.bind({});
-OptionsOpen.args = {
-  value: ['opt1'],
-  options: basicOptions,
-  open: true,
-};
-export const NoOptionsAvailable = Template.bind({});
-NoOptionsAvailable.args = {
-  value: ['opt1', 'opt2', 'opt3'],
-  options: basicOptions.slice(0, 3),
-  open: true,
-};
 
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
   onChange: onAutoSave,
 };
+
 
 export const Disabled = Template.bind({});
 Disabled.args = {
@@ -179,14 +191,17 @@ LocalizeRTL.args = {
     {
       id: 'opt1',
       label: 'تنكر هؤلاء الرجال المفتونون',
+      "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     },
     {
       id: 'opt2',
       label: 'م فيتساوي مع هؤلاء',
+      "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     },
     {
       id: 'opt3',
       label: 'فلا أحد يرفض',
+      "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     },
   ],
 };

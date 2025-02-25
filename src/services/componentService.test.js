@@ -203,6 +203,59 @@ describe('ComponentService', () => {
       });
     });
 
+    describe('dt-multi-select-button-group', () => {
+      it('handles null', async () => {
+        const result = ComponentService.convertValue('dt-multi-select-button-group', null);
+        expect(result).to.be.null;
+      });
+      it('handles unexpected: string', () => {
+        const result = ComponentService.convertValue('dt-multi-select-button-group', 'opt1');
+        expect(result).to.eql({
+          values: [
+            {
+              value: 'opt1',
+            },
+          ],
+          force_values: false,
+        });
+      });
+      it('handles expected: array of IDs', async () => {
+        const result = ComponentService.convertValue('dt-multi-select-button-group', [
+          'opt1',
+          'opt2',
+        ]);
+        expect(result).to.eql({
+          values: [
+            {
+              value: 'opt1',
+            },
+            {
+              value: 'opt2',
+            },
+          ],
+          force_values: false,
+        });
+      });
+      it('handles expected: deleted items', () => {
+        const result = ComponentService.convertValue('dt-multi-select-button-group', [
+          'opt1',
+          '-opt2',
+        ]);
+        expect(result).to.eql({
+          values: [
+            {
+              value: 'opt1',
+            },
+            {
+              value: 'opt2',
+              delete: true,
+            },
+          ],
+          force_values: false,
+        });
+      });
+    });
+
     describe('dt-number', () => {
       it('handles null', async () => {
         const result = ComponentService.convertValue('dt-number', null);

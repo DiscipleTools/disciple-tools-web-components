@@ -29,7 +29,7 @@ export default class ComponentService {
       'dt-textarea',
       'dt-toggle',
       'dt-comm-channel',
-      'dt-multiselect-buttons-group',
+      'dt-multi-select-button-group',
       'dt-list',
       'dt-button'
     ];
@@ -305,27 +305,35 @@ export default class ComponentService {
       // Update post via API
       try {
         let apiResponse;
-      switch(component){
-        case 'dt-users-connection':{
-          if(remove === true){
-            apiResponse =await this.api.removePostShare(this.postType,this.postId,apiValue);
+        switch(component) {
+          case 'dt-users-connection': {
+            if (remove === true) {
+              apiResponse = await this.api.removePostShare(this.postType, this.postId, apiValue);
+              break;
+            }
+            apiResponse = await this.api.addPostShare(this.postType, this.postId, apiValue)
             break;
           }
-          apiResponse= await this.api.addPostShare(this.postType,this.postId,apiValue)
-          break;
-        }
-        default:{
-          apiResponse= await this.api.updatePost(this.postType, this.postId, {
+          default: {
+            apiResponse = await this.api.updatePost(this.postType, this.postId, {
               [field]: apiValue,
             });
 
-        // Sending response to update value
-        if(component==='dt-comm-channel' && details.onSuccess){
-          details.onSuccess(apiResponse);
+            // Sending response to update value
+            if (component === 'dt-comm-channel' && details.onSuccess) {
+              details.onSuccess(apiResponse);
+            }
+
+            document.dispatchEvent(new CustomEvent('dt:post:update', {
+              detail: {
+                'response': apiResponse,
+                'field': field,
+                'value': apiValue,
+              },
+            }));
+            break;
+          }
         }
-      break;
-    }
-  }
 
         event.target.removeAttribute('loading');
         event.target.setAttribute('error', '');
@@ -358,6 +366,7 @@ export default class ComponentService {
           break;
 
         case 'dt-multi-select':
+        case 'dt-multi-select-button-group':
         case 'dt-tags':
           if (typeof value === 'string') {
             returnValue = [value];
@@ -449,29 +458,6 @@ export default class ComponentService {
                 }),
                 force_values: false,
               };
-          break;
-
-        case 'dt-multiselect-buttons-group':
-          if (typeof value === 'string') {
-            returnValue = [
-              {
-                id: value,
-              },
-            ];
-          }
-          returnValue = {
-            values: returnValue.map(item => {
-              if (item.value.startsWith('-')) {
-                const removedItem = item.value.replace('-', '');
-                return {
-                  value: removedItem,
-                  delete: true,
-                };
-              }
-              return item;
-            }),
-            force_values: false,
-          };
           break;
         case 'dt-comm-channel': {
           const valueLength = value.length;

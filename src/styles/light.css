@@ -93,6 +93,7 @@ html {
   --dt-alert-border-color: var(--surface-0);
   --dt-alert-text-color: var(--text-color);
 
+  --dt-button-inactive-color: #eee;
   --dt-button-text-color-light: var(--text-color-inverse);
   --dt-button-text-color-dark: var(--text-color);
 }

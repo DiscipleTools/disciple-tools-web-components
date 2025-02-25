@@ -109,14 +109,14 @@ function Template(theme) {
         options="${JSON.stringify(options)}"
       ></dt-multi-select>
 
-      <dt-multiselect-button-group
+      <dt-multi-select-button-group
       label="Multi Select Buttons"
       placeholder="Select Buttons"
       value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
         options="${JSON.stringify(options)}"
       >
 
-      </dt-multiselect-button-group>
+      </dt-multi-select-button-group>
       <dt-dropdown text="Sample">
       </dt-dropdown>
 

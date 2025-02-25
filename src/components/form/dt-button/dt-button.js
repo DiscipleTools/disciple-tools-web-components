@@ -15,7 +15,7 @@ export class DtButton extends DtBase {
       .dt-button {
         cursor: pointer;
         display: flex;
-        margin: var(--dt-button-margin, 5px);
+        margin: var(--dt-button-margin, 0px);
         padding: var(--dt-button-padding-y, 10px)
           var(--dt-button-padding-x, 10px);
         font-family: var(--dt-button-font-family);
@@ -89,9 +89,9 @@ export class DtButton extends DtBase {
       }
 
       .dt-button--inactive:not(.dt-button--outline) {
-        --dt-button-context-border-color: var(--inactive-color);
-        --dt-button-context-background-color: var(--inactive-color);
-        --dt-button-context-text-color: var(--dt-button-text-color-light);
+        --dt-button-context-border-color: var(--dt-button-inactive-color);
+        --dt-button-context-background-color: var(--dt-button-inactive-color);
+        --dt-button-context-text-color: var(--dt-button-text-color-dark);
       }
 
       .dt-button--disabled:not(.dt-button--outline) {
@@ -121,7 +121,8 @@ export class DtButton extends DtBase {
       }
 
       .dt-button--inactive.dt-button--outline {
-        --dt-button-context-border-color: var(--inactive-color);
+        --dt-button-context-border-color: var(--dt-button-inactive-color);
+        --dt-button-context-text-color: var(--dt-button-text-color-dark);
       }
 
       .dt-button--disabled.dt-button--outline {
