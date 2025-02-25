@@ -1,0 +1,47 @@
+import {
+  Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
+} from '@storybook/blocks';
+import * as ComponentStories from './dt-single-select.stories.js';
+
+
+<Meta name="Docs" of={ComponentStories} />
+
+<Title />
+<Subtitle />
+
+## Overview
+<Description />
+<Primary />
+
+## Parameters
+<Controls />
+
+## Slots
+
+Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slots).
+
+## Events
+
+### `change`
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  oldValue: string, // previous value before current change
+  newValue: string, // updated value
+}
+```
+
+## CSS Properties / Theming
+
+Inherits custom properties from [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties).
+
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-single-select-text-color`  | `#0a0a0a`  |
+| `--dt-single-select-text-color-inverse`   | `#fff`  |
+| `--dt-form-background-color`  | `#fff` |
+
+## Stories
+<Stories title="" />

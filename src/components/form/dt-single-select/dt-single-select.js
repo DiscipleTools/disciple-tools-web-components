@@ -70,6 +70,7 @@ export class DtSingleSelect extends DtFormBase {
         }
 
         .icon-overlay {
+          height: 2.5rem;
           inset-inline-end: 2.5rem;
         }
       `,
@@ -141,7 +142,7 @@ export class DtSingleSelect extends DtFormBase {
     return html`
       ${this.labelTemplate()}
 
-      <div class="container" dir="${this.RTL ? 'rtl' : 'ltr'}">
+      <div class="input-group ${this.disabled ? 'disabled' : ''}" dir="${this.RTL ? 'rtl' : 'ltr'}">
         <select
           name="${this.name}"
           aria-label="${this.name}"

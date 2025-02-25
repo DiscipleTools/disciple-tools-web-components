@@ -1,5 +1,6 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent } from '@open-wc/testing';
+import { fixture, expect, oneEvent, aTimeout } from '@open-wc/testing';
+import { selectOption, sendKeys } from '@web/test-runner-commands';
 
 import './dt-single-select.js';
 
@@ -66,10 +67,11 @@ describe('dt-single-select', () => {
     );
     const select = el.shadowRoot.querySelector('select');
 
-    select.value = 'opt1';
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('change', true, false);
-    select.dispatchEvent(event);
+    select.focus();
+    sendKeys({ type: 'Option 1'});
+    select.dispatchEvent(new Event('change'));
+
+    await aTimeout(100);
 
     expect(select.value).to.equal('opt1');
     expect(el.value).to.equal('opt1');
@@ -84,10 +86,10 @@ describe('dt-single-select', () => {
     );
     const select = el.shadowRoot.querySelector('select');
 
-    select.value = 'opt1';
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('change', true, false);
-    setTimeout(() => select.dispatchEvent(event));
+    select.focus();
+    sendKeys({ type: 'Option 1'});
+    sendKeys({ press: 'Enter'});
+    setTimeout(() => select.dispatchEvent(new Event('change')));
 
     const { detail } = await oneEvent(el, 'change');
 

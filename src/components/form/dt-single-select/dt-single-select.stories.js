@@ -1,6 +1,7 @@
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils.js';
+import { LocaleDecorator, FormDecorator, onAutoSave } from '../../../stories-utils.js';
 import './dt-single-select.js';
 
 const basicOptions = [
@@ -40,20 +41,18 @@ const colorOptions = [
   },
 ];
 export default {
-  title: 'Form/dt-single-select',
+  title: 'Components/Form/Single Select',
   component: 'dt-single-select',
   argTypes: {
     name: { control: 'text' },
-    theme: {
-      control: 'select',
-      options: Object.keys(themes),
-      defaultValue: 'default',
-    },
-    placeholder: { control: 'text' },
     value: { control: 'text' },
-    isLoading: { control: 'boolean' },
-    isSaved: { control: 'boolean' },
+    placeholder: { control: 'text' },
+    loading: { control: 'boolean' },
+    saved: { control: 'boolean' },
     ...argTypes,
+  },
+  args: {
+    onChange: action('on-change'),
   },
 };
 
@@ -64,36 +63,31 @@ function Template(args) {
     options,
     placeholder,
     value,
+    disabled,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     iconAltText = 'Icon Alt Text',
-    disabled,
     isPrivate,
     privateLabel,
-    onChange,
-    isLoading,
-    isSaved,
+    loading,
+    saved,
     slot,
-    RTL,
+    onChange,
   } = args;
   return html`
-    <style>
-      ${themeCss(args)}
-    </style>
     <dt-single-select
       name="${name}"
       label="${label}"
       placeholder="${placeholder}"
       options="${JSON.stringify(options)}"
       value="${value}"
+      ?disabled=${disabled}
       icon="${icon}"
       iconAltText="${iconAltText}"
-      ?disabled=${disabled}
       ?private=${isPrivate}
       privateLabel="${privateLabel}"
-      onchange="${onChange}"
-      ?loading="${isLoading}"
-      ?saved="${isSaved}"
-      ?rtl="${RTL}"
+      ?loading="${loading}"
+      ?saved="${saved}"
+      @change=${onChange}
     >
       ${slot}
     </dt-single-select>
@@ -139,7 +133,7 @@ ColorChangeNotSelected.args = {
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
-  onChange: 'onAutoSave(event)',
+  onChange: onAutoSave,
 };
 
 export const Disabled = Template.bind({});
@@ -153,13 +147,20 @@ export const Loading = Template.bind({});
 Loading.args = {
   value: 'opt2',
   options: basicOptions,
-  isLoading: true,
+  loading: true,
 };
 export const Saved = Template.bind({});
 Saved.args = {
   value: 'opt2',
   options: basicOptions,
-  isSaved: true,
+  saved: true,
+};
+
+export const BasicForm = Template.bind({});
+BasicForm.decorators = [FormDecorator];
+BasicForm.args = {
+  value: 'opt2',
+  options: basicOptions,
 };
 
 export const LocalizeRTL = Template.bind({});
