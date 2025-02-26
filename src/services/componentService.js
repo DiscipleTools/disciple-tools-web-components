@@ -253,12 +253,7 @@ export default class ComponentService {
             };
 
             if (filteredConnectionResponse?.posts) {
-              values = filteredConnectionResponse?.posts.map(value => ({
-                id: value.ID,
-                label: value.name,
-                link: value.permalink,
-                status: value.status,
-              }));
+              values = ComponentService.convertApiValue('dt-connection', filteredConnectionResponse?.posts);
             }
             break;
           }
@@ -345,6 +340,29 @@ export default class ComponentService {
         event.target.setAttribute('error', error.message || error.toString());
       }
     }
+  }
+
+  /**
+   * Conver value returned from API into what is expected by each component
+   * @param {string} component Tag name of component. E.g. dt-text
+   * @param {mixed} value
+   * @returns {mixed}
+   */
+  static convertApiValue(component, value) {
+    let returnValue = value;
+    switch (component) {
+      case 'dt-connection':
+        returnValue = value.map(post => ({
+          id: post.ID,
+          label: post.name ?? post.post_title,
+          link: post.permalink,
+          status: post.status,
+        }));
+        break;
+      default:
+        break;
+    }
+    return returnValue;
   }
 
   /**

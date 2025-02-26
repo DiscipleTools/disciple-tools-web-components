@@ -1,11 +1,12 @@
 import { html } from 'lit';
-import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils.js';
+import { action } from '@storybook/addon-actions';
+import { argTypes } from '../../../stories-theme.js';
+import { LocaleDecorator, FormDecorator, onAutoSave } from '../../../stories-utils.js';
 import './dt-connection.js';
 
 const basicOptions = [
   {
-    id: '1',
+    id: 1,
     label: 'Option 1',
     link: '/#opt1',
     status: {
@@ -15,7 +16,7 @@ const basicOptions = [
     },
   },
   {
-    id: '2',
+    id: 2,
     label: 'User 2',
     link: '/#opt2',
     user: true,
@@ -26,139 +27,72 @@ const basicOptions = [
     },
   },
   {
-    id: '3',
+    id: 3,
     label: 'Option 3',
     link: '/#opt3',
   },
   {
-    id: '4',
+    id: 4,
     label: 'Option 4',
     link: '/#opt4',
   },
   {
-    id: '5',
+    id: 5,
     label: 'Option 5',
     link: '/#opt5',
   },
   {
-    id: '6',
+    id: 6,
     label: 'Option 6',
     link: '/#opt6',
   },
   {
-    id: '7',
+    id: 7,
     label: 'Option 7',
     link: '/#opt7',
   },
   {
-    id: '8',
+    id: 8,
     label: 'Option 8',
     link: '/#opt8',
   },
 ];
+function onLoadEvent(event) {
+  console.log('fetching data', event);
+  const { field, query, onSuccess, onError } = event.detail;
+  fetch('https://jsonplaceholder.typicode.com/posts')
+    .then(response => response.json())
+    .then(json => {
+      onSuccess(
+        json
+          .filter(
+            post =>
+              !query || post.title.includes(query) || post.id === query
+          )
+          .map(post => ({
+            id: post.id,
+            label: post.title,
+          }))
+      );
+    });
+}
+
 export default {
-  title: 'Form/dt-connection',
+  title: 'Components/Form/Connection',
   component: 'dt-connection',
   argTypes: {
-    theme: {
-      control: 'select',
-      options: Object.keys(themes),
-      defaultValue: 'default',
-    },
-    name: {
-      control: 'text',
-      type: { name: 'string', required: true },
-      description:
-        'Passed to `change` function to identify which input triggered the event',
-    },
-    value: {
-      control: 'text',
-      type: { name: 'array' },
-      table: {
-        type: {
-          summary: '{id:string, label:string}[]',
-          detail: `[{id:'1',label:'Item 1'},{id:'345',label:'Item 345'}]`,
-        },
-      },
-      description:
-        'Array of values indicating the selected values. Should be an array of option objects converted to a string with `JSON.stringify`. <br/>**Note:** This attribute will be updated on the HTML element when value changes.',
-    },
-    options: {
-      description:
-        'Array of available options to choose.' +
-        '<br/>**Format:** Array of objects with keys `id` and `label`. Convert to string with `JSON.stringify`. ',
-      table: {
-        type: {
-          summary: '{id:string, label:string}[]',
-          detail: `[{id:'1',label:'Item 1'},{id:'345',label:'Item 345'}]`,
-        },
-      },
-    },
-    placeholder: {
-      control: 'text',
-      description: 'String rendered as placeholder text',
-    },
-    allowAdd: {
-      control: 'boolean',
-      description:
-        "(true|false) If attribute is present, new values can be added if they don't exist yet",
-      table: {
-        type: {
-          summary: 'allowAdd',
-          detail: '<dt-multi-select allowAdd />',
-        },
-      },
-    },
-    loading: {
-      control: 'boolean',
-      description:
-        '(true|false) If attribute is present, the loading spinner will be displayed within the field',
-      table: {
-        type: {
-          summary: 'loading',
-          detail: '<dt-multi-select loading />',
-        },
-      },
-    },
-    saved: {
-      control: 'boolean',
-      description:
-        '(true|false) If attribute is present, the saved checkmark will be displayed within the field',
-      table: {
-        type: {
-          summary: 'saved',
-          detail: '<dt-multi-select saved />',
-        },
-      },
-    },
-    onchange: {
-      control: 'text',
-      description:
-        'Javascript code to be executed when the value of the field changes. Makes available a `event` variable that includes field name, old value, and new value in `event.details`',
-      table: {
-        type: {
-          summary: 'onChange(event)',
-          detail: '<dt-multi-select onchange="onChange(event)" />',
-        },
-      },
-    },
-    onload: {
-      control: 'text',
-      description:
-        'Javascript code to be executed when the search value changes and data should be loaded from API.<br/>' +
-        'Makes available a `event` variable that includes field name, search query, onSuccess event, and onError event in `event.details`',
-      table: {
-        type: {
-          summary: 'onLoad(event)',
-          detail: '<dt-multi-select onload="onLoad(event)" />',
-        },
-      },
-    },
+    name: { control: 'text' },
+    value: { control: 'text' },
+    placeholder: { control: 'text' },
+    loading: { control: 'boolean' },
+    saved: { control: 'boolean' },
+    allowAdd: { control: 'boolean' },
     ...argTypes,
   },
   args: {
     placeholder: 'Select Connection',
-    onload: 'onLoad(event)',
+    onLoad: action('on-load'),
+    onChange: action('on-change'),
   },
 };
 
@@ -176,46 +110,20 @@ function Template(args) {
     privateLabel,
     loading = false,
     saved = false,
-    error,
-    onchange,
-    onload,
     open,
-    allowAdd,
+    error,
     slot,
+    allowAdd,
+    onChange,
+    onLoad,
   } = args;
   return html`
-    <style>
-      ${themeCss(args)}
-    </style>
-    <script>
-      function onLoad(event) {
-        console.log('fetching data', event);
-        const { field, query, onSuccess, onError } = event.detail;
-        fetch('https://jsonplaceholder.typicode.com/posts')
-          .then(response => response.json())
-          .then(json => {
-            onSuccess(
-              json
-                .filter(
-                  post =>
-                    !query || post.title.includes(query) || post.id === query
-                )
-                .map(post => ({
-                  id: post.id.toString(),
-                  label: post.title,
-                }))
-            );
-          });
-      }
-    </script>
     <dt-connection
       name="${name}"
       label=${label}
       placeholder="${placeholder}"
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
-      onchange="${onchange}"
-      onload="${onload}"
       ?disabled=${disabled}
       icon="${icon}"
       iconAltText="${iconAltText}"
@@ -224,8 +132,10 @@ function Template(args) {
       ?allowAdd="${allowAdd}"
       ?loading="${loading}"
       ?saved="${saved}"
-      error="${error}"
       .open="${open}"
+      error="${error}"
+      @change=${onChange}
+      @dt:get-data=${onLoad}
     >
       ${slot}
     </dt-connection>
@@ -259,8 +169,8 @@ export const SelectedValue = Template.bind({});
 SelectedValue.args = {
   value: [
     {
-      id: '2',
-      label: 'qui est esse',
+      id: 2,
+      label: 'User 2',
     },
   ],
   options: basicOptions,
@@ -275,7 +185,7 @@ OptionsOpen.args = {
 
 export const LoadOptionsFromAPI = Template.bind({});
 LoadOptionsFromAPI.args = {
-  onload: 'onLoad(event)',
+  onLoad: onLoadEvent,
 };
 
 export const AddNewOption = Template.bind({});
@@ -286,7 +196,7 @@ AddNewOption.args = {
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   options: basicOptions,
-  onchange: 'onAutoSave(event)',
+  onChange: onAutoSave,
 };
 
 export const Disabled = Template.bind({});
@@ -305,7 +215,7 @@ export const Saved = Template.bind({});
 Saved.args = {
   value: [
     {
-      id: '2',
+      id: 2,
       label: 'qui est esse',
     },
   ],
@@ -319,6 +229,13 @@ Error.args = {
   error: 'Field is invalid',
 };
 
+export const basicForm = Template.bind({});
+basicForm.decorators = [FormDecorator];
+basicForm.args = {
+  value: [basicOptions[1]],
+  options: basicOptions,
+};
+
 export const LocalizeRTL = Template.bind({});
 LocalizeRTL.decorators = [LocaleDecorator];
 LocalizeRTL.args = {
@@ -330,13 +247,13 @@ LocalizeRTL.args = {
   loading: true,
   value: [
     {
-      id: 'opt1',
+      id: 1,
       label: 'تنكر هؤلاء الرجال المفتونون',
     },
   ],
   options: [
     {
-      id: '1',
+      id: 1,
       label: 'تنكر هؤلاء الرجال المفتونون',
       link: '/#opt1',
       status: {
@@ -346,7 +263,7 @@ LocalizeRTL.args = {
       },
     },
     {
-      id: '2',
+      id: 2,
       label: 'م فيتساوي مع هؤلاء',
       link: '/#opt2',
       user: true,
@@ -357,7 +274,7 @@ LocalizeRTL.args = {
       },
     },
     {
-      id: '3',
+      id: 3,
       label: 'فلا أحد يرفض',
       link: '/#opt3',
     },

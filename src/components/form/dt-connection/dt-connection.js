@@ -91,6 +91,12 @@ export class DtConnection extends DtTags {
 
   _remove(e) {
     if (e.target && e.target.dataset && e.target.dataset.value) {
+      // check if value from html could be integer and convert if so
+      let clickedValue = e.target.dataset.value;
+      const intVal = Number.parseInt(clickedValue);
+      if (!Number.isNaN(intVal)) {
+        clickedValue = intVal;
+      }
       const event = new CustomEvent('change', {
         detail: {
           field: this.name,
@@ -101,7 +107,7 @@ export class DtConnection extends DtTags {
         const val = {
           ...i,
         };
-        if (i.id === e.target.dataset.value) {
+        if (i.id === clickedValue) {
           val.delete = true;
         }
         return val;

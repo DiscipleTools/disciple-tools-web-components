@@ -6,16 +6,16 @@ import './dt-connection.js';
 
 const options = [
   {
-    id: '1',
+    id: 1,
     label: 'Option 1',
   },
   {
-    id: '2',
+    id: 2,
     label: 'Second Option',
     user: true,
   },
   {
-    id: '3',
+    id: 3,
     label: 'Option Three',
   },
 ];
@@ -156,9 +156,9 @@ describe('dt-connection', () => {
     optionBtn.click();
     await wait(100);
 
-    expect(el.value).to.deep.include({ id: '3', label: options[2].label });
+    expect(el.value).to.deep.include({ id: 3, label: options[2].label });
     expect(el.value).to.deep.include({
-      id: '1',
+      id: 1,
       label: options[0].label,
       delete: true,
     });
@@ -183,9 +183,9 @@ describe('dt-connection', () => {
     optionBtn.click();
     await wait(100);
 
-    expect(el.value).to.deep.include({ id: '1', label: 'old' });
+    expect(el.value).to.deep.include({ id: 1, label: 'old' });
     expect(el.value).to.not.deep.include({
-      id: '1',
+      id: 1,
       label: 'old',
       delete: true,
     });
