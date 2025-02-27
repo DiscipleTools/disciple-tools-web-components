@@ -25,7 +25,7 @@ export function onAutoSave(event) {
   }
 }
 
-function onSubmit(event) {
+export function onSubmit(event) {
   if (event) {
     event.preventDefault();
   }

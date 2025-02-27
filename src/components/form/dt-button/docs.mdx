@@ -1,0 +1,78 @@
+import {
+  Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
+} from '@storybook/blocks';
+import * as ComponentStories from './dt-button.stories.js';
+
+
+<Meta name="Docs" of={ComponentStories} />
+
+<Title />
+<Subtitle />
+
+## Overview
+<Description />
+<Primary />
+
+## Parameters
+<Controls />
+
+## Slots
+
+Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slots).
+
+## Events
+
+### `click`
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  oldValue: string, // previous value before current change
+  newValue: string, // updated value
+}
+```
+
+## CSS Properties / Theming
+
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-button-align-content` | `center` |
+| `--dt-button-align-items` | `center` |
+| `--dt-button-aspect-ratio` | `auto` |
+| `--dt-button-border-radius` | `10px` |
+| `--dt-button-border-width` | `1px` |
+| `--dt-button-box-shadow` | `--dt-button-context-box-shadow(0 2px 4px rgb(0 0 0 / 25%)` |
+| `--dt-button-context-background-color` | `` |
+| `--dt-button-context-border-color` | `` |
+| `--dt-button-context-box-shadow` | `` |
+| `--dt-button-context-text-color` | `` |
+| `--dt-button-context-text-decoration` | `` |
+| `--dt-button-font-family` | `` |
+| `--dt-button-font-size` | `14px` |
+| `--dt-button-font-weight` | `700` |
+| `--dt-button-gap` | `10px` |
+| `--dt-button-height` | `auto` |
+| `--dt-button-justify-content` | `center` |
+| `--dt-button-letter-spacing` | `normal` |
+| `--dt-button-line-height` | `inherit` |
+| `--dt-button-margin` | `0px` |
+| `--dt-button-padding-x` | `10px` |
+| `--dt-button-padding-y` | `10px` |
+| `--dt-button-text-decoration` | `var(--dt-button-context-text-decoration, none` |
+| `--dt-button-text-transform` | `none` |
+| `--dt-button-width` | `100%` |
+
+### Parts
+
+`button`
+Allows you to directly style the button element from an external stylesheet.
+
+```css
+dt-button::part(button) {
+  background-color: #ff0000;
+}
+```
+
+## Stories
+<Stories title="" />

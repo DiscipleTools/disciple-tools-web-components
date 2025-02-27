@@ -1,23 +1,17 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { action } from '@storybook/addon-actions';
 import {
-  themes,
-  themeCss,
   argTypes,
   buttonContexts,
 } from '../../../stories-theme.js';
-
-import { LocaleDecorator, FormDecorator } from '../../../stories-utils.js';
+import { onSubmit } from '../../../stories-utils.js';
 import './dt-button.js';
 
 export default {
-  title: 'Form/dt-button',
+  title: 'Components/Form/Button',
   component: 'dt-button',
   argTypes: {
-    theme: {
-      control: 'select',
-      options: Object.keys(themes),
-      defaultValue: 'default',
-    },
     context: {
       control: 'select',
       options: ['primary', ...buttonContexts],
@@ -25,112 +19,151 @@ export default {
     },
     ...argTypes,
   },
-};
-
-const Template = args => {
-  const { slot = 'Button' } = args;
-  return html`
-    <style>
-      ${themeCss(args)}
-    </style>
+  args: {
+    onClick: action('on-click'),
+  },
+  render: args => {
+    const { slot = 'Button' } = args;
+    return html`
     <dt-button
-      .context="${args.context}"
-      type="${args.type}"
-      buttonStyle="${args.buttonStyle}"
+      context="${ifDefined(args.context)}"
+      type="${ifDefined(args.type)}"
       ?outline="${args.outline}"
-      ?rounded="${args.rounded}"
-      .href="${args.href}"
-      title="${args.title}"
-      confirm="${args.confirm}"
-    >
-      ${slot}
-    </dt-button>
+      ?round="${args.round}"
+      ?disabled="${args.disabled}"
+      title="${ifDefined(args.title)}"
+      @click=${args.onClick}
+    >${slot}</dt-button>
   `;
-};
-export const Default = Template.bind({});
-Default.args = {
-  context: 'primary',
+  },
 };
 
-export const Link = Template.bind({});
-Link.args = {
-  context: 'link',
+export const Default = {
+  name: 'Context: default',
+  args: {
+  }
+};
+export const ContextPrimary = {
+  name: 'Context: primary',
+  args: {
+    context: 'primary',
+  }
+};
+export const ContextLink = {
+  name: 'Context: link',
+  args: {
+    context: 'link',
+  }
+};
+export const ContextAlert = {
+  name: 'Context: alert',
+  args: {
+    context: 'alert',
+  }
+};
+export const ContextCaution = {
+  name: 'Context: caution',
+  args: {
+    context: 'caution',
+  }
+};
+export const ContextSuccess = {
+  name: 'Context: success',
+  args: {
+    context: 'success',
+  }
+};
+export const ContextInactive = {
+  name: 'Context: inactive',
+  args: {
+    context: 'inactive',
+  }
+};
+export const ContextDisabled = {
+  name: 'Context: disabled',
+  args: {
+    context: 'disabled',
+  }
 };
 
-export const Alert = Template.bind({});
-Alert.args = {
-  context: 'alert',
+export const Disabled = {
+  args: {
+    context: 'primary',
+    disabled: true,
+  }
 };
 
-export const Caution = Template.bind({});
-Caution.args = {
-  context: 'caution',
+export const OutlineDefault = {
+  args: {
+    outline: true,
+    context: 'primary',
+  }
 };
-export const Success = Template.bind({});
-Success.args = {
-  context: 'success',
+export const OutlineLink = {
+  args: {
+    outline: true,
+    context: 'link',
+  }
 };
-export const Inactive = Template.bind({});
-Inactive.args = {
-  context: 'inactive',
+export const OutlineAlert = {
+  args: {
+    outline: true,
+    context: 'alert',
+  }
 };
-export const Disabled = Template.bind({});
-Disabled.args = {
-  context: 'disabled',
+export const OutlineCaution = {
+  args: {
+    outline: true,
+    context: 'caution',
+  }
 };
-export const OutlineDefault = Template.bind({});
-OutlineDefault.args = {
-  outline: true,
-  context: 'primary',
+export const OutlineSuccess = {
+  args: {
+    outline: true,
+    context: 'success',
+  }
 };
-
-export const OutlineLink = Template.bind({});
-OutlineLink.args = {
-  outline: true,
-  context: 'link',
+export const OutlineInactive = {
+  args: {
+    outline: true,
+    context: 'inactive',
+  }
 };
-
-export const OutlineAlert = Template.bind({});
-OutlineAlert.args = {
-  outline: true,
-  context: 'alert',
-};
-
-export const OutlineCaution = Template.bind({});
-OutlineCaution.args = {
-  outline: true,
-  context: 'caution',
-};
-export const OutlineSuccess = Template.bind({});
-OutlineSuccess.args = {
-  outline: true,
-  context: 'success',
-};
-export const OutlineInactive = Template.bind({});
-OutlineInactive.args = {
-  outline: true,
-  context: 'inactive',
-};
-export const OutlineDisabled = Template.bind({});
-OutlineDisabled.args = {
-  outline: true,
-  context: 'disabled',
+export const OutlineDisabled = {
+  args: {
+    outline: true,
+    context: 'disabled',
+  }
 };
 
-export const RoundedDefault = Template.bind({});
-RoundedDefault.args = {
-  rounded: true,
+export const RoundPrimary = {
+  args: {
+    round: true,
+    context: 'primary',
+  }
 };
 
-export const WithConfrimationMessage = Template.bind({});
-WithConfrimationMessage.args = {
-  context: 'alert',
-  confirm: 'Are you sure you want to do this?',
-};
+export const FormSubmit = {
+  render: (args) => {
+    const { slot = 'Button' } = args;
+    return html`
+      <form method="post" @submit="${(e) => onSubmit(e)}">
+        <div><input type="text" name="name" value="John Doe"/></div>
 
-export const FormSubmit = Template.bind({});
-FormSubmit.decorators = [FormDecorator];
-FormSubmit.args = {
-  context: 'primary',
-  type: 'submit',
-}
+        <dt-button
+          context="${ifDefined(args.context)}"
+          type="${ifDefined(args.type)}"
+          ?outline="${args.outline}"
+          ?round="${args.round}"
+          title="${ifDefined(args.title)}"
+          @click=${args.onClick}
+        >${slot}
+        </dt-button>
+      </form>
+    `;
+  },
+  args: {
+    context: 'primary',
+    type: 'submit',
+  }
+};

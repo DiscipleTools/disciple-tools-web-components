@@ -22,17 +22,10 @@ describe('DT-Button', () => {
         id="name"
         name="Name"
         label="Label Name"
-        value="John Doe"
       >Button</dt-button>`
     );
 
     await expect(el).shadowDom.to.be.accessible();
-  });
-
-  it('Check the href attribute', async () => {
-    const el = await fixture(html`<dt-button href="https://www.google.com">Button</dt-button>`);
-
-    expect(el.href).to.equal('https://www.google.com');
   });
 
   it('Check the title attribute', async () => {
