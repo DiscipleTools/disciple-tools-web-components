@@ -1,45 +1,41 @@
 import { html } from 'lit';
-import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { FormDecorator, LocaleDecorator } from '../../../stories-utils.js';
+import { action } from '@storybook/addon-actions';
+import { argTypes } from '../../../stories-theme.js';
+import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
 import './dt-comm-channel.js';
 
 export default {
-  title: 'Form/dt-comm-channel',
+  title: 'Components/Form/Communication Channel',
   component: 'dt-comm-channel',
   argTypes: {
-    theme: {
-      control: 'select',
-      options: Object.keys(themes),
-      defaultValue: 'default',
-    },
-    id: { control: 'text' },
     name: { control: 'text' },
     label: { control: 'text' },
     value: {
-      control: 'test',
+      control: 'text',
       type: { name: 'array' }
     },
-    disabled: { control: 'boolean' },
+    placeholder: { control: 'text' },
     type: {
       control: 'select',
       options: ['text', 'password', 'email', 'number', 'tel', 'url'],
       defaultValue: 'text',
     },
-    icon: { control: 'text' },
-    isPrivate: { control: 'boolean' },
+    disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
-    onchange: { control: 'text' },
     ...argTypes,
   },
+  args: {
+    onChange: action('on-change'),
+  }
 };
 
 function Template(args) {
   const {
-    id = 'name',
     name = 'field-name',
     label = 'Field Name',
     value = '',
+    placeholder,
     disabled = false,
     required = false,
     requiredMessage = '',
@@ -55,14 +51,11 @@ function Template(args) {
     type,
   } = args;
   return html`
-    <style>
-      ${themeCss(args)}
-    </style>
     <dt-comm-channel
-      id=${id}
       name=${name}
       label=${label}
       .value=${value}
+      placeholder=${placeholder}
       type=${type}
       ?disabled=${disabled}
       ?required=${required}
@@ -74,7 +67,7 @@ function Template(args) {
       ?loading=${loading}
       ?saved=${saved}
       error="${error}"
-      onchange=${onChange}
+      @change=${onChange}
     >
       ${slot}
     </dt-comm-channel>
@@ -82,18 +75,20 @@ function Template(args) {
 }
 
 export const Empty = Template.bind({});
-Empty.decorators = [LocaleDecorator, FormDecorator];
 
 export const SvgIcon = Template.bind({});
-SvgIcon.decorators = [LocaleDecorator, FormDecorator];
 SvgIcon.args = {
   icon: null,
   // prettier-ignore
   slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
 };
 
+export const CustomPlaceholder = Template.bind({});
+CustomPlaceholder.args = {
+  placeholder: 'Enter a value',
+};
+
 export const EnteredValue = Template.bind({});
-EnteredValue.decorators = [LocaleDecorator, FormDecorator];
 EnteredValue.args = {
   value: [
     {
@@ -111,60 +106,61 @@ EnteredValue.args = {
 
 export const AutoSave = Template.bind({});
 AutoSave.args = {
-  onChange: 'onAutoSave(event)',
+  onChange: onAutoSave,
 };
 
 export const Disabled = Template.bind({});
-Disabled.decorators = [LocaleDecorator, FormDecorator];
 Disabled.args = {
   disabled: true,
-  value: 'Lorem Ipsum',
+  value: [{
+    value: 'Lorem Ipsum',
+    key: 'comm_channel_1',
+  }],
 };
 
 export const privateField = Template.bind({});
-privateField.decorators = [LocaleDecorator, FormDecorator];
 privateField.args = {
   isPrivate: true,
-  value: 'Lorem Ipsum',
+  value: [{
+    value: 'Lorem Ipsum',
+    key: 'comm_channel_1',
+  }],
   privateLabel: 'This is a custom tooltip',
 };
 
 export const Loading = Template.bind({});
-Loading.decorators = [LocaleDecorator, FormDecorator];
 Loading.args = {
   loading: true,
 };
 export const Saved = Template.bind({});
-Saved.decorators = [LocaleDecorator, FormDecorator];
 Saved.args = {
   saved: true,
 };
 export const Error = Template.bind({});
-Error.decorators = [LocaleDecorator, FormDecorator];
 Error.args = {
   error: 'Custom error message',
 };
 
-export const basicForm = Template.bind({});
-basicForm.decorators = [LocaleDecorator, FormDecorator];
-basicForm.args = {
-  value: 'Lorem Ipsum',
+export const BasicForm = Template.bind({});
+BasicForm.decorators = [FormDecorator];
+BasicForm.args = {
+  value: [{
+    value: 'Lorem Ipsum',
+    key: 'comm_channel_1',
+  }],
 };
 
 export const required = Template.bind({});
-required.decorators = [LocaleDecorator, FormDecorator];
 required.args = {
   required: true,
 };
 
 export const password = Template.bind({});
-password.decorators = [LocaleDecorator, FormDecorator];
 password.args = {
   type: 'password',
 };
 
 export const requiredCustomMessage = Template.bind({});
-requiredCustomMessage.decorators = [LocaleDecorator, FormDecorator];
 requiredCustomMessage.args = {
   required: true,
   requiredMessage: 'Custom error message',
@@ -176,5 +172,8 @@ LocalizeRTL.args = {
   lang: 'ar',
   dir: 'rtl',
   label: 'اسم الإدخال',
-  value: 'راد أن يشع',
+  value: [{
+    value: 'راد أن يشع',
+    key: 'comm_channel_1',
+  }],
 };

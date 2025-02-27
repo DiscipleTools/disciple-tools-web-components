@@ -38,6 +38,11 @@ export default {
         headingSelector: 'h1, h2',
       },
     },
+    options: {
+      storySort: {
+        method: 'alphabetical',
+      },
+    },
   },
 };
 

@@ -179,7 +179,7 @@ export default class DtFormBase extends DtBase {
    * Interacts with the form internals to set the form value that will be submitted with a standard
    * HTML form.
    * @param value
-   * @private
+   * @protected
    */
   _setFormValue(value) {
     // handle complex types like arrays and objects by converting to FormData

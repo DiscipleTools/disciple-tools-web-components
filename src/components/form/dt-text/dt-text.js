@@ -143,6 +143,7 @@ export class DtText extends DtFormBase {
     const classes = {
       'text-input': true,
       invalid: this.touched && this.invalid,
+      disabled: this.disabled,
     };
     return classes;
   }

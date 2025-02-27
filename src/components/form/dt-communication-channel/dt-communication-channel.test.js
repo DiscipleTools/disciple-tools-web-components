@@ -1,93 +1,144 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent } from '@open-wc/testing';
+import { fixture, expect, oneEvent, aTimeout } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
-
-
 import './dt-comm-channel.js';
 
-async function wait(ms) {
-  return new Promise(r => {
-    setTimeout(r, ms);
-  });
-}
-
 describe('DtCommChannel', () => {
-  let element;
 
-  beforeEach(async () => {
-    element = await fixture(html`<dt-comm-channel id="name" name="field-name" label="Field Name"></dt-comm-channel>`);
+  it('sets placeholder', async () => {
+    const el = await fixture(
+      html`<dt-comm-channel placeholder="Custom Placeholder"></dt-comm-channel>`
+    );
+    const input = el.shadowRoot.querySelector('input');
+
+    expect(input.placeholder).to.equal('Custom Placeholder');
   });
 
-  it('should be initialized correctly', () => {
-    expect(element).to.exist;
-  });
+  it('sets value from attribute', async () => {
+    const el = await fixture(
+      html`<dt-comm-channel
+        value="${JSON.stringify([{
+          key: 'cc01',
+          value: 'Value 1',
+          verified: true,
+        }, {
+          key: 'cc02',
+          value: 'Value 2',
+          verified: true,
+        }])}"
+      ></dt-comm-channel>`
+    );
 
-  it('reflects the "value" property', async () => {
-    const testValue = [{ verified: false, value: 'test', key: 'new-test-1' }];
-    element.value = testValue;
-    await element.updateComplete;
-    expect(element.value).to.deep.equal(testValue);
+    const inputGroup = el.shadowRoot.querySelector('.input-group');
+
+    expect(inputGroup.querySelector('input[data-key="cc01"]'))
+      .to.exist
+      .and.have.value('Value 1');
+    expect(inputGroup.querySelector('input[data-key="cc02"]'))
+      .to.exist
+      .and.have.value('Value 2');
   });
 
   it('adds a new item on add button click', async () => {
-    const addButton = element.shadowRoot.querySelector('button.add-btn');
+    const el = await fixture(
+      html`<dt-comm-channel></dt-comm-channel>`
+    );
 
+    expect(el.shadowRoot.querySelectorAll('input')).to.have.length(1);
+
+    const addButton = el.shadowRoot.querySelector('button.btn-add');
     addButton.click();
-    await wait(50);
+    await aTimeout(50);
 
-    expect(element.value.length).to.equal(2);
+    expect(el.value.length).to.equal(2);
+    expect(el.shadowRoot.querySelectorAll('input')).to.have.length(2);
   });
 
-  it('deletes an item on _deleteField', async () => {
-    element.value = [{ verified: false, value: 'test', key: 'new-test-1' }];
-    await element.updateComplete;
-    element._deleteField(element.value[0]);
-    await element.updateComplete;
-    expect(element.value.length).to.equal(1);
+  it('deletes an item on remove button click', async () => {
+    const el = await fixture(
+      html`<dt-comm-channel
+        value="${JSON.stringify([{
+        key: 'cc01',
+        value: 'Value 1',
+        verified: true,
+      }, {
+        key: 'cc02',
+        value: 'Value 2',
+        verified: true,
+      }])}"
+      ></dt-comm-channel>`
+    );
+
+    expect(el.shadowRoot.querySelectorAll('input')).to.have.length(2);
+
+    const removeButton = el.shadowRoot.querySelector('button.btn-remove');
+    removeButton.click();
+    await aTimeout(50);
+
+    // marked as deleted in value
+    expect(el.value.length).to.equal(2);
+    expect(el.value).to.deep.include.include({
+      key: 'cc01',
+      value: 'Value 1',
+      verified: true,
+      delete: true,
+    });
+    expect(el.value).to.deep.include.include({
+      key: 'cc02',
+      value: 'Value 2',
+      verified: true,
+    });
+
+    // not rendered in DOM
+    expect(el.shadowRoot.querySelectorAll('input')).to.have.length(1);
   });
 
-  it('emits a "change" event on adding a new item', async () => {
-    const input = element.shadowRoot.querySelector('input');
+  it('triggers a change event - item added', async () => {
+    const el = await fixture(
+      html`<dt-comm-channel></dt-comm-channel>`
+    );
+    const input = el.shadowRoot.querySelector('input');
 
     input.focus();
 
-    await sendKeys({
-      type: 'Tes',
-    });
-    await wait(50);
-    const listener = oneEvent(element, 'change');
+    setTimeout(async () => {
+      await sendKeys({ type: 'Test' });
+      input.blur();
+    })
 
-    await sendKeys({
-      type: 't',
-    });
-    input.blur();
+    const { detail } = await oneEvent(el, 'change');
 
-    await wait(50);
-
-    const event = await listener;
-
-    await wait(50);
-
-    expect(event.detail.newValue.length).to.equal(1);
-    expect(event.detail.newValue[0].value).to.equal('Test')
+    expect(detail.newValue.length).to.equal(1);
+    expect(detail.newValue[0].value).to.equal('Test')
 
   });
 
-  it('emits a "change" event with correct details on deleting an item', async () => {
-    element.value = [{ verified: false, value: 'test', key: 'new-test-1' }, { verified: false, value: 'test2', key: 'new-test-2' }];
-    await element.updateComplete;
-    const listener = oneEvent(element, 'change');
-    const deleteButton = element.shadowRoot.querySelectorAll('button.delete-button');
+  it('triggers a change event - item removed', async () => {
+    const el = await fixture(
+      html`<dt-comm-channel
+        value="${JSON.stringify([{
+        key: 'cc01',
+        value: 'Value 1',
+        verified: true,
+      }, {
+        key: 'cc02',
+        value: 'Value 2',
+        verified: true,
+      }])}"
+      ></dt-comm-channel>`
+    );
 
-    deleteButton[1].click();
-    await wait(50);
+    expect(el.shadowRoot.querySelectorAll('input')).to.have.length(2);
 
-    const event = await listener;
-    expect(event).to.exist;
-    expect(event.detail.oldValue.key).to.equal('new-test-2');
-    expect(event.detail.newValue.length).to.equal(1);
-    expect(event.detail.newValue[0].key).to.equal('new-test-1');
+    const removeButton = el.shadowRoot.querySelector('button.btn-remove');
 
+    setTimeout(() => removeButton.click());
+
+    const { detail } = await oneEvent(el, 'change');
+
+    expect(detail.oldValue).to.have.length(2);
+    expect(detail.newValue).to.have.length(2);
+    expect(detail.newValue[0].value).to.equal('Value 1')
+    expect(detail.newValue[0].delete).to.equal(true);
   });
-
 });

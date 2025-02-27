@@ -382,7 +382,6 @@ export default class ComponentService {
             returnValue = value.toLowerCase() === 'true';
           }
           break;
-
         case 'dt-multi-select':
         case 'dt-multi-select-button-group':
         case 'dt-tags':
@@ -413,8 +412,6 @@ export default class ComponentService {
             force_values: false,
           };
           break;
-
-        // seperate case for dt-users-connection
         case 'dt-users-connection': {
            // Initialize an empty array to hold the differences found.
             const userDataDifferences=[];
@@ -455,8 +452,8 @@ export default class ComponentService {
           returnValue = userDataDifferences[0].id;
           break;
         }
-    case 'dt-connection':
-            case 'dt-location':
+        case 'dt-connection':
+        case 'dt-location':
               if (typeof value === 'string') {
                 returnValue = [
                   {
@@ -477,28 +474,21 @@ export default class ComponentService {
                 force_values: false,
               };
           break;
-        case 'dt-comm-channel': {
-          const valueLength = value.length;
-          // case: Delete
-          if (oldValue && oldValue.delete === true) {
-            returnValue = [oldValue];
-          }
-          // case: Add
-          else if (
-            value[valueLength - 1].key === '' ||
-            value[valueLength - 1].key.startsWith('new-contact')
-          ) {
-            returnValue = [];
-            value.forEach(obj => {
-              returnValue.push({ value: obj.value });
+        case 'dt-comm-channel':
+          if (Array.isArray(value)) {
+            returnValue = value.map(x => {
+              const ret = {
+                ...x,
+              };
+              delete ret.tempKey;
+              return ret;
             });
-          }
-          // case: Edit
-          else {
-            returnValue = value;
+          } else if (typeof value === 'string') {
+            returnValue = [{
+              value,
+            }];
           }
           break;
-        }
         default:
           break;
       }

@@ -69,6 +69,89 @@ describe('ComponentService', () => {
       });
     });
 
+    describe('dt-comm-channel', () => {
+      it('handles null', async () => {
+        const result = ComponentService.convertValue('dt-comm-channel', null);
+        expect(result).to.be.null;
+      });
+      it('handles unexpected: string', () => {
+        const result = ComponentService.convertValue('dt-comm-channel', 'opt1');
+        expect(result).to.eql([
+          {
+            value: 'opt1',
+          },
+        ]);
+      });
+      it('handles expected: array of existing values', async () => {
+        const result = ComponentService.convertValue('dt-comm-channel', [
+          {
+            key: 'opt1',
+            value: 'Option 1',
+            verified: true,
+          },
+          {
+            key: 'opt2',
+            value: 'Option 2',
+          },
+        ]);
+        expect(result).to.eql([
+          {
+            key: 'opt1',
+            value: 'Option 1',
+            verified: true,
+          },
+          {
+            key: 'opt2',
+            value: 'Option 2',
+          },
+        ]);
+      });
+      it('handles expected: array of new values', async () => {
+        const result = ComponentService.convertValue('dt-comm-channel', [
+          {
+            tempKey: Date.now(),
+            value: 'Option 1',
+          },
+          {
+            tempKey: '123456',
+            value: 'Option 2',
+          },
+        ]);
+        expect(result).to.eql([
+          {
+            value: 'Option 1',
+          },
+          {
+            value: 'Option 2',
+          },
+        ]);
+      });
+      it('handles expected: deleted items', () => {
+        const result = ComponentService.convertValue('dt-comm-channel', [
+          {
+            key: 'opt1',
+            value: 'Option 1',
+          },
+          {
+            key: 'opt2',
+            value: 'Option 2',
+            delete: true,
+          },
+        ]);
+        expect(result).to.eql([
+          {
+            key: 'opt1',
+            value: 'Option 1',
+          },
+          {
+            key: 'opt2',
+            value: 'Option 2',
+            delete: true,
+          },
+        ]);
+      });
+    });
+
     describe('dt-date', () => {
       it('handles null', async () => {
         const result = ComponentService.convertValue('dt-date', null);
