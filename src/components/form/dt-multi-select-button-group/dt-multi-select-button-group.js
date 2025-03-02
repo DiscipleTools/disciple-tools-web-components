@@ -61,21 +61,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       options: { type: Array },
       /** Indicates buttons should be outlined instead of filled */
       outline: { type: Boolean },
-      /** Indicates button corners should be rounded */
-      rounded: { type: Boolean },
     };
-  }
-
-  get classes() {
-    //todo: delete this?
-    const classes = {
-      'dt-button': true,
-      'dt-button--outline': this.outline,
-      'dt-button--rounded': this.rounded,
-    };
-    const contextClass = `dt-button--${this.context}`;
-    classes[contextClass] = true;
-    return classes;
   }
 
   _select(value) {
@@ -109,8 +95,8 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
   }
 
   _clickOption(e) {
-    if (e.target && e.target.value) {
-      this._select(e.target.value);
+    if (e?.currentTarget?.value) {
+      this._select(e.currentTarget.value);
     }
   }
 
