@@ -13,6 +13,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       css`
         :host {
           margin-bottom: 5px;
+          --dt-button-font-weight: 0;
         }
         span .icon {
           vertical-align: middle;
