@@ -1,6 +1,10 @@
 import { css, html } from 'lit';
 import { DtMultiSelect } from '../dt-multi-select/dt-multi-select.js';
 
+/**
+ * Implementation of the Multi Select field that allows adding new values that don't exist.
+ * Can also fetch options from API.
+ */
 export class DtTags extends DtMultiSelect {
   static get properties() {
     return {

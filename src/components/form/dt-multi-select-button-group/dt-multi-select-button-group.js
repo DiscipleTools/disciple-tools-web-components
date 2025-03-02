@@ -3,6 +3,9 @@ import DtFormBase from '../dt-form-base.js';
 import { repeat } from 'lit/directives/repeat.js';
 import '../dt-button/dt-button.js';
 
+/**
+ * Select field that allows multiple values to be selected. Displayed as a group of buttons.
+ */
 export class DtMultiSelectButtonGroup extends DtFormBase {
   static get styles() {
     return [

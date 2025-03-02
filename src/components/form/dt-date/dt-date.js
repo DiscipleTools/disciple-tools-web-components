@@ -1,6 +1,9 @@
 import { html, css } from 'lit';
 import DtFormBase from '../dt-form-base.js';
 
+/**
+ * Basic date component
+ */
 export class DtDate extends DtFormBase {
   static get styles() {
     return [

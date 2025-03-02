@@ -4,6 +4,9 @@ import { classMap } from 'lit/directives/class-map.js';
 import '../../icons/dt-icon.js';
 import { DtText } from '../dt-text/dt-text.js';
 
+/**
+ * Display list of communication channels (e.g. phone, email, social links, etc.)
+ */
 export class DtCommChannel extends DtText {
   static get styles() {
     return [

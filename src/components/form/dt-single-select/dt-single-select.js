@@ -3,6 +3,9 @@ import DtFormBase from '../dt-form-base.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
 
+/**
+ * Dropdown list that allows selection of a single value.
+ */
 export class DtSingleSelect extends DtFormBase {
   static get styles() {
     return [

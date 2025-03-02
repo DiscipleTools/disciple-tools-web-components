@@ -1,6 +1,11 @@
 import { css, html } from 'lit';
 import { DtTags } from '../dt-tags/dt-tags.js';
 
+/**
+ * Multi-select field that allows selection of posts to be connected.
+ * Fetches options by API.
+ * Optionally allows adding new items.
+ */
 export class DtConnection extends DtTags {
   static get styles() {
     return [

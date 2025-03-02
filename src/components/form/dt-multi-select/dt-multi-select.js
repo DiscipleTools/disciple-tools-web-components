@@ -6,6 +6,9 @@ import {HasOptionsList} from '../mixins/hasOptionsList.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
 
+/**
+ * Select field that allows multiple values to be selected. Displayed as a typeahead or autocomplete style input.
+ */
 export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   static get styles() {
     return [

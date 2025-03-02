@@ -5,6 +5,9 @@ import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
 import '../../icons/dt-exclamation-circle.js';
 
+/**
+ * Multi-line text input
+ */
 export class DtTextArea extends DtFormBase {
   static get styles() {
     return [
