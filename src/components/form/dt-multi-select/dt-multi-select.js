@@ -58,7 +58,8 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
 
         .field-container input,
         .field-container .selected-option {
-          height: 1.25rem;
+          line-height: 1;
+          padding: 4px;
         }
 
         .selected-option {
