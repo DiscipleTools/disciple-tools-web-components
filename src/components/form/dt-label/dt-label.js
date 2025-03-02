@@ -2,6 +2,9 @@ import { html, css } from 'lit';
 import { msg } from '@lit/localize';
 import DtBase from '../../dt-base.js';
 
+/**
+ * Form label to be displayed above input field
+ */
 export class DtLabel extends DtBase {
   static get styles() {
     return css`
@@ -54,9 +57,13 @@ export class DtLabel extends DtBase {
 
   static get properties() {
     return {
+      /** URL to an icon to be displayed before the label */
       icon: { type: String },
+      /** Alt test for icon */
       iconAltText: { type: String },
+      /** Whether field should be marked as private */
       private: { type: Boolean },
+      /** Customize tooltip text for private icon hover state. Pass in correct language content. */
       privateLabel: { type: String },
     };
   }
