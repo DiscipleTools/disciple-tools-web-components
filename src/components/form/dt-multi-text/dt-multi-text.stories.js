@@ -2,11 +2,11 @@ import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
 import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
-import './dt-comm-channel.js';
+import './dt-multi-text.js';
 
 export default {
-  title: 'Components/Form/Communication Channel',
-  component: 'dt-comm-channel',
+  title: 'Components/Form/Text - Multi',
+  component: 'dt-multi-text',
   argTypes: {
     name: { control: 'text' },
     label: { control: 'text' },
@@ -51,7 +51,7 @@ function Template(args) {
     type,
   } = args;
   return html`
-    <dt-comm-channel
+    <dt-multi-text
       name=${name}
       label=${label}
       .value=${value}
@@ -70,7 +70,7 @@ function Template(args) {
       @change=${onChange}
     >
       ${slot}
-    </dt-comm-channel>
+    </dt-multi-text>
   `;
 }
 

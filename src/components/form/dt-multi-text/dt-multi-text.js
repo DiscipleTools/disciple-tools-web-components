@@ -5,9 +5,10 @@ import '../../icons/dt-icon.js';
 import { DtText } from '../dt-text/dt-text.js';
 
 /**
- * Display list of communication channels (e.g. phone, email, social links, etc.)
+ * Field to edit multiple text values with ability to add/remove values.
+ * Used primarily for lists of communication channels (e.g. phone, email, social links, etc.)
  */
-export class DtCommChannel extends DtText {
+export class DtMultiText extends DtText {
   static get styles() {
     return [
       ...super.styles,
@@ -18,11 +19,11 @@ export class DtCommChannel extends DtText {
         input {
           color: var(--dt-form-text-color, #000);
           appearance: none;
-          background-color: var(--dt-comm-channel-background-color, #fefefe);
-          border: 1px solid var(--dt-comm-channel-border-color, #fefefe);
-          border-radius: var(--dt-comm-channel-border-radius, 0);
+          background-color: var(--dt-multi-text-background-color, #fefefe);
+          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
+          border-radius: var(--dt-multi-text-border-radius, 0);
           box-shadow: var(
-            --dt-comm-channel-box-shadow,
+            --dt-multi-text-box-shadow,
             var(
               --dt-form-input-box-shadow,
               inset 0 1px 2px hsl(0deg 0% 4% / 10%)
@@ -87,11 +88,11 @@ export class DtCommChannel extends DtText {
           padding: 10px;
           border: solid 1px gray;
           border-collapse: collapse;
-          background-color: var(--dt-comm-channel-background-color, buttonface);
-          border: 1px solid var(--dt-comm-channel-border-color, #fefefe);
-          border-radius: var(--dt-comm-channel-border-radius, 0);
+          background-color: var(--dt-multi-text-background-color, buttonface);
+          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
+          border-radius: var(--dt-multi-text-border-radius, 0);
           box-shadow: var(
-            --dt-comm-channel-box-shadow,
+            --dt-multi-text-box-shadow,
             var(
               --dt-form-input-box-shadow,
               inset 0 1px 2px hsl(0deg 0% 4% / 10%)
@@ -116,7 +117,7 @@ export class DtCommChannel extends DtText {
           }
           &:hover:not([disabled]) {
             background-color: var(--alert-color, #cc4b37);
-            color: var(--dt-comm-channel-button-hover-color, #ffffff);
+            color: var(--dt-multi-text-button-hover-color, #ffffff);
           }
         }
         .input-addon.btn-add {
@@ -126,7 +127,7 @@ export class DtCommChannel extends DtText {
           }
           &:hover:not([disabled]) {
             background-color: var(--success-color, #cc4b37);
-            color: var(--dt-comm-channel-button-hover-color, #ffffff);
+            color: var(--dt-multi-text-button-hover-color, #ffffff);
           }
         }
 
@@ -341,4 +342,4 @@ export class DtCommChannel extends DtText {
   }
 }
 
-window.customElements.define('dt-comm-channel', DtCommChannel);
+window.customElements.define('dt-multi-text', DtMultiText);

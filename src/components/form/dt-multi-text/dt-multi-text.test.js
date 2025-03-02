@@ -1,13 +1,13 @@
 import { html } from 'lit';
 import { fixture, expect, oneEvent, aTimeout } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
-import './dt-comm-channel.js';
+import './dt-multi-text.js';
 
-describe('DtCommChannel', () => {
+describe('DtMultiText', () => {
 
   it('sets placeholder', async () => {
     const el = await fixture(
-      html`<dt-comm-channel placeholder="Custom Placeholder"></dt-comm-channel>`
+      html`<dt-multi-text placeholder="Custom Placeholder"></dt-multi-text>`
     );
     const input = el.shadowRoot.querySelector('input');
 
@@ -16,7 +16,7 @@ describe('DtCommChannel', () => {
 
   it('sets value from attribute', async () => {
     const el = await fixture(
-      html`<dt-comm-channel
+      html`<dt-multi-text
         value="${JSON.stringify([{
           key: 'cc01',
           value: 'Value 1',
@@ -26,7 +26,7 @@ describe('DtCommChannel', () => {
           value: 'Value 2',
           verified: true,
         }])}"
-      ></dt-comm-channel>`
+      ></dt-multi-text>`
     );
 
     const inputGroup = el.shadowRoot.querySelector('.input-group');
@@ -41,7 +41,7 @@ describe('DtCommChannel', () => {
 
   it('adds a new item on add button click', async () => {
     const el = await fixture(
-      html`<dt-comm-channel></dt-comm-channel>`
+      html`<dt-multi-text></dt-multi-text>`
     );
 
     expect(el.shadowRoot.querySelectorAll('input')).to.have.length(1);
@@ -56,7 +56,7 @@ describe('DtCommChannel', () => {
 
   it('deletes an item on remove button click', async () => {
     const el = await fixture(
-      html`<dt-comm-channel
+      html`<dt-multi-text
         value="${JSON.stringify([{
         key: 'cc01',
         value: 'Value 1',
@@ -66,7 +66,7 @@ describe('DtCommChannel', () => {
         value: 'Value 2',
         verified: true,
       }])}"
-      ></dt-comm-channel>`
+      ></dt-multi-text>`
     );
 
     expect(el.shadowRoot.querySelectorAll('input')).to.have.length(2);
@@ -95,7 +95,7 @@ describe('DtCommChannel', () => {
 
   it('triggers a change event - item added', async () => {
     const el = await fixture(
-      html`<dt-comm-channel></dt-comm-channel>`
+      html`<dt-multi-text></dt-multi-text>`
     );
     const input = el.shadowRoot.querySelector('input');
 
@@ -115,7 +115,7 @@ describe('DtCommChannel', () => {
 
   it('triggers a change event - item removed', async () => {
     const el = await fixture(
-      html`<dt-comm-channel
+      html`<dt-multi-text
         value="${JSON.stringify([{
         key: 'cc01',
         value: 'Value 1',
@@ -125,7 +125,7 @@ describe('DtCommChannel', () => {
         value: 'Value 2',
         verified: true,
       }])}"
-      ></dt-comm-channel>`
+      ></dt-multi-text>`
     );
 
     expect(el.shadowRoot.querySelectorAll('input')).to.have.length(2);

@@ -69,13 +69,13 @@ describe('ComponentService', () => {
       });
     });
 
-    describe('dt-comm-channel', () => {
+    describe('dt-multi-text', () => {
       it('handles null', async () => {
-        const result = ComponentService.convertValue('dt-comm-channel', null);
+        const result = ComponentService.convertValue('dt-multi-text', null);
         expect(result).to.be.null;
       });
       it('handles unexpected: string', () => {
-        const result = ComponentService.convertValue('dt-comm-channel', 'opt1');
+        const result = ComponentService.convertValue('dt-multi-text', 'opt1');
         expect(result).to.eql([
           {
             value: 'opt1',
@@ -83,7 +83,7 @@ describe('ComponentService', () => {
         ]);
       });
       it('handles expected: array of existing values', async () => {
-        const result = ComponentService.convertValue('dt-comm-channel', [
+        const result = ComponentService.convertValue('dt-multi-text', [
           {
             key: 'opt1',
             value: 'Option 1',
@@ -107,7 +107,7 @@ describe('ComponentService', () => {
         ]);
       });
       it('handles expected: array of new values', async () => {
-        const result = ComponentService.convertValue('dt-comm-channel', [
+        const result = ComponentService.convertValue('dt-multi-text', [
           {
             tempKey: Date.now(),
             value: 'Option 1',
@@ -127,7 +127,7 @@ describe('ComponentService', () => {
         ]);
       });
       it('handles expected: deleted items', () => {
-        const result = ComponentService.convertValue('dt-comm-channel', [
+        const result = ComponentService.convertValue('dt-multi-text', [
           {
             key: 'opt1',
             value: 'Option 1',

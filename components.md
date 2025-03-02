@@ -9,7 +9,7 @@ Fields
 - [x] [Multi Select](src/components/form/dt-multi-select/README.md)
 - [x] [Multi Select Buttons Group](src/components/form/dt-multiselect-button-group/README.md)
 - [x] [Tags](src/components/form/dt-tags/README.md)
-- [x] [Communication Channel](src/components/form/dt-communication-channel/README.md)
+- [x] [Communication Channel](src/components/form/dt-multi-text/README.md)
 - [x] [Date](src/components/form/dt-date/README.md)
 - [ ] [User Select](src/components/form/dt-user-select/README.md)
 - [x] [Number](src/components/form/dt-number/README.md)

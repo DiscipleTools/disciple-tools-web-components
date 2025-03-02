@@ -28,7 +28,7 @@ export default class ComponentService {
       'dt-text',
       'dt-textarea',
       'dt-toggle',
-      'dt-comm-channel',
+      'dt-multi-text',
       'dt-multi-select-button-group',
       'dt-list',
       'dt-button'
@@ -302,6 +302,7 @@ export default class ComponentService {
         let apiResponse;
         switch(component) {
           case 'dt-users-connection': {
+            // todo: this doesn't look like it will actually edit the field itself. And this logic should not be done inside this service. Move to theme.
             if (remove === true) {
               apiResponse = await this.api.removePostShare(this.postType, this.postId, apiValue);
               break;
@@ -313,11 +314,6 @@ export default class ComponentService {
             apiResponse = await this.api.updatePost(this.postType, this.postId, {
               [field]: apiValue,
             });
-
-            // Sending response to update value
-            if (component === 'dt-comm-channel' && details.onSuccess) {
-              details.onSuccess(apiResponse);
-            }
 
             document.dispatchEvent(new CustomEvent('dt:post:update', {
               detail: {
@@ -474,7 +470,7 @@ export default class ComponentService {
                 force_values: false,
               };
           break;
-        case 'dt-comm-channel':
+        case 'dt-multi-text':
           if (Array.isArray(value)) {
             returnValue = value.map(x => {
               const ret = {
