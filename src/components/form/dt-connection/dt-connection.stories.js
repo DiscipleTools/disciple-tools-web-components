@@ -171,6 +171,11 @@ SelectedValue.args = {
     {
       id: 2,
       label: 'User 2',
+      status: {
+        key: 'active',
+        label: 'Active',
+        color: '#4CAF50',
+      },
     },
   ],
   options: basicOptions,

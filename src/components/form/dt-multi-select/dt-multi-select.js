@@ -58,8 +58,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
 
         .field-container input,
         .field-container .selected-option {
-          line-height: 1;
-          padding: 4px;
+          //height: 1.5rem;
         }
 
         .selected-option {
@@ -79,6 +78,8 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         }
         .selected-option > *:first-child {
           padding-inline-start: 4px;
+          padding-block: 0.25rem;
+          line-height: normal;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
