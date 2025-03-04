@@ -260,7 +260,6 @@ export class DtMultiText extends DtText {
           .value="${item.value || ''}"
           @change=${this._change}
           novalidate
-          @keyup="${this.implicitFormSubmit}"
         />
 
         <button
@@ -282,27 +281,17 @@ export class DtMultiText extends DtText {
     `;
   }
 
-  // update the value comming from API
-  /*_setFormValue(value) {
-    super._setFormValue(value);
-    this.internals.setFormValue(JSON.stringify(value));
-    this.value = value;
-    this.requestUpdate();
-  }*/
-
 
   // rendering the input at 0 index
   _renderInputFields() {
-    if ((this.value == null || !(this.value.length))) {
+    if (!this.value || !this.value.length) {
       this.value = [{
         verified: false,
         value: '',
         tempKey: Date.now().toString(),
       }];
-
-      // initializing with 0 so that delete button does comes in
-      return this._inputFieldTemplate(this.value[0]);
     }
+
     return html`
       ${repeat(
         (this.value ?? []).filter(x => !x.delete),

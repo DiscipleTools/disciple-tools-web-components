@@ -58,6 +58,7 @@ export default class DtBase extends LitElement {
   constructor() {
     super();
     updateWhenLocaleChanges(this);
+    this.addEventListener('click', this._proxyClick.bind(this));
     this.addEventListener('focus', this._proxyFocus.bind(this));
   }
 
@@ -102,6 +103,14 @@ export default class DtBase extends LitElement {
   }
 
   /**
+   * Capture when element was clicked so we know when focus is triggered
+   * if it was from mouse or keyboard
+   * @private
+   */
+  _proxyClick() {
+    this.click = true;
+  }
+  /**
    * Used to transfer focus to the shadow DOM when the component itself receives focus.
    * This will use the `_focusTarget` to determine which shadow DOM element to focus,
    * so that getter should be changed instead of this function when the shadow DOM is non-standard.
@@ -109,6 +118,12 @@ export default class DtBase extends LitElement {
    */
   _proxyFocus() {
     if (!this._focusTarget) {
+      return;
+    }
+    // if this focus was from a click, don't focus target element
+    // because user clicked on a specific part of the component
+    if (this.click) {
+      this.click = false;
       return;
     }
 

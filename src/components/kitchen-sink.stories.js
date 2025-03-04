@@ -8,17 +8,12 @@ import './form/dt-textarea/dt-textarea.js';
 import './form/dt-number/dt-number.js';
 import './form/dt-date/dt-date.js';
 import './form/dt-multi-select/dt-multi-select.js';
+import './form/dt-multi-text/dt-multi-text.js';
 import './form/dt-single-select/dt-single-select.js';
 import './form/dt-tags/dt-tags.js';
 import './form/dt-connection/dt-connection.js';
 import './form/dt-dropdown/dt-dropdown.js'
 import './form/dt-users-connection/dt-users-connection.js'
-
-export default {
-  title: 'Components/All',
-  argTypes,
-  theme: 'default',
-};
 
 const options = [
   {
@@ -76,22 +71,22 @@ const posts = [
     label: 'Jane Meldrum',
   },
 ];
-function Template(theme) {
-  return html`
-    <style>
-      ${themeCss(theme)}
-    </style>
+
+export default {
+  title: 'Components/All',
+  argTypes,
+  tags: ['!autodocs'],
+  render: (theme) => {
+    return html`
     <dt-tile
       title="Kitchen Sink Tile"
       expands: true,
     >
-      <dt-toggle id="toggleField" name="toggleField" label="Toggle Field"></dt-toggle>
-
       <dt-text id='textField' name='textField' value='' label="Text Field"></dt-text>
 
       <dt-textarea id='textareaField' name='textareaField' value='' label="Textarea Field"></dt-textarea>
 
-      <dt-number id="numberField" name="numberField" label="Number Field"></dt-number>
+      <dt-multi-text id="multiTextField" name="multiTextField" label="MultiText Field"></dt-multi-text>
 
       <dt-date id="dateField" name="dateField" label="Date Field"></dt-date>
 
@@ -114,15 +109,11 @@ function Template(theme) {
       placeholder="Select Buttons"
       value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
         options="${JSON.stringify(options)}"
-      >
-
-      </dt-multi-select-button-group>
-      <dt-dropdown text="Sample">
-      </dt-dropdown>
+      ></dt-multi-select-button-group>
 
       <dt-tags
         label="Tags Field"
-        value="${JSON.stringify([{ id: 'personal', label: 'Personal' }])}"
+        value="${JSON.stringify([ 'personal' ])}"
         options="${JSON.stringify(tags)}"
       ></dt-tags>
 
@@ -130,19 +121,13 @@ function Template(theme) {
         label="Dropdown Field"
         options="${JSON.stringify(posts)}"
       ></dt-connection>
-      <dt-users-connection
-        label="Connection Field"
-        options="${JSON.stringify(posts)}"
-      ></dt-users-connection>
 
        <dt-button id="buttonField" name="buttonField" label="Button" context="primary">
         Click Me
       </dt-button>
     </dt-tile>
-    <pre><code>
-    ${themeCss(theme)}
-    </code></pre>
   `;
-}
+  }
+};
 
-export const Components = Template.bind({});
+export const Components = {};

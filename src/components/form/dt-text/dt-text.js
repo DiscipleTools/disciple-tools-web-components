@@ -114,7 +114,7 @@ export class DtText extends DtFormBase {
     // If the Enter key is pressed, find the first button in the form and click it.
     // This replicates normal browser handling of input elements when pressing Enter
     if (keycode === 13 && this.internals.form) {
-      const button = this.internals.form.querySelector('button');
+      const button = this.internals.form.querySelector('button[type=submit]');
       if (button) {
         button.click();
       }
