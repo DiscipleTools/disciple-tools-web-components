@@ -3,6 +3,14 @@ import ApiService from './apiService.js';
 
 export default class ComponentService {
   /**
+   * Instance of ApiService created in `initialize` method
+   * @returns {ApiService}
+   */
+  get api() {
+    return this._api;
+  }
+
+  /**
    * Initialize ComponentService
    * @param postType - D.T Post Type (e.g. contacts, groups, etc.)
    * @param postId - ID of current post
@@ -15,7 +23,7 @@ export default class ComponentService {
     this.nonce = nonce;
     this.apiRoot = `${apiRoot}/`.replace('//', '/'); // ensure it ends with /
 
-    this.api = new ApiService(this.nonce, this.apiRoot);
+    this._api = new ApiService(this.nonce, this.apiRoot);
 
     this.autoSaveComponents = [
       'dt-connection',
@@ -115,7 +123,7 @@ export default class ComponentService {
       if (button) {
         button.style.display = 'none';
       }
-      const duplicates = await this.api.checkDuplicateUsers(
+      const duplicates = await this._api.checkDuplicateUsers(
         this.postType,
         this.postId
       );
@@ -169,7 +177,7 @@ export default class ComponentService {
 
       // Update post via API
       try {
-        const apiResponse = await this.api.updatePost(
+        const apiResponse = await this._api.updatePost(
           this.postType,
           this.postId ,
           apiValue
@@ -193,7 +201,7 @@ export default class ComponentService {
   const { newValue } = details;
 
   try {
-    const apiResponse = await this.api.createPost(
+    const apiResponse = await this._api.createPost(
       this.postType, newValue.el
     );
     if (apiResponse) {
@@ -226,7 +234,7 @@ export default class ComponentService {
         let values = [];
         switch (component) {
           case 'dt-button': {
-            const contactApiData = await this.api.getContactInfo(
+            const contactApiData = await this._api.getContactInfo(
               this.postType,
               this.postId
             );
@@ -234,13 +242,13 @@ export default class ComponentService {
           };
             break;
           case 'dt-list': {
-            const listResponse = await this.api.fetchPostsList(this.postType, query)
+            const listResponse = await this._api.fetchPostsList(this.postType, query)
             values = listResponse.posts
           }
           break;
           case 'dt-connection': {
             const postType = details.postType || this.postType;
-            const connectionResponse = await this.api.listPostsCompact(
+            const connectionResponse = await this._api.listPostsCompact(
               postType,
               query
             );
@@ -259,7 +267,7 @@ export default class ComponentService {
           }
           case 'dt-tags':
           default:
-            values = await this.api.getMultiSelectValues(
+            values = await this._api.getMultiSelectValues(
               this.postType,
               field,
               query
@@ -304,14 +312,14 @@ export default class ComponentService {
           case 'dt-users-connection': {
             // todo: this doesn't look like it will actually edit the field itself. And this logic should not be done inside this service. Move to theme.
             if (remove === true) {
-              apiResponse = await this.api.removePostShare(this.postType, this.postId, apiValue);
+              apiResponse = await this._api.removePostShare(this.postType, this.postId, apiValue);
               break;
             }
-            apiResponse = await this.api.addPostShare(this.postType, this.postId, apiValue)
+            apiResponse = await this._api.addPostShare(this.postType, this.postId, apiValue)
             break;
           }
           default: {
-            apiResponse = await this.api.updatePost(this.postType, this.postId, {
+            apiResponse = await this._api.updatePost(this.postType, this.postId, {
               [field]: apiValue,
             });
 
@@ -339,7 +347,7 @@ export default class ComponentService {
   }
 
   /**
-   * Conver value returned from API into what is expected by each component
+   * Convert value returned from API into what is expected by each component
    * @param {string} component Tag name of component. E.g. dt-text
    * @param {mixed} value
    * @returns {mixed}
@@ -372,7 +380,7 @@ export default class ComponentService {
 
     // Convert component value format into what the API expects
     if (value) {
-      switch (component) {
+      switch (component.toLowerCase()) {
         case 'dt-toggle':
           if (typeof value === 'string') {
             returnValue = value.toLowerCase() === 'true';

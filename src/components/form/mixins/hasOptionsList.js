@@ -118,6 +118,10 @@ export const HasOptionsList = (superClass) => class extends superClass {
   }
 
   _inputKeyDown(e) {
+
+  }
+
+  _inputKeyUp(e) {
     const keycode = e.keyCode || e.which;
 
     switch (keycode) {
@@ -155,12 +159,9 @@ export const HasOptionsList = (superClass) => class extends superClass {
         break;
       default:
         this.open = true;
+        this.query = e.target.value;
         break;
     }
-  }
-
-  _inputKeyUp(e) {
-    this.query = e.target.value;
   }
 
   /**

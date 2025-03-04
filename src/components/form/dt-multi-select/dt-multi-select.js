@@ -328,6 +328,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           <input
             type="text"
             placeholder="${this.placeholder}"
+            autocomplete="off"
             @focusin="${this._inputFocusIn}"
             @blur="${this._inputFocusOut}"
             @keydown="${this._inputKeyDown}"
