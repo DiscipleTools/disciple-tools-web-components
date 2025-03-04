@@ -634,7 +634,7 @@ export default class DtLocationMapItem extends LitElement {
             type="text"
             class="${this.disabled ? 'disabled' : null}"
             placeholder="${this.placeholder}"
-            .value="${this.metadata?.label}"
+            .value="${this.metadata?.label ?? ''}"
             .disabled=${(existingValue && hasGeometry) || this.disabled}
             @focusin="${this._inputFocusIn}"
             @blur="${this._inputFocusOut}"
