@@ -114,4 +114,8 @@ export default class DtBase extends LitElement {
 
     this._focusTarget.focus();
   }
+
+  focus() {
+    this._proxyFocus();
+  }
 }
