@@ -21,9 +21,6 @@ jobs:
       # Run tests
       - run: npm test
 
-      # Build release files
-      - run: npm run build
-
       # Publish to NPM
       - run: npm publish
         env:
