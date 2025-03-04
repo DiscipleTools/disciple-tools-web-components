@@ -103,11 +103,12 @@ describe('dt-multi-select-button-group', () => {
 
     await wait(100);
 
-    expect(input).to.have.attribute('context','success');
-    expect(el.shadowRoot.querySelector('dt-button[value=button2]'))
+    expect(el.shadowRoot.querySelector('dt-button[value=button1]'))
       .to.have.attribute('context', 'inactive');
+    expect(el.shadowRoot.querySelector('dt-button[value=button2]'))
+      .to.have.attribute('context', 'success');
 
-    expect(el.value).to.eql(['button1']);
+    expect(el.value).to.eql(['button2']);
   });
 
   it('selects option via keyboard: enter', async () => {
@@ -125,11 +126,12 @@ describe('dt-multi-select-button-group', () => {
 
     await wait(100);
 
-    expect(input).to.have.attribute('context','success');
-    expect(el.shadowRoot.querySelector('dt-button[value=button2]'))
+    expect(el.shadowRoot.querySelector('dt-button[value=button1]'))
       .to.have.attribute('context', 'inactive');
+    expect(el.shadowRoot.querySelector('dt-button[value=button2]'))
+      .to.have.attribute('context', 'success');
 
-    expect(el.value).to.eql(['button1']);
+    expect(el.value).to.eql(['button2']);
   });
 
   it('updates value attribute', async () => {

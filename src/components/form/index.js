@@ -1,7 +1,6 @@
 export { DtButton } from './dt-button/dt-button.js';
 export { DtDropdown } from './dt-dropdown/dt-dropdown.js';
 export { DtChurchHealthCircle } from './dt-church-health-circle/dt-church-health-circle.js';
-// export { DtCommunicationChannel } from './dt-multi-text/dt-multi-text.js';
 export { DtConnection } from './dt-connection/dt-connection.js';
 export { DtUsersConnection} from './dt-users-connection/dt-users-connection.js';
 export { DtDate } from './dt-date/dt-date.js';
@@ -15,6 +14,6 @@ export { DtTags } from './dt-tags/dt-tags.js';
 export { DtText } from './dt-text/dt-text.js';
 export { DtTextArea } from './dt-textarea/dt-textarea.js';
 export { DtToggle } from './dt-toggle/dt-toggle.js';
-export { DtCommChannel } from './dt-multi-text/dt-multi-text.js';
+export { DtMultiText } from './dt-multi-text/dt-multi-text.js';
 export { DtMultiSelectButtonGroup } from './dt-multi-select-button-group/dt-multi-select-button-group.js';
 // export { DtUserSelect } from './dt-user-select/dt-user-select.js';

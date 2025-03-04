@@ -102,7 +102,6 @@ export class DtDate extends DtFormBase {
         },
         reflect: true,
       },
-      onchange: { type: String },
     };
   }
 
