@@ -40,7 +40,7 @@ export class DtSingleSelect extends DtFormBase {
           font-weight: 300;
           height: 2.5rem;
           line-height: 1.5;
-          margin: 0 0 1rem;
+          margin: 0;
           padding: 0.53rem;
           padding-inline-end: 1.6rem;
           transition: border-color 0.25s ease-in-out;
