@@ -328,6 +328,7 @@ export default class ComponentService {
                 'response': apiResponse,
                 'field': field,
                 'value': apiValue,
+                'component': component,
               },
             }));
             break;
