@@ -2,7 +2,7 @@ import { useEffect } from '@storybook/preview-api';
 import { DecoratorHelpers } from '@storybook/addon-themes';
 import { DecoratorFunction, Renderer } from '@storybook/types';
 
-const { initializeThemeState, pluckThemeFromContext, useThemeParameters } = DecoratorHelpers;
+const { initializeThemeState, pluckThemeFromContext } = DecoratorHelpers;
 
 const DEFAULT_ELEMENT_SELECTOR = 'html';
 
@@ -12,7 +12,7 @@ export const withCssFileTheme = ({ themes, defaultTheme, parentSelector = DEFAUL
   initializeThemeState(Object.keys(themes), defaultTheme);
 
   return (storyFn, context) => {
-    const { themeOverride } = useThemeParameters();
+    const { themeOverride } = context.parameters.themes ?? {};
     const selected = pluckThemeFromContext(context);
 
     useEffect(() => {
