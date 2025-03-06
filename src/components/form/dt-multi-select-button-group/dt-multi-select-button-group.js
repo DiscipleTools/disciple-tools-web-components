@@ -13,7 +13,11 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       css`
         :host {
           margin-bottom: 5px;
+          --dt-button-font-size: 0.75rem;
           --dt-button-font-weight: 0;
+          --dt-button-line-height: 1em;
+          --dt-button-padding-y: 0.85em;
+          --dt-button-padding-x: 1em;
         }
         span .icon {
           vertical-align: middle;
@@ -128,11 +132,9 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       role="button"
       value="${opt.id}"
     >
-      <span class="icon">
-        ${opt.icon
-          ? html`<img src="${opt.icon}" alt="${this.iconAltText}" />`
-          : null}
-      </span>
+      ${opt.icon
+        ? html`<span class="icon"><img src="${opt.icon}" alt="${this.iconAltText}" /></span>`
+        : null}
       ${opt.label}
     </dt-button>
     `;

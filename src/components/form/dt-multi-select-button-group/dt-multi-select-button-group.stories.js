@@ -38,12 +38,10 @@ const basicOptions = [
   {
     id: 'opt7',
     label: 'Option 7',
-    "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
   },
   {
     id: 'opt8',
     label: 'Option 8',
-    "icon": 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
   },
 ];
 
