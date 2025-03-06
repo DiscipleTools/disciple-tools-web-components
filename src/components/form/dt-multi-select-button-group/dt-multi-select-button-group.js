@@ -33,10 +33,10 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
           display: inline-flex;
           flex-direction: row;
           flex-wrap: wrap;
+          gap: 5px 10px;
         }
         dt-button {
-          margin-block-end: 5px;
-          margin-inline-end: 10px;
+          margin: 0px;
         }
 
         .icon-overlay {

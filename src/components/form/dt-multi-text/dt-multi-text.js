@@ -72,9 +72,13 @@ export class DtMultiText extends DtText {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
         }
 
+        .input-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
         .field-container {
           display: flex;
-          margin-bottom: 0.5rem;
         }
         .field-container input {
           flex-grow: 1;

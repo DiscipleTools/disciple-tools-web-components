@@ -50,8 +50,7 @@ export class DtDate extends DtFormBase {
 
         .input-group {
           position: relative;
-          display: inline-flex;
-          margin: 0 0 1.0666666667rem;
+          display: flex;
           width: 100%;
         }
 

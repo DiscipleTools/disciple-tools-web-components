@@ -21,7 +21,6 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
 
         .input-group {
           color: var(--dt-multi-select-text-color, #0a0a0a);
-          margin-bottom: 1rem;
         }
         .input-group.disabled input,
         .input-group.disabled .field-container {

@@ -30,7 +30,7 @@ export class DtTextArea extends DtFormBase {
           font-weight: 300;
           height: 10rem;
           line-height: 1.5;
-          margin: 0 0 1.0666666667rem;
+          margin: 0;
           padding: var(--dt-form-padding, 0.5333333333rem);
           transition: var(
             --dt-form-transition,
