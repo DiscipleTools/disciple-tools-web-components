@@ -1,6 +1,7 @@
 import { html, css } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { when } from 'lit/directives/when.js';
 import '../../icons/dt-icon.js';
 import { DtText } from '../dt-text/dt-text.js';
 
@@ -249,7 +250,7 @@ export class DtMultiText extends DtText {
     }
   }
 
-  _inputFieldTemplate(item) {
+  _inputFieldTemplate(item, itemCount) {
     return html`
       <div class="field-container">
         <input
@@ -266,14 +267,18 @@ export class DtMultiText extends DtText {
           novalidate
         />
 
-        <button
-          class="input-addon btn-remove"
-          @click=${this._removeItem}
-          data-key="${item.key ?? item.tempKey}"
-          ?disabled=${this.disabled}
-        >
-          <dt-icon icon="mdi:close"></dt-icon>
-        </button>
+        ${when(itemCount > 1 || item.key || item.value,
+            () => html`
+              <button
+                  class="input-addon btn-remove"
+                  @click=${this._removeItem}
+                  data-key="${item.key ?? item.tempKey}"
+                  ?disabled=${this.disabled}
+              >
+                <dt-icon icon="mdi:close"></dt-icon>
+              </button>
+            `,
+            () => html``)}
         <button
           class="input-addon btn-add"
           @click=${this._addItem}
@@ -300,7 +305,7 @@ export class DtMultiText extends DtText {
       ${repeat(
         (this.value ?? []).filter(x => !x.delete),
         (x) => x.id,
-        (x) => this._inputFieldTemplate(x))
+        (x) => this._inputFieldTemplate(x, this.value.length))
       }
     `;
   }
