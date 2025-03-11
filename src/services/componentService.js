@@ -96,21 +96,25 @@ export default class ComponentService {
       selector || this.dynamicLoadComponents.join(',')
     );
 
-    // check if there is dt-modal and duplicate-detected class with it on DOM.
-    const filteredElements = Array.from(elements).filter(
-      element =>
-        element.tagName.toLowerCase() === 'dt-modal' &&
-        element.classList.contains('duplicate-detected')
-    );
-    // calling the function to check duplicates
-    if (filteredElements.length > 0) {
-      this.checkDuplicates(elements, filteredElements);
-    }
+    // // check if there is dt-modal and duplicate-detected class with it on DOM.
+    // const filteredElements = Array.from(elements).filter(
+    //   element =>
+    //     element.tagName.toLowerCase() === 'dt-modal' &&
+    //     element.classList.contains('duplicate-detected')
+    // );
+    // // calling the function to check duplicates
+    // if (filteredElements.length > 0) {
+    //   this.checkDuplicates(elements, filteredElements);
+    // }
 
     if (elements) {
-      elements.forEach(el =>
-        el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this))
-      );
+      elements.forEach(el => {
+        // prevent multiple event attachments if this is called multiple times
+        if (!el.dataset['eventDtGetData']) {
+          el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this));
+          el.dataset['eventDtGetData'] = true;
+        }
+      });
     }
   }
 
