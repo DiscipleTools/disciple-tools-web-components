@@ -142,7 +142,7 @@ export class DtButton extends DtBase {
       .dt-button[disabled] {
         opacity: 0.5;
         &:hover {
-          cursor: initial;
+          cursor: not-allowed;
         }
       }
     `;

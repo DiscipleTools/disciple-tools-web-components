@@ -76,25 +76,48 @@ export default {
   title: 'Components/All',
   argTypes,
   tags: ['!autodocs'],
-  render: (theme) => {
+  render: (args) => {
     return html`
     <dt-tile
       title="Kitchen Sink Tile"
       expands: true,
     >
-      <dt-text id='textField' name='textField' value='' label="Text Field"></dt-text>
+      <dt-text
+        id='textField'
+        name='textField'
+        value=''
+        label="Text Field"
+        ?disabled=${args.disabled}
+      ></dt-text>
 
-      <dt-textarea id='textareaField' name='textareaField' value='' label="Textarea Field"></dt-textarea>
+      <dt-textarea
+        id='textareaField'
+        name='textareaField'
+        value=''
+        label="Textarea Field"
+        ?disabled=${args.disabled}
+      ></dt-textarea>
 
-      <dt-multi-text id="multiTextField" name="multiTextField" label="MultiText Field"></dt-multi-text>
+      <dt-multi-text
+        id="multiTextField"
+        name="multiTextField"
+        label="MultiText Field"
+        ?disabled=${args.disabled}
+      ></dt-multi-text>
 
-      <dt-date id="dateField" name="dateField" label="Date Field"></dt-date>
+      <dt-date
+        id="dateField"
+        name="dateField"
+        label="Date Field"
+        ?disabled=${args.disabled}
+      ></dt-date>
 
       <dt-single-select
         label="Single Select Field"
         placeholder="Select Item"
         value="opt1"
         options="${JSON.stringify(options)}"
+        ?disabled=${args.disabled}
       ></dt-single-select>
 
       <dt-multi-select
@@ -102,32 +125,46 @@ export default {
         placeholder="Select Items"
         value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
         options="${JSON.stringify(options)}"
+        ?disabled=${args.disabled}
       ></dt-multi-select>
 
       <dt-multi-select-button-group
-      label="Multi Select Buttons"
-      placeholder="Select Buttons"
-      value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
+        label="Multi Select Buttons"
+        placeholder="Select Buttons"
+        value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
         options="${JSON.stringify(options)}"
+        ?disabled=${args.disabled}
       ></dt-multi-select-button-group>
 
       <dt-tags
         label="Tags Field"
         value="${JSON.stringify([ 'personal' ])}"
         options="${JSON.stringify(tags)}"
+        ?disabled=${args.disabled}
       ></dt-tags>
 
       <dt-connection
         label="Dropdown Field"
         options="${JSON.stringify(posts)}"
+        ?disabled=${args.disabled}
       ></dt-connection>
 
-       <dt-button id="buttonField" name="buttonField" label="Button" context="primary">
-        Click Me
-      </dt-button>
+       <dt-button
+         id="buttonField"
+         name="buttonField"
+         label="Button"
+         context="primary"
+         ?disabled=${args.disabled}
+       >Click Me</dt-button>
     </dt-tile>
   `;
   }
 };
 
 export const Components = {};
+
+export const Disabled = {
+  args: {
+    disabled: true,
+  }
+};

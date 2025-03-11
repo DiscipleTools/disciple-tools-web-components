@@ -49,6 +49,14 @@ export class DtSingleSelect extends DtFormBase {
           width: 100%;
           text-transform: none;
         }
+        select:disabled,
+        select[readonly] {
+          background-color: var(
+            --dt-single-select-disabled-background-color,
+            var(--dt-form-disabled-background-color, #e6e6e6)
+          );
+          cursor: not-allowed;
+        }
         [dir='rtl'] select {
           background-position: 15px calc(1em + 2px), 20px calc(1em + 2px),
             2.5em 0.5em;

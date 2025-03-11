@@ -43,6 +43,10 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
           align-items: flex-start;
           padding-block: 4px;
         }
+
+        .input-group.disabled {
+          background-color: inherit;
+        }
       `
     ];
   };
