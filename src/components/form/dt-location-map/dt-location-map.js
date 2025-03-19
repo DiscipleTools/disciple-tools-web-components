@@ -211,7 +211,7 @@ export class DtLocationMap extends DtFormBase {
       ${this.labelTemplate()}
 
       ${repeat(this.locations || [], (opt) => opt.id, (opt, idx) => this.renderItem(opt, idx))}
-      ${!this.open
+      ${!this.open && (this.limit == 0 || this.locations.length < this.limit)
         ? html`<button @click="${this.addNew}">Add New</button>`
         : null}
     `;
