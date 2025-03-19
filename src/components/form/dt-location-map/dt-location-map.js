@@ -20,6 +20,10 @@ export class DtLocationMap extends DtFormBase {
         type: Boolean,
         state: true,
       },
+      limit: {
+        type: Number,
+        attribute: 'limit',      
+      },
       onchange: { type: String },
       mapboxToken: {
         type: String,
@@ -52,6 +56,7 @@ export class DtLocationMap extends DtFormBase {
 
   constructor() {
     super();
+    this.limit = 0; // 0 means no limit
     this.value = [];
     this.locations = [{
       id: Date.now(),
@@ -112,11 +117,12 @@ export class DtLocationMap extends DtFormBase {
   updateLocationList() {
     if (!this.disabled && (this.open || !this.value || !this.value.length)) {
       this.open = true;
+      const currentLocations = (this.value || []).filter(i => i.label);
+      const canAddMore = this.limit === 0 || currentLocations.length < this.limit;
+      
       this.locations = [
-        ...(this.value || []).filter(i => i.label),
-        {
-          id: Date.now(),
-        }
+        ...currentLocations,
+        ...(canAddMore ? [{ id: Date.now() }] : [])
       ];
     } else {
       this.locations = [
@@ -175,8 +181,11 @@ export class DtLocationMap extends DtFormBase {
   }
 
   addNew() {
-    this.open = true;
-    this.updateLocationList();
+    const currentLocations = (this.value || []).filter(i => i.label);
+    if (this.limit === 0 || currentLocations.length < this.limit) {
+      this.open = true;
+      this.updateLocationList();
+    }
   }
 
   renderItem(opt) {
@@ -202,7 +211,7 @@ export class DtLocationMap extends DtFormBase {
       ${this.labelTemplate()}
 
       ${repeat(this.locations || [], (opt) => opt.id, (opt, idx) => this.renderItem(opt, idx))}
-      ${!this.open
+      ${!this.open && (this.limit == 0 || this.locations.length < this.limit)
         ? html`<button @click="${this.addNew}">Add New</button>`
         : null}
     `;

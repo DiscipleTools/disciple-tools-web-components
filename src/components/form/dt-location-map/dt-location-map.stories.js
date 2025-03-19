@@ -111,6 +111,16 @@ export default {
         },
       },
     },
+    limit: {
+      control: 'number',
+      description: 'Maximum number of locations that can be selected',
+      table: {
+        type: {
+          summary: 'limit',
+          detail: '<dt-location-map limit="1" />',
+        },
+      },
+    },
     ...argTypes,
   },
   args: {
@@ -138,6 +148,7 @@ function Template(args) {
     open,
     slot,
     i18n,
+    limit,
   } = args;
   return html`
     <style>
@@ -160,6 +171,7 @@ function Template(args) {
       ?saved="${saved}"
       .open="${open}"
       i18n="${JSON.stringify(i18n)}"
+      limit="${limit}"
     >
       ${slot}
     </dt-location-map>
@@ -265,4 +277,10 @@ LocalizeRTL.args = {
       "label": "نيويورك ، نيويورك ، الولايات المتحدة"
     },
   ],
+};
+
+export const WithLimit = Template.bind({});
+WithLimit.args = {
+  value: [basicOptions[0]],
+  limit: 1,
 };
