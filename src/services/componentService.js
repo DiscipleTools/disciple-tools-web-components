@@ -21,9 +21,9 @@ export default class ComponentService {
     this.postType = postType;
     this.postId = postId;
     this.nonce = nonce;
-    this.apiRoot = `${apiRoot}/`.replace('//', '/'); // ensure it ends with /
 
-    this._api = new ApiService(this.nonce, this.apiRoot);
+    this._api = new ApiService(this.nonce, apiRoot);
+    this.apiRoot = this._api.apiRoot;
 
     this.autoSaveComponents = [
       'dt-connection',

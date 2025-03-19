@@ -5,8 +5,18 @@ export default class ApiService {
    */
   constructor(nonce, apiRoot = '/wp-json') {
     this.nonce = nonce;
-    this.apiRoot = apiRoot.endsWith("/")? `${apiRoot}`: `${apiRoot} + "/"`;// ensure it ends with /
-    this.apiRoot = `/${apiRoot}/`.replace(/\/\//g, '/'); // ensure it starts/ends with /
+    let root = apiRoot;
+
+    // strip out domain name (up to first slash)
+    if (root.match('^http')) {
+      root = root.replace(/^http[s]?:\/\/.*?\//, '');
+    }
+
+    // ensure it starts/ends with /
+    // by adding start/end slash and replacing any doubles
+    root = `/${root}/`.replace(/\/\//g, '/');
+
+    this.apiRoot = root;
   }
 
   /**

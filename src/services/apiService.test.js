@@ -20,6 +20,23 @@ describe('ApiService', () => {
         const service = new ApiService(null, '/root/');
         expect(service.apiRoot).to.equal('/root/');
       });
+
+      it('handles http domain', async () => {
+        const service = new ApiService(null, 'http://dt.local/root/');
+        expect(service.apiRoot).to.equal('/root/');
+      });
+      it('handles https domain', async () => {
+        const service = new ApiService(null, 'https://dt.local/root/');
+        expect(service.apiRoot).to.equal('/root/');
+      });
+      it('handles https subdomain', async () => {
+        const service = new ApiService(null, 'https://site-one.dt.local/root/');
+        expect(service.apiRoot).to.equal('/root/');
+      });
+      it('handles domain with subdirectory', async () => {
+        const service = new ApiService(null, 'https://dt.local/site1/root/');
+        expect(service.apiRoot).to.equal('/site1/root/');
+      });
     });
   });
 });
