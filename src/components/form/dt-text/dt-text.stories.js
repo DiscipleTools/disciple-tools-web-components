@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { userEvent, within } from '@storybook/test';
 import { argTypes } from '../../../stories-theme.js';
@@ -33,10 +34,10 @@ export default {
       id = 'name',
       name = 'field-name',
       label = 'Field Name',
-      value = '',
+      value,
       disabled = false,
       required = false,
-      requiredMessage = '',
+      requiredMessage,
       icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
       iconAltText = 'Icon Alt Text',
       privateLabel,
@@ -49,21 +50,21 @@ export default {
     } = args;
     return html`
     <dt-text
-      id=${id}
-      name=${name}
-      label=${label}
-      value=${value}
-      type=${type}
+      id=${ifDefined(id)}
+      name=${ifDefined(name)}
+      label=${ifDefined(label)}
+      value=${ifDefined(value)}
+      type=${ifDefined(type)}
       ?disabled=${disabled}
       ?required=${required}
-      requiredMessage=${requiredMessage}
-      icon="${icon}"
-      iconAltText="${iconAltText}"
+      requiredMessage=${ifDefined(requiredMessage)}
+      icon="${ifDefined(icon)}"
+      iconAltText="${ifDefined(iconAltText)}"
       ?private=${args.private}
-      privateLabel="${privateLabel}"
+      privateLabel="${ifDefined(privateLabel)}"
       ?loading=${loading}
       ?saved=${saved}
-      error="${error}"
+      error="${ifDefined(error)}"
       @change=${onChange}
     >
       ${slot}
@@ -79,8 +80,7 @@ export const Empty = {};
 export const SvgIcon = {
   args: {
     icon: null,
-    // prettier-ignore
-    slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
+    slot: 'SvgIcon',
   }
 };
 
@@ -162,8 +162,9 @@ export const LocalizeRTL = {
     value: 'راد أن يشع',
   }
 };
+/*// requires addon-interactions v8.6
 export const Focus = {
   play: async () => {
     document.querySelector('dt-text').focus();
   }
-};
+};*/
