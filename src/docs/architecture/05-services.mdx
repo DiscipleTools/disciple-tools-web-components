@@ -98,11 +98,40 @@ to setup all of the needed event listeners:
 const componentService = new ComponentService(postType, postId, nonce, apiRoot);
 componentService.initialize();
 ```
+The constructor will instantiate the ApiService for use within event listeners within
+the service. The `initialize()` method will attach various event listeners. These
+two methods should generally be the only methods needed in client scripts alongside
+web components.
 
-The **initialize** method will do two things: 1) listen for change events on all D.T components
-and automatically save the updated values via API, and 2) setup `load` events for all components
-that need to request data from the API for a list of options.
+### Methods
 
-The service will automatically map the format of the value from the JS object in the component
-to the schema that the API requires. This way you don't have to know which format is needed in which
-place - the service handles it for you.
+#### `initialize()`
+Convenience method to call two other service methods:
+
+- If service has a `postId` (from the constructor), calls `enableAutoSave()`. This will connect change events to the API on the post detail screen.
+- Calls `attachLoadEvents()` to connect `dt:get-data` events to API for fetching field options.
+
+#### `attachLoadEvents(selector)`
+For all components in `this.dynamicLoadComponents` (or overridden by `selector` parameter),
+this will attach event listeners to the `dt:get-data` event that is dispatched by components
+that have an autocomplete function or need a list of values from the API.
+
+#### `enableAutoSave(selector)`
+For all components in `this.autoSaveComponents` (or overridden by `selector` parameter),
+this will attach event listeners to the `change` event that is dispatched by form
+components and call the `handleChangeEvent()` function.
+
+#### `handleChangeEvent(event)`
+Calls the `convertValue()` function to convert the value of the component to the format
+required by the API and then send the value to the API to be saved.
+
+While saving, this sets the `loading` attribute and will set the `saved` or `error` attributes
+on success or failure of the API request.
+
+#### `convertValue(component, value, oldValue)`
+Based on the name of the `component`, this transforms the value from the format returned
+by the component to the format required by the API.
+
+#### `convertApiValue(component, value)`
+Based on the name of the `component`, this transforms the value from the format returned
+by the API to the format required by the component.
