@@ -38,7 +38,7 @@ function Template(args) {
     placeholder,
     disabled = false,
     required = false,
-    requiredMessage = '',
+    requiredMessage,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     iconAltText = 'Icon Alt Text',
     isPrivate,

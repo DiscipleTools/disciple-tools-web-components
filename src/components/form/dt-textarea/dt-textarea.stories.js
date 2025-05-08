@@ -35,10 +35,13 @@ function Template(args) {
     label = 'Field Name',
     value = '',
     disabled,
+    required = false,
+    requiredMessage,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     isPrivate,
     loading,
     saved,
+    error,
     onChange,
     slot,
   } = args;
@@ -48,10 +51,13 @@ function Template(args) {
       name=${name}
       label=${label}
       ?disabled=${disabled}
+      ?required=${required}
+      requiredMessage=${requiredMessage}
       icon=${icon}
       ?private=${isPrivate}
       ?loading=${loading}
       ?saved=${saved}
+      error=${error}
       @change=${onChange}
       .value=${value}
     >
@@ -109,9 +115,15 @@ BasicForm.args = {
   value: 'Lorem Ipsum',
 };
 
-export const required = Template.bind({});
-required.args = {
+export const Required = Template.bind({});
+Required.args = {
   required: true,
+}
+
+export const RequiredCustomMessage = Template.bind({});
+RequiredCustomMessage.args = {
+  required: true,
+  requiredMessage: 'Custom error message',
 };
 
 export const LocalizeRTL = Template.bind({});

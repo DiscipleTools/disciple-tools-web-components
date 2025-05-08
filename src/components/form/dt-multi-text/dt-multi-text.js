@@ -310,6 +310,31 @@ export class DtMultiText extends DtText {
     `;
   }
 
+  _validateRequired() {
+    const { value } = this;
+
+    if (this.required) {
+      this.invalid = true;
+    }
+    for (var i = 0; i < value.length; i++) {
+      if (value[i].value !== '') {
+        this.invalid = false;
+        if (this.requiredMessage == null || this.requiredMessage == '') {
+          this.requiredMessage = 'This field is required';
+        }
+      }
+      //Do something
+    }
+  }
+
+  get classes() {
+    const classes = {
+      'text-input': true,
+      invalid: this.touched && this.invalid,
+    };
+    return classes;
+  }
+
   render() {
     return html`
       ${this.labelTemplate()}
@@ -317,9 +342,12 @@ export class DtMultiText extends DtText {
         ${this._renderInputFields()}
 
         ${this.touched && this.invalid
-          ? html`<dt-exclamation-circle
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
               class="icon-overlay alert"
-            ></dt-exclamation-circle>`
+              tooltip="${this.requiredMessage}"
+              size="2rem"
+            ></dt-icon>`
           : null}
         ${this.error
           ? html`<dt-icon
