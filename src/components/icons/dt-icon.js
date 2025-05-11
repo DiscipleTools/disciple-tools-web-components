@@ -12,6 +12,7 @@ export class DtIcon extends DtBase {
         width: fit-content;
         height: fit-content;
         position: relative;
+        font-family: var(--font-family);
       }
       .tooltip {
         --tt-padding: 0.25rem;
