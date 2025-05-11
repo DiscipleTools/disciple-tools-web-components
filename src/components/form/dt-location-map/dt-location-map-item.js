@@ -183,7 +183,7 @@ export default class DtLocationMapItem extends LitElement {
           justify-content: center;
           align-items: center;
           aspect-ratio: 1/1;
-          padding: 10px;
+          padding: 0.6em;
           border-collapse: collapse;
           color: var(--dt-location-map-button-color, #cc4b37);
           background-color: var(--dt-location-map-background-color, buttonface);
@@ -195,6 +195,7 @@ export default class DtLocationMapItem extends LitElement {
               inset 0 1px 2px hsl(0deg 0% 4% / 10%)
             )
           );
+          min-width: 3em;
         }
         .field-container .input-addon dt-icon {
           display: flex;
