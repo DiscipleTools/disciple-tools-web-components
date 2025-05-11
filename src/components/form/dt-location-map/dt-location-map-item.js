@@ -111,7 +111,6 @@ export default class DtLocationMapItem extends LitElement {
           appearance: none;
           background-color: var(--dt-location-map-background-color, #fefefe);
           border: 1px solid var(--dt-location-map-border-color, #fefefe);
-          border-radius: var(--dt-location-map-border-radius, 0);
           box-shadow: var(
             --dt-location-map-box-shadow,
             var(
@@ -162,8 +161,17 @@ export default class DtLocationMapItem extends LitElement {
         }
 
         .field-container {
+          --dt-location-map-border-radius: var(--dt-form-border-radius, 10px);
           display: flex;
           margin-bottom: 0.5rem;
+        }
+        .field-container > *:first-child {
+          border-start-start-radius: var(--dt-location-map-border-radius, 0);
+          border-end-start-radius: var(--dt-location-map-border-radius, 0);
+        }
+        .field-container > *:last-child {
+          border-start-end-radius: var(--dt-location-map-border-radius, 0);
+          border-end-end-radius: var(--dt-location-map-border-radius, 0);
         }
         .field-container input {
           flex-grow: 1;
@@ -180,7 +188,6 @@ export default class DtLocationMapItem extends LitElement {
           color: var(--dt-location-map-button-color, #cc4b37);
           background-color: var(--dt-location-map-background-color, buttonface);
           border: var(--dt-form-border-width, 1px) solid var(--dt-location-map-border-color, #fefefe);
-          border-radius: var(--dt-location-map-border-radius, 0);
           box-shadow: var(
             --dt-location-map-box-shadow,
             var(
