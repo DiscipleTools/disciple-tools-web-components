@@ -135,21 +135,23 @@ export const BasicForm = {
 };
 
 export const Required = {
+  decorators: [FormDecorator],
   args: {
     required: true,
+  }
+};
+
+export const RequiredCustomMessage = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+    requiredMessage: 'Custom error message',
   }
 };
 
 export const Password = {
   args: {
     type: 'password',
-  }
-};
-
-export const RequiredCustomMessage = {
-  args: {
-    required: true,
-    requiredMessage: 'Custom error message',
   }
 };
 
