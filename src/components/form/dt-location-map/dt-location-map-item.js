@@ -659,7 +659,7 @@ export default class DtLocationMapItem extends LitElement {
             @click=${this._openMapModal}
             ?disabled=${this.disabled}
           >
-            <dt-icon icon="mdi:map"></dt-icon>
+            <slot name="map-icon"><dt-icon icon="mdi:map"></dt-icon></slot>
           </button>
           ` : null }
           ${existingValue ? html`
@@ -668,7 +668,7 @@ export default class DtLocationMapItem extends LitElement {
             @click=${this._delete}
             ?disabled=${this.disabled}
           >
-            <dt-icon icon="mdi:trash-can-outline"></dt-icon>
+            <slot name="delete-icon"><dt-icon icon="mdi:trash-can-outline"></dt-icon></slot>
           </button>
           ` : html`
           <button
@@ -676,7 +676,7 @@ export default class DtLocationMapItem extends LitElement {
             @click=${this._openMapModal}
             ?disabled=${this.disabled}
           >
-            <dt-icon icon="mdi:map-marker-radius"></dt-icon>
+            <slot name="pin-icon"><dt-icon icon="mdi:map-marker-radius"></dt-icon></slot>
           </button>
           ` }
         </div>
