@@ -162,6 +162,12 @@ AutoSave.args = {
   onchange: 'onAutoSave(event)',
 };
 
+export const DisableDeleteButton = Template.bind({});
+DisableDeleteButton.args = {
+  metadata: basicOptions[0],
+  disableDeleteButton: true,
+};
+
 export const Disabled = Template.bind({});
 Disabled.args = {
   value: [basicOptions[0]],
