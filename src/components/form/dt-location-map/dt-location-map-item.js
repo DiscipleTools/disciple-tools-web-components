@@ -189,6 +189,10 @@ export default class DtLocationMapItem extends LitElement {
             )
           );
         }
+        .field-container .input-addon dt-icon {
+          display: flex;
+          font-size: var(--dt-location-map-icon-size, 1rem);
+        }
         .field-container .input-addon:hover {
           background-color: var(--dt-location-map-button-hover-background-color, #cc4b37);
           color: var(--dt-location-map-button-hover-color, #ffffff);
