@@ -167,6 +167,7 @@ export default class DtLocationMapItem extends LitElement {
         }
         .field-container input {
           flex-grow: 1;
+          border-width: var(--dt-form-border-width, 1px);
         }
         .field-container .input-addon {
           flex-shrink: 1;
@@ -175,11 +176,10 @@ export default class DtLocationMapItem extends LitElement {
           align-items: center;
           aspect-ratio: 1/1;
           padding: 10px;
-          border: solid 1px gray;
           border-collapse: collapse;
           color: var(--dt-location-map-button-color, #cc4b37);
           background-color: var(--dt-location-map-background-color, buttonface);
-          border: 1px solid var(--dt-location-map-border-color, #fefefe);
+          border: var(--dt-form-border-width, 1px) solid var(--dt-location-map-border-color, #fefefe);
           border-radius: var(--dt-location-map-border-radius, 0);
           box-shadow: var(
             --dt-location-map-box-shadow,
