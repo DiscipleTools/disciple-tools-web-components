@@ -162,7 +162,7 @@ export default class DtLocationMapItem extends LitElement {
         }
 
         .field-container {
-          --dt-location-map-border-radius: var(--dt-form-border-radius, 10px);
+          --dt-location-map-border-radius: var(--dt-form-border-radius, 0);
           display: flex;
           margin-bottom: 0.5rem;
         }
