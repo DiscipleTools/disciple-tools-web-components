@@ -33,7 +33,6 @@ export default class DtLocationMapItem extends LitElement {
       },
       loading: { type: Boolean },
       saved: { type: Boolean },
-      disableDeleteButton: { type: Boolean },
       filteredOptions: { type: Array, state: true },
     };
   }
@@ -247,7 +246,6 @@ export default class DtLocationMapItem extends LitElement {
     this.filteredOptions = [];
     this.detectTap = false;
     this.debounceTimer = null;
-    this.disableDeleteButton = false;
   }
 
   connectedCallback() {
@@ -650,7 +648,7 @@ export default class DtLocationMapItem extends LitElement {
             class="${this.disabled ? 'disabled' : null}"
             placeholder="${this.placeholder}"
             .value="${this.metadata?.label ?? ''}"
-            .disabled=${(!this.disableDeleteButton && existingValue && hasGeometry) || this.disabled}
+            .disabled=${(existingValue && hasGeometry) || this.disabled}
             @focusin="${this._inputFocusIn}"
             @blur="${this._inputFocusOut}"
             @keydown="${this._inputKeyDown}"
@@ -667,23 +665,21 @@ export default class DtLocationMapItem extends LitElement {
           </button>
           ` : null }
           ${existingValue ? html`
-            ${this.disableDeleteButton ? null : html`
-              <button
-                class="input-addon btn-delete"
-                @click=${this._delete}
-                ?disabled=${this.disabled}
-              >
-                <slot name="delete-icon"><dt-icon icon="mdi:trash-can-outline"></dt-icon></slot>
-              </button>
-            `}
+          <button
+            class="input-addon btn-delete"
+            @click=${this._delete}
+            ?disabled=${this.disabled}
+          >
+            <slot name="delete-icon"><dt-icon icon="mdi:trash-can-outline"></dt-icon></slot>
+          </button>
           ` : html`
-            <button
-              class="input-addon btn-pin"
-              @click=${this._openMapModal}
-              ?disabled=${this.disabled}
-            >
-              <slot name="pin-icon"><dt-icon icon="mdi:map-marker-radius"></dt-icon></slot>
-            </button>
+          <button
+            class="input-addon btn-pin"
+            @click=${this._openMapModal}
+            ?disabled=${this.disabled}
+          >
+            <slot name="pin-icon"><dt-icon icon="mdi:map-marker-radius"></dt-icon></slot>
+          </button>
           ` }
         </div>
         <ul class="option-list" style=${styleMap(optionListStyles)}>
