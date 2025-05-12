@@ -86,6 +86,17 @@ export default {
         },
       },
     },
+    disableDeleteButton: {
+      control: 'boolean',
+      description:
+        '(true|false) If attribute is present, the delete button will be disabled',
+      table: {
+        type: {
+          summary: 'disableDeleteButton',
+          detail: '<dt-location disableDeleteButton />',
+        },
+      },
+    },
     ...argTypes,
   },
   args: {
@@ -106,6 +117,7 @@ function Template(args) {
     onchange,
     open,
     i18n,
+    disableDeleteButton,
   } = args;
   return html`
     <style>
@@ -120,6 +132,7 @@ function Template(args) {
       ?disabled=${disabled}
       ?loading="${loading}"
       ?saved="${saved}"
+      ?disableDeleteButton="${disableDeleteButton}"
       .open="${open}"
       i18n="${JSON.stringify(i18n)}"
     >
@@ -160,6 +173,12 @@ Open.args = {
 export const AutoSave = Template.bind({});
 AutoSave.args = {
   onchange: 'onAutoSave(event)',
+};
+
+export const DisableDeleteButton = Template.bind({});
+DisableDeleteButton.args = {
+  metadata: basicOptions[0],
+  disableDeleteButton: true,
 };
 
 export const Disabled = Template.bind({});
