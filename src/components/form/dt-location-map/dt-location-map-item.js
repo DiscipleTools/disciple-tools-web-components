@@ -167,12 +167,12 @@ export default class DtLocationMapItem extends LitElement {
           margin-bottom: 0.5rem;
         }
         .field-container > *:first-child {
-          border-start-start-radius: var(--dt-location-map-border-radius, 0);
-          border-end-start-radius: var(--dt-location-map-border-radius, 0);
+          border-start-start-radius: var(--dt-location-map-border-radius);
+          border-end-start-radius: var(--dt-location-map-border-radius);
         }
         .field-container > *:last-child {
-          border-start-end-radius: var(--dt-location-map-border-radius, 0);
-          border-end-end-radius: var(--dt-location-map-border-radius, 0);
+          border-start-end-radius: var(--dt-location-map-border-radius);
+          border-end-end-radius: var(--dt-location-map-border-radius);
         }
         .field-container input {
           flex-grow: 1;
