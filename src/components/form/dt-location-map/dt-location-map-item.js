@@ -42,6 +42,7 @@ export default class DtLocationMapItem extends LitElement {
     return [
       css`
         :host {
+          --dt-location-map-border-color: var(--dt-form-border-color, #fefefe);
           position: relative;
           font-family: Helvetica, Arial, sans-serif;
           display: block;
@@ -111,7 +112,7 @@ export default class DtLocationMapItem extends LitElement {
           color: var(--dt-form-text-color, #000);
           appearance: none;
           background-color: var(--dt-location-map-background-color, #fefefe);
-          border: 1px solid var(--dt-location-map-border-color, #fefefe);
+          border: 1px solid var(--dt-location-map-border-color);
           box-shadow: var(
             --dt-location-map-box-shadow,
             var(
@@ -188,7 +189,7 @@ export default class DtLocationMapItem extends LitElement {
           border-collapse: collapse;
           color: var(--dt-location-map-button-color, #cc4b37);
           background-color: var(--dt-location-map-background-color, buttonface);
-          border: var(--dt-form-border-width, 1px) solid var(--dt-location-map-border-color, #fefefe);
+          border: var(--dt-form-border-width, 1px) solid var(--dt-location-map-border-color);
           box-shadow: var(
             --dt-location-map-box-shadow,
             var(
