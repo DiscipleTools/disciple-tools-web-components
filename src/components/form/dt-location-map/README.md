@@ -23,10 +23,27 @@ Location field using Mapbox to search and geocode locations
 | `icon-start` | Icon to be displayed before label. Use if you want to embed an SVG directly on the page without an `img` tag |
 
 ## CSS Custom Properties
-| Custom Properties   | Default Value   |
-|---------------------|-----------------|
-| `--dt-form-border-color` | `#cacaca`   |
 
+### `dt-location-map-item`
+
+| Custom Properties                       | Default Value                           | 
+|-----------------------------------------|-----------------------------------------|
+| `--dt-form-border-color`                | `#cacaca`                               |
+| `--dt-location-map-background-color`    | `#fefefe`                               |
+| `--dt-location-map-text-color`          | `#000`                                  |
+| `--dt-location-map-padding`             | `0.5rem`                                |
+| `--dt-location-map-border`              | `1px solid #cacaca`                     |
+| `--dt-location-map-border-radius`       | `0`                                     |
+| `--dt-location-map-box-shadow`          | `inset 0 1px 2px hsl(0deg 0% 4% / 10%)` |
+| `--dt-location-map-hover-background`    | `#f8f8f8`                               |
+| `--dt-location-map-hover-border`        | `1px solid #b1b1b1`                     |
+| `--dt-location-map-selected-background` | `#e6e6e6`                               |
+| `--dt-location-map-selected-border`     | `1px solid #acacac`                     |
+| `--dt-location-map-disabled-background` | `#e6e6e6`                               |
+| `--dt-location-map-disabled-text`       | `#999`                                  |
+| `--dt-location-map-placeholder-color`   | `#999`                                  |
+| `--dt-location-map-item-height`         | `2.5rem`                                |
+| `--dt-location-map-item-margin`         | `0.25rem`                               |
 
 ## Feature Status
 - [x] label
