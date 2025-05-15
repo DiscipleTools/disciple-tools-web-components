@@ -38,6 +38,8 @@ function Template(args) {
     value = '',
     timestamp = 0,
     disabled,
+    required = false,
+    requiredMessage,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     loading,
     saved,
@@ -53,11 +55,13 @@ function Template(args) {
       value=${value}
       timestamp=${timestamp}
       ?disabled=${disabled}
+      ?required=${required}
+      requiredMessage=${requiredMessage}
       icon=${icon}
       ?private=${args.private}
       ?loading=${loading}
       ?saved=${saved}
-      ?error=${error}
+      error=${error}
       @change=${onChange}
     >
       ${slot}
@@ -110,13 +114,24 @@ Saved.args = {
 };
 export const Error = Template.bind({});
 Error.args = {
-  error: true,
+  error: 'Custom error message',
 };
 
 export const BasicForm = Template.bind({});
 BasicForm.decorators = [FormDecorator];
 BasicForm.args = {
   value: '2020-01-01',
+};
+
+export const Required = Template.bind({});
+Required.args = {
+  required: true,
+}
+
+export const RequiredCustomMessage = Template.bind({});
+RequiredCustomMessage.args = {
+  required: true,
+  requiredMessage: 'Custom error message',
 };
 
 export const LocalizeRTL = Template.bind({});

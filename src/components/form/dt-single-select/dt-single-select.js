@@ -1,5 +1,6 @@
 import { html, css } from 'lit';
 import DtFormBase from '../dt-form-base.js';
+import { classMap } from 'lit/directives/class-map.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
 
@@ -84,6 +85,9 @@ export class DtSingleSelect extends DtFormBase {
           height: 2.5rem;
           inset-inline-end: 2.5rem;
         }
+        select.invalid {
+          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+        }
       `,
     ];
   }
@@ -149,6 +153,37 @@ export class DtSingleSelect extends DtFormBase {
     this.dispatchEvent(event);
   }
 
+  _validateRequired() {
+    const { value } = this;
+
+    var empty = true;
+
+    if (value != undefined) {
+      for (var i = 0; i < value.length; i++) {
+        if (value[i].charAt(0) != '-') {
+          empty = false;
+        }
+      }
+    }
+
+    if (empty == true && this.required) {
+      this.invalid = true;
+      if (this.requiredMessage == null || this.requiredMessage == '') {
+        this.requiredMessage = 'This field is required';
+      }
+    } else {
+      this.invalid = false;
+    }
+  }
+
+  get classes() {
+    const classes = {
+      invalid: this.touched && this.invalid,
+      'color-select': this.isColorSelect(),
+    };
+    return classes;
+  }
+
   render() {
     return html`
       ${this.labelTemplate()}
@@ -158,9 +193,10 @@ export class DtSingleSelect extends DtFormBase {
           name="${this.name}"
           aria-label="${this.name}"
           @change="${this._change}"
-          class="${this.isColorSelect() ? 'color-select' : ''}"
+          class="${classMap(this.classes)}"
           style="background-color: ${this.color};"
           ?disabled="${this.disabled}"
+          ?required=${this.required}
         >
           <option disabled selected hidden value="">${this.placeholder}</option>
 
@@ -173,6 +209,22 @@ export class DtSingleSelect extends DtFormBase {
             `
           )}
         </select>
+        ${this.touched && this.invalid
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.requiredMessage}"
+              size="2rem"
+            ></dt-icon>`
+          : null}
+        ${this.error
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.error}"
+              size="2rem"
+            ></dt-icon>`
+          : null}
         ${this.loading
           ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
           : null}
