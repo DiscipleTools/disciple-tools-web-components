@@ -41,6 +41,7 @@ export default class DtLocationMapItem extends LitElement {
     return [
       css`
         :host {
+          --dt-location-map-border-color: var(--dt-form-border-color, #fefefe);
           position: relative;
           font-family: Helvetica, Arial, sans-serif;
           display: block;
@@ -110,8 +111,7 @@ export default class DtLocationMapItem extends LitElement {
           color: var(--dt-form-text-color, #000);
           appearance: none;
           background-color: var(--dt-location-map-background-color, #fefefe);
-          border: 1px solid var(--dt-location-map-border-color, #fefefe);
-          border-radius: var(--dt-location-map-border-radius, 0);
+          border: 1px solid var(--dt-location-map-border-color);
           box-shadow: var(
             --dt-location-map-box-shadow,
             var(
@@ -162,11 +162,21 @@ export default class DtLocationMapItem extends LitElement {
         }
 
         .field-container {
+          --dt-location-map-border-radius: var(--dt-form-border-radius, 0);
           display: flex;
           margin-bottom: 0.5rem;
         }
+        .field-container > *:first-child {
+          border-start-start-radius: var(--dt-location-map-border-radius);
+          border-end-start-radius: var(--dt-location-map-border-radius);
+        }
+        .field-container > *:last-child {
+          border-start-end-radius: var(--dt-location-map-border-radius);
+          border-end-end-radius: var(--dt-location-map-border-radius);
+        }
         .field-container input {
           flex-grow: 1;
+          border-width: var(--dt-form-border-width, 1px);
         }
         .field-container .input-addon {
           flex-shrink: 1;
@@ -174,13 +184,11 @@ export default class DtLocationMapItem extends LitElement {
           justify-content: center;
           align-items: center;
           aspect-ratio: 1/1;
-          padding: 10px;
-          border: solid 1px gray;
+          padding: 0.6em;
           border-collapse: collapse;
           color: var(--dt-location-map-button-color, #cc4b37);
           background-color: var(--dt-location-map-background-color, buttonface);
-          border: 1px solid var(--dt-location-map-border-color, #fefefe);
-          border-radius: var(--dt-location-map-border-radius, 0);
+          border: var(--dt-form-border-width, 1px) solid var(--dt-location-map-border-color);
           box-shadow: var(
             --dt-location-map-box-shadow,
             var(
@@ -188,6 +196,11 @@ export default class DtLocationMapItem extends LitElement {
               inset 0 1px 2px hsl(0deg 0% 4% / 10%)
             )
           );
+          min-width: 3em;
+        }
+        .field-container .input-addon dt-icon {
+          display: flex;
+          font-size: var(--dt-location-map-icon-size, 1rem);
         }
         .field-container .input-addon:hover {
           background-color: var(--dt-location-map-button-hover-background-color, #cc4b37);
@@ -648,7 +661,7 @@ export default class DtLocationMapItem extends LitElement {
             @click=${this._openMapModal}
             ?disabled=${this.disabled}
           >
-            <dt-icon icon="mdi:map"></dt-icon>
+            <slot name="map-icon"><dt-icon icon="mdi:map"></dt-icon></slot>
           </button>
           ` : null }
           ${existingValue ? html`
@@ -657,7 +670,7 @@ export default class DtLocationMapItem extends LitElement {
             @click=${this._delete}
             ?disabled=${this.disabled}
           >
-            <dt-icon icon="mdi:trash-can-outline"></dt-icon>
+            <slot name="delete-icon"><dt-icon icon="mdi:trash-can-outline"></dt-icon></slot>
           </button>
           ` : html`
           <button
@@ -665,7 +678,7 @@ export default class DtLocationMapItem extends LitElement {
             @click=${this._openMapModal}
             ?disabled=${this.disabled}
           >
-            <dt-icon icon="mdi:map-marker-radius"></dt-icon>
+            <slot name="pin-icon"><dt-icon icon="mdi:map-marker-radius"></dt-icon></slot>
           </button>
           ` }
         </div>
