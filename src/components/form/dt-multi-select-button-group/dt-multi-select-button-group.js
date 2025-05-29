@@ -1,6 +1,7 @@
 import { html, css } from 'lit';
 import DtFormBase from '../dt-form-base.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { classMap } from 'lit/directives/class-map.js';
 import '../dt-button/dt-button.js';
 
 /**
@@ -50,7 +51,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       `
     ];
   };
-
+  //border: 1px solid var(--dt-text-border-color-alert, var(--alert-color));
   constructor() {
     super();
     this.options = [];
@@ -122,7 +123,8 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
 
   _renderButton(opt) {
     const isSelected = (this.value ?? []).includes(opt.id);
-    const context = isSelected ? 'success' : 'inactive';
+    const context = isSelected ? 'success' : this.invalid ? 'alert' : 'inactive';
+    const outline = this.outline ?? this.invalid;
 
     return html`
     <dt-button
@@ -132,7 +134,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       .value=${opt.id}
       @click="${this._clickOption}"
       ?disabled="${this.disabled}"
-      ?outline="${this.outline}"
+      ?outline="${outline}"
       role="button"
       value="${opt.id}"
     >
@@ -144,13 +146,42 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     `;
   }
 
+  _validateRequired() {
+    const { value } = this;
+
+    if (this.required && value) {
+      if (value.every((item) => !item || item.charAt(0) === '-')) {
+        this.invalid = true;
+        this.requiredMessage = 'This field is required';
+      } else {
+        this.invalid = false;
+      }
+    }
+  }
+
+  get classes() {
+    const classes = {
+      'button-group': true,
+      invalid: this.touched && this.invalid,
+    };
+    return classes;
+  }
+
   render() {
     return html`
        ${this.labelTemplate()}
        <div class="input-group ${this.disabled ? 'disabled' : ''}">
-         <div class="button-group">
+         <div class="${classMap(this.classes)}">
            ${repeat(this.options ?? [], (opt) => opt.id, (opt) => this._renderButton(opt))}
          </div>
+         ${this.touched && this.invalid
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.requiredMessage}"
+              size="2rem"
+            ></dt-icon>`
+          : null}
          ${this.loading
            ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
            : null}

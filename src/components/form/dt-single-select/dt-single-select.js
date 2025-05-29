@@ -155,18 +155,7 @@ export class DtSingleSelect extends DtFormBase {
 
   _validateRequired() {
     const { value } = this;
-
-    var empty = true;
-
-    if (value != undefined) {
-      for (var i = 0; i < value.length; i++) {
-        if (value[i].charAt(0) != '-') {
-          empty = false;
-        }
-      }
-    }
-
-    if (empty == true && this.required) {
+    if (value === '' && this.required) {
       this.invalid = true;
       if (this.requiredMessage == null || this.requiredMessage == '') {
         this.requiredMessage = 'This field is required';

@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { themes, argTypes } from '../../../stories-theme.js';
 import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
@@ -61,7 +62,7 @@ function Template(args) {
       ?private=${args.private}
       ?loading=${loading}
       ?saved=${saved}
-      error=${error}
+      error="${ifDefined(error)}"
       @change=${onChange}
     >
       ${slot}

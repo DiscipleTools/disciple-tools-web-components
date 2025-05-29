@@ -102,7 +102,7 @@ export class DtTextArea extends DtFormBase {
 
   _validateRequired() {
     const { value } = this;
-    if (value === '' && this.required) {
+    if (!value && this.required) {
       this.invalid = true;
       if (this.requiredMessage == null || this.requiredMessage == '') {
         this.requiredMessage = 'This field is required';

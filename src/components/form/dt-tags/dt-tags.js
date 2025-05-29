@@ -132,23 +132,14 @@ export class DtTags extends DtMultiSelect {
   _validateRequired() {
     const { value } = this;
 
-    var empty = true;
-
-    if (value != undefined) {
-      for (var i = 0; i < value.length; i++) {
-        if (value[i].charAt(0) != '-') {
-          empty = false;
-        }
-      }
-    }
-
-    if (empty == true && this.required) {
-      this.invalid = true;
-      if (this.requiredMessage == null || this.requiredMessage == '') {
+    if (this.required && value) {
+      console.log(value);
+      if (value.every((item) => !item || (typeof item === 'string' && item.charAt(0) === '-'))) {
+        this.invalid = true;
         this.requiredMessage = 'This field is required';
+      } else {
+        this.invalid = false;
       }
-    } else {
-      this.invalid = false;
     }
   }
 

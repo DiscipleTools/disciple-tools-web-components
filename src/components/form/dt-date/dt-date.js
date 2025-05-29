@@ -77,7 +77,7 @@ export class DtDate extends DtFormBase {
         }
 
         .icon-overlay {
-          inset-inline-end: 5rem;
+          inset-inline-end: 3rem;
         }
         input.invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
@@ -149,7 +149,7 @@ export class DtDate extends DtFormBase {
   _validateRequired() {
     const { value } = this;
 
-    if (value === '' && this.required) {
+    if (!value && this.required) {
       this.invalid = true;
       if (this.requiredMessage == null || this.requiredMessage == '') {
         this.requiredMessage = 'This field is required';

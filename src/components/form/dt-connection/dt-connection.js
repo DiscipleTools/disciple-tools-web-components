@@ -191,26 +191,13 @@ export class DtConnection extends DtTags {
   _validateRequired() {
     const { value } = this;
 
-    var empty = true;
-
-    if (value != undefined) {
-      console.log('value not undefined');
-      for (var i = 0; i < value.length; i++) {
-        console.log('looping');
-        if (value[i].delete == undefined) {
-          console.log('not empty');
-          empty = false;
-        }
-      }
-    }
-
-    if (empty == true && this.required) {
-      this.invalid = true;
-      if (this.requiredMessage == null || this.requiredMessage == '') {
+    if (this.required && value) {
+      if (value.every((item) => !item || item.delete)) {
+        this.invalid = true;
         this.requiredMessage = 'This field is required';
+      } else {
+        this.invalid = false;
       }
-    } else {
-      this.invalid = false;
     }
   }
 

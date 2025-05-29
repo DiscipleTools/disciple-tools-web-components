@@ -314,16 +314,13 @@ export class DtMultiText extends DtText {
     const { value } = this;
 
     if (this.required) {
-      this.invalid = true;
-    }
-    for (var i = 0; i < value.length; i++) {
-      if (value[i].value !== '') {
+      console.log(value);
+      if (value.every((item) => !item.value)) {
+        this.invalid = true;
+        this.requiredMessage = 'This field is required';
+      } else {
         this.invalid = false;
-        if (this.requiredMessage == null || this.requiredMessage == '') {
-          this.requiredMessage = 'This field is required';
-        }
       }
-      //Do something
     }
   }
 

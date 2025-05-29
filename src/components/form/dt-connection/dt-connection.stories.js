@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator, FormDecorator, onAutoSave } from '../../../stories-utils.js';
@@ -136,7 +137,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
-      error="${error}"
+      error="${ifDefined(error)}"
       @change=${onChange}
       @dt:get-data=${onLoad}
     >
@@ -233,7 +234,7 @@ export const Error = Template.bind({});
 Error.args = {
   value: [basicOptions[1]],
   options: basicOptions,
-  error: 'Field is invalid',
+  error: 'Custom error message',
 };
 
 export const basicForm = Template.bind({});
