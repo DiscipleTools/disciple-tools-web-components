@@ -30,6 +30,7 @@ html {
   --font-family: Helvetica, Arial, sans-serif;
 
   --dt-form-border-color: var(--border-color);
+  --dt-form-border-width: 1px;
   --dt-form-background-color: var(--surface-1);
   --dt-form-disabled-background-color: var(--disabled-color);
   --dt-form-text-color: var(--text-color);

@@ -5,22 +5,24 @@ import 'iconify-icon';
 export class DtIcon extends DtBase {
   static get styles() {
     return css`
-      :root {
+      :root, .icon-container {
         font-size: inherit;
         color: inherit;
         display: inline-flex;
         width: fit-content;
         height: fit-content;
         position: relative;
+        font-family: var(--font-family);
       }
       .tooltip {
+        --tt-padding: 0.25rem;
         position: absolute;
-        right: 20px;
-        top: -50%;
+        right: 0px;
+        top: calc(-1lh - var(--tt-padding) - var(--tt-padding) - 4px);
         min-width: max-content;
         border: solid 1px currentcolor;
         background-color: var(--dt-form-background-color, var(--surface-1));
-        padding: .25rem;
+        padding: var(--tt-padding);
         border-radius: .25rem;
         text-align: end;
         z-index: 1;
@@ -29,11 +31,11 @@ export class DtIcon extends DtBase {
       .tooltip:before {
         position: absolute;
         right: .7rem;
-        top: 1.45rem;
+        top: calc(1lh + var(--tt-padding) + var(--tt-padding) + 1px);
         content: " ";
         border-width: .25rem;
         border-style: solid;
-        border-color: transparent transparent currentcolor transparent;
+        border-color: currentcolor transparent transparent transparent;
       }
       .tooltip[hidden] {
         display: none;
@@ -62,8 +64,10 @@ export class DtIcon extends DtBase {
   render() {
     const tooltip = this.tooltip ? html`<div class="tooltip" ?hidden=${this.tooltip_open}>${this.tooltip}</div>` : null;
     return html`
+      <div class="icon-container">
       <iconify-icon icon=${this.icon} width="${this.size}" @click=${this._showTooltip}></iconify-icon>
       ${tooltip}
+      </div>
     `;
   }
 }

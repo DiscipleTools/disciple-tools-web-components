@@ -123,13 +123,19 @@ export class DtText extends DtFormBase {
 
   _validateRequired() {
     const { value } = this;
-    if (value === '' && this.required) {
+    const input = this.shadowRoot.querySelector('input');
+    if (!value && this.required) {
       this.invalid = true;
-      if (this.requiredMessage == null || this.requiredMessage == '') {
-        this.requiredMessage = 'This field is required';
-      }
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        this.requiredMessage || 'This field is required',
+        input
+      );
     } else {
       this.invalid = false;
+      this.internals.setValidity({});
     }
   }
 
@@ -167,7 +173,7 @@ export class DtText extends DtFormBase {
           ? html`<dt-icon
               icon="mdi:alert-circle"
               class="icon-overlay alert"
-              tooltip="${this.requiredMessage}"
+              tooltip="${this.internals.validationMessage}"
               size="2rem"
             ></dt-icon>`
           : null}

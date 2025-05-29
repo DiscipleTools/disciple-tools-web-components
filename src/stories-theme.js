@@ -757,6 +757,7 @@ export function themeCss(storyArgs) {
       storyArgs,
       'locationMapButtonHoverColor'
     )};
+    --dt-location-map-icon-size: ${getArg(storyArgs, 'locationMapIconSize')};
 
     --dt-button-text-color-light: ${getArg(storyArgs, 'buttonTextColorLight')};
     --dt-button-text-color-dark: ${getArg(storyArgs, 'buttonTextColorDark')};
