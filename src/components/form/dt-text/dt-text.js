@@ -124,7 +124,7 @@ export class DtText extends DtFormBase {
   _validateRequired() {
     const { value } = this;
     const input = this.shadowRoot.querySelector('input');
-    if (value === '' && this.required) {
+    if (!value && this.required) {
       this.invalid = true;
       this.internals.setValidity(
         {
@@ -170,9 +170,12 @@ export class DtText extends DtFormBase {
         />
 
         ${this.touched && this.invalid
-          ? html`<dt-exclamation-circle
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
               class="icon-overlay alert"
-            ></dt-exclamation-circle>`
+              tooltip="${this.internals.validationMessage}"
+              size="2rem"
+            ></dt-icon>`
           : null}
         ${this.error
           ? html`<dt-icon

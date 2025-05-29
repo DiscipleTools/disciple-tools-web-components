@@ -24,6 +24,9 @@ export class DtTags extends DtMultiSelect {
           text-decoration: none;
           color: var(--primary-color, #3f729b);
         }
+        .invalid {
+          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+        }
       `,
     ];
   }
@@ -124,6 +127,20 @@ export class DtTags extends DtMultiSelect {
         </button>
       </li>
     `;
+  }
+
+  _validateRequired() {
+    const { value } = this;
+
+    if (this.required && value) {
+      console.log(value);
+      if (value.every((item) => !item || (typeof item === 'string' && item.charAt(0) === '-'))) {
+        this.invalid = true;
+        this.requiredMessage = 'This field is required';
+      } else {
+        this.invalid = false;
+      }
+    }
   }
 
   _renderSelectedOptions() {
