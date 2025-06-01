@@ -133,7 +133,6 @@ export class DtTags extends DtMultiSelect {
     const { value } = this;
 
     if (this.required && value) {
-      console.log(value);
       if (value.every((item) => !item || (typeof item === 'string' && item.charAt(0) === '-'))) {
         this.invalid = true;
         this.requiredMessage = 'This field is required';

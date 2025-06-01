@@ -77,7 +77,7 @@ export class DtDate extends DtFormBase {
         }
 
         .icon-overlay {
-          inset-inline-end: 3rem;
+          inset-inline-end: 4rem;
         }
         input.invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));

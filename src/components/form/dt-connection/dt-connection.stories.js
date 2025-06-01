@@ -245,6 +245,7 @@ basicForm.args = {
 };
 
 export const Required = Template.bind({});
+Required.decorators = [FormDecorator];
 Required.args = {
   required: true,
   options: basicOptions,

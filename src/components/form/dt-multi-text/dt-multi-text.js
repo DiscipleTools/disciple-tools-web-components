@@ -137,7 +137,7 @@ export class DtMultiText extends DtText {
         }
 
         .icon-overlay {
-          inset-inline-end: 5.5rem;
+          inset-inline-end: 4rem;
           height: 2.5rem;
         }
       `,
