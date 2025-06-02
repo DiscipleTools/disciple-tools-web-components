@@ -148,14 +148,20 @@ export class DtDate extends DtFormBase {
 
   _validateRequired() {
     const { value } = this;
+    const input = this.shadowRoot.querySelector('input');
 
     if (!value && this.required) {
       this.invalid = true;
-      if (this.requiredMessage == null || this.requiredMessage == '') {
-        this.requiredMessage = 'This field is required';
-      }
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        this.requiredMessage || 'This field is required',
+        input
+      );
     } else {
       this.invalid = false;
+      this.internals.setValidity({});
     }
   }
 

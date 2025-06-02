@@ -316,14 +316,20 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
 
   _validateRequired() {
     const { value } = this;
+    const input = this.shadowRoot.querySelector('input');
 
-    if (this.required && value) {
-      if (value.every((item) => !item || item.charAt(0) === '-')) {
-        this.invalid = true;
-        this.requiredMessage = 'This field is required';
-      } else {
-        this.invalid = false;
-      }
+    if (this.required && (!value || value.every((item) => !item || item.charAt(0) === '-'))) {
+      this.invalid = true;
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        this.requiredMessage || 'This field is required',
+        input
+      );
+    } else {
+      this.invalid = false;
+      this.internals.setValidity({});
     }
   }
 
@@ -381,12 +387,12 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           : null}
         ${this.error
           ? html`<dt-icon
-                icon="mdi:alert-circle"
-                class="icon-overlay alert"
-                tooltip="${this.error}"
-                size="2rem"
-                ></dt-icon>`
-              : null}
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.error}"
+              size="2rem"
+              ></dt-icon>`
+            : null}
         </div>
 `;
   }

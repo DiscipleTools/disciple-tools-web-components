@@ -92,7 +92,7 @@ function Template(args) {
       privateLabel="${privateLabel}"
       ?loading="${loading}"
       ?saved="${saved}"
-      ?error="${ifDefined(error)}"
+      error="${ifDefined(error)}"
       .open="${open}"
       @change=${onChange}
     >
