@@ -150,8 +150,9 @@ BasicForm.args = {
   }],
 };
 
-export const required = Template.bind({});
-required.args = {
+export const Required = Template.bind({});
+Required.decorators = [FormDecorator];
+Required.args = {
   required: true,
 };
 

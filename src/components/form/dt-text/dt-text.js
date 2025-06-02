@@ -123,7 +123,6 @@ export class DtText extends DtFormBase {
 
   _validateRequired() {
     const { value } = this;
-    const input = this.shadowRoot.querySelector('input');
     if (!value && this.required) {
       this.invalid = true;
       this.internals.setValidity(
@@ -131,7 +130,7 @@ export class DtText extends DtFormBase {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        input
+        this._field
       );
     } else {
       this.invalid = false;
