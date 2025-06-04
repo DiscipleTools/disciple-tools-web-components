@@ -123,8 +123,8 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
 
   _renderButton(opt) {
     const isSelected = (this.value ?? []).includes(opt.id);
-    const context = isSelected ? 'success' : this.invalid ? 'alert' : 'inactive';
-    const outline = this.outline ?? this.invalid;
+    const context = isSelected ? 'success' : (this.touched && this.invalid) ? 'alert' : 'inactive';
+    const outline = this.outline ?? (this.touched && this.invalid);
 
     return html`
     <dt-button
@@ -148,9 +148,11 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
 
   _validateRequired() {
     const { value } = this;
-    const input = this.shadowRoot.querySelector('input');
+    const input = this.shadowRoot.querySelector('.input-group');
+    //input-group
 
     if (this.required && (!value || value.every((item) => !item || item.charAt(0) === '-'))) {
+      console.log(input);
       this.invalid = true;
       this.internals.setValidity(
         {
@@ -184,7 +186,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
           ? html`<dt-icon
               icon="mdi:alert-circle"
               class="icon-overlay alert"
-              tooltip="${this.requiredMessage}"
+              tooltip="${this.internals.validationMessage}"
               size="2rem"
             ></dt-icon>`
           : null}
@@ -194,7 +196,6 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
          ${this.saved
            ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
            : null}
-
          ${this.error
            ? html`<dt-icon
                   icon="mdi:alert-circle"

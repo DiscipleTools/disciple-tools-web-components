@@ -312,7 +312,7 @@ export class DtMultiText extends DtText {
 
   _validateRequired() {
     const { value } = this;
-    const input = this.shadowRoot.querySelector('input');
+    const input = this.shadowRoot.querySelector('.input-group');
 
     if (this.required && (!value || value.every((item) => !item.value))) {
       this.invalid = true;
@@ -347,7 +347,7 @@ export class DtMultiText extends DtText {
           ? html`<dt-icon
               icon="mdi:alert-circle"
               class="icon-overlay alert"
-              tooltip="${this.requiredMessage}"
+              tooltip="${this.internals.validationMessage}"
               size="2rem"
             ></dt-icon>`
           : null}

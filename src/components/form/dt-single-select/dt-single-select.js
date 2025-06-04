@@ -155,7 +155,7 @@ export class DtSingleSelect extends DtFormBase {
 
   _validateRequired() {
     const { value } = this;
-    const input = this.shadowRoot.querySelector('input');
+    const input = this.shadowRoot.querySelector('select');
 
     if (value === '' && this.required) {
       this.invalid = true;
@@ -209,7 +209,7 @@ export class DtSingleSelect extends DtFormBase {
           ? html`<dt-icon
               icon="mdi:alert-circle"
               class="icon-overlay alert"
-              tooltip="${this.requiredMessage}"
+              tooltip="${this.internals.validationMessage}"
               size="2rem"
             ></dt-icon>`
           : null}

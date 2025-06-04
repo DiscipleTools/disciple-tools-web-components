@@ -375,7 +375,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           ? html`<dt-icon
               icon="mdi:alert-circle"
               class="icon-overlay alert"
-              tooltip="${this.requiredMessage}"
+              tooltip="${this.internals.validationMessage}"
               size="2rem"
             ></dt-icon>`
           : null}
