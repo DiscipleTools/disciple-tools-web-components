@@ -44,6 +44,9 @@ export class DtConnection extends DtTags {
         li button svg use {
           fill: var(--dt-connection-icon-fill, var(--primary-color));
         }
+        .invalid {
+          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+        }
       `,
     ];
   }
@@ -126,6 +129,8 @@ export class DtConnection extends DtTags {
       if (this.open) {
         this.shadowRoot.querySelector('input').focus();
       }
+
+      this._validateRequired();
     }
   }
 
@@ -183,6 +188,24 @@ export class DtConnection extends DtTags {
     return this.filteredOptions;
   }
 
+  _validateRequired() {
+    const { value } = this;
+
+    if (this.required && (!value || value.every((item) => !item || item.delete))) {
+      this.invalid = true;
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        this.requiredMessage || 'This field is required',
+        this._field
+      );
+    } else {
+      this.invalid = false;
+      this.internals.setValidity({});
+    }
+  }
+
   _renderSelectedOptions() {
     return (this.value || [])
       .filter(i => !i.delete)
@@ -195,6 +218,7 @@ export class DtConnection extends DtTags {
                 ? opt.status.color
                 : ''}"
               ?disabled="${this.disabled}"
+              ?required=${this.required}
               title="${opt.status ? opt.status.label : opt.label}"
               >${opt.label}</a
             >

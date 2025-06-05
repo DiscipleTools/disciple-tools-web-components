@@ -1,5 +1,6 @@
 import { html, css } from 'lit';
 import DtFormBase from '../dt-form-base.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 /**
  * Basic date component
@@ -76,7 +77,10 @@ export class DtDate extends DtFormBase {
         }
 
         .icon-overlay {
-          inset-inline-end: 5rem;
+          inset-inline-end: 4rem;
+        }
+        input.invalid {
+          border-color: var(--dt-text-border-color-alert, var(--alert-color));
         }
       `,
     ];
@@ -142,6 +146,33 @@ export class DtDate extends DtFormBase {
     input.showPicker();
   }
 
+  _validateRequired() {
+    const { value } = this;
+
+    if (this.required && !value) {
+      this.invalid = true;
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        this.requiredMessage || 'This field is required',
+        this._field
+      );
+    } else {
+      this.invalid = false;
+      this.internals.setValidity({});
+    }
+  }
+
+  get classes() {
+    const classes = {
+      'input-group-field': true,
+      'dt_date_picker': true,
+      invalid: this.touched && this.invalid,
+    };
+    return classes;
+  }
+
   render() {
     if (this.timestamp) {
       this.value = new Date(this.timestamp).toISOString().substring(0, 10);
@@ -155,13 +186,14 @@ export class DtDate extends DtFormBase {
       <div class="input-group">
         <input
           id="${this.id}"
-          class="input-group-field dt_date_picker"
+          class="${classMap(this.classes)}"
           type="date"
           autocomplete="off"
           .placeholder="${new Date().toISOString().substring(0, 10)}"
           .value="${this.value}"
           .timestamp="${this.date}"
           ?disabled=${this.disabled}
+          ?required=${this.required}
           @change="${this._change}"
           @click="${this.showDatePicker}"
         />
@@ -177,10 +209,21 @@ export class DtDate extends DtFormBase {
           x
         </button>
 
-        ${(this.touched && this.invalid) || this.error
-          ? html`<dt-exclamation-circle
+        ${this.touched && this.invalid
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
               class="icon-overlay alert"
-            ></dt-exclamation-circle>`
+              tooltip="${this.internals.validationMessage}"
+              size="2rem"
+            ></dt-icon>`
+          : null}
+        ${this.error
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.error}"
+              size="2rem"
+            ></dt-icon>`
           : null}
         ${this.loading
           ? html`<dt-spinner class="icon-overlay"></dt-spinner>`

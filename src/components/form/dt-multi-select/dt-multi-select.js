@@ -1,5 +1,6 @@
 import { html, css } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { msg } from '@lit/localize';
 import DtFormBase from '../dt-form-base.js';
 import {HasOptionsList} from '../mixins/hasOptionsList.js';
@@ -166,6 +167,10 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           cursor: pointer;
           background: var(--dt-multi-select-option-hover-background, #f5f5f5);
         }
+
+        .field-container.invalid {
+          border: 1px solid var(--dt-text-border-color-alert, var(--alert-color));
+        }
       `,
     ];
   }
@@ -309,6 +314,32 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     );
   }
 
+  _validateRequired() {
+    const { value } = this;
+
+    if (this.required && (!value || value.every((item) => !item || item.charAt(0) === '-'))) {
+      this.invalid = true;
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        this.requiredMessage || 'This field is required',
+        this._field
+      );
+    } else {
+      this.invalid = false;
+      this.internals.setValidity({});
+    }
+  }
+
+  get classes() {
+    const classes = {
+      'field-container': true,
+      invalid: this.touched && this.invalid,
+    };
+    return classes;
+  }
+
   render() {
     const optionListStyles = {
       display: this.open ? 'block' : 'none',
@@ -319,7 +350,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
 
       <div class="input-group ${this.disabled ? 'disabled' : ''}">
         <div
-          class="field-container"
+          class="${classMap(this.classes)}"
           @click="${this._focusInput}"
           @keydown="${this._focusInput}"
         >
@@ -333,11 +364,20 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
             @keydown="${this._inputKeyDown}"
             @keyup="${this._inputKeyUp}"
             ?disabled="${this.disabled}"
+            ?required=${this.required}
           />
         </div>
         <ul class="option-list" style=${styleMap(optionListStyles)}>
           ${this._renderOptions()}
         </ul>
+        ${this.touched && this.invalid
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.internals.validationMessage}"
+              size="2rem"
+            ></dt-icon>`
+          : null}
         ${this.loading
           ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
           : null}
@@ -346,12 +386,12 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           : null}
         ${this.error
           ? html`<dt-icon
-                icon="mdi:alert-circle"
-                class="icon-overlay alert"
-                tooltip="${this.error}"
-                size="2rem"
-                ></dt-icon>`
-              : null}
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.error}"
+              size="2rem"
+              ></dt-icon>`
+            : null}
         </div>
 `;
   }

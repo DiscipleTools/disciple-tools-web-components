@@ -29,7 +29,7 @@ export default class DtFormBase extends DtBase {
         /* === Inline Icons === */
         .icon-overlay {
           position: absolute;
-          inset-inline-end: 2rem;
+          inset-inline-end: 1rem;
           top: 0;
           height: 100%;
           display: flex;
@@ -129,7 +129,11 @@ export default class DtFormBase extends DtBase {
 
     // catch oninvalid event (when validation is triggered from form submit)
     // and set touched=true so that styles are shown
-    this.addEventListener('invalid', () => {
+    this.addEventListener('invalid', (e) => {
+      if (e) {
+        // hide default html validation pop-up messages, since we are using our own
+        e.preventDefault();
+      }
       this.touched = true;
       this._validateRequired();
     });

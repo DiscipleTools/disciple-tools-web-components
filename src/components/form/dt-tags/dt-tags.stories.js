@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator, FormDecorator, onAutoSave } from '../../../stories-utils.js';
@@ -85,6 +86,8 @@ function Template(args) {
     placeholder,
     value,
     disabled = false,
+    required = false,
+    requiredMessage,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     iconAltText = 'Icon Alt Text',
     isPrivate,
@@ -94,6 +97,7 @@ function Template(args) {
     open,
     slot,
     allowAdd,
+    error,
     onChange,
     onLoad,
   } = args;
@@ -105,6 +109,8 @@ function Template(args) {
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
       ?disabled=${disabled}
+      ?required=${required}
+      requiredMessage=${requiredMessage}
       icon="${icon}"
       iconAltText="${iconAltText}"
       ?private=${isPrivate}
@@ -112,6 +118,7 @@ function Template(args) {
       ?allowAdd="${allowAdd}"
       ?loading="${loading}"
       ?saved="${saved}"
+      error="${ifDefined(error)}"
       .open="${open}"
       @change=${onChange}
       @dt:get-data=${onLoad}
@@ -196,10 +203,29 @@ Saved.args = {
   saved: true,
 };
 
+export const Error = Template.bind({});
+Error.args = {
+  error: 'Custom error message',
+};
+
 export const basicForm = Template.bind({});
 basicForm.decorators = [FormDecorator];
 basicForm.args = {
   value: [basicOptions[0].id, basicOptions[1].id],
+  options: basicOptions,
+};
+
+export const Required = Template.bind({});
+Required.decorators = [FormDecorator];
+Required.args = {
+  required: true,
+  options: basicOptions,
+}
+
+export const RequiredCustomMessage = Template.bind({});
+RequiredCustomMessage.args = {
+  required: true,
+  requiredMessage: 'Custom error message',
   options: basicOptions,
 };
 

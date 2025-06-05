@@ -1,6 +1,7 @@
 import { html, css } from 'lit';
 import DtFormBase from '../dt-form-base.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { classMap } from 'lit/directives/class-map.js';
 import '../dt-button/dt-button.js';
 
 /**
@@ -50,7 +51,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       `
     ];
   };
-
+  //border: 1px solid var(--dt-text-border-color-alert, var(--alert-color));
   constructor() {
     super();
     this.options = [];
@@ -70,6 +71,10 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       /** Indicates buttons should be outlined instead of filled */
       outline: { type: Boolean },
     };
+  }
+
+  get _field() {
+    return this.shadowRoot.querySelector('.input-group');
   }
 
   _select(value) {
@@ -122,7 +127,8 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
 
   _renderButton(opt) {
     const isSelected = (this.value ?? []).includes(opt.id);
-    const context = isSelected ? 'success' : 'inactive';
+    const context = isSelected ? 'success' : (this.touched && this.invalid) ? 'alert' : 'inactive';
+    const outline = this.outline ?? (this.touched && this.invalid);
 
     return html`
     <dt-button
@@ -132,7 +138,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       .value=${opt.id}
       @click="${this._clickOption}"
       ?disabled="${this.disabled}"
-      ?outline="${this.outline}"
+      ?outline="${outline}"
       role="button"
       value="${opt.id}"
     >
@@ -144,20 +150,53 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     `;
   }
 
+  _validateRequired() {
+    const { value } = this;
+
+    if (this.required && (!value || value.every((item) => !item || item.charAt(0) === '-'))) {
+      this.invalid = true;
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        this.requiredMessage || 'This field is required',
+        this._field
+      );
+    } else {
+      this.invalid = false;
+      this.internals.setValidity({});
+    }
+  }
+
+  get classes() {
+    const classes = {
+      'button-group': true,
+      invalid: this.touched && this.invalid,
+    };
+    return classes;
+  }
+
   render() {
     return html`
        ${this.labelTemplate()}
        <div class="input-group ${this.disabled ? 'disabled' : ''}">
-         <div class="button-group">
+         <div class="${classMap(this.classes)}">
            ${repeat(this.options ?? [], (opt) => opt.id, (opt) => this._renderButton(opt))}
          </div>
+         ${this.touched && this.invalid
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.internals.validationMessage}"
+              size="2rem"
+            ></dt-icon>`
+          : null}
          ${this.loading
            ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
            : null}
          ${this.saved
            ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
            : null}
-
          ${this.error
            ? html`<dt-icon
                   icon="mdi:alert-circle"

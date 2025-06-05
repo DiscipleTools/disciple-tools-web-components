@@ -58,6 +58,9 @@ export class DtTextArea extends DtFormBase {
           align-items: flex-start;
           padding-block: 1rem;
         }
+        textarea.invalid {
+          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+        }
       `,
     ];
   }
@@ -97,6 +100,24 @@ export class DtTextArea extends DtFormBase {
     this.dispatchEvent(event);
   }
 
+  _validateRequired() {
+    const { value } = this;
+
+    if (!value && this.required) {
+      this.invalid = true;
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        this.requiredMessage || 'This field is required',
+        this._field
+      );
+    } else {
+      this.invalid = false;
+      this.internals.setValidity({});
+    }
+  }
+
   get classes() {
     const classes = {
       'text-input': true,
@@ -115,6 +136,7 @@ export class DtTextArea extends DtFormBase {
           name="${this.name}"
           aria-label="${this.label}"
           ?disabled=${this.disabled}
+          ?required=${this.required}
           class="${classMap(this.classes)}"
           .value="${this.value || ''}"
           @change=${this._change}
@@ -122,9 +144,12 @@ export class DtTextArea extends DtFormBase {
         ></textarea>
 
         ${this.touched && this.invalid
-          ? html`<dt-exclamation-circle
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
               class="icon-overlay alert"
-            ></dt-exclamation-circle>`
+              tooltip="${this.internals.validationMessage}"
+              size="2rem"
+            ></dt-icon>`
           : null}
         ${this.error
           ? html`<dt-icon

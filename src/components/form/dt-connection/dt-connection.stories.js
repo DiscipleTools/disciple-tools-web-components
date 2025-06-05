@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator, FormDecorator, onAutoSave } from '../../../stories-utils.js';
@@ -66,13 +67,12 @@ function onLoadEvent(event) {
       onSuccess(
         json
           .filter(
-            post =>
-              !query || post.title.includes(query) || post.id === query
+            post => !query || post.title.includes(query) || post.id === query,
           )
           .map(post => ({
             id: post.id,
             label: post.title,
-          }))
+          })),
       );
     });
 }
@@ -104,6 +104,8 @@ function Template(args) {
     placeholder,
     value,
     disabled = false,
+    required = false,
+    requiredMessage,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     iconAltText = 'Icon Alt Text',
     isPrivate,
@@ -125,6 +127,8 @@ function Template(args) {
       options="${JSON.stringify(options)}"
       value="${JSON.stringify(value)}"
       ?disabled=${disabled}
+      ?required=${required}
+      requiredMessage=${requiredMessage}
       icon="${icon}"
       iconAltText="${iconAltText}"
       ?private=${isPrivate}
@@ -133,7 +137,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
-      error="${error}"
+      error="${ifDefined(error)}"
       @change=${onChange}
       @dt:get-data=${onLoad}
     >
@@ -230,13 +234,27 @@ export const Error = Template.bind({});
 Error.args = {
   value: [basicOptions[1]],
   options: basicOptions,
-  error: 'Field is invalid',
+  error: 'Custom error message',
 };
 
 export const basicForm = Template.bind({});
 basicForm.decorators = [FormDecorator];
 basicForm.args = {
   value: [basicOptions[1]],
+  options: basicOptions,
+};
+
+export const Required = Template.bind({});
+Required.decorators = [FormDecorator];
+Required.args = {
+  required: true,
+  options: basicOptions,
+};
+
+export const RequiredCustomMessage = Template.bind({});
+RequiredCustomMessage.args = {
+  required: true,
+  requiredMessage: 'Custom error message',
   options: basicOptions,
 };
 

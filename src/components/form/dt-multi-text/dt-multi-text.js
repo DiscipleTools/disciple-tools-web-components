@@ -137,7 +137,7 @@ export class DtMultiText extends DtText {
         }
 
         .icon-overlay {
-          inset-inline-end: 5.5rem;
+          inset-inline-end: 4rem;
           height: 2.5rem;
         }
       `,
@@ -310,6 +310,32 @@ export class DtMultiText extends DtText {
     `;
   }
 
+  _validateRequired() {
+    const { value } = this;
+
+    if (this.required && (!value || value.every((item) => !item.value))) {
+      this.invalid = true;
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        this.requiredMessage || 'This field is required',
+        this._field
+      );
+    } else {
+      this.invalid = false;
+      this.internals.setValidity({});
+    }
+  }
+
+  get classes() {
+    const classes = {
+      'text-input': true,
+      invalid: this.touched && this.invalid,
+    };
+    return classes;
+  }
+
   render() {
     return html`
       ${this.labelTemplate()}
@@ -317,9 +343,12 @@ export class DtMultiText extends DtText {
         ${this._renderInputFields()}
 
         ${this.touched && this.invalid
-          ? html`<dt-exclamation-circle
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
               class="icon-overlay alert"
-            ></dt-exclamation-circle>`
+              tooltip="${this.internals.validationMessage}"
+              size="2rem"
+            ></dt-icon>`
           : null}
         ${this.error
           ? html`<dt-icon

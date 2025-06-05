@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
 import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
@@ -38,7 +39,7 @@ function Template(args) {
     placeholder,
     disabled = false,
     required = false,
-    requiredMessage = '',
+    requiredMessage,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     iconAltText = 'Icon Alt Text',
     isPrivate,
@@ -66,7 +67,7 @@ function Template(args) {
       privateLabel="${privateLabel}"
       ?loading=${loading}
       ?saved=${saved}
-      error="${error}"
+      error="${ifDefined(error)}"
       @change=${onChange}
     >
       ${slot}
@@ -149,8 +150,9 @@ BasicForm.args = {
   }],
 };
 
-export const required = Template.bind({});
-required.args = {
+export const Required = Template.bind({});
+Required.decorators = [FormDecorator];
+Required.args = {
   required: true,
 };
 
