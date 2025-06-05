@@ -86,10 +86,10 @@ describe('dt-single-select', () => {
     );
     const select = el.shadowRoot.querySelector('select');
 
-    select.focus();
-    sendKeys({ type: 'Option 1'});
-    sendKeys({ press: 'Enter'});
-    setTimeout(() => select.dispatchEvent(new Event('change')));
+    setTimeout(() => {
+      select.value = 'opt1';
+      select.dispatchEvent(new Event('change'));
+    });
 
     const { detail } = await oneEvent(el, 'change');
 
