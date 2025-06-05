@@ -316,7 +316,6 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
 
   _validateRequired() {
     const { value } = this;
-    const input = this.shadowRoot.querySelector('input');
 
     if (this.required && (!value || value.every((item) => !item || item.charAt(0) === '-'))) {
       this.invalid = true;
@@ -325,7 +324,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        input
+        this._field
       );
     } else {
       this.invalid = false;

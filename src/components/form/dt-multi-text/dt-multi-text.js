@@ -312,7 +312,6 @@ export class DtMultiText extends DtText {
 
   _validateRequired() {
     const { value } = this;
-    const input = this.shadowRoot.querySelector('.input-group');
 
     if (this.required && (!value || value.every((item) => !item.value))) {
       this.invalid = true;
@@ -321,7 +320,7 @@ export class DtMultiText extends DtText {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        input
+        this._field
       );
     } else {
       this.invalid = false;
