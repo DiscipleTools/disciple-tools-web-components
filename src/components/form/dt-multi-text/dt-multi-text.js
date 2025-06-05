@@ -140,6 +140,9 @@ export class DtMultiText extends DtText {
           inset-inline-end: 4rem;
           height: 2.5rem;
         }
+        .field-container:has(.btn-remove) ~ .icon-overlay {
+          inset-inline-end: 5.5rem;
+        }
       `,
     ];
   }
