@@ -199,6 +199,7 @@ LoadOptionsFromAPI.args = {
 export const AddNewOption = Template.bind({});
 AddNewOption.args = {
   allowAdd: true,
+  options: basicOptions,
 };
 
 export const AutoSave = Template.bind({});
