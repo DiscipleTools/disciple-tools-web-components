@@ -123,7 +123,7 @@ export class DtText extends DtFormBase {
 
   _validateRequired() {
     const { value } = this;
-    if (!value && this.required) {
+    if (this.required && !value) {
       this.invalid = true;
       this.internals.setValidity(
         {

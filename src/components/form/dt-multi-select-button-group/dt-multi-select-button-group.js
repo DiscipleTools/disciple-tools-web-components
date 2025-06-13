@@ -73,6 +73,10 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     };
   }
 
+  get _field() {
+    return this.shadowRoot.querySelector('.input-group');
+  }
+
   _select(value) {
     // Create custom event with new/old values to pass to onchange function
     const event = new CustomEvent('change', {
@@ -148,18 +152,15 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
 
   _validateRequired() {
     const { value } = this;
-    const input = this.shadowRoot.querySelector('.input-group');
-    //input-group
 
     if (this.required && (!value || value.every((item) => !item || item.charAt(0) === '-'))) {
-      console.log(input);
       this.invalid = true;
       this.internals.setValidity(
         {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        input
+        this._field
       );
     } else {
       this.invalid = false;

@@ -131,7 +131,6 @@ export class DtTags extends DtMultiSelect {
 
   _validateRequired() {
     const { value } = this;
-    const input = this.shadowRoot.querySelector('input');
 
     if (this.required && (!value || value.every((item) => !item || (typeof item === 'string' && item.charAt(0) === '-')))) {
       this.invalid = true;
@@ -140,7 +139,7 @@ export class DtTags extends DtMultiSelect {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        input
+        this._field
       );
     } else {
       this.invalid = false;

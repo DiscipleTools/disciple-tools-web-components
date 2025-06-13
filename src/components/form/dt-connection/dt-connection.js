@@ -190,7 +190,6 @@ export class DtConnection extends DtTags {
 
   _validateRequired() {
     const { value } = this;
-    const input = this.shadowRoot.querySelector('input');
 
     if (this.required && (!value || value.every((item) => !item || item.delete))) {
       this.invalid = true;
@@ -199,7 +198,7 @@ export class DtConnection extends DtTags {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        input
+        this._field
       );
     } else {
       this.invalid = false;
