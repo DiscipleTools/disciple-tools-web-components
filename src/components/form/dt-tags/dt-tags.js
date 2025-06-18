@@ -1,4 +1,7 @@
 import { css, html } from 'lit';
+import { styleMap } from 'lit/directives/style-map.js';
+import { classMap } from 'lit/directives/class-map.js';
+import '../../icons/dt-icon.js';
 import { DtMultiSelect } from '../dt-multi-select/dt-multi-select.js';
 
 /**
@@ -27,8 +30,60 @@ export class DtTags extends DtMultiSelect {
         .invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
         }
+        .input-group {
+          display: flex;
+        }
+
+        .field-container {
+          flex: 1;
+        }
+
+        .field-container .input-addon {
+          flex-shrink: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          aspect-ratio: 1/1;
+          border: solid 1px gray;
+          border-collapse: collapse;
+          background-color: var(--dt-multi-text-background-color, buttonface);
+          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
+          border-radius: var(--dt-multi-text-border-radius, 0);
+          box-shadow: var(
+            --dt-multi-text-box-shadow,
+            var(
+              --dt-form-input-box-shadow,
+              inset 0 1px 2px hsl(0deg 0% 4% / 10%)
+            )
+          );
+        }
+        .input-addon.btn-add {
+          width: 37.5px;
+          &:disabled {
+            color: var(--dt-text-placeholder-color, #999);
+          }
+          &:hover:not([disabled]) {
+            background-color: var(--success-color, #cc4b37);
+            color: var(--dt-multi-text-button-hover-color, #ffffff);
+          }
+        }
+        .input-group.allowAdd .icon-overlay {
+          inset-inline-end: 3rem;
+        }
       `,
     ];
+  }
+
+  _addRecord() {
+    // dispatch event for use with addEventListener from javascript
+    const event = new CustomEvent('dt:add-new', {
+      detail: {
+        field: this.name,
+        value: this.query,
+      },
+    });
+
+    this.dispatchEvent(event);
   }
 
   willUpdate(props) {
@@ -185,6 +240,70 @@ export class DtTags extends DtMultiSelect {
           </div>
         `}
       );
+  }
+
+  render() {
+    const optionListStyles = {
+      display: this.open ? 'block' : 'none',
+      top: this.containerHeight ? `${this.containerHeight}px` : '2.5rem',
+    };
+    return html`
+      ${this.labelTemplate()}
+
+      <div class="input-group ${this.disabled ? 'disabled' : ''} ${this.allowAdd ? 'allowAdd' : ''}">
+        <div
+          class="${classMap(this.classes)}"
+          @click="${this._focusInput}"
+          @keydown="${this._focusInput}"
+        >
+          ${this._renderSelectedOptions()}
+          <input
+            type="text"
+            placeholder="${this.placeholder}"
+            autocomplete="off"
+            @focusin="${this._inputFocusIn}"
+            @blur="${this._inputFocusOut}"
+            @keydown="${this._inputKeyDown}"
+            @keyup="${this._inputKeyUp}"
+            ?disabled="${this.disabled}"
+            ?required=${this.required}
+          />
+        </div>
+        ${this.allowAdd
+          ? html`<button
+          class="input-addon btn-add"
+          @click=${this._addRecord}
+          >
+            <dt-icon icon="mdi:account-plus-outline"></dt-icon>
+          </button>`
+          : null}
+        <ul class="option-list" style=${styleMap(optionListStyles)}>
+          ${this._renderOptions()}
+        </ul>
+        ${this.touched && this.invalid
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.internals.validationMessage}"
+              size="2rem"
+            ></dt-icon>`
+          : null}
+        ${this.loading
+          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
+          : null}
+        ${this.saved
+          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
+          : null}
+        ${this.error
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.error}"
+              size="2rem"
+              ></dt-icon>`
+            : null}
+        </div>
+`;
   }
 }
 

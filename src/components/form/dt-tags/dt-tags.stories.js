@@ -75,6 +75,7 @@ export default {
     placeholder: 'Select Tags',
     onLoad: action('on-load'),
     onChange: action('on-change'),
+    onNew: action('on-new'),
   },
 };
 
@@ -100,6 +101,7 @@ function Template(args) {
     error,
     onChange,
     onLoad,
+    onNew,
   } = args;
   return html`
     <dt-tags
@@ -122,6 +124,7 @@ function Template(args) {
       .open="${open}"
       @change=${onChange}
       @dt:get-data=${onLoad}
+      @dt:add-new=${onNew}
     >
       ${slot}
     </dt-tags>
@@ -175,6 +178,7 @@ LoadOptionsFromAPI.args = {
 export const AddNewOption = Template.bind({});
 AddNewOption.args = {
   allowAdd: true,
+  options: basicOptions,
 };
 
 export const AutoSave = Template.bind({});

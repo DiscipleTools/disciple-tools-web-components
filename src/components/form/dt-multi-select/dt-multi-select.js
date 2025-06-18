@@ -21,7 +21,6 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         }
 
         .input-group {
-          display: flex;
           color: var(--dt-multi-select-text-color, #0a0a0a);
         }
         .input-group.disabled input,
@@ -51,7 +50,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           padding-bottom: 0.5rem;
           padding-inline: 0.5rem 1.6rem;
           box-sizing: border-box;
-          flex: 1;
+          width: 100%;
           text-transform: none;
           display: flex;
           flex-wrap: wrap;
@@ -172,41 +171,6 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         .field-container.invalid {
           border: 1px solid var(--dt-text-border-color-alert, var(--alert-color));
         }
-
-        .field-container .input-addon {
-          flex-shrink: 1;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          aspect-ratio: 1/1;
-          border: solid 1px gray;
-          border-collapse: collapse;
-          background-color: var(--dt-multi-text-background-color, buttonface);
-          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
-          border-radius: var(--dt-multi-text-border-radius, 0);
-          box-shadow: var(
-            --dt-multi-text-box-shadow,
-            var(
-              --dt-form-input-box-shadow,
-              inset 0 1px 2px hsl(0deg 0% 4% / 10%)
-            )
-          );
-        }
-
-        .input-addon.btn-add {
-          width: 37.5px;
-          &:disabled {
-            color: var(--dt-text-placeholder-color, #999);
-          }
-          &:hover:not([disabled]) {
-            background-color: var(--success-color, #cc4b37);
-            color: var(--dt-multi-text-button-hover-color, #ffffff);
-          }
-        }
-
-        .input-group.allowAdd .icon-overlay {
-          inset-inline-end: 3rem;
-        }
       `,
     ];
   }
@@ -295,18 +259,6 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     }
   }
 
-  _addRecord() {
-    // dispatch event for use with addEventListener from javascript
-    const event = new CustomEvent('dt:add-new', {
-      detail: {
-        field: this.name,
-        value: this.query,
-      },
-    });
-
-    dispatchEvent(event);
-  }
-
   /**
    * Filter to options that:
    *   1: are not selected
@@ -384,7 +336,6 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     const classes = {
       'field-container': true,
       invalid: this.touched && this.invalid,
-      allowAdd: this.allowAdd,
     };
     return classes;
   }
@@ -397,7 +348,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     return html`
       ${this.labelTemplate()}
 
-      <div class="input-group ${this.disabled ? 'disabled' : ''} ${this.allowAdd ? 'allowAdd' : ''}">
+      <div class="input-group ${this.disabled ? 'disabled' : ''}">
         <div
           class="${classMap(this.classes)}"
           @click="${this._focusInput}"

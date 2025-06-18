@@ -93,6 +93,7 @@ export default {
     placeholder: 'Select Connection',
     onLoad: action('on-load'),
     onChange: action('on-change'),
+    onNew: action('on-new'),
   },
 };
 
@@ -118,6 +119,7 @@ function Template(args) {
     allowAdd,
     onChange,
     onLoad,
+    onNew,
   } = args;
   return html`
     <dt-connection
@@ -140,6 +142,7 @@ function Template(args) {
       error="${ifDefined(error)}"
       @change=${onChange}
       @dt:get-data=${onLoad}
+      @dt:add-new=${onNew}
     >
       ${slot}
     </dt-connection>
