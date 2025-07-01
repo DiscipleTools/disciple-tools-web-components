@@ -367,14 +367,6 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
             ?required=${this.required}
           />
         </div>
-        ${this.allowAdd
-          ? html`<button
-          class="input-addon btn-add"
-          @click=${this._addRecord}
-          >
-            <dt-icon icon="mdi:account-plus-outline"></dt-icon>
-          </button>`
-          : null}
         <ul class="option-list" style=${styleMap(optionListStyles)}>
           ${this._renderOptions()}
         </ul>

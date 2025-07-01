@@ -38,26 +38,9 @@ export class DtTags extends DtMultiSelect {
           flex: 1;
         }
 
-        .field-container .input-addon {
-          flex-shrink: 1;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          aspect-ratio: 1/1;
-          border: solid 1px gray;
-          border-collapse: collapse;
-          background-color: var(--dt-multi-text-background-color, buttonface);
-          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
-          border-radius: var(--dt-multi-text-border-radius, 0);
-          box-shadow: var(
-            --dt-multi-text-box-shadow,
-            var(
-              --dt-form-input-box-shadow,
-              inset 0 1px 2px hsl(0deg 0% 4% / 10%)
-            )
-          );
-        }
         .input-addon.btn-add {
+          background-color: var(--dt-multi-text-background-color, #fefefe);
+          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
           width: 37.5px;
           &:disabled {
             color: var(--dt-text-placeholder-color, #999);
@@ -274,7 +257,7 @@ export class DtTags extends DtMultiSelect {
           class="input-addon btn-add"
           @click=${this._addRecord}
           >
-            <dt-icon icon="mdi:account-plus-outline"></dt-icon>
+            <dt-icon icon="mdi:tag-plus-outline"></dt-icon>
           </button>`
           : null}
         <ul class="option-list" style=${styleMap(optionListStyles)}>

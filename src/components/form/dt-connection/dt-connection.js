@@ -1,4 +1,7 @@
 import { css, html } from 'lit';
+import { styleMap } from 'lit/directives/style-map.js';
+import { classMap } from 'lit/directives/class-map.js';
+import '../../icons/dt-icon.js';
 import { DtTags } from '../dt-tags/dt-tags.js';
 
 /**
@@ -268,6 +271,70 @@ export class DtConnection extends DtTags {
         </button>
       </li>
     `;
+  }
+
+  render() {
+    const optionListStyles = {
+      display: this.open ? 'block' : 'none',
+      top: this.containerHeight ? `${this.containerHeight}px` : '2.5rem',
+    };
+    return html`
+      ${this.labelTemplate()}
+
+      <div class="input-group ${this.disabled ? 'disabled' : ''} ${this.allowAdd ? 'allowAdd' : ''}">
+        <div
+          class="${classMap(this.classes)}"
+          @click="${this._focusInput}"
+          @keydown="${this._focusInput}"
+        >
+          ${this._renderSelectedOptions()}
+          <input
+            type="text"
+            placeholder="${this.placeholder}"
+            autocomplete="off"
+            @focusin="${this._inputFocusIn}"
+            @blur="${this._inputFocusOut}"
+            @keydown="${this._inputKeyDown}"
+            @keyup="${this._inputKeyUp}"
+            ?disabled="${this.disabled}"
+            ?required=${this.required}
+          />
+        </div>
+        ${this.allowAdd
+          ? html`<button
+          class="input-addon btn-add"
+          @click=${this._addRecord}
+          >
+            <dt-icon icon="mdi:account-plus-outline"></dt-icon>
+          </button>`
+          : null}
+        <ul class="option-list" style=${styleMap(optionListStyles)}>
+          ${this._renderOptions()}
+        </ul>
+        ${this.touched && this.invalid
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.internals.validationMessage}"
+              size="2rem"
+            ></dt-icon>`
+          : null}
+        ${this.loading
+          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
+          : null}
+        ${this.saved
+          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
+          : null}
+        ${this.error
+          ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.error}"
+              size="2rem"
+              ></dt-icon>`
+            : null}
+        </div>
+`;
   }
 }
 
