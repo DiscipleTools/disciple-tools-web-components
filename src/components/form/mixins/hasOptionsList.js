@@ -125,13 +125,6 @@ export const HasOptionsList = (superClass) => class extends superClass {
     const keycode = e.keyCode || e.which;
 
     switch (keycode) {
-      case 8: // backspace
-        if (e.target.value === '') {
-          this.value = this.value.slice(0, -1);
-        } else {
-          this.open = true;
-        }
-        break;
       case 38: // arrow up
         this.open = true;
         this._listHighlightPrevious();
