@@ -295,7 +295,9 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   _renderSelectedOptions() {
     return (
       this.options &&
-      this.value.map(
+      this.value
+      .filter(val => val.charAt(0) !== '-')
+      .map(
           val => html`
             <div class="selected-option">
               <span>${this.options.find(option => option.id === val).label}</span>
