@@ -45,8 +45,24 @@ export function onSubmit(event) {
   });
   action('on-submit')(data);
 }
-export const FormDecorator = story => html`<form method="post" @submit="${(e) => onSubmit(e)}" style="background-color: var(--surface-0);">
+export function clearForm(event) {
+  if (event) {
+    event.preventDefault();
+  }
+  const form = event.target;
+  Array.from(form.elements).forEach((el) => {
+    if (el.localName.startsWith('dt-')) {
+      el.reset();
+    }
+  });
+}
+export const FormDecorator = story => html`<form
+  method="post"
+  @submit="${(e) => onSubmit(e)}"
+  @reset="${(e) => clearForm(e)}"
+  style="background-color: var(--surface-0);">
     ${story()}
 
     <button type="submit">Submit</button>
+    <button type="reset">Reset</button>
   </form>`;
