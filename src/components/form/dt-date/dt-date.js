@@ -234,6 +234,11 @@ export class DtDate extends DtFormBase {
       </div>
     `;
   }
+
+  reset() {
+    this.updateTimestamp('');
+    super.reset();
+  }
 }
 
 window.customElements.define('dt-date', DtDate);

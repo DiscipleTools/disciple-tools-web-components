@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, aTimeout } from '@open-wc/testing';
+import { fixture, expect, oneEvent, aTimeout, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-connection.js';
@@ -78,6 +78,24 @@ describe('dt-connection', () => {
 
     expect(container).to.contain('button[data-value="1"]');
     expect(container).to.contain('button[data-value="2"]');
+    expect(container).not.to.contain('button[data-value="3"]');
+  });
+
+  it('resets value', async () => {
+    const el = await fixture(
+      html`<dt-connection
+        value="${JSON.stringify([options[0], options[1]])}"
+        options="${JSON.stringify(options)}"
+      ></dt-connection>`
+    );
+    const container = el.shadowRoot.querySelector('.field-container');
+
+    el.reset();
+
+    await nextFrame();
+
+    expect(container).not.to.contain('button[data-value="1"]');
+    expect(container).not.to.contain('button[data-value="2"]');
     expect(container).not.to.contain('button[data-value="3"]');
   });
 
@@ -340,7 +358,6 @@ describe('dt-connection', () => {
       .with.attribute('disabled');
     expect(selectedOption).to.have.descendant('a').with.attribute('disabled');
   });
-
 
   it('clicks add new button', async () => {
     const el = await fixture(

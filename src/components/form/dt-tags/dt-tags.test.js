@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, aTimeout } from '@open-wc/testing';
+import { fixture, expect, oneEvent, aTimeout, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-tags.js';
@@ -81,6 +81,24 @@ describe('dt-tags', () => {
 
     expect(container).to.contain('button[data-value=opt1]');
     expect(container).to.contain('button[data-value=opt2]');
+    expect(container).not.to.contain('button[data-value=opt3]');
+  });
+
+  it('resets value', async () => {
+    const el = await fixture(
+      html`<dt-tags
+        value="${JSON.stringify([options[0].id, options[1].id])}"
+        options="${JSON.stringify(options)}"
+      ></dt-tags>`
+    );
+    const container = el.shadowRoot.querySelector('.field-container');
+
+    el.reset();
+
+    await nextFrame();
+
+    expect(container).not.to.contain('button[data-value=opt1]');
+    expect(container).not.to.contain('button[data-value=opt2]');
     expect(container).not.to.contain('button[data-value=opt3]');
   });
 

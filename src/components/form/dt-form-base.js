@@ -250,4 +250,12 @@ export default class DtFormBase extends DtBase {
       <slot></slot>
     `;
   }
+
+  reset() {
+    if (this._field.reset) {
+      this._field.reset();
+    }
+    this.value = '';
+    this._setFormValue('');
+  }
 }
