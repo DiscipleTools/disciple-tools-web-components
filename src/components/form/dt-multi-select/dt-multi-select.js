@@ -295,16 +295,14 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   _renderSelectedOptions() {
     return (
       this.options &&
-      this.options
-        .filter(opt => this.value && this.value.indexOf(opt.id) > -1)
-        .map(
-          opt => html`
+      this.value.map(
+          val => html`
             <div class="selected-option">
-              <span>${opt.label}</span>
+              <span>${this.options.find(option => option.id === val).label}</span>
               <button
                 @click="${this._remove}"
                 ?disabled="${this.disabled}"
-                data-value="${opt.id}"
+                data-value="${val}"
               >
                 x
               </button>
