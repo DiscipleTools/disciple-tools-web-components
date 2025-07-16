@@ -295,6 +295,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   _renderSelectedOptions() {
     return (
       this.options &&
+      this.value &&
       this.value
       .filter(val => val.charAt(0) !== '-')
       .map(
