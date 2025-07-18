@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, aTimeout } from '@open-wc/testing';
+import { fixture, expect, oneEvent, aTimeout, nextFrame } from '@open-wc/testing';
 import { selectOption, sendKeys } from '@web/test-runner-commands';
 
 import './dt-single-select.js';
@@ -58,6 +58,22 @@ describe('dt-single-select', () => {
     expect(select).to.have.value('opt1');
   });
 
+  it('resets value', async () => {
+    const el = await fixture(
+      html`<dt-single-select
+        value="opt1"
+        options="${JSON.stringify(options)}"
+      ></dt-single-select>`
+    );
+    const select = el.shadowRoot.querySelector('select');
+
+    el.reset();
+
+    await nextFrame();
+
+    expect(select.value).to.be.empty;
+  });
+
   it('updates value attribute', async () => {
     const el = await fixture(
       html`<dt-single-select
@@ -86,10 +102,10 @@ describe('dt-single-select', () => {
     );
     const select = el.shadowRoot.querySelector('select');
 
-    select.focus();
-    sendKeys({ type: 'Option 1'});
-    sendKeys({ press: 'Enter'});
-    setTimeout(() => select.dispatchEvent(new Event('change')));
+    setTimeout(() => {
+      select.value = 'opt1';
+      select.dispatchEvent(new Event('change'));
+    });
 
     const { detail } = await oneEvent(el, 'change');
 

@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, aTimeout } from '@open-wc/testing';
+import { fixture, expect, oneEvent, aTimeout, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 import './dt-multi-text.js';
 
@@ -37,6 +37,33 @@ describe('DtMultiText', () => {
     expect(inputGroup.querySelector('input[data-key="cc02"]'))
       .to.exist
       .and.have.value('Value 2');
+  });
+
+  it('resets value', async () => {
+    const el = await fixture(
+      html`<dt-multi-text
+        value="${JSON.stringify([{
+          key: 'cc01',
+          value: 'Value 1',
+          verified: true,
+        }, {
+          key: 'cc02',
+          value: 'Value 2',
+          verified: true,
+        }])}"
+      ></dt-multi-text>`
+    );
+
+    el.reset();
+
+    await nextFrame();
+
+    const inputGroup = el.shadowRoot.querySelector('.input-group');
+
+    const input = inputGroup.querySelector('input');
+
+    expect(input).to.have.attribute('type', 'text');
+    expect(input).to.have.value('');
   });
 
   it('adds a new item on add button click', async () => {

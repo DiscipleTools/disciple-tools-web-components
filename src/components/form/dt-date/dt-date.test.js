@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent } from '@open-wc/testing';
+import { fixture, expect, oneEvent, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-date.js';
@@ -81,6 +81,20 @@ describe('DT-Date', () => {
     const label = await fixture(el.shadowRoot.querySelector('dt-label'));
 
     expect(label.hasAttribute('private')).to.be.true;
+  });
+
+  it('resets value', async () => {
+    const el = await fixture(html`<dt-date value="2020-01-01"></dt-date>`);
+
+    const input = el.shadowRoot.querySelector('input');
+
+    expect(input.value).to.equal('2020-01-01');
+
+    el.reset();
+
+    await nextFrame();
+
+    expect(input.value).to.equal('');
   });
 
   it('passes the a11y audit', async () => {

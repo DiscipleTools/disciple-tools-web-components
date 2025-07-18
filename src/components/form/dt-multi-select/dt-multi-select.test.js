@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent } from '@open-wc/testing';
+import { fixture, expect, oneEvent, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-multi-select.js';
@@ -74,6 +74,24 @@ describe('dt-multi-select', () => {
 
     expect(container).to.contain('button[data-value=opt1]');
     expect(container).to.contain('button[data-value=opt2]');
+    expect(container).not.to.contain('button[data-value=opt3]');
+  });
+
+  it('resets value', async () => {
+    const el = await fixture(
+      html`<dt-multi-select
+        value="${JSON.stringify(['opt1', 'opt2'])}"
+        options="${JSON.stringify(options)}"
+      ></dt-multi-select>`
+    );
+    const container = el.shadowRoot.querySelector('.field-container');
+
+    el.reset();
+
+    await nextFrame();
+
+    expect(container).not.to.contain('button[data-value=opt1]');
+    expect(container).not.to.contain('button[data-value=opt2]');
     expect(container).not.to.contain('button[data-value=opt3]');
   });
 

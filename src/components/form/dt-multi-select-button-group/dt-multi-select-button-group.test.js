@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent } from '@open-wc/testing';
+import { fixture, expect, oneEvent, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-multi-select-button-group.js';
@@ -70,6 +70,24 @@ describe('dt-multi-select-button-group', () => {
 
     expect(el.shadowRoot.querySelector('dt-button[value=button1]')).to.have.attribute('context', 'success');
     expect(el.shadowRoot.querySelector('dt-button[value=button2]')).to.have.attribute('context', 'success');
+    expect(el.shadowRoot.querySelector('dt-button[value=button3]')).to.have.attribute('context', 'inactive');
+    expect(el.shadowRoot.querySelector('dt-button[value=button4]')).to.have.attribute('context', 'inactive');
+  });
+
+  it('resets value', async () => {
+    const el = await fixture(
+      html`<dt-multi-select-button-group
+        value="${JSON.stringify(['button1', 'button2'])}"
+        options="${JSON.stringify(options)}"
+      ></dt-multi-select-button-group>`
+    );
+
+    el.reset();
+
+    await nextFrame();
+
+    expect(el.shadowRoot.querySelector('dt-button[value=button1]')).to.have.attribute('context', 'inactive');
+    expect(el.shadowRoot.querySelector('dt-button[value=button2]')).to.have.attribute('context', 'inactive');
     expect(el.shadowRoot.querySelector('dt-button[value=button3]')).to.have.attribute('context', 'inactive');
     expect(el.shadowRoot.querySelector('dt-button[value=button4]')).to.have.attribute('context', 'inactive');
   });

@@ -4,7 +4,7 @@
   "author": "disciple.tools",
   "license": "GPL-2.0-or-later",
   "homepage": "https://github.com/DiscipleTools/disciple-tools-web-components",
-  "version": "0.7.5",
+  "version": "0.7.9",
   "main": "index.js",
   "type": "module",
   "module": "index.js",
