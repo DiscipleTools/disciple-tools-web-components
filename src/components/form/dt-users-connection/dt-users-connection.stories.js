@@ -17,6 +17,13 @@ const basicOptions =[
         avatar: "https:\/\/0.gravatar.com\/avatar\/3f009d72559f51e7e454b16e5d0687a1?s=16&d=mm&r=g",
         contact_id: 6,
         update_needed: 0
+    },
+    {
+        label: "root2",
+        id: 3,
+        avatar: "https:\/\/0.gravatar.com\/avatar\/3f009d72559f51e7e454b16e5d0687a1?s=16&d=mm&r=g",
+        contact_id: 6,
+        update_needed: 0
     }
 ]
 export default {
@@ -94,6 +101,17 @@ export default {
         },
       },
     },
+    single: {
+      control: 'boolean',
+      description:
+        '(true|false) If attribute is present, ________',
+      table: {
+        type: {
+          summary: 'single',
+          detail: '<dt-multi-select single />',
+        },
+      },
+    },
     onchange: {
       control: 'text',
       description:
@@ -140,6 +158,7 @@ function Template(args) {
     loading = false,
     saved = false,
     error,
+    single = false,
     onchange,
     onload,
     open,
@@ -185,6 +204,7 @@ function Template(args) {
       ?allowAdd="${allowAdd}"
       ?loading="${loading}"
       ?saved="${saved}"
+      ?single="${single}"
       error="${error}"
       .open="${open}"
     >
@@ -195,6 +215,7 @@ function Template(args) {
 
 export const Empty = Template.bind({});
 Empty.args = {
+  options: basicOptions,
   onload: '',
 };
 
@@ -280,6 +301,12 @@ Saved.args = {
   ],
   options: basicOptions,
   saved: true,
+};
+export const Single = Template.bind({});
+Single.args = {
+  options: basicOptions,
+  single: true,
+  allowAdd: true,
 };
 export const Error = Template.bind({});
 Error.args = {

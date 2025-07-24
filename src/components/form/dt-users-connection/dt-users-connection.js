@@ -43,6 +43,17 @@ export class DtUsersConnection extends DtTags {
     ];
   }
 
+  static get properties() {
+    return {
+      ...super.properties,
+      /**
+       * The name attribute used to identify an input within a form.
+       * This will be submitted with the form as the field's key.
+       */
+      single: { type: Boolean },
+    };
+  }
+
   _clickOption(e) {
     if (e.target && e.target.value) {
       const id = parseInt(e.target.value, 10);
@@ -52,7 +63,11 @@ export class DtUsersConnection extends DtTags {
         }
         return result;
       }, null);
-      if (option) {
+
+      const singleValue = (this.value || [])
+      .filter(i => !i.delete);
+
+      if (option && (!this.single || singleValue.length < 1)) {
         this._select(option);
       }
       this._clearSearch();
@@ -60,7 +75,10 @@ export class DtUsersConnection extends DtTags {
   }
 
   _clickAddNew(e) {
-    if (e.target) {
+    const singleValue = (this.value || [])
+      .filter(i => !i.delete);
+    
+    if (e.target && (!this.single || singleValue.length < 1)) {
       this._select({
         id: e.target.dataset?.label,
         label: e.target.dataset?.label,
@@ -102,7 +120,9 @@ export class DtUsersConnection extends DtTags {
         const val = {
           ...i,
         };
-        if (i.id === parseInt(e.target.dataset.value, 10)) {
+        // when adding a new connection via AddNew, the ID was set as the label (string)
+        // for pre-existing selections, the ID is a number (int), so it would fail
+        if (i.id.toString() === e.target.dataset.value) {
           val.delete = true;
         }
         return val;
