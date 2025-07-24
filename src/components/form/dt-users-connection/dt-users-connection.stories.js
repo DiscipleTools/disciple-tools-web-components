@@ -104,7 +104,7 @@ export default {
     single: {
       control: 'boolean',
       description:
-        '(true|false) If attribute is present, ________',
+        '(true|false) If attribute is present, only one option can be selected at a time',
       table: {
         type: {
           summary: 'single',
