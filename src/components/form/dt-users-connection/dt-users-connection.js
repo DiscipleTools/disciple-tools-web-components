@@ -43,6 +43,14 @@ export class DtUsersConnection extends DtTags {
     ];
   }
 
+  static get properties() {
+    return {
+      ...super.properties,
+      /** Indicates if field is restricted to hold only one value. */
+      single: { type: Boolean },
+    };
+  }
+
   _clickOption(e) {
     if (e.target && e.target.value) {
       const id = parseInt(e.target.value, 10);
@@ -52,7 +60,26 @@ export class DtUsersConnection extends DtTags {
         }
         return result;
       }, null);
+
+      const singleValue = (this.value || [])
+      .filter(i => !i.delete);
       if (option) {
+        if (this.single && singleValue.length > 0) {
+          // deselect
+          singleValue[0].delete = true;
+
+          const event = new CustomEvent('change', {
+            detail: {
+              field: this.name,
+              oldValue: this.value,
+              remove: true,
+              newValue: singleValue,
+            },
+          });
+
+          // dispatch event for use with addEventListener from javascript
+          this.dispatchEvent(event);
+        }
         this._select(option);
       }
       this._clearSearch();
@@ -60,7 +87,26 @@ export class DtUsersConnection extends DtTags {
   }
 
   _clickAddNew(e) {
+    const singleValue = (this.value || [])
+      .filter(i => !i.delete);
+    
     if (e.target) {
+      if (this.single && singleValue.length > 0) {
+          // deselect
+          singleValue[0].delete = true;
+
+          const event = new CustomEvent('change', {
+            detail: {
+              field: this.name,
+              oldValue: this.value,
+              remove: true,
+              newValue: singleValue,
+            },
+          });
+
+          // dispatch event for use with addEventListener from javascript
+          this.dispatchEvent(event);
+        }
       this._select({
         id: e.target.dataset?.label,
         label: e.target.dataset?.label,
@@ -102,7 +148,9 @@ export class DtUsersConnection extends DtTags {
         const val = {
           ...i,
         };
-        if (i.id === parseInt(e.target.dataset.value, 10)) {
+        // when adding a new connection via AddNew, the ID was set as the label (string)
+        // for pre-existing selections, the ID is a number (int), so it would fail
+        if (i.id.toString() === e.target.dataset.value) {
           val.delete = true;
         }
         return val;

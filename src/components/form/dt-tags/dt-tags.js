@@ -66,7 +66,6 @@ export class DtTags extends DtMultiSelect {
       },
     });
 
-    this.query = '';
     this.dispatchEvent(event);
   }
 
