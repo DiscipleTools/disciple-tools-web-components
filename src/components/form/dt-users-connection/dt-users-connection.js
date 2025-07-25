@@ -46,10 +46,7 @@ export class DtUsersConnection extends DtTags {
   static get properties() {
     return {
       ...super.properties,
-      /**
-       * The name attribute used to identify an input within a form.
-       * This will be submitted with the form as the field's key.
-       */
+      /** Indicates if field is restricted to hold only one value. */
       single: { type: Boolean },
     };
   }
@@ -66,8 +63,23 @@ export class DtUsersConnection extends DtTags {
 
       const singleValue = (this.value || [])
       .filter(i => !i.delete);
+      if (option) {
+        if (this.single && singleValue.length > 0) {
+          // deselect
+          singleValue[0].delete = true;
 
-      if (option && (!this.single || singleValue.length < 1)) {
+          const event = new CustomEvent('change', {
+            detail: {
+              field: this.name,
+              oldValue: this.value,
+              remove: true,
+              newValue: singleValue,
+            },
+          });
+
+          // dispatch event for use with addEventListener from javascript
+          this.dispatchEvent(event);
+        }
         this._select(option);
       }
       this._clearSearch();
@@ -78,7 +90,23 @@ export class DtUsersConnection extends DtTags {
     const singleValue = (this.value || [])
       .filter(i => !i.delete);
     
-    if (e.target && (!this.single || singleValue.length < 1)) {
+    if (e.target) {
+      if (this.single && singleValue.length > 0) {
+          // deselect
+          singleValue[0].delete = true;
+
+          const event = new CustomEvent('change', {
+            detail: {
+              field: this.name,
+              oldValue: this.value,
+              remove: true,
+              newValue: singleValue,
+            },
+          });
+
+          // dispatch event for use with addEventListener from javascript
+          this.dispatchEvent(event);
+        }
       this._select({
         id: e.target.dataset?.label,
         label: e.target.dataset?.label,
