@@ -37,7 +37,6 @@ export class DtTextArea extends DtFormBase {
             box-shadow 0.5s,
             border-color 0.25s ease-in-out
           );
-          overflow: hidden;
           position: relative;
           outline: 0;
           resize: none;
