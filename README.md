@@ -1,24 +1,29 @@
 # Disciple Tools Web Component Library
 
-These web components mostly follow the [open-wc](https://github.com/open-wc/open-wc) recommendations.
+A set of standard components to be used across the [Disciple.Tools](https://github.com/DiscipleTools/disciple-tools-theme) system
 
-## Installation
+See the live documentation on the [Storybook](https://jade-chebakia-17493f.netlify.app/).
 
-Clone the Repo then run
-```bash
-npm install
-```
+# Get Started
 
-## Usage
+These components are already included in the Disciple.Tools theme. If you are working in the theme or a plugin that is within the standard user interface, you can start using the components now without any extra including of scripts or styles.
 
-### Samples
+In other cases, see the below samples for how to use the components in other scenarios.
+
+## Samples
 
 - [Use in static HTML](./samples/html) (Note: Need to [Build for use in HTML](#build-for-use-in-html), see below)
 - [Use in React](./samples/react-include)
 - [Use in Vue](./samples/vue-include)
 - [Extend your own Lit Components](./samples/lit-extend)
 
-### Build for use in HTML
+# Developing Components
+
+## Installation
+
+Clone the Repo then run`npm install`
+
+## Build for use in HTML
 
 To build/transpile the components for use in basic HTML as a script include, run the following:
 
@@ -29,7 +34,7 @@ npm run build
 This will create a `dist` directory with all of the final javascript files that can be included in any HTML page like so:
 
 ```html
-<script type="module" src="/dist/form/index.js"></script>
+<script src="/dist/index.js"></script>
 ```
 
 You can then use any of the new elements in your HTML and they will be used from this library.
@@ -49,31 +54,32 @@ To build a production version of Storybook, run
 npm run storybook:build
 ```
 
-<!-- ## Usage
+## Coding Standards
 
-```html
-<script type="module">
-  import 'dt-text/dt-text.js';
-</script>
-
-<dt-text></dt-text>
-``` -->
-
-## Linting and formatting
-
+### Linting
 To scan the project for linting and formatting errors, run
 
 ```bash
 npm run lint
 ```
 
+### Formatting
 To automatically fix linting and formatting errors, run
 
 ```bash
 npm run format
 ```
 
-## Testing with Web Test Runner
+### Component Standards
+The [Standards](./Standards.md) file contains a description of the implementation details that are expected for components.
+
+They are written so that you can provide them to an AI coding agent and have it update the component for you:
+
+```
+Use the Standards.md file to make sure everything in src/components/form/dt-my-component is up to date
+```
+
+## Automated Testing
 
 ![Test Status](https://github.com/DiscipleTools/disciple-tools-web-components/actions/workflows/test.yml/badge.svg?event=push)
 
