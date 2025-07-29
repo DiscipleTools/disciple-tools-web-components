@@ -36,6 +36,7 @@ export class DtDatetime extends DtDate {
           ?disabled=${this.disabled}
           @change="${this._change}"
           @click="${this.showDatePicker}"
+          part="input"
         />
         <button
           id="${this.id}-clear-button"
@@ -45,21 +46,12 @@ export class DtDatetime extends DtDate {
           type="button"
           ?disabled=${this.disabled}
           @click="${this.clearInput}"
+          part="clear-button"
         >
           x
         </button>
 
-        ${(this.touched && this.invalid) || this.error
-          ? html`<dt-exclamation-circle
-              class="icon-overlay alert"
-            ></dt-exclamation-circle>`
-          : null}
-        ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
-        ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
+        ${this.renderIcons()}
       </div>
     `;
   }

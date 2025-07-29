@@ -1,0 +1,62 @@
+We want to update the structure of each component. As an example use the dt-text component in ./src/components/form/dt-text.
+
+Each component should implement the following for each file:
+
+- `docs.mdx`
+  - Copy the basic file content from dt-text
+  - Update any instances of dt-text with the name of the component
+  - CSS Properties / Theming
+    - Look in the component file that is a sibling of the docs file for any CSS styles defined in the file. If there are any, update the table of CSS properties in the docs.mdx file with the name of the property and its default value.
+    - If the component inherits a base class other than DtFormBase, update the link in the CSS properties section to the docs file of the base class.
+    - If any HTML elements specify a "part" attribute, add a subsection listing the part name and the element it applies to within the shadow DOM
+  - Slots
+    - Update the statement about inheriting slots to link to the base class of the component
+  - Events
+    - If the component dispatches other events besides the change event, add similar documentation for each event
+- `*.js`
+  - This is the main component file
+  - In the render function, instead of including individual icons, use `this.renderIcons()` from the DtFormBase
+  - If the render function uses input, select, or any other standard form elements, add a part attribute to it.
+- `*.stories.js`
+  - Set the title to be in the Components/Form/ directory, and use a human-friendly name for its title
+  - Replace all Template.bind syntax with standard json object notation
+  - Move the Template function to be the render property of the default export.
+    - All properties in the HTML return that aren't boolean values should be wrapped in `ifDefined()`
+    - Ensure all these standard properties are included and rendered:
+      - id
+      - name
+      - label
+      - value
+      - disabled
+      - required
+      - requiredMessage
+      - icon
+      - iconAltText
+      - private
+        - This should replace isPrivate
+        - When used in the HTML, it should be referenced as args.private and not destructured
+      - privateLabel
+      - loading
+      - saved
+      - error
+      - slot
+      - onChange
+        - This should be set to `action('on-change')`
+    - The render function should not include a style tag with the theme CSS
+  - Ensure that all of these standard stories are included:
+    - Empty
+    - SvgIcon
+      - The value of the slot should be 'SvgIcon', not actual svg content
+    - EnteredValue
+      - The exact name of this may change if the component implements different value types. Just ensure there is a test that includes a pre-set value
+    - AutoSave
+      - The value of onChange should be onAutoSave from stories-utils.js
+    - Disabled
+    - PrivateField
+    - Loading
+    - Saved
+    - Error
+    - BasicForm
+    - Required
+    - RequiredCustomMessage
+    - LocalizeRTL

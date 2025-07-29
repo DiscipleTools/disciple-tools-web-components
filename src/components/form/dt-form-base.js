@@ -2,6 +2,9 @@ import { css, html } from 'lit';
 import DtBase from '../dt-base.js';
 import 'element-internals-polyfill'; // eslint-disable-line import/no-extraneous-dependencies
 import './dt-label/dt-label.js';
+import '../icons/dt-spinner.js';
+import '../icons/dt-icon.js';
+import '../icons/dt-checkmark.js';
 
 /**
  * Extends `DtBase` to add features specific to form components, including base styles
@@ -237,6 +240,33 @@ export default class DtFormBase extends DtBase {
           : null}
         ${this.label}
       </dt-label>
+    `;
+  }
+
+  renderIcons() {
+    return html`
+      ${this.touched && this.invalid
+        ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.internals.validationMessage}"
+              size="2rem"
+            ></dt-icon>`
+        : null}
+      ${this.error
+        ? html`<dt-icon
+              icon="mdi:alert-circle"
+              class="icon-overlay alert"
+              tooltip="${this.error}"
+              size="2rem"
+            ></dt-icon>`
+        : null}
+      ${this.loading
+        ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
+        : null}
+      ${this.saved
+        ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
+        : null}
     `;
   }
 

@@ -500,8 +500,8 @@ export const buttonContexts = [
 ];
 
 export const argTypes = {
-  lang: { control: 'text' },
-  dir: { control: 'select', options: ['ltr', 'rtl'] },
+  // lang: { control: 'text' },
+  // dir: { control: 'select', options: ['ltr', 'rtl'] },
   slot: {
     options: ['SvgIcon'],
     mapping: {

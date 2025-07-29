@@ -103,7 +103,7 @@ export const Disabled = {
   }
 };
 
-export const privateField = {
+export const PrivateField = {
   args: {
     private: true,
     value: 'Lorem Ipsum',

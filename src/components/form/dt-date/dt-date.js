@@ -15,7 +15,7 @@ export class DtDate extends DtFormBase {
           appearance: none;
           background-color: var(--dt-form-background-color, #cecece);
           border: 1px solid var(--dt-form-border-color, #cacaca);
-          border-radius: 0;
+          border-radius: var(--dt-date-border-radius, 0);
           box-shadow: var(
             --dt-form-input-box-shadow,
             inset 0 1px 2px hsl(0deg 0% 4% / 10%)
@@ -49,6 +49,11 @@ export class DtDate extends DtFormBase {
           color: red;
         }
 
+        input.invalid {
+          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+        }
+      `,
+      css`
         .input-group {
           position: relative;
           display: flex;
@@ -79,17 +84,13 @@ export class DtDate extends DtFormBase {
         .icon-overlay {
           inset-inline-end: 4rem;
         }
-        input.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
-        }
-      `,
+        `
     ];
   }
 
   static get properties() {
     return {
       ...super.properties,
-      id: { type: String },
       value: {
         type: String,
         reflect: true,
@@ -169,6 +170,7 @@ export class DtDate extends DtFormBase {
       'input-group-field': true,
       'dt_date_picker': true,
       invalid: this.touched && this.invalid,
+      disabled: this.disabled,
     };
     return classes;
   }
@@ -209,28 +211,7 @@ export class DtDate extends DtFormBase {
           x
         </button>
 
-        ${this.touched && this.invalid
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.internals.validationMessage}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.error
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.error}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
-        ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
+        ${this.renderIcons()}
       </div>
     `;
   }

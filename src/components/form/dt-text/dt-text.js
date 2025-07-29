@@ -1,9 +1,6 @@
 import { html, css } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import DtFormBase from '../dt-form-base.js';
-import '../../icons/dt-spinner.js';
-import '../../icons/dt-checkmark.js';
-import '../../icons/dt-exclamation-circle.js';
 
 /**
  * Basic single line text input
@@ -73,8 +70,6 @@ export class DtText extends DtFormBase {
   static get properties() {
     return {
       ...super.properties,
-      /** Element ID */
-      id: { type: String },
       /** `type` attribute of `<input />` */
       type: { type: String },
       /** Placeholder displayed when no value is entered */
@@ -168,28 +163,7 @@ export class DtText extends DtFormBase {
           @keyup="${this.implicitFormSubmit}"
         />
 
-        ${this.touched && this.invalid
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.internals.validationMessage}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.error
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.error}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
-        ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
+        ${this.renderIcons()}
       </div>
     `;
   }
