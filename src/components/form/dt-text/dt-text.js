@@ -161,6 +161,7 @@ export class DtText extends DtFormBase {
           @input=${this._input}
           novalidate
           @keyup="${this.implicitFormSubmit}"
+          part="input"
         />
 
         ${this.renderIcons()}

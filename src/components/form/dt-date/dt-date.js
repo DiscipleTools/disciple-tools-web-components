@@ -1,6 +1,6 @@
 import { html, css } from 'lit';
-import DtFormBase from '../dt-form-base.js';
 import { classMap } from 'lit/directives/class-map.js';
+import DtFormBase from '../dt-form-base.js';
 
 /**
  * Basic date component
