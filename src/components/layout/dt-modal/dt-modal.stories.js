@@ -35,6 +35,10 @@ export default {
       control: 'boolean',
       defaultValue: false,
     },
+    bottom: {
+      control: 'boolean',
+      defaultValue: false,
+    },
 
     ...argTypes,
   },
@@ -136,6 +140,7 @@ const Template = args => {
       context="${args.context}"
       ?isHelp="${args.isHelp}"
       ?isopen="${args.isOpen}"
+      ?bottom="${args.bottom}"
       ?hideHeader="${args.hideHeader}"
       buttonclass="${JSON.stringify(args.buttonClass)}"
       buttonstyle="${JSON.stringify(args.buttonStyle)}"
@@ -178,6 +183,13 @@ OpenedModal.args = {
   isHelp: true,
   isOpen: true,
 };
+
+export const BottomModal = Template.bind({});
+BottomModal.args = {
+  title: 'Bottom Modal',
+  context: 'default',
+  bottom: true,
+}
 
 export const CustomButtonStyle = Template.bind({});
 CustomButtonStyle.args = {
