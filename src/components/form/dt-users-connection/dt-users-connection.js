@@ -51,6 +51,61 @@ export class DtUsersConnection extends DtTags {
     };
   }
 
+  _select(value) {
+
+    // Grab the current values for the single check
+    const singleValue = (this.value || [])
+      .filter(i => !i.delete);
+    if (this.single && singleValue.length > 0) {
+        // Set 'delete' of the singleValue to true
+        singleValue[0].delete = true;
+      }
+
+    // Create custom event with new/old values to pass to onchange function
+    const event = new CustomEvent('change', {
+      bubbles: true,
+      detail: {
+        field: this.name,
+        oldValue: this.value,
+      },
+    });
+
+    // update value in this component
+    if (this.value && this.value.length) {
+      if (typeof this.value[0] === 'string') {
+        // If value is array of strings, check for same value prefixed with hyphen
+        this.value = [...this.value.filter(i => i !== `-${value}`), value];
+      } else {
+        // If value is array of objects, check for same value with `delete` property
+        let foundPrevious = false;
+        const newVal = this.value.map(i => {
+          const val = {
+            ...i,
+          };
+          if (i.id === value.id && i.delete) {
+            delete val.delete;
+            foundPrevious = true;
+          }
+          return val;
+        });
+        if (!foundPrevious) {
+          newVal.push(value);
+        }
+        this.value = newVal;
+      }
+    } else {
+      this.value = [value];
+    }
+    event.detail.newValue = this.value;
+    this.open = false; // close options list
+    this.activeIndex = -1; // reset keyboard-selected option
+    this.canUpdate = true;
+
+    // dispatch event for use with addEventListener from javascript
+    this.dispatchEvent(event);
+    this._setFormValue(this.value);
+  }
+
   _clickOption(e) {
     if (e.target && e.target.value) {
       const id = parseInt(e.target.value, 10);
@@ -60,53 +115,16 @@ export class DtUsersConnection extends DtTags {
         }
         return result;
       }, null);
-
-      const singleValue = (this.value || [])
-      .filter(i => !i.delete);
       if (option) {
-        if (this.single && singleValue.length > 0) {
-          // deselect
-          singleValue[0].delete = true;
-
-          const event = new CustomEvent('change', {
-            detail: {
-              field: this.name,
-              oldValue: this.value,
-              remove: true,
-              newValue: singleValue,
-            },
-          });
-
-          // dispatch event for use with addEventListener from javascript
-          this.dispatchEvent(event);
-        }
         this._select(option);
       }
       this._clearSearch();
+      this.query = '';
     }
   }
 
   _clickAddNew(e) {
-    const singleValue = (this.value || [])
-      .filter(i => !i.delete);
-    
     if (e.target) {
-      if (this.single && singleValue.length > 0) {
-          // deselect
-          singleValue[0].delete = true;
-
-          const event = new CustomEvent('change', {
-            detail: {
-              field: this.name,
-              oldValue: this.value,
-              remove: true,
-              newValue: singleValue,
-            },
-          });
-
-          // dispatch event for use with addEventListener from javascript
-          this.dispatchEvent(event);
-        }
       this._select({
         id: e.target.dataset?.label,
         label: e.target.dataset?.label,
@@ -116,6 +134,7 @@ export class DtUsersConnection extends DtTags {
       const input = this.shadowRoot.querySelector('input');
       if (input) {
         input.value = '';
+        this.query = '';
       }
     }
   }
@@ -132,6 +151,7 @@ export class DtUsersConnection extends DtTags {
         this._select(this.filteredOptions[this.activeIndex]);
       }
       this._clearSearch();
+      this.query = '';
     }
   }
 
