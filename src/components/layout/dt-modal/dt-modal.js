@@ -48,6 +48,7 @@ export class DtModal extends DtBase {
         margin-bottom: 0;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
+        max-inline-size: fit-content;
      }
 
      dialog:not([open]).bottom {
