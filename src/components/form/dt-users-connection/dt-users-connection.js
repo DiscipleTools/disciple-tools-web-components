@@ -52,15 +52,6 @@ export class DtUsersConnection extends DtTags {
   }
 
   _select(value) {
-
-    // Grab the current values for the single check
-    const singleValue = (this.value || [])
-      .filter(i => !i.delete);
-    if (this.single && singleValue.length > 0) {
-        // Set 'delete' of the singleValue to true
-        singleValue[0].delete = true;
-      }
-
     // Create custom event with new/old values to pass to onchange function
     const event = new CustomEvent('change', {
       bubbles: true,
@@ -72,10 +63,6 @@ export class DtUsersConnection extends DtTags {
 
     // update value in this component
     if (this.value && this.value.length) {
-      if (typeof this.value[0] === 'string') {
-        // If value is array of strings, check for same value prefixed with hyphen
-        this.value = [...this.value.filter(i => i !== `-${value}`), value];
-      } else {
         // If value is array of objects, check for same value with `delete` property
         let foundPrevious = false;
         const newVal = this.value.map(i => {
@@ -85,6 +72,8 @@ export class DtUsersConnection extends DtTags {
           if (i.id === value.id && i.delete) {
             delete val.delete;
             foundPrevious = true;
+          } else if (this.single && !i.delete) {
+            val.delete = true
           }
           return val;
         });
@@ -92,7 +81,6 @@ export class DtUsersConnection extends DtTags {
           newVal.push(value);
         }
         this.value = newVal;
-      }
     } else {
       this.value = [value];
     }
