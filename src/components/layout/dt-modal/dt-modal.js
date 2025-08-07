@@ -43,6 +43,35 @@ export class DtModal extends DtBase {
       font-size: 2rem;
       }
 
+      .dt-modal.bottom {
+        position: fixed;
+        margin-bottom: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        max-inline-size: fit-content;
+     }
+
+     dialog:not([open]).bottom {
+        opacity: 0;
+        transform: translateY(100%);
+        transition: 0.5s ease;
+      }
+
+      dialog[open].bottom {
+        opacity: 1;
+        transform: translateY(0);
+        transition: 0.5s ease;
+      }
+
+     @media (max-width: 600px) {
+        /* CSS rules specific to small mobile devices */
+        .dt-modal.bottom {
+          width: 100%;
+          margin-left: 0;
+          margin-right: 0;
+        }
+      }
+
       dialog:not([open]) {
         pointer-events: none;
         opacity: 0;
@@ -238,6 +267,7 @@ export class DtModal extends DtBase {
       dropdownListImg: {type: String},
       submitButton: {type:Boolean},
       closeButton: {type:Boolean},
+      bottom: {type:Boolean},
     };
   }
 
@@ -344,6 +374,14 @@ export class DtModal extends DtBase {
     this._triggerClose('button');
   }
 
+  get classes() {
+    const classes = {
+      'no-header': this.hideHeader,
+      'bottom': this.bottom,
+    };
+    return classes;
+  }
+
   render() {
     // prettier-ignore
     const svg = html`
@@ -362,7 +400,7 @@ export class DtModal extends DtBase {
     return html`
       <dialog
         id=""
-        class="dt-modal dt-modal--width ${classMap(this.headerClass || {})}"
+        class="dt-modal dt-modal--width ${classMap(this.classes)}"
         @click=${this._dialogClick}
         @keypress=${this._dialogKeypress}
       >
