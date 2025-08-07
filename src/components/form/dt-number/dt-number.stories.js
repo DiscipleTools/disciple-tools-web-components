@@ -1,126 +1,182 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { action } from '@storybook/addon-actions';
+import { argTypes } from '../../../stories-theme.js';
+import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
 import './dt-number.js';
-import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils.js';
 
 export default {
-  title: 'Form/dt-number',
+  title: 'Components/Form/Number',
   component: 'dt-number',
   argTypes: {
-    theme: {
-      control: 'select',
-      options: Object.keys(themes),
-      defaultValue: 'default',
-    },
     id: { control: 'text' },
     name: { control: 'text' },
     label: { control: 'text' },
     value: { control: 'text' },
-    min: { control: 'text' },
-    max: { control: 'text' },
+    min: { control: 'number' },
+    max: { control: 'number' },
     disabled: { control: 'boolean' },
+    required: { control: 'boolean' },
+    requiredMessage: { control: 'text' },
     icon: { control: 'text' },
-    isPrivate: { control: 'boolean' },
+    iconAltText: { control: 'text' },
+    private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
-    onchange: { control: 'text' },
-    postType: { control: 'text' },
+    error: { control: 'text' },
     ...argTypes,
   },
-};
-
-function Template(args) {
-  const {
-    id = 'name',
-    name = 'field-name',
-    label = 'Field Name',
-    value = '',
-    disabled,
-    min,
-    max,
-    icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
-    isPrivate,
-    loading,
-    saved,
-    onchange,
-    slot,
-    apiRoot,
-    nonce,
-    postType
-  } = args;
-  return html`
-    <style>
-      ${themeCss(args)}
-    </style>
+  args: {
+    onChange: action('on-change'),
+  },
+  render: (args) => {
+    const {
+      id = 'name',
+      name = 'field-name',
+      label = 'Field Name',
+      value,
+      min,
+      max,
+      disabled = false,
+      required = false,
+      requiredMessage,
+      icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+      iconAltText = 'Icon Alt Text',
+      privateLabel,
+      loading = false,
+      saved = false,
+      error,
+      slot,
+      onChange,
+    } = args;
+    return html`
     <dt-number
-      id=${id}
-      name=${name}
-      label=${label}
-      .value=${value}
-      .min=${min}
-      .max=${max}
+      id=${ifDefined(id)}
+      name=${ifDefined(name)}
+      label=${ifDefined(label)}
+      value=${ifDefined(value)}
+      min=${ifDefined(min)}
+      max=${ifDefined(max)}
       ?disabled=${disabled}
-      icon=${icon}
-      ?private=${isPrivate}
+      ?required=${required}
+      requiredMessage=${ifDefined(requiredMessage)}
+      icon="${ifDefined(icon)}"
+      iconAltText="${ifDefined(iconAltText)}"
+      ?private=${args.private}
+      privateLabel="${ifDefined(privateLabel)}"
       ?loading=${loading}
       ?saved=${saved}
-      onchange=${onchange}
-      apiRoot=${apiRoot}
-      nonce=${nonce}
-      postType=${postType}
+      error="${ifDefined(error)}"
+      @change=${onChange}
     >
       ${slot}
     </dt-number>
   `;
-}
-
-export const Empty = Template.bind({});
-
-export const SvgIcon = Template.bind({});
-SvgIcon.args = {
-  icon: null,
-  // prettier-ignore
-  slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
+  }
 };
 
-export const EnteredValue = Template.bind({});
-EnteredValue.args = {
-  value: 7,
+export const Empty = {};
+
+export const SvgIcon = {
+  args: {
+    icon: null,
+    slot: 'SvgIcon',
+  }
 };
 
-export const MinValue = Template.bind({});
-MinValue.args = {
-  min: 9,
+export const EnteredValue = {
+  args: {
+    value: 42,
+  }
 };
 
-export const MaxValue = Template.bind({});
-MaxValue.args = {
-  max: 10,
+export const AutoSave = {
+  args: {
+    onChange: onAutoSave,
+  }
 };
 
-export const MinMaxValue = Template.bind({});
-MinMaxValue.args = {
-  min: 3,
-  max: 7,
+export const Disabled = {
+  args: {
+    disabled: true,
+    value: 42,
+  }
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  disabled: true,
-  value: 12,
+export const PrivateField = {
+  args: {
+    private: true,
+    value: 42,
+    privateLabel: 'This is a custom tooltip',
+  }
 };
 
-export const privateField = Template.bind({});
-privateField.args = {
-  isPrivate: true,
-  value: 77,
+export const Loading = {
+  args: {
+    loading: true,
+  }
 };
 
-export const LocalizeRTL = Template.bind({});
-LocalizeRTL.decorators = [LocaleDecorator];
-LocalizeRTL.args = {
-  lang: 'ar',
-  dir: 'rtl',
-  label: 'اسم الإدخال',
-  value: 'راد أن يشع',
+export const Saved = {
+  args: {
+    saved: true,
+  }
+};
+
+export const Error = {
+  args: {
+    error: 'Custom error message',
+  }
+};
+
+export const BasicForm = {
+  decorators: [FormDecorator],
+  args: {
+    value: 42,
+  }
+};
+
+export const Required = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+  }
+};
+
+export const RequiredCustomMessage = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+    requiredMessage: 'Custom error message',
+  }
+};
+
+export const MinValue = {
+  args: {
+    min: 9,
+  }
+};
+
+export const MaxValue = {
+  args: {
+    max: 10,
+  }
+};
+
+export const MinMaxValue = {
+  args: {
+    min: 3,
+    max: 7,
+  }
+};
+
+export const LocalizeRTL = {
+  decorators: [LocaleDecorator],
+  args: {
+    lang: 'ar',
+    dir: 'rtl',
+    label: 'اسم الإدخال',
+    value: 42,
+  }
 };
