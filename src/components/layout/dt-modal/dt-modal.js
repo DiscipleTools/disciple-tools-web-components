@@ -155,7 +155,7 @@ export class DtModal extends DtBase {
         grid-template-rows: 2.5em auto 4.5em;
       }
       .dt-modal.header-blue-bg {
-        padding: 1;
+        padding: 1em;
       }
       .dt-modal.header-blue-bg header {
         background-color: #3f729b;
