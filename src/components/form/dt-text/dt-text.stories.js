@@ -164,9 +164,9 @@ export const LocalizeRTL = {
     value: 'راد أن يشع',
   }
 };
-/*// requires addon-interactions v8.6
+/* // requires addon-interactions v8.6
 export const Focus = {
   play: async () => {
     document.querySelector('dt-text').focus();
   }
-};*/
+}; */

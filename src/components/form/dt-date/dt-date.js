@@ -1,6 +1,6 @@
 import { html, css } from 'lit';
-import DtFormBase from '../dt-form-base.js';
 import { classMap } from 'lit/directives/class-map.js';
+import DtFormBase from '../dt-form-base.js';
 
 /**
  * Basic date component
@@ -17,84 +17,130 @@ export class DtDate extends DtFormBase {
           border: 1px solid var(--dt-form-border-color, #cacaca);
           border-radius: var(--dt-date-border-radius, 0);
           box-shadow: var(
-            --dt-form-input-box-shadow,
-            inset 0 1px 2px hsl(0deg 0% 4% / 10%)
+            --dt-date-box-shadow,
+            var(
+              --dt-form-input-box-shadow,
+              inset 0 1px 2px hsl(0deg 0% 4% / 10%)
+            )
           );
           box-sizing: border-box;
-          display: inline-flex;
+          display: block;
           font-family: inherit;
           font-size: 1rem;
           font-weight: 300;
-          height: 2.5rem;
+          height: auto;
           line-height: 1.5;
+          margin: 0;
           padding: var(--dt-form-padding, 0.5333333333rem);
           transition: var(
             --dt-form-transition,
             box-shadow 0.5s,
             border-color 0.25s ease-in-out
           );
-          width: 100%;
         }
         input:disabled,
         input[readonly],
         textarea:disabled,
         textarea[readonly],
         .input-group button:disabled {
-          background-color: var(--dt-form-disabled-background-color, #e6e6e6);
+          background-color: var(
+            --dt-date-disabled-background-color,
+            var(--dt-form-disabled-background-color, #e6e6e6)
+          );
           cursor: not-allowed;
         }
-
-        /* input::-webkit-datetime-edit-text { color: red; padding: 0 0.3em; } */
-        input::-webkit-calendar-picker-indicator {
-          color: red;
+        input.disabled {
+          color: var(--dt-text-placeholder-color, #999);
         }
-
+        input:focus-within,
+        input:focus-visible {
+          outline: none;
+        }
+        input::placeholder {
+          color: var(--dt-date-placeholder-color, #999);
+          text-transform: var(--dt-date-placeholder-transform, none);
+          font-size: var(--dt-date-placeholder-font-size, 1rem);
+          font-weight: var(--dt-date-placeholder-font-weight, 400);
+          letter-spacing: var(--dt-date-placeholder-letter-spacing, normal);
+        }
         input.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(--dt-date-border-color-alert, var(--alert-color));
         }
       `,
       css`
         .input-group {
-          position: relative;
           display: flex;
-          width: 100%;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+        .field-container {
+          display: flex;
+        }
+        .field-container input {
+          flex-grow: 1;
+        }
+        .field-container .input-addon {
+          flex-shrink: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          aspect-ratio: 1/1;
+          padding: 10px;
+          border: solid 1px gray;
+          border-collapse: collapse;
+          background-color: var(
+            --dt-date-background-color,
+            var(--dt-form-background-color, buttonface)
+          );
+          border: 1px solid
+            var(--dt-date-border-color, var(--dt-form-border-color, #fefefe));
+          border-radius: var(--dt-date-border-radius, 0);
+          box-shadow: var(
+            --dt-date-box-shadow,
+            var(
+              --dt-form-input-box-shadow,
+              inset 0 1px 2px hsl(0deg 0% 4% / 10%)
+            )
+          );
         }
 
-        .input-group .input-group-button {
-          font-size: 0.75rem;
-          line-height: 1em;
-          display: inline-flex;
+        .input-addon:disabled {
+          background-color: var(--dt-form-disabled-background-color);
+          color: var(--dt-date-placeholder-color, #999);
         }
-        .input-group .button {
-          display: inline-block;
-          background: var(--dt-form-background-color, #cecece);
-          border: 1px solid var(--dt-form-border-color, #cecece);
+        .input-addon:disabled:hover {
+          background-color: var(--dt-form-disabled-background-color);
+          color: var(--dt-date-placeholder-color, #999);
+          cursor: not-allowed;
+        }
+
+        .input-addon.btn-clear {
           color: var(--alert-color, #cc4b37);
-          align-self: stretch;
-          font-size: 1rem;
-          height: auto;
-          padding: 0 1em;
-          margin: 0;
-        }
-        .input-group .button:hover:not([disabled]) {
-          background-color: var(--alert-color, #cc4b37);
-          color: var(--text-color-inverse, #fefefe);
+          &:disabled {
+            color: var(--dt-date-placeholder-color, #999);
+          }
+          &:hover:not([disabled]) {
+            background-color: var(--alert-color, #cc4b37);
+            color: var(--dt-date-button-hover-color, #ffffff);
+          }
         }
 
         .icon-overlay {
-          inset-inline-end: 4rem;
+          inset-inline-end: 5rem;
         }
-        `
+      `,
     ];
   }
 
   static get properties() {
     return {
       ...super.properties,
+      /** Value of field. Reflected back to attribute in order to select from DOM if needed. */
       value: {
         type: String,
         reflect: true,
       },
+      /** Timestamp value of field. Reflected back to attribute in order to select from DOM if needed. */
       timestamp: {
         converter: date => {
           let JStimestamp = Number(date);
@@ -108,14 +154,6 @@ export class DtDate extends DtFormBase {
       },
     };
   }
-
-  // _convertArabicToEnglishNumbers() {
-  //   this.value
-  //   .replace(/[\u0660-\u0669]/g, (c) => { return c.charCodeAt(0) - 0x0660; })
-  //     .replace(/[\u06f0-\u06f9]/g, (c) => {
-  //       return c.charCodeAt(0) - 0x06f0;
-  //     });
-  // }
 
   updateTimestamp(value) {
     const timestampMilliseconds = new Date(value).getTime();
@@ -157,7 +195,7 @@ export class DtDate extends DtFormBase {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        this._field
+        this._field,
       );
     } else {
       this.invalid = false;
@@ -167,8 +205,7 @@ export class DtDate extends DtFormBase {
 
   get classes() {
     const classes = {
-      'input-group-field': true,
-      'dt_date_picker': true,
+      'text-input': true,
       invalid: this.touched && this.invalid,
       disabled: this.disabled,
     };
@@ -186,30 +223,32 @@ export class DtDate extends DtFormBase {
       ${this.labelTemplate()}
 
       <div class="input-group">
-        <input
-          id="${this.id}"
-          class="${classMap(this.classes)}"
-          type="date"
-          autocomplete="off"
-          .placeholder="${new Date().toISOString().substring(0, 10)}"
-          .value="${this.value}"
-          .timestamp="${this.date}"
-          ?disabled=${this.disabled}
-          ?required=${this.required}
-          @change="${this._change}"
-          @click="${this.showDatePicker}"
-        />
-        <button
-          id="${this.id}-clear-button"
-          class="button alert clear-date-button"
-          data-inputid="${this.id}"
-          title="Delete Date"
-          type="button"
-          ?disabled=${this.disabled}
-          @click="${this.clearInput}"
-        >
-          x
-        </button>
+        <div class="field-container">
+          <input
+            id="${this.id}"
+            class="${classMap(this.classes)}"
+            type="date"
+            autocomplete="off"
+            .placeholder="${new Date().toISOString().substring(0, 10)}"
+            .value="${this.value}"
+            .timestamp="${this.date}"
+            ?disabled=${this.disabled}
+            ?required=${this.required}
+            @change="${this._change}"
+            novalidate
+            @click="${this.showDatePicker}"
+            part="input"
+          />
+          <button
+            class="input-addon btn-clear"
+            @click="${this.clearInput}"
+            data-inputid="${this.id}"
+            ?disabled=${this.disabled}
+            part="clear-button"
+          >
+            <dt-icon icon="mdi:close"></dt-icon>
+          </button>
+        </div>
 
         ${this.renderIcons()}
       </div>
