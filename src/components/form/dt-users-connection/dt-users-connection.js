@@ -43,6 +43,57 @@ export class DtUsersConnection extends DtTags {
     ];
   }
 
+  static get properties() {
+    return {
+      ...super.properties,
+      /** Indicates if field is restricted to hold only one value. */
+      single: { type: Boolean },
+    };
+  }
+
+  _select(value) {
+    // Create custom event with new/old values to pass to onchange function
+    const event = new CustomEvent('change', {
+      bubbles: true,
+      detail: {
+        field: this.name,
+        oldValue: this.value,
+      },
+    });
+
+    // update value in this component
+    if (this.value && this.value.length) {
+        // If value is array of objects, check for same value with `delete` property
+        let foundPrevious = false;
+        const newVal = this.value.map(i => {
+          const val = {
+            ...i,
+          };
+          if (i.id === value.id && i.delete) {
+            delete val.delete;
+            foundPrevious = true;
+          } else if (this.single && !i.delete) {
+            val.delete = true
+          }
+          return val;
+        });
+        if (!foundPrevious) {
+          newVal.push(value);
+        }
+        this.value = newVal;
+    } else {
+      this.value = [value];
+    }
+    event.detail.newValue = this.value;
+    this.open = false; // close options list
+    this.activeIndex = -1; // reset keyboard-selected option
+    this.canUpdate = true;
+
+    // dispatch event for use with addEventListener from javascript
+    this.dispatchEvent(event);
+    this._setFormValue(this.value);
+  }
+
   _clickOption(e) {
     if (e.target && e.target.value) {
       const id = parseInt(e.target.value, 10);
@@ -56,6 +107,7 @@ export class DtUsersConnection extends DtTags {
         this._select(option);
       }
       this._clearSearch();
+      this.query = '';
     }
   }
 
@@ -70,6 +122,7 @@ export class DtUsersConnection extends DtTags {
       const input = this.shadowRoot.querySelector('input');
       if (input) {
         input.value = '';
+        this.query = '';
       }
     }
   }
@@ -86,6 +139,7 @@ export class DtUsersConnection extends DtTags {
         this._select(this.filteredOptions[this.activeIndex]);
       }
       this._clearSearch();
+      this.query = '';
     }
   }
 
@@ -102,7 +156,9 @@ export class DtUsersConnection extends DtTags {
         const val = {
           ...i,
         };
-        if (i.id === parseInt(e.target.dataset.value, 10)) {
+        // when adding a new connection via AddNew, the ID was set as the label (string)
+        // for pre-existing selections, the ID is a number (int), so it would fail
+        if (i.id.toString() === e.target.dataset.value) {
           val.delete = true;
         }
         return val;

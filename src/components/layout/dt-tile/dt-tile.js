@@ -21,7 +21,7 @@ export class DtTile extends DtBase {
         border-radius: var(--dt-tile-border-radius, 10px);
         box-shadow: var(--dt-tile-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
         padding: 1rem;
-        margin: var(--dt-tile-margin, 0); 
+        margin: var(--dt-tile-margin, 0);
       }
 
       h3 {
@@ -43,8 +43,12 @@ export class DtTile extends DtBase {
 
       .section-body {
         display: grid;
-        grid-template-columns: var(--dt-tile-body-grid-template-columns, repeat(auto-fill, minmax(200px, 1fr)));
+        grid-template-columns: var(
+          --dt-tile-body-grid-template-columns,
+          repeat(auto-fill, minmax(200px, 1fr))
+        );
         column-gap: 1.4rem;
+        row-gap: 1rem;
         transition: height 1s ease 0s;
         height: auto;
       }
@@ -104,31 +108,34 @@ export class DtTile extends DtBase {
 
   renderHeading() {
     if (!this.hasHeading) {
-      return nothing
+      return nothing;
     }
 
     return html`
-        <h3 class="section-header">
-          ${this.title}
-          ${this.expands
-            ? html`
-                <button
-                  @click="${this._toggle}"
-                  class="toggle chevron ${this.collapsed ? 'down' : 'up'}"
-                >
-                  &nbsp;
-                </button>
-              `
-            : null}
-        </h3>
-    `
+      <h3 class="section-header">
+        ${this.title}
+        ${this.expands
+          ? html`
+              <button
+                @click="${this._toggle}"
+                class="toggle chevron ${this.collapsed ? 'down' : 'up'}"
+              >
+                &nbsp;
+              </button>
+            `
+          : null}
+      </h3>
+    `;
   }
 
   render() {
     return html`
       <section>
         ${this.renderHeading()}
-        <div part="body" class="section-body ${this.collapsed ? 'collapsed' : null}">
+        <div
+          part="body"
+          class="section-body ${this.collapsed ? 'collapsed' : null}"
+        >
           <slot></slot>
         </div>
       </section>

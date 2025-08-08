@@ -1,8 +1,6 @@
 import { html, css } from 'lit';
-import DtFormBase from '../dt-form-base.js';
 import { classMap } from 'lit/directives/class-map.js';
-import '../../icons/dt-spinner.js';
-import '../../icons/dt-checkmark.js';
+import DtFormBase from '../dt-form-base.js';
 
 /**
  * Dropdown list that allows selection of a single value.
@@ -192,6 +190,7 @@ export class DtSingleSelect extends DtFormBase {
           style="background-color: ${this.color};"
           ?disabled="${this.disabled}"
           ?required=${this.required}
+          part="select"
         >
           <option disabled selected hidden value="">${this.placeholder}</option>
 
@@ -204,28 +203,8 @@ export class DtSingleSelect extends DtFormBase {
             `
           )}
         </select>
-        ${this.touched && this.invalid
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.internals.validationMessage}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.error
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.error}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
-        ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
+
+        ${this.renderIcons()}
       </div>
     `;
   }

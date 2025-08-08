@@ -22,7 +22,7 @@ Each component should implement the following for each file:
   - Replace all Template.bind syntax with standard json object notation
   - Move the Template function to be the render property of the default export.
     - All properties in the HTML return that aren't boolean values should be wrapped in `ifDefined()`
-    - Ensure all these standard properties are included and rendered:
+    - Ensure at least all these standard properties are included and rendered:
       - id
       - name
       - label
@@ -43,11 +43,11 @@ Each component should implement the following for each file:
       - onChange
         - This should be set to `action('on-change')`
     - The render function should not include a style tag with the theme CSS
-  - Ensure that all of these standard stories are included:
+  - Ensure that at least these standard stories are included. If there are added stories, do not delete them; just update their code formatting.
     - Empty
     - SvgIcon
       - The value of the slot should be 'SvgIcon', not actual svg content
-    - EnteredValue
+    - EnteredValue / SelectedValue
       - The exact name of this may change if the component implements different value types. Just ensure there is a test that includes a pre-set value
     - AutoSave
       - The value of onChange should be onAutoSave from stories-utils.js
