@@ -142,6 +142,7 @@ const Template = args => {
       ?isopen="${args.isOpen}"
       ?bottom="${args.bottom}"
       ?hideHeader="${args.hideHeader}"
+      headerClass="${JSON.stringify(args.headerClass)}"
       buttonclass="${JSON.stringify(args.buttonClass)}"
       buttonstyle="${JSON.stringify(args.buttonStyle)}"
       buttonLabel="${args.buttonLabel?args.buttonLabel:'Open Modal'}"
@@ -182,6 +183,12 @@ OpenedModal.args = {
   context: 'default',
   isHelp: true,
   isOpen: true,
+};
+
+export const BlueBackground = Template.bind({});
+BlueBackground.args = {
+  title: 'Blue Background',
+  headerClass: {"header-blue-bg":true},
 };
 
 export const BottomModal = Template.bind({});

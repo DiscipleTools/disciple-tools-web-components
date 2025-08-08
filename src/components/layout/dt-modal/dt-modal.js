@@ -24,7 +24,7 @@ export class DtModal extends DtBase {
         max-block-size: min(80dvb, 100%);
         margin: auto;
         height: fit-content;
-        padding: var(--dt-modal-padding, 1em);
+        padding: var(--dt-modal-padding, 0em);
         position: fixed;
         inset: 0;
         border-radius: 1em;
@@ -36,7 +36,6 @@ export class DtModal extends DtBase {
       .dt-modal.dt-modal--width {
         width: 80dvw;
         background-color: #fefefe;
-        border: 1px solid #cacaca;
         border-radius: 10px;
       }
       #modal-field-title {
@@ -106,14 +105,7 @@ export class DtModal extends DtBase {
       }
 
       form {
-        display: grid;
         height: fit-content;
-        grid-template-columns: 1fr;
-        grid-template-rows: 2.5em auto 3em;
-        grid-template-areas:
-          'header'
-          'main'
-          'footer';
         position: relative;
       }
 
@@ -125,9 +117,9 @@ export class DtModal extends DtBase {
       }
 
       header {
-        grid-area: header;
         display: flex;
         justify-content: space-between;
+        padding: 1em;
       }
 
       .button {
@@ -158,16 +150,15 @@ export class DtModal extends DtBase {
       }
 
       article {
-        grid-area: main;
         overflow: auto;
+        padding: 0em 1em;
       }
 
       footer {
-        grid-area: footer;
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        padding-block-start: 1rem;
+        padding: 1rem;
         border-top: 1px solid #ccc;
       }
 
@@ -191,21 +182,21 @@ export class DtModal extends DtBase {
       }
       .dt-modal.dt-modal--contact-type form {
         grid-template-rows: 2.5em auto 4.5em;
+      }
       .dt-modal.header-blue-bg {
-        padding: 0;
+        padding: 1em;
       }
       .dt-modal.header-blue-bg header {
         background-color: #3f729b;
         color: #fff;
         text-align: center;
-        padding-top: .75rem;
       }
       .dt-modal.header-blue-bg header #modal-field-title {
         font-size: 1.5rem;
         width: 100%;
       }
       .dt-modal.header-blue-bg article {
-        padding: .75rem 0;
+        padding: 0em 1em;
       }
       .dt-modal.header-blue-bg footer {
         padding-inline: .7rem;
