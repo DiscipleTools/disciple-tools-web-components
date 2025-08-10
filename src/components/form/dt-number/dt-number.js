@@ -109,6 +109,7 @@ export class DtNumberField extends DtFormBase {
       this.dispatchEvent(event);
     } else {
       e.currentTarget.value = '';
+      this.value = undefined;
     }
   }
 
