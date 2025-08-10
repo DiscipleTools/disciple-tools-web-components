@@ -67,7 +67,7 @@ export class DtNumberField extends DtFormBase {
       ...super.properties,
       /** Value of field. Reflected back to attribute in order to select from DOM if needed. */
       value: {
-        type: Number,
+        type: String,
         reflect: true,
       },
       /** Minimum allowed value */
@@ -82,22 +82,34 @@ export class DtNumberField extends DtFormBase {
     this._setFormValue(this.value);
   }
 
+  _validateValue(value) {
+    if (value < this.min || value > this.max) {
+      return false;
+    }
+
+    return true;
+  }
+
   async _change(e) {
-    const event = new CustomEvent('change', {
-      detail: {
-        field: this.name,
-        oldValue: this.value,
-        newValue: e.target.value,
-      },
-      bubbles: true,
-      composed: true,
-    });
+    if (this._validateValue(e.target.value)) {
+      const event = new CustomEvent('change', {
+        detail: {
+          field: this.name,
+          oldValue: this.value,
+          newValue: e.target.value,
+        },
+        bubbles: true,
+        composed: true,
+      });
 
-    this.value = e.target.value;
+      this.value = e.target.value;
 
-    this._setFormValue(this.value);
+      this._setFormValue(this.value);
 
-    this.dispatchEvent(event);
+      this.dispatchEvent(event);
+    } else {
+      e.currentTarget.value = '';
+    }
   }
 
   implicitFormSubmit(e) {
