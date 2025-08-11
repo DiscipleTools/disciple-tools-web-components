@@ -245,6 +245,7 @@ export class DtDate extends DtFormBase {
             data-inputid="${this.id}"
             ?disabled=${this.disabled}
             part="clear-button"
+            aria-label="Clear date"
           >
             <dt-icon icon="mdi:close"></dt-icon>
           </button>
