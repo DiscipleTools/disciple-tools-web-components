@@ -2,8 +2,8 @@ import { html, css } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { when } from 'lit/directives/when.js';
-import '../../icons/dt-icon.js';
 import { DtText } from '../dt-text/dt-text.js';
+import '../../icons/dt-icon.js';
 
 /**
  * Field to edit multiple text values with ability to add/remove values.
@@ -345,29 +345,7 @@ export class DtMultiText extends DtText {
     return html`
       ${this.labelTemplate()}
       <div class="input-group">
-        ${this._renderInputFields()}
-        ${this.touched && this.invalid
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.internals.validationMessage}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.error
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.error}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
-        ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
+        ${this._renderInputFields()} ${this.renderIcons()}
       </div>
     `;
   }

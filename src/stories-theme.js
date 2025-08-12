@@ -503,10 +503,14 @@ export const argTypes = {
   // lang: { control: 'text' },
   // dir: { control: 'select', options: ['ltr', 'rtl'] },
   slot: {
-    options: ['SvgIcon'],
+    options: ['SvgIcon', 'ErrorSlot'],
     mapping: {
       SvgIcon: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`
     }
+      ErrorSlot: html`<div slot="error">
+        Custom error message <a href="#">Link</a>
+      </div>`,
+    },
   },
 };
 
@@ -559,7 +563,7 @@ export function themeCss(storyArgs) {
     --dt-form-background-color: ${getArg(storyArgs, 'formBackgroundColor')};
     --dt-form-disabled-background-color: ${getArg(
       storyArgs,
-      'formDisabledBackgroundColor'
+      'formDisabledBackgroundColor',
     )};
     --dt-form-text-color: ${getArg(storyArgs, 'formTextColor')};
     --dt-form-text-color-inverse: ${getArg(storyArgs, 'formTextColorInverse')};
@@ -572,28 +576,28 @@ export function themeCss(storyArgs) {
     --dt-multi-select-text-color: ${getArg(storyArgs, 'multiSelectTextColor')};
     --dt-multi-select-background-color: ${getArg(
       storyArgs,
-      'multiSelectBackgroundColor'
+      'multiSelectBackgroundColor',
     )};
     --dt-multi-select-tag-border-color: ${getArg(
       storyArgs,
-      'multiSelectTagBorderColor'
+      'multiSelectTagBorderColor',
     )};
     --dt-multi-select-tag-background-color: ${getArg(
       storyArgs,
-      'multiSelectTagBackgroundColor'
+      'multiSelectTagBackgroundColor',
     )};
     --dt-multi-select-option-hover-background: ${getArg(
       storyArgs,
-      'multiSelectOptionHoverBackground'
+      'multiSelectOptionHoverBackground',
     )};
 
     --dt-single-select-text-color: ${getArg(
       storyArgs,
-      'singleSelectTextColor'
+      'singleSelectTextColor',
     )};
     --dt-single-select-text-color-inverse: ${getArg(
       storyArgs,
-      'singleSelectTextColorInverse'
+      'singleSelectTextColorInverse',
     )};
 
     --dt-text-color: ${getArg(storyArgs, 'dttextColor')};
@@ -604,41 +608,41 @@ export function themeCss(storyArgs) {
     --dt-text-border-color-alert: ${getArg(storyArgs, 'textBorderColorAlert')};
     --dt-text-disabled-background-color: ${getArg(
       storyArgs,
-      'textDisabledBackgroundColor'
+      'textDisabledBackgroundColor',
     )};
     --dt-text-border-radius: ${getArg(storyArgs, 'textBorderRadius')};
     --dt-text-box-shadow: ${getArg(storyArgs, 'textBoxShadow')};
     --dt-text-placeholder-color: ${getArg(storyArgs, 'textPlaceholderColor')};
     --dt-text-placeholder-text-transform: ${getArg(
       storyArgs,
-      'textPlaceholderTextTransform'
+      'textPlaceholderTextTransform',
     )};
     --dt-text-placeholder-font-size: ${getArg(
       storyArgs,
-      'textPlaceholderFontSize'
+      'textPlaceholderFontSize',
     )};
     --dt-text-placeholder-font-weight: ${getArg(
       storyArgs,
-      'textPlaceholderFontWeight'
+      'textPlaceholderFontWeight',
     )};
     --dt-text-placeholder-letter-spacing: ${getArg(
       storyArgs,
-      'textPlaceholderLetterSpacing'
+      'textPlaceholderLetterSpacing',
     )};
 
     --dt-textarea-border-color: ${getArg(storyArgs, 'textareaBorderColor')};
     --dt-textarea-background-color: ${getArg(
       storyArgs,
-      'textareaBackgroundColor'
+      'textareaBackgroundColor',
     )};
     --dt-textarea-disabled-background-color: ${getArg(
       storyArgs,
-      'textareaDisabledBackgroundColor'
+      'textareaDisabledBackgroundColor',
     )};
     --dt-textarea-text-color: ${getArg(storyArgs, 'textareaTextColor')};
     --dt-textarea-text-color-inverse: ${getArg(
       storyArgs,
-      'textareaTextcolorInverse'
+      'textareaTextcolorInverse',
     )};
 
     --dt-label-font-size: ${getArg(storyArgs, 'labelFontSize')};
@@ -647,7 +651,7 @@ export function themeCss(storyArgs) {
     --dt-label-tooltip-color: ${getArg(storyArgs, 'labelTooltipColor')};
     --dt-label-tooltip-background: ${getArg(
       storyArgs,
-      'labelTooltipBackground'
+      'labelTooltipBackground',
     )};
 
     --dt-spinner-color-1: ${getArg(storyArgs, 'spinnerColor1')};
@@ -656,11 +660,11 @@ export function themeCss(storyArgs) {
 
     --dt-toggle-background-color-on: ${getArg(
       storyArgs,
-      'toggleBackgroundColorOn'
+      'toggleBackgroundColorOn',
     )};
     --dt-toggle-background-color-off: ${getArg(
       storyArgs,
-      'toggleBackgroundColorOff'
+      'toggleBackgroundColorOff',
     )};
     --dt-toggle-border-color: ${getArg(storyArgs, 'toggleBorderColor')};
     --dt-toggle-icon-success: ${getArg(storyArgs, 'toggleIconSuccess')};
@@ -695,22 +699,22 @@ export function themeCss(storyArgs) {
     --dt-list-border-color: ${getArg(storyArgs, 'listBorderColor')};
     --dt-list-action-section-background-color: ${getArg(
       storyArgs,
-      'listActionSectionBackgroundColor'
+      'listActionSectionBackgroundColor',
     )};
     --dt-list-header-background-color: ${getArg(
       storyArgs,
-      'listHeaderBackgroundColor'
+      'listHeaderBackgroundColor',
     )};
     --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
     --dt-list-background-color: ${getArg(storyArgs, 'listheaderBackground')};
     --dt-list-hover-background-color: ${getArg(
       storyArgs,
-      'listheaderHoverBackground'
+      'listheaderHoverBackground',
     )};
     --dt-list-sort-arrow-color: ${getArg(storyArgs, 'listSortArrowColor')};
     --dt-list-sort-arrow-color-highlight: ${getArg(
       storyArgs,
-      'listSortArrowColorHighlight'
+      'listSortArrowColorHighlight',
     )};
     --dt-list-header-color: ${getArg(storyArgs, 'listHeaderColor')};
     --dt-list-link-color: ${getArg(storyArgs, 'listLinkColor')};
@@ -721,41 +725,41 @@ export function themeCss(storyArgs) {
     --dt-modal-button-background: ${getArg(storyArgs, 'modalButtonBackground')};
     --dt-modal-button-opener-color: ${getArg(
       storyArgs,
-      'modalButtonOpenerColor'
+      'modalButtonOpenerColor',
     )};
     --dt-modal-button-opener-background: ${getArg(
       storyArgs,
-      'modalButtonOpenerBackground'
+      'modalButtonOpenerBackground',
     )};
 
     --dt-location-map-background-color: ${getArg(
       storyArgs,
-      'locationMapBackgroundColor'
+      'locationMapBackgroundColor',
     )};
     --dt-location-map-border-color: ${getArg(
       storyArgs,
-      'locationMapBorderColor'
+      'locationMapBorderColor',
     )};
     --dt-location-map-border-color-alert: ${getArg(
       storyArgs,
-      'locationMapBorderColorAlert'
+      'locationMapBorderColorAlert',
     )};
     --dt-location-map-border-radius: ${getArg(
       storyArgs,
-      'locationMapBorderRadius'
+      'locationMapBorderRadius',
     )};
     --dt-location-map-box-shadow: ${getArg(storyArgs, 'locationMapBoxShadow')};
     --dt-location-map-button-color: ${getArg(
       storyArgs,
-      'locationMapButtonColor'
+      'locationMapButtonColor',
     )};
     --dt-location-map-button-hover-background-color: ${getArg(
       storyArgs,
-      'locationMapButtonHoverBackgroundColor'
+      'locationMapButtonHoverBackgroundColor',
     )};
     --dt-location-map-button-hover-color: ${getArg(
       storyArgs,
-      'locationMapButtonHoverColor'
+      'locationMapButtonHoverColor',
     )};
     --dt-location-map-icon-size: ${getArg(storyArgs, 'locationMapIconSize')};
 
