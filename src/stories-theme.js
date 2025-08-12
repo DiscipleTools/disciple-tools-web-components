@@ -505,8 +505,36 @@ export const argTypes = {
   slot: {
     options: ['SvgIcon', 'ErrorSlot'],
     mapping: {
-      SvgIcon: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`
-    }
+      SvgIcon: html`<svg
+        slot="icon-start"
+        xmlns="http://www.w3.org/2000/svg"
+        width="100"
+        height="100"
+        viewBox="0 0 100 100"
+      >
+        <linearGradient id="lg">
+          <stop offset="0%" stop-color="#000000" />
+          <stop offset="100%" stop-color="#c3c3c3" />
+        </linearGradient>
+        <rect
+          x="2"
+          y="2"
+          width="96"
+          height="96"
+          style="fill:url(#lg);stroke:#ffffff;stroke-width:2"
+        />
+        <text
+          x="50%"
+          y="50%"
+          font-size="18"
+          text-anchor="middle"
+          alignment-baseline="middle"
+          font-family="monospace, sans-serif"
+          fill="#ffffff"
+        >
+          icon
+        </text>
+      </svg>`,
       ErrorSlot: html`<div slot="error">
         Custom error message <a href="#">Link</a>
       </div>`,

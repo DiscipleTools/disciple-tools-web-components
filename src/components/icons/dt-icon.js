@@ -61,25 +61,26 @@ export class DtIcon extends DtBase {
   }
 
   firstUpdated() {
-    // handle img or svg content that may be bigger than the space allotted
+    // Check if tooltip slot has any content to add CSS class and
+    // hide standard tooltip content
     const slot = this.shadowRoot.querySelector('slot[name=tooltip]');
-    slot.addEventListener('slotchange', event => {
-      const changedSlot = event.target;
-      const nodes = changedSlot.assignedNodes();
-      let value = false;
-      // dt-icon has a nested slot that comes from the form-base and is passed along,
-      // so we need to check if slot is a slot and then check if that has assignedNodes.
-      if (nodes.length > 0) {
-        if (nodes[0].tagName === 'SLOT') {
-          value = nodes[0].assignedNodes().length > 0;
-        } else {
-          value = true;
+    if (slot) {
+      slot.addEventListener('slotchange', event => {
+        const changedSlot = event.target;
+        const nodes = changedSlot.assignedNodes();
+        let value = false;
+        // dt-icon has a nested slot that comes from the form-base and is passed along,
+        // so we need to check if slot is a slot and then check if that has assignedNodes.
+        if (nodes.length > 0) {
+          if (nodes[0].tagName === 'SLOT') {
+            value = nodes[0].assignedNodes().length > 0;
+          } else {
+            value = true;
+          }
         }
-      } else {
-        console.log('Slot content changed and is now empty. ' + nodes.length);
-      }
-      this.slotted = value;
-    });
+        this.slotted = value;
+      });
+    }
   }
 
   _showTooltip() {
