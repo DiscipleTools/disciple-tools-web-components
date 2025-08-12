@@ -24,6 +24,7 @@ export class DtModal extends DtBase {
         max-block-size: min(80dvb, 100%);
         margin: auto;
         height: fit-content;
+        scrollbar-color: var(--border-color) transparent;
         padding: var(--dt-modal-padding, 0em);
         position: fixed;
         inset: 0;
@@ -109,13 +110,6 @@ export class DtModal extends DtBase {
         position: relative;
       }
 
-      form.no-header {
-        grid-template-rows: auto auto;
-        grid-template-areas:
-          'main'
-          'footer';
-      }
-
       header {
         display: flex;
         justify-content: space-between;
@@ -180,33 +174,26 @@ export class DtModal extends DtBase {
         filter: invert(69%) sepia(1%) saturate(0) hue-rotate(239deg) brightness(94%) contrast(86%);
         height: 1rem;
       }
-      .dt-modal.dt-modal--contact-type form {
-        grid-template-rows: 2.5em auto 4.5em;
-      }
       .dt-modal.header-blue-bg {
-        padding: 1em;
-      }
-      .dt-modal.header-blue-bg header {
-        background-color: #3f729b;
-        color: #fff;
-        text-align: center;
-      }
-      .dt-modal.header-blue-bg header #modal-field-title {
-        font-size: 1.5rem;
-        width: 100%;
-      }
-      .dt-modal.header-blue-bg article {
-        padding: 0em 1em;
-      }
-      .dt-modal.header-blue-bg footer {
-        padding-inline: .7rem;
-        justify-content: flex-end;
-      }
-      .dt-modal.header-blue-bg footer .button {
-        padding: 12px 14px;
-      }
-      .dt-modal.header-blue-bg form {
-        grid-template-rows: 2.5em auto 3em;
+        header {
+          background-color: #3f729b;
+          color: #fff;
+          text-align: center;
+          #modal-field-title {
+            font-size: 1.5rem;
+            width: 100%;
+          }
+        }
+        article {
+          padding: 0em 1em;
+        }
+        footer {
+          padding-inline: .7rem;
+          justify-content: flex-end;
+          .button {
+            padding: 12px 14px;
+          }
+        }
       }
       .button img {
         height: 1em;
@@ -367,6 +354,7 @@ export class DtModal extends DtBase {
 
   get classes() {
     const classes = {
+      ...this.headerClass,
       'no-header': this.hideHeader,
       'bottom': this.bottom,
     };
