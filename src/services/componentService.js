@@ -28,6 +28,7 @@ export default class ComponentService {
     this.autoSaveComponents = [
       'dt-connection',
       'dt-date',
+      'dt-datetime',
       'dt-location',
       'dt-multi-select',
       'dt-number',

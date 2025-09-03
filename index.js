@@ -8,6 +8,7 @@ export { DtConnection } from './src/components/form/dt-connection/dt-connection.
 export { DtUsersConnection } from './src/components/form/dt-users-connection/dt-users-connection.js';
 export { DtCopyText } from './src/components/form/dt-copy-text/dt-copy-text.js';
 export { DtDate } from './src/components/form/dt-date/dt-date.js';
+export { DtDatetime } from './src/components/form/dt-datetime/dt-datetime.js';
 export { DtLabel } from './src/components/form/dt-label/dt-label.js';
 export { DtLocation } from './src/components/form/dt-location/dt-location.js';
 export { DtLocationMap } from './src/components/form/dt-location-map/dt-location-map.js';
