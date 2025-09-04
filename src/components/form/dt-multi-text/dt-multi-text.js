@@ -2,8 +2,8 @@ import { html, css } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { when } from 'lit/directives/when.js';
-import '../../icons/dt-icon.js';
 import { DtText } from '../dt-text/dt-text.js';
+import '../../icons/dt-icon.js';
 
 /**
  * Field to edit multiple text values with ability to add/remove values.
@@ -72,7 +72,8 @@ export class DtMultiText extends DtText {
         input.invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
         }
-
+      `,
+      css`
         .input-group {
           display: flex;
           flex-direction: column;
@@ -242,9 +243,7 @@ export class DtMultiText extends DtText {
       // update this item's value in the list
       this.value = this.value.map(x => ({
         ...x,
-        value: x.key === key || x.tempKey === key
-        ? e.target?.value
-          : x.value
+        value: x.key === key || x.tempKey === key ? e.target?.value : x.value,
       }));
       event.detail.newValue = this.value;
 
@@ -270,18 +269,20 @@ export class DtMultiText extends DtText {
           novalidate
         />
 
-        ${when(itemCount > 1 || item.key || item.value,
-            () => html`
-              <button
-                  class="input-addon btn-remove"
-                  @click=${this._removeItem}
-                  data-key="${item.key ?? item.tempKey}"
-                  ?disabled=${this.disabled}
-              >
-                <dt-icon icon="mdi:close"></dt-icon>
-              </button>
-            `,
-            () => html``)}
+        ${when(
+          itemCount > 1 || item.key || item.value,
+          () => html`
+            <button
+              class="input-addon btn-remove"
+              @click=${this._removeItem}
+              data-key="${item.key ?? item.tempKey}"
+              ?disabled=${this.disabled}
+            >
+              <dt-icon icon="mdi:close"></dt-icon>
+            </button>
+          `,
+          () => html``,
+        )}
         <button
           class="input-addon btn-add"
           @click=${this._addItem}
@@ -293,37 +294,38 @@ export class DtMultiText extends DtText {
     `;
   }
 
-
   // rendering the input at 0 index
   _renderInputFields() {
     if (!this.value || !this.value.length) {
-      this.value = [{
-        verified: false,
-        value: '',
-        tempKey: Date.now().toString(),
-      }];
+      this.value = [
+        {
+          verified: false,
+          value: '',
+          tempKey: Date.now().toString(),
+        },
+      ];
     }
 
     return html`
       ${repeat(
         (this.value ?? []).filter(x => !x.delete),
-        (x) => x.id,
-        (x) => this._inputFieldTemplate(x, this.value.length))
-      }
+        x => x.id,
+        x => this._inputFieldTemplate(x, this.value.length),
+      )}
     `;
   }
 
   _validateRequired() {
     const { value } = this;
 
-    if (this.required && (!value || value.every((item) => !item.value))) {
+    if (this.required && (!value || value.every(item => !item.value))) {
       this.invalid = true;
       this.internals.setValidity(
         {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        this._field
+        this._field,
       );
     } else {
       this.invalid = false;
@@ -343,30 +345,7 @@ export class DtMultiText extends DtText {
     return html`
       ${this.labelTemplate()}
       <div class="input-group">
-        ${this._renderInputFields()}
-
-        ${this.touched && this.invalid
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.internals.validationMessage}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.error
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.error}"
-              size="2rem"
-              ></dt-icon>`
-          : null}
-        ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
-        ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
+        ${this._renderInputFields()} ${this.renderIcons()}
       </div>
     `;
   }

@@ -2,6 +2,9 @@ import { css, html } from 'lit';
 import DtBase from '../dt-base.js';
 import 'element-internals-polyfill'; // eslint-disable-line import/no-extraneous-dependencies
 import './dt-label/dt-label.js';
+import '../icons/dt-spinner.js';
+import '../icons/dt-icon.js';
+import '../icons/dt-checkmark.js';
 
 /**
  * Extends `DtBase` to add features specific to form components, including base styles
@@ -129,7 +132,7 @@ export default class DtFormBase extends DtBase {
 
     // catch oninvalid event (when validation is triggered from form submit)
     // and set touched=true so that styles are shown
-    this.addEventListener('invalid', (e) => {
+    this.addEventListener('invalid', e => {
       if (e) {
         // hide default html validation pop-up messages, since we are using our own
         e.preventDefault();
@@ -156,9 +159,18 @@ export default class DtFormBase extends DtBase {
    * @private
    */
   static _buildFormData(formData, data, parentKey) {
-    if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+    if (
+      data &&
+      typeof data === 'object' &&
+      !(data instanceof Date) &&
+      !(data instanceof File)
+    ) {
       Object.keys(data).forEach(key => {
-        this._buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+        this._buildFormData(
+          formData,
+          data[key],
+          parentKey ? `${parentKey}[${key}]` : key,
+        );
       });
     } else {
       const value = data == null ? '' : data;
@@ -237,6 +249,34 @@ export default class DtFormBase extends DtBase {
           : null}
         ${this.label}
       </dt-label>
+    `;
+  }
+
+  renderIcons() {
+    return html`
+      ${this.touched && this.invalid
+        ? html`<dt-icon
+            icon="mdi:alert-circle"
+            class="icon-overlay alert"
+            tooltip="${this.internals.validationMessage}"
+            size="2rem"
+          ></dt-icon>`
+        : null}
+      ${this.error
+        ? html`<dt-icon
+            icon="mdi:alert-circle"
+            class="icon-overlay alert"
+            tooltip="${this.error}"
+            size="2rem"
+            ><slot name="error" slot="tooltip"></slot
+          ></dt-icon>`
+        : null}
+      ${this.loading
+        ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
+        : null}
+      ${this.saved
+        ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
+        : null}
     `;
   }
 

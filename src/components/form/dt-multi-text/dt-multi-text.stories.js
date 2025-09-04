@@ -2,7 +2,11 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
-import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
+import {
+  FormDecorator,
+  LocaleDecorator,
+  onAutoSave,
+} from '../../../stories-utils.js';
 import './dt-multi-text.js';
 
 export default {
@@ -13,7 +17,7 @@ export default {
     label: { control: 'text' },
     value: {
       control: 'text',
-      type: { name: 'array' }
+      type: { name: 'array' },
     },
     placeholder: { control: 'text' },
     type: {
@@ -28,7 +32,7 @@ export default {
   },
   args: {
     onChange: action('on-change'),
-  }
+  },
 };
 
 function Template(args) {
@@ -92,16 +96,16 @@ export const EnteredValue = Template.bind({});
 EnteredValue.args = {
   value: [
     {
-        "verified": false,
-        "value": "test1",
-        "key": "comm_channel_1"
+      verified: false,
+      value: 'test1',
+      key: 'comm_channel_1',
     },
     {
-        "verified": false,
-        "value": "test2",
-        "key": "comm_channel_2"
-    }
-]
+      verified: false,
+      value: 'test2',
+      key: 'comm_channel_2',
+    },
+  ],
 };
 
 export const AutoSave = Template.bind({});
@@ -112,19 +116,23 @@ AutoSave.args = {
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
-  value: [{
-    value: 'Lorem Ipsum',
-    key: 'comm_channel_1',
-  }],
+  value: [
+    {
+      value: 'Lorem Ipsum',
+      key: 'comm_channel_1',
+    },
+  ],
 };
 
 export const privateField = Template.bind({});
 privateField.args = {
   isPrivate: true,
-  value: [{
-    value: 'Lorem Ipsum',
-    key: 'comm_channel_1',
-  }],
+  value: [
+    {
+      value: 'Lorem Ipsum',
+      key: 'comm_channel_1',
+    },
+  ],
   privateLabel: 'This is a custom tooltip',
 };
 
@@ -141,13 +149,21 @@ Error.args = {
   error: 'Custom error message',
 };
 
+export const ErrorSlot = Template.bind({});
+ErrorSlot.args = {
+  error: '[Should show link here]',
+  slot: 'ErrorSlot',
+};
+
 export const BasicForm = Template.bind({});
 BasicForm.decorators = [FormDecorator];
 BasicForm.args = {
-  value: [{
-    value: 'Lorem Ipsum',
-    key: 'comm_channel_1',
-  }],
+  value: [
+    {
+      value: 'Lorem Ipsum',
+      key: 'comm_channel_1',
+    },
+  ],
 };
 
 export const Required = Template.bind({});
@@ -173,8 +189,10 @@ LocalizeRTL.args = {
   lang: 'ar',
   dir: 'rtl',
   label: 'اسم الإدخال',
-  value: [{
-    value: 'راد أن يشع',
-    key: 'comm_channel_1',
-  }],
+  value: [
+    {
+      value: 'راد أن يشع',
+      key: 'comm_channel_1',
+    },
+  ],
 };

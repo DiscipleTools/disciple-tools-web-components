@@ -3,7 +3,11 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { userEvent, within } from '@storybook/test';
 import { argTypes } from '../../../stories-theme.js';
-import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
+import {
+  FormDecorator,
+  LocaleDecorator,
+  onAutoSave,
+} from '../../../stories-utils.js';
 import './dt-text.js';
 
 export default {
@@ -29,7 +33,7 @@ export default {
   args: {
     onChange: action('on-change'),
   },
-  render: (args) => {
+  render: args => {
     const {
       id = 'name',
       name = 'field-name',
@@ -49,31 +53,29 @@ export default {
       onChange,
     } = args;
     return html`
-    <dt-text
-      id=${ifDefined(id)}
-      name=${ifDefined(name)}
-      label=${ifDefined(label)}
-      value=${ifDefined(value)}
-      type=${ifDefined(type)}
-      ?disabled=${disabled}
-      ?required=${required}
-      requiredMessage=${ifDefined(requiredMessage)}
-      icon="${ifDefined(icon)}"
-      iconAltText="${ifDefined(iconAltText)}"
-      ?private=${args.private}
-      privateLabel="${ifDefined(privateLabel)}"
-      ?loading=${loading}
-      ?saved=${saved}
-      error="${ifDefined(error)}"
-      @change=${onChange}
-    >
-      ${slot}
-    </dt-text>
-  `;
-  }
+      <dt-text
+        id=${ifDefined(id)}
+        name=${ifDefined(name)}
+        label=${ifDefined(label)}
+        value=${ifDefined(value)}
+        type=${ifDefined(type)}
+        ?disabled=${disabled}
+        ?required=${required}
+        requiredMessage=${ifDefined(requiredMessage)}
+        icon="${ifDefined(icon)}"
+        iconAltText="${ifDefined(iconAltText)}"
+        ?private=${args.private}
+        privateLabel="${ifDefined(privateLabel)}"
+        ?loading=${loading}
+        ?saved=${saved}
+        error="${ifDefined(error)}"
+        @change=${onChange}
+      >
+        ${slot}
+      </dt-text>
+    `;
+  },
 };
-
-
 
 export const Empty = {};
 
@@ -81,64 +83,70 @@ export const SvgIcon = {
   args: {
     icon: null,
     slot: 'SvgIcon',
-  }
+  },
 };
 
 export const EnteredValue = {
   args: {
     value: 'Lorem Ipsum',
-  }
+  },
 };
 
 export const AutoSave = {
   args: {
     onChange: onAutoSave,
-  }
+  },
 };
 
 export const Disabled = {
   args: {
     disabled: true,
     value: 'Lorem Ipsum',
-  }
+  },
 };
 
-export const privateField = {
+export const PrivateField = {
   args: {
     private: true,
     value: 'Lorem Ipsum',
     privateLabel: 'This is a custom tooltip',
-  }
+  },
 };
 
 export const Loading = {
   args: {
     loading: true,
-  }
+  },
 };
 export const Saved = {
   args: {
     saved: true,
-  }
+  },
 };
 export const Error = {
   args: {
     error: 'Custom error message',
-  }
+  },
+};
+export const ErrorSlot = {
+  args: {
+    error: '[Should show link here]',
+    slot: 'ErrorSlot',
+  },
 };
 
 export const BasicForm = {
   decorators: [FormDecorator],
   args: {
     value: 'Lorem Ipsum',
-  }
+  },
 };
 
 export const Required = {
   decorators: [FormDecorator],
   args: {
     required: true,
-  }
+  },
 };
 
 export const RequiredCustomMessage = {
@@ -146,13 +154,13 @@ export const RequiredCustomMessage = {
   args: {
     required: true,
     requiredMessage: 'Custom error message',
-  }
+  },
 };
 
 export const Password = {
   args: {
     type: 'password',
-  }
+  },
 };
 
 export const LocalizeRTL = {
@@ -162,11 +170,11 @@ export const LocalizeRTL = {
     dir: 'rtl',
     label: 'اسم الإدخال',
     value: 'راد أن يشع',
-  }
+  },
 };
-/*// requires addon-interactions v8.6
+/* // requires addon-interactions v8.6
 export const Focus = {
   play: async () => {
     document.querySelector('dt-text').focus();
   }
-};*/
+}; */

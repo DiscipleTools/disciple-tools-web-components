@@ -1,0 +1,48 @@
+import {
+  Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
+} from '@storybook/blocks';
+import * as ComponentStories from './dt-datetime.stories.js';
+
+
+<Meta name="Docs" of={ComponentStories} />
+
+<Title />
+<Subtitle />
+
+## Overview
+<Description />
+<Primary />
+
+## Parameters
+<Controls />
+
+## Slots
+
+Inherits slots from [Date](?path=/docs/components-form-date--docs#slots).
+
+## Parts
+
+| Part Name | Element |
+|-----------|---------|
+| `input` | `<input>` element for datetime input |
+| `clear-button` | `<button>` element for clearing the date |
+
+## Events
+
+### `change`
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  oldValue: string, // previous value before current change
+  newValue: string, // updated value
+}
+```
+
+## CSS Properties / Theming
+
+Inherits custom properties from [DtDate](?path=/docs/components-form-date--docs#css-properties--theming).
+
+## Stories
+<Stories title="" />

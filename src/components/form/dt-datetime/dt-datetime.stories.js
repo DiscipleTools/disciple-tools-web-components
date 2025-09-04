@@ -1,126 +1,171 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { action } from '@storybook/addon-actions';
+import { argTypes } from '../../../stories-theme.js';
+import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
 import './dt-datetime.js';
-import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils.js';
 
 export default {
-  title: 'Form/dt-datetime',
+  title: 'Components/Form/DateTime',
   component: 'dt-datetime',
   argTypes: {
     id: { control: 'text' },
     name: { control: 'text' },
-    theme: {
-      control: 'select',
-      options: Object.keys(themes),
-      defaultValue: 'default',
-    },
     label: { control: 'text' },
     value: { control: 'number' },
     date: { control: 'text' },
     disabled: { control: 'boolean' },
+    required: { control: 'boolean' },
+    requiredMessage: { control: 'text' },
     icon: { control: 'text' },
-    isPrivate: { control: 'boolean' },
+    iconAltText: { control: 'text' },
+    private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
-    onchange: { control: 'text' },
+    error: { control: 'text' },
     ...argTypes,
   },
   args: {
-    theme: 'default',
+    onChange: action('on-change'),
   },
+  render: (args) => {
+    const {
+      id = 'name',
+      name = 'field-name',
+      label = 'Date Field',
+      value = '',
+      timestamp = 0,
+      disabled,
+      required = false,
+      requiredMessage,
+      icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+      iconAltText = 'Icon Alt Text',
+      privateLabel,
+      loading,
+      saved,
+      error,
+      onChange,
+      slot,
+    } = args;
+    return html`
+      <dt-datetime
+        id=${ifDefined(id)}
+        name=${ifDefined(name)}
+        label=${ifDefined(label)}
+        value=${ifDefined(value)}
+        timestamp=${ifDefined(timestamp)}
+        ?disabled=${disabled}
+        ?required=${required}
+        requiredMessage=${ifDefined(requiredMessage)}
+        icon=${ifDefined(icon)}
+        iconAltText="${ifDefined(iconAltText)}"
+        ?private=${args.private}
+        privateLabel="${ifDefined(privateLabel)}"
+        ?loading=${loading}
+        ?saved=${saved}
+        error=${ifDefined(error)}
+        @change=${onChange}
+      >
+        ${slot}
+      </dt-datetime>
+    `;
+  }
 };
 
-function Template(args) {
-  const {
-    id = 'name',
-    name = 'field-name',
-    label = 'Date Field',
-    value = '',
-    timestamp = 0,
-    disabled,
-    icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
-    isPrivate,
-    loading,
-    saved,
-    error,
-    onChange,
-    slot,
-  } = args;
-  return html`
-    <style>
-      ${themeCss(args)}
-    </style>
-    <dt-datetime
-      id=${id}
-      name=${name}
-      label=${label}
-      value=${value}
-      timestamp=${timestamp}
-      ?disabled=${disabled}
-      icon=${icon}
-      ?private=${isPrivate}
-      ?loading=${loading}
-      ?saved=${saved}
-      ?error=${error}
-      onchange=${onChange}
-    >
-      ${slot}
-    </dt-datetime>
-  `;
-}
+export const Empty = {};
 
-export const Empty = Template.bind({});
-
-export const SvgIcon = Template.bind({});
-SvgIcon.args = {
-  icon: null,
-  // prettier-ignore
-  slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
+export const SvgIcon = {
+  args: {
+    icon: null,
+    slot: 'SvgIcon',
+  }
 };
 
-export const EnteredPHPTimestamp = Template.bind({});
-EnteredPHPTimestamp.args = {
-  timestamp: 1468281600,
+export const EnteredPHPTimestamp = {
+  args: {
+    timestamp: 1468281600
+  }
 };
 
-export const EnteredDateString = Template.bind({});
-EnteredDateString.args = {
-  value: '2023-07-21T17:00',
+export const EnteredDateString = {
+  args: {
+    value: '2023-07-21T17:00'
+  }
 };
 
-export const EnteredJSTimestamp = Template.bind({});
-EnteredJSTimestamp.args = {
-  timestamp: 1658361600000,
+export const EnteredJSTimestamp = {
+  args: {
+    timestamp: 1658361600000
+  }
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  value: '2023-07-21T17:00',
-  disabled: true,
+export const AutoSave = {
+  args: {
+    onChange: onAutoSave,
+  }
 };
 
-export const AutoSave = Template.bind({});
-AutoSave.args = {
-  onChange: 'onAutoSave(event)',
+export const Disabled = {
+  args: {
+    value: '2023-07-21T17:00',
+    disabled: true
+  }
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-  loading: true,
-};
-export const Saved = Template.bind({});
-Saved.args = {
-  saved: true,
-};
-export const Error = Template.bind({});
-Error.args = {
-  error: true,
+export const PrivateField = {
+  args: {
+    private: true,
+    value: '2023-07-21T17:00',
+    privateLabel: 'This is a custom tooltip',
+  }
 };
 
-export const LocalizeRTL = Template.bind({});
-LocalizeRTL.decorators = [LocaleDecorator];
-LocalizeRTL.args = {
-  lang: 'ar',
-  dir: 'rtl',
-  label: 'اسم الإدخال',
+export const Loading = {
+  args: {
+    loading: true
+  }
+};
+
+export const Saved = {
+  args: {
+    saved: true
+  }
+};
+
+export const Error = {
+  args: {
+    error: 'Custom error message',
+  }
+};
+
+export const BasicForm = {
+  decorators: [FormDecorator],
+  args: {
+    value: '2023-07-21T17:00',
+  }
+};
+
+export const Required = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+  }
+};
+
+export const RequiredCustomMessage = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+    requiredMessage: 'Custom error message',
+  }
+};
+
+export const LocalizeRTL = {
+  decorators: [LocaleDecorator],
+  args: {
+    lang: 'ar',
+    dir: 'rtl',
+    label: 'اسم الإدخال'
+  }
 };
