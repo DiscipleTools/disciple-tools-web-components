@@ -208,7 +208,6 @@ export default class ComponentService {
    * @returns {Promise<void>}
    */
   async handleChangeEvent(event) {
-    console.log(event);
     const details = event.detail;
     if (details) {
       const { field, newValue, oldValue, remove } = details;
@@ -223,7 +222,6 @@ export default class ComponentService {
 
       // Update post via API
       try {
-        console.log('test');
         let apiResponse;
         switch(component) {
           case 'dt-users-connection': {
