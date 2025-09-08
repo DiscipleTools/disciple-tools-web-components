@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import '@disciple.tools/web-components';
 import { wrapWc } from 'wc-react';
+import { DtNumberField } from '../../../src/components/form/dt-number/dt-number';
 
 const DtTile = wrapWc('dt-tile');
 const DtText = wrapWc('dt-text');

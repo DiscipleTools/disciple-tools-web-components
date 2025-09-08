@@ -50,6 +50,8 @@ export default class ComponentService {
       'dt-list',
       'dt-button'
     ]
+    
+    this.debouncedSearch = ComponentService.debounce(ComponentService.changeEvent, 1000);
   }
 
   /**
@@ -206,6 +208,7 @@ export default class ComponentService {
    * @returns {Promise<void>}
    */
   async handleChangeEvent(event) {
+    console.log(event);
     const details = event.detail;
     if (details) {
       const { field, newValue, oldValue, remove } = details;
@@ -220,6 +223,7 @@ export default class ComponentService {
 
       // Update post via API
       try {
+        console.log('test');
         let apiResponse;
         switch(component) {
           case 'dt-users-connection': {
@@ -229,6 +233,10 @@ export default class ComponentService {
               break;
             }
             apiResponse = await this._api.addPostShare(this.postType, this.postId, apiValue)
+            break;
+          }
+          case 'dt-number': {
+            this.debouncedSearch(field, apiValue, component, this._api, this.postType, this.postId);
             break;
           }
           default: {
@@ -258,6 +266,36 @@ export default class ComponentService {
         event.target.setAttribute('error', error.message || error.toString());
       }
     }
+  }
+
+  static debounce(callback, delay) {
+    let timeoutId; // This variable holds the timer ID
+
+    return (...args) => {
+      // Clear any existing timer
+      clearTimeout(timeoutId);
+
+      // Set a new timer
+      timeoutId = setTimeout(() => {
+        // Execute the callback function with the provided arguments
+        callback(...args);
+      }, delay);
+    };
+  }
+
+  static async changeEvent(field, apiValue, component, thisApi, postType, postId) {
+    const apiResponse = await thisApi.updatePost(postType, postId, {
+              [field]: apiValue,
+            });
+
+    document.dispatchEvent(new CustomEvent('dt:post:update', {
+      detail: {
+        'response': apiResponse,
+        'field': field,
+        'value': apiValue,
+        'component': component,
+      },
+    }));
   }
 
   /**
