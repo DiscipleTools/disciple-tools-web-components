@@ -208,11 +208,6 @@ export class DtSingleSelect extends DtFormBase {
       </div>
     `;
   }
-
-  reset() {
-    this._field.value = '';
-    super.reset();
-  }
 }
 
 window.customElements.define('dt-single-select', DtSingleSelect);

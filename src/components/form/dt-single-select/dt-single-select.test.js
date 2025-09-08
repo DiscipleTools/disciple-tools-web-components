@@ -67,11 +67,12 @@ describe('dt-single-select', () => {
     );
     const select = el.shadowRoot.querySelector('select');
 
+    expect(el.value).to.equal('opt1');
     el.reset();
 
     await nextFrame();
 
-    expect(select.value).to.be.empty;
+    expect(el.value).to.be.empty;
   });
 
   it('updates value attribute', async () => {
