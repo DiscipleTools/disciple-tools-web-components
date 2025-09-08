@@ -49,170 +49,206 @@ export default {
   title: 'Components/Form/Single Select',
   component: 'dt-single-select',
   argTypes: {
+    id: { control: 'text' },
     name: { control: 'text' },
+    label: { control: 'text' },
     value: { control: 'text' },
     placeholder: { control: 'text' },
+    disabled: { control: 'boolean' },
+    required: { control: 'boolean' },
+    requiredMessage: { control: 'text' },
+    icon: { control: 'text' },
+    iconAltText: { control: 'text' },
+    private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
+    error: { control: 'text' },
     ...argTypes,
   },
   args: {
     onChange: action('on-change'),
   },
+  render: (args) => {
+    const {
+      id = 'single-select',
+      name = 'field-name',
+      label = 'Field Name',
+      options,
+      placeholder,
+      value,
+      disabled = false,
+      required = false,
+      requiredMessage,
+      icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+      iconAltText = 'Icon Alt Text',
+      privateLabel,
+      loading = false,
+      saved = false,
+      error,
+      slot,
+      onChange,
+    } = args;
+    return html`
+      <dt-single-select
+        id=${ifDefined(id)}
+        name=${ifDefined(name)}
+        label=${ifDefined(label)}
+        placeholder=${ifDefined(placeholder)}
+        options=${ifDefined(options ? JSON.stringify(options) : undefined)}
+        value=${ifDefined(value)}
+        ?disabled=${disabled}
+        ?required=${required}
+        requiredMessage=${ifDefined(requiredMessage)}
+        icon=${ifDefined(icon)}
+        iconAltText=${ifDefined(iconAltText)}
+        ?private=${args.private}
+        privateLabel=${ifDefined(privateLabel)}
+        ?loading=${loading}
+        ?saved=${saved}
+        error=${ifDefined(error)}
+        @change=${onChange}
+      >
+        ${slot}
+      </dt-single-select>
+    `;
+  }
 };
 
-function Template(args) {
-  const {
-    name = 'field-name',
-    label = 'Field Name',
-    options,
-    placeholder,
-    value,
-    disabled,
-    required = false,
-    requiredMessage,
-    icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
-    iconAltText = 'Icon Alt Text',
-    isPrivate,
-    privateLabel,
-    loading,
-    saved,
-    error,
-    slot,
-    onChange,
-  } = args;
-  return html`
-    <dt-single-select
-      name="${name}"
-      label="${label}"
-      placeholder="${placeholder}"
-      options="${JSON.stringify(options)}"
-      value="${value}"
-      ?disabled=${disabled}
-      ?required=${required}
-      requiredMessage=${requiredMessage}
-      icon="${icon}"
-      iconAltText="${iconAltText}"
-      ?private=${isPrivate}
-      privateLabel="${privateLabel}"
-      ?loading="${loading}"
-      ?saved="${saved}"
-      error="${ifDefined(error)}"
-      @change=${onChange}
-    >
-      ${slot}
-    </dt-single-select>
-  `;
-}
+export const Empty = {};
 
-export const Empty = Template.bind({});
-
-export const SvgIcon = Template.bind({});
-SvgIcon.args = {
-  icon: null,
-  // prettier-ignore
-  slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
+export const SvgIcon = {
+  args: {
+    icon: null,
+    slot: 'SvgIcon',
+  }
 };
 
-export const CustomOptions = Template.bind({});
-CustomOptions.args = {
-  options: basicOptions,
+export const CustomOptions = {
+  args: {
+    options: basicOptions,
+  }
 };
 
-export const CustomPlaceholder = Template.bind({});
-CustomPlaceholder.args = {
-  placeholder: '--Select--',
+export const CustomPlaceholder = {
+  args: {
+    placeholder: '--Select--',
+  }
 };
 
-export const SelectedValue = Template.bind({});
-SelectedValue.args = {
-  value: 'opt2',
-  options: basicOptions,
+export const SelectedValue = {
+  args: {
+    value: 'opt2',
+    options: basicOptions,
+  }
 };
 
-export const ColorChange = Template.bind({});
-ColorChange.args = {
-  value: 'opt1',
-  options: colorOptions,
+export const ColorChange = {
+  args: {
+    value: 'opt1',
+    options: colorOptions,
+  }
 };
 
-export const ColorChangeNotSelected = Template.bind({});
-ColorChangeNotSelected.args = {
-  options: colorOptions,
+export const ColorChangeNotSelected = {
+  args: {
+    options: colorOptions,
+  }
 };
 
-export const AutoSave = Template.bind({});
-AutoSave.args = {
-  options: basicOptions,
-  onChange: onAutoSave,
+export const AutoSave = {
+  args: {
+    options: basicOptions,
+    onChange: onAutoSave,
+  }
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  value: 'opt2',
-  options: basicOptions,
-  disabled: true,
+export const Disabled = {
+  args: {
+    value: 'opt2',
+    options: basicOptions,
+    disabled: true,
+  }
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-  value: 'opt2',
-  options: basicOptions,
-  loading: true,
-};
-export const Saved = Template.bind({});
-Saved.args = {
-  value: 'opt2',
-  options: basicOptions,
-  saved: true,
-};
-export const Error = Template.bind({});
-Error.args = {
-  error: 'Custom error message',
+export const PrivateField = {
+  args: {
+    private: true,
+    value: 'opt2',
+    options: basicOptions,
+    privateLabel: 'This is a custom tooltip',
+  }
 };
 
-export const BasicForm = Template.bind({});
-BasicForm.decorators = [FormDecorator];
-BasicForm.args = {
-  value: 'opt2',
-  options: basicOptions,
+export const Loading = {
+  args: {
+    value: 'opt2',
+    options: basicOptions,
+    loading: true,
+  }
 };
 
-export const Required = Template.bind({});
-Required.decorators = [FormDecorator];
-Required.args = {
-  required: true,
-  options: basicOptions,
-}
-
-export const RequiredCustomMessage = Template.bind({});
-RequiredCustomMessage.args = {
-  required: true,
-  requiredMessage: 'Custom error message',
-  options: basicOptions,
+export const Saved = {
+  args: {
+    value: 'opt2',
+    options: basicOptions,
+    saved: true,
+  }
 };
 
-export const LocalizeRTL = Template.bind({});
-LocalizeRTL.decorators = [LocaleDecorator];
-LocalizeRTL.args = {
-  lang: 'ar',
-  dir: 'rtl',
-  label: 'اسم الإدخال',
-  placeholder: 'حدد العلامات',
-  isSaved: true,
-  value: 'opt2',
-  options: [
-    {
-      id: 'opt1',
-      label: 'تنكر هؤلاء الرجال المفتونون',
-    },
-    {
-      id: 'opt2',
-      label: 'م فيتساوي مع هؤلاء',
-    },
-    {
-      id: 'opt3',
-      label: 'فلا أحد يرفض',
-    },
-  ],
+export const Error = {
+  args: {
+    error: 'Custom error message',
+  }
+};
+
+export const BasicForm = {
+  decorators: [FormDecorator],
+  args: {
+    value: 'opt2',
+    options: basicOptions,
+  }
+};
+
+export const Required = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+    options: basicOptions,
+  }
+};
+
+export const RequiredCustomMessage = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+    requiredMessage: 'Custom error message',
+    options: basicOptions,
+  }
+};
+
+export const LocalizeRTL = {
+  decorators: [LocaleDecorator],
+  args: {
+    lang: 'ar',
+    dir: 'rtl',
+    label: 'اسم الإدخال',
+    placeholder: 'حدد العلامات',
+    saved: true,
+    value: 'opt2',
+    options: [
+      {
+        id: 'opt1',
+        label: 'تنكر هؤلاء الرجال المفتونون',
+      },
+      {
+        id: 'opt2',
+        label: 'م فيتساوي مع هؤلاء',
+      },
+      {
+        id: 'opt3',
+        label: 'فلا أحد يرفض',
+      },
+    ],
+  }
 };

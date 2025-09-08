@@ -81,7 +81,6 @@ export class DtConnection extends DtTags {
       const input = this.shadowRoot.querySelector('input');
       if (input) {
         input.value = '';
-        this.query = '';
       }
     }
   }

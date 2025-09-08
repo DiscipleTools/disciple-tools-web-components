@@ -110,6 +110,7 @@ export default class DtBase extends LitElement {
   _proxyClick() {
     this.clicked = true;
   }
+
   /**
    * Used to transfer focus to the shadow DOM when the component itself receives focus.
    * This will use the `_focusTarget` to determine which shadow DOM element to focus,

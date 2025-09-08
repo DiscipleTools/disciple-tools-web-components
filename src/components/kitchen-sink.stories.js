@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { argTypes, themeCss } from '../stories-theme.js';
+import { argTypes } from '../stories-theme.js';
 
 import './layout/dt-tile/dt-tile.js';
 import './form/dt-label/dt-label.js';
@@ -7,13 +7,15 @@ import './form/dt-text/dt-text.js';
 import './form/dt-textarea/dt-textarea.js';
 import './form/dt-number/dt-number.js';
 import './form/dt-date/dt-date.js';
+import './form/dt-datetime/dt-datetime.js';
 import './form/dt-multi-select/dt-multi-select.js';
+import './form/dt-multi-select-button-group/dt-multi-select-button-group.js';
 import './form/dt-multi-text/dt-multi-text.js';
 import './form/dt-single-select/dt-single-select.js';
 import './form/dt-tags/dt-tags.js';
 import './form/dt-connection/dt-connection.js';
-import './form/dt-dropdown/dt-dropdown.js'
-import './form/dt-users-connection/dt-users-connection.js'
+import './form/dt-dropdown/dt-dropdown.js';
+import './form/dt-users-connection/dt-users-connection.js';
 
 const options = [
   {
@@ -76,7 +78,7 @@ export default {
   title: 'Components/All',
   argTypes,
   tags: ['!autodocs'],
-  render: (args) => {
+  render: args => {
     return html`
     <dt-tile
       title="Kitchen Sink Tile"
@@ -98,6 +100,13 @@ export default {
         ?disabled=${args.disabled}
       ></dt-textarea>
 
+      <dt-number
+        id='numberField'
+        name='numberField'
+        label="Number Field"
+        ?disabled=${args.disabled}
+      ></dt-number>
+
       <dt-multi-text
         id="multiTextField"
         name="multiTextField"
@@ -111,6 +120,13 @@ export default {
         label="Date Field"
         ?disabled=${args.disabled}
       ></dt-date>
+
+      <dt-datetime
+        id="dateTimeField"
+        name="dateTimeField"
+        label="Date Time Field"
+        ?disabled=${args.disabled}
+      ></dt-datetime>
 
       <dt-single-select
         label="Single Select Field"
@@ -138,13 +154,13 @@ export default {
 
       <dt-tags
         label="Tags Field"
-        value="${JSON.stringify([ 'personal' ])}"
+        value="${JSON.stringify(['personal'])}"
         options="${JSON.stringify(tags)}"
         ?disabled=${args.disabled}
       ></dt-tags>
 
       <dt-connection
-        label="Dropdown Field"
+        label="Connection Field"
         options="${JSON.stringify(posts)}"
         ?disabled=${args.disabled}
       ></dt-connection>
@@ -158,7 +174,7 @@ export default {
        >Click Me</dt-button>
     </dt-tile>
   `;
-  }
+  },
 };
 
 export const Components = {};
@@ -166,5 +182,5 @@ export const Components = {};
 export const Disabled = {
   args: {
     disabled: true,
-  }
+  },
 };

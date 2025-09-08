@@ -1,9 +1,6 @@
 import { html, css } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import DtFormBase from '../dt-form-base.js';
-import '../../icons/dt-spinner.js';
-import '../../icons/dt-checkmark.js';
-import '../../icons/dt-exclamation-circle.js';
 
 /**
  * Multi-line text input
@@ -37,7 +34,6 @@ export class DtTextArea extends DtFormBase {
             box-shadow 0.5s,
             border-color 0.25s ease-in-out
           );
-          overflow: hidden;
           position: relative;
           outline: 0;
           resize: none;
@@ -141,30 +137,10 @@ export class DtTextArea extends DtFormBase {
           .value="${this.value || ''}"
           @change=${this._change}
           @input=${this._input}
+          part="textarea"
         ></textarea>
 
-        ${this.touched && this.invalid
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.internals.validationMessage}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.error
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.error}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
-        ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
+        ${this.renderIcons()}
       </div>
     `;
   }

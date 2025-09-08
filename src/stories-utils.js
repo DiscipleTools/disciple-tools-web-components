@@ -13,12 +13,12 @@ export function onAutoSave(event) {
   if (event?.target) {
     event.target.setAttribute('loading', true);
     console.log(
-      'Value changed from ' +
-      JSON.stringify(event.detail.oldValue) +
-      ' to ' +
-      JSON.stringify(event.detail.newValue)
+      `Value changed from ${ 
+      JSON.stringify(event.detail.oldValue) 
+      } to ${ 
+      JSON.stringify(event.detail.newValue)}`
     );
-    setTimeout(function () {
+    setTimeout(() => {
       event.target.removeAttribute('loading');
       event.target.setAttribute('saved', true);
     }, 1000);
