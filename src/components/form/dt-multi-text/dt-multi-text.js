@@ -153,8 +153,9 @@ export class DtMultiText extends DtText {
           flex-direction: row;
           align-items: center;
           gap: 0;
+          position: relative;
         }
-        .phone-intl-container .country-select {
+        .phone-intl-container .country-button {
           flex-shrink: 0;
           min-width: 60px;
           width: auto;
@@ -177,13 +178,64 @@ export class DtMultiText extends DtText {
           text-align: center;
           height: auto;
           line-height: 1.5;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.25rem;
         }
-        .phone-intl-container .country-select:disabled {
+        .phone-intl-container .country-button:disabled {
           background-color: var(
             --dt-text-disabled-background-color,
             var(--dt-form-disabled-background-color, #e6e6e6)
           );
           cursor: not-allowed;
+        }
+        .phone-intl-container .country-button:hover:not(:disabled) {
+          background-color: var(--dt-multi-text-background-color, #f0f0f0);
+        }
+        .phone-intl-container .country-dropdown {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          z-index: 1000;
+          background-color: var(--dt-multi-text-background-color, #fefefe);
+          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
+          border-radius: var(--dt-multi-text-border-radius, 0);
+          box-shadow: var(
+            --dt-multi-text-box-shadow,
+            var(
+              --dt-form-input-box-shadow,
+              0 2px 8px hsl(0deg 0% 4% / 20%)
+            )
+          );
+          max-height: 200px;
+          overflow-y: auto;
+          min-width: 250px;
+          display: none;
+        }
+        .phone-intl-container .country-dropdown.open {
+          display: block;
+        }
+        .phone-intl-container .country-option {
+          padding: var(--dt-form-padding, 0.5333333333rem);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-family: inherit;
+          font-size: 1rem;
+          color: var(--dt-form-text-color, #000);
+          border: none;
+          background: none;
+          width: 100%;
+          text-align: left;
+        }
+        .phone-intl-container .country-option:hover {
+          background-color: var(--dt-multi-text-background-color, #f0f0f0);
+        }
+        .phone-intl-container .country-option.selected {
+          background-color: var(--dt-multi-text-background-color, #e6f3ff);
         }
         .phone-intl-container .dial-code {
           flex-shrink: 0;
@@ -217,15 +269,23 @@ export class DtMultiText extends DtText {
         type: Array,
         reflect: true,
       },
+      _openDropdownKey: {
+        type: String,
+        state: true,
+      },
     };
   }
 
   constructor() {
     super();
     this._countries = CountryList.getAll();
+    this._openDropdownKey = null;
     
     // Register some common locales with i18n-iso-countries
     // We'll register them on-demand in _getCountryOptions to avoid bundling all locales
+    
+    // Bind click outside handler
+    this._handleClickOutside = this._handleClickOutside.bind(this);
   }
 
   _getCountryOptions() {
@@ -303,6 +363,11 @@ export class DtMultiText extends DtText {
         this.focusNewItem();
       }
     }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('click', this._handleClickOutside);
   }
 
   focusNewItem() {
@@ -439,29 +504,41 @@ export class DtMultiText extends DtText {
     const parsed = this._parsePhoneValue(item.value);
     const countryOptions = this._getCountryOptions();
     const selectedCountry = countryOptions.find(c => c.code === parsed.countryCode) || countryOptions.find(c => c.code === 'US');
+    const dropdownKey = item.key ?? item.tempKey;
+    const isDropdownOpen = this._openDropdownKey === dropdownKey;
     
     return html`
       <div class="field-container">
         <div class="phone-intl-container">
-          <select 
-            class="country-select"
-            data-key="${item.key ?? item.tempKey}"
-            data-type="country"
+          <button 
+            class="country-button"
+            data-key="${dropdownKey}"
+            data-type="country-button"
             ?disabled=${this.disabled}
-            @change=${this._changeCountry}
+            @click=${this._toggleCountryDropdown}
+            type="button"
           >
+            <span>${selectedCountry?.flag || '🇺🇸'}</span>
+            <dt-icon icon="mdi:chevron-down" size="0.8em"></dt-icon>
+          </button>
+          <div class="country-dropdown ${isDropdownOpen ? 'open' : ''}">
             ${countryOptions.map(country => html`
-              <option 
-                value="${country.code}"
-                ?selected=${country.code === parsed.countryCode}
+              <button 
+                class="country-option ${country.code === parsed.countryCode ? 'selected' : ''}"
+                data-key="${dropdownKey}"
+                data-country-code="${country.code}"
+                @click=${this._selectCountry}
+                type="button"
               >
-                ${country.flag} ${country.name} ${country.dialCode}
-              </option>
+                <span>${country.flag}</span>
+                <span>${country.name}</span>
+                <span>${country.dialCode}</span>
+              </button>
             `)}
-          </select>
+          </div>
           <div class="dial-code">${selectedCountry?.dialCode || '+1'}</div>
           <input
-            data-key="${item.key ?? item.tempKey}"
+            data-key="${dropdownKey}"
             data-type="phone"
             name="${this.name}"
             aria-label="${this.label} phone number"
@@ -484,6 +561,7 @@ export class DtMultiText extends DtText {
               @click=${this._removeItem}
               data-key="${item.key ?? item.tempKey}"
               ?disabled=${this.disabled}
+              type="button"
             >
               <dt-icon icon="mdi:close"></dt-icon>
             </button>
@@ -494,6 +572,7 @@ export class DtMultiText extends DtText {
           class="input-addon btn-add"
           @click=${this._addItem}
           ?disabled=${this.disabled}
+          type="button"
         >
           <dt-icon icon="mdi:plus-thick"></dt-icon>
         </button>
@@ -573,6 +652,81 @@ export class DtMultiText extends DtText {
 
       this._setFormValue(this.value);
       this.dispatchEvent(event);
+    }
+  }
+
+  _toggleCountryDropdown(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (this.disabled) return;
+    
+    const key = e.currentTarget.dataset.key;
+    if (this._openDropdownKey === key) {
+      this._closeDropdown();
+    } else {
+      this._openDropdownKey = key;
+      // Add click outside listener when dropdown opens
+      setTimeout(() => {
+        document.addEventListener('click', this._handleClickOutside);
+      }, 0);
+    }
+  }
+
+  _selectCountry(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const key = e.currentTarget.dataset.key;
+    const countryCode = e.currentTarget.dataset.countryCode;
+    
+    if (key && countryCode) {
+      // Find the phone input and dial code display for this item
+      const container = e.currentTarget.closest('.phone-intl-container');
+      const phoneInput = container?.querySelector('input[data-type="phone"]');
+      const dialCodeDisplay = container?.querySelector('.dial-code');
+      const phoneNumber = phoneInput ? phoneInput.value : '';
+      
+      // Update the dial code display
+      const countryOptions = this._getCountryOptions();
+      const selectedCountry = countryOptions.find(c => c.code === countryCode);
+      if (dialCodeDisplay && selectedCountry) {
+        dialCodeDisplay.textContent = selectedCountry.dialCode;
+      }
+      
+      const newValue = this._formatPhoneValue(countryCode, phoneNumber);
+      
+      const event = new CustomEvent('change', {
+        detail: {
+          field: this.name,
+          oldValue: this.value,
+        },
+      });
+
+      // update this item's value in the list
+      this.value = this.value.map(x => ({
+        ...x,
+        value: x.key === key || x.tempKey === key ? newValue : x.value,
+      }));
+      event.detail.newValue = this.value;
+
+      this._setFormValue(this.value);
+      this.dispatchEvent(event);
+      
+      // Close the dropdown
+      this._closeDropdown();
+    }
+  }
+
+  _closeDropdown() {
+    this._openDropdownKey = null;
+    document.removeEventListener('click', this._handleClickOutside);
+  }
+
+  _handleClickOutside(e) {
+    const dropdown = e.target.closest('.phone-intl-container');
+    if (!dropdown) {
+      this._closeDropdown();
     }
   }
 
