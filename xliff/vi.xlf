@@ -30,6 +30,10 @@
         <source>Close</source>
         <target>Đóng</target>
       </trans-unit>
+      <trans-unit id="s29e25f5e4622f847" xml:space="preserve">
+        <source>Open Dialog</source>
+        <target state="translated">Mở hộp thoại</target>
+      </trans-unit>
       <trans-unit id="s33f85f24c0f5f008">
         <source>Save</source>
         <target>Lưu</target>
@@ -54,6 +58,10 @@
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
         <target state="translated"><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> Danh sách</target>
       </trans-unit>
+      <trans-unit id="seafe6ef133ede7da" xml:space="preserve">
+        <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
+        <target state="translated">Đang hiển thị 1 of <x id="0" equiv-text="${this.total}"/></target>
+      </trans-unit>
       <trans-unit id="s41cb4006238ebd3b">
         <source>Bulk Edit</source>
         <target>Chỉnh sửa Hàng loạt</target>
@@ -70,9 +78,6 @@
         <source>Loading</source>
         <target state="translated">Đang tải</target>
       </trans-unit>
-<trans-unit id="se32ddb0a9cd4181d">
-  <source>Showing <x id="0" equiv-text="${this.total}"/> of <x id="1" equiv-text="${this.total}"/></source>
-</trans-unit>
     </body>
   </file>
 </xliff>

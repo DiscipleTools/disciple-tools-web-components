@@ -28,6 +28,9 @@
         <source>Close</source>
         <target>Zatvori</target>
       </trans-unit>
+      <trans-unit id="s29e25f5e4622f847">
+        <source>Open Dialog</source>
+      </trans-unit>
       <trans-unit id="s33f85f24c0f5f008">
         <source>Save</source>
         <target>Sačuvaj</target>
@@ -50,6 +53,9 @@
       <trans-unit id="sac83d7f9358b43db">
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
       </trans-unit>
+      <trans-unit id="seafe6ef133ede7da">
+        <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
+      </trans-unit>
       <trans-unit id="s41cb4006238ebd3b">
         <source>Bulk Edit</source>
         <target>masovno uređivanje</target>
@@ -64,9 +70,6 @@
       <trans-unit id="sb59d68ed12d46377">
         <source>Loading</source>
       </trans-unit>
-<trans-unit id="se32ddb0a9cd4181d">
-  <source>Showing <x id="0" equiv-text="${this.total}"/> of <x id="1" equiv-text="${this.total}"/></source>
-</trans-unit>
     </body>
   </file>
 </xliff>

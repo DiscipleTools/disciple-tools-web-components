@@ -11,10 +11,10 @@
     export const templates = {
       's04ceadb276bbe149': `Učitavanje opcija...`,
 's226be12a5b1a27e8': `Pročitajte dokumentaciju`,
+'s29e25f5e4622f847': `Otvorite dijalog`,
 's33f85f24c0f5f008': `Sačuvaj`,
 's36cb242ac90353bc': `Polja`,
 's41cb4006238ebd3b': `Skupno uređivanje`,
-'s49730f3d5751a433': `Učitavanje...`,
 's5e8250fb85d64c23': `Zatvori`,
 's625ad019db843f94': `Koristi`,
 's9d51bfd93b5dbeca': `Prikaži arhivirano`,
@@ -24,8 +24,9 @@
 'sbf1ca928ec1deb62': `Trebate više pomoći?`,
 'scb9a1ff437efbd2a': str`Odaberite sve ${0} koje želite ažurirati sa liste i ažurirajte ih ispod`,
 'sd1a8dc951b2b6a98': `Odaberite koja polja će se prikazati kao kolone na listi`,
-'sd2e180dab4fbcfb9': `Nema dostupnih podataka`,
+'seafe6ef133ede7da': str`Prikazuje se 1 od ${0}`,
 'sf9aee319a006c9b4': `Dodati`,
-'se32ddb0a9cd4181d': str`Showing ${0} of ${1}`,
+'sd2e180dab4fbcfb9': `No Data Available`,
+'s49730f3d5751a433': `Loading...`,
     };
   

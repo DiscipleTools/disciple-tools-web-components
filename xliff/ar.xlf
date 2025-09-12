@@ -30,6 +30,10 @@
         <source>Close</source>
         <target>غلق</target>
       </trans-unit>
+      <trans-unit id="s29e25f5e4622f847">
+        <source>Open Dialog</source>
+        <target>افتح</target>
+      </trans-unit>
       <trans-unit id="s33f85f24c0f5f008">
         <source>Save</source>
         <target>حفظ</target>
@@ -54,6 +58,10 @@
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
         <target><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/>قائمة الأعضاء</target>
       </trans-unit>
+      <trans-unit id="seafe6ef133ede7da">
+        <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
+        <target>عرض 1 of <x id="0" equiv-text="${this.total}"/></target>
+      </trans-unit>
       <trans-unit id="s41cb4006238ebd3b">
         <source>Bulk Edit</source>
         <target>التحرير بالجملة</target>
@@ -70,9 +78,6 @@
         <source>Loading</source>
         <target>جار التحميل</target>
       </trans-unit>
-<trans-unit id="se32ddb0a9cd4181d">
-  <source>Showing <x id="0" equiv-text="${this.total}"/> of <x id="1" equiv-text="${this.total}"/></source>
-</trans-unit>
     </body>
   </file>
 </xliff>

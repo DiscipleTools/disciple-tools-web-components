@@ -11,10 +11,10 @@
     export const templates = {
       's04ceadb276bbe149': `Seçenekler Yükleniyor...`,
 's226be12a5b1a27e8': `Belgeleri oku`,
+'s29e25f5e4622f847': `İletişim Kutusunu Aç`,
 's33f85f24c0f5f008': `Kaydet`,
 's36cb242ac90353bc': `Alanlar`,
 's41cb4006238ebd3b': `Toplu Düzenleme`,
-'s49730f3d5751a433': `Yükleniyor...`,
 's5e8250fb85d64c23': `Kapat`,
 's625ad019db843f94': `Kullan`,
 's9d51bfd93b5dbeca': `Arşivlenmiş Göster`,
@@ -24,8 +24,9 @@
 'sbf1ca928ec1deb62': `Daha fazla yardıma ihtiyacınız var mı?`,
 'scb9a1ff437efbd2a': str`Listeden güncellemek istediğiniz tüm ${0} 'i seçin ve aşağıda güncelleyin`,
 'sd1a8dc951b2b6a98': `Listede Hangi Alanların Sütun Olarak Görüntüleneceğini Seçin`,
-'sd2e180dab4fbcfb9': `Veri Yok`,
+'seafe6ef133ede7da': str`Gösteriliyor 1 of ${0}`,
 'sf9aee319a006c9b4': `Ekle`,
-'se32ddb0a9cd4181d': str`Showing ${0} of ${1}`,
+'sd2e180dab4fbcfb9': `No Data Available`,
+'s49730f3d5751a433': `Loading...`,
     };
   
