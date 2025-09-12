@@ -156,7 +156,8 @@ export class DtMultiText extends DtText {
         }
         .phone-intl-container .country-select {
           flex-shrink: 0;
-          width: 60px;
+          min-width: 60px;
+          width: auto;
           padding: var(--dt-form-padding, 0.5333333333rem);
           border: 1px solid var(--dt-multi-text-border-color, #fefefe);
           border-radius: var(--dt-multi-text-border-radius, 0);
@@ -174,6 +175,8 @@ export class DtMultiText extends DtText {
           font-size: 1rem;
           color: var(--dt-form-text-color, #000);
           text-align: center;
+          height: auto;
+          line-height: 1.5;
         }
         .phone-intl-container .country-select:disabled {
           background-color: var(
@@ -192,12 +195,16 @@ export class DtMultiText extends DtText {
           font-size: 1rem;
           color: var(--dt-form-text-color, #000);
           font-weight: 500;
+          line-height: 1.5;
+          display: flex;
+          align-items: center;
         }
         .phone-intl-container input[data-type="phone"] {
           flex-grow: 1;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
           border-left: none;
+          line-height: 1.5;
         }
       `,
     ];
@@ -448,7 +455,7 @@ export class DtMultiText extends DtText {
                 value="${country.code}"
                 ?selected=${country.code === parsed.countryCode}
               >
-                ${country.flag}
+                ${country.flag} ${country.name} ${country.dialCode}
               </option>
             `)}
           </select>
