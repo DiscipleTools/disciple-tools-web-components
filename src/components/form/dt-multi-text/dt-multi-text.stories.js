@@ -222,3 +222,24 @@ PhoneIntlEmpty.args = {
   label: 'Phone Numbers',
   placeholder: 'Enter phone number',
 };
+
+export const PhoneIntlLocalized = Template.bind({});
+PhoneIntlLocalized.decorators = [LocaleDecorator, FormDecorator];
+PhoneIntlLocalized.args = {
+  type: 'phone-intl',
+  lang: 'fr',
+  label: 'Numéros de téléphone',
+  placeholder: 'Entrez le numéro de téléphone',
+  value: [
+    {
+      verified: false,
+      value: '+33 1 42 86 83 26',
+      key: 'phone_1',
+    },
+    {
+      verified: false,
+      value: '+49 30 12345678',
+      key: 'phone_2',
+    },
+  ],
+};

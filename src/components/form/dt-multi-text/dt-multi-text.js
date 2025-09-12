@@ -2,9 +2,10 @@ import { html, css } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { when } from 'lit/directives/when.js';
+import CountryList from 'country-list-with-dial-code-and-flag';
+import countries from 'i18n-iso-countries';
 import { DtText } from '../dt-text/dt-text.js';
 import '../../icons/dt-icon.js';
-import CountryList from 'country-list-with-dial-code-and-flag';
 
 /**
  * Field to edit multiple text values with ability to add/remove values.
@@ -150,14 +151,17 @@ export class DtMultiText extends DtText {
         .phone-intl-container {
           display: flex;
           flex-direction: row;
-          gap: 0.25rem;
+          align-items: center;
+          gap: 0;
         }
         .phone-intl-container .country-select {
           flex-shrink: 0;
-          min-width: 120px;
+          width: 60px;
           padding: var(--dt-form-padding, 0.5333333333rem);
           border: 1px solid var(--dt-multi-text-border-color, #fefefe);
           border-radius: var(--dt-multi-text-border-radius, 0);
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
           background-color: var(--dt-multi-text-background-color, #fefefe);
           box-shadow: var(
             --dt-multi-text-box-shadow,
@@ -169,6 +173,7 @@ export class DtMultiText extends DtText {
           font-family: inherit;
           font-size: 1rem;
           color: var(--dt-form-text-color, #000);
+          text-align: center;
         }
         .phone-intl-container .country-select:disabled {
           background-color: var(
@@ -177,10 +182,22 @@ export class DtMultiText extends DtText {
           );
           cursor: not-allowed;
         }
+        .phone-intl-container .dial-code {
+          flex-shrink: 0;
+          padding: var(--dt-form-padding, 0.5333333333rem);
+          border-top: 1px solid var(--dt-multi-text-border-color, #fefefe);
+          border-bottom: 1px solid var(--dt-multi-text-border-color, #fefefe);
+          background-color: var(--dt-multi-text-background-color, #f8f8f8);
+          font-family: inherit;
+          font-size: 1rem;
+          color: var(--dt-form-text-color, #000);
+          font-weight: 500;
+        }
         .phone-intl-container input[data-type="phone"] {
           flex-grow: 1;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
+          border-left: none;
         }
       `,
     ];
@@ -199,14 +216,37 @@ export class DtMultiText extends DtText {
   constructor() {
     super();
     this._countries = CountryList.getAll();
+    
+    // Register some common locales with i18n-iso-countries
+    // We'll register them on-demand in _getCountryOptions to avoid bundling all locales
   }
 
   _getCountryOptions() {
     return this._countries.map(country => {
-      const data = country.data;
+      const { data } = country;
+      // Use localized country names when possible, fallback to default
+      let localizedName = data.name;
+      try {
+        const locale = this.locale || 'en';
+        // Convert locale format: 'en_US' -> 'en', 'fr_FR' -> 'fr', etc.
+        const [isoLanguage] = locale.split('_');
+        
+        // Try to get localized name, fallback to English or default
+        const localizedNameResult = countries.getName(data.code, isoLanguage) || 
+                                   countries.getName(data.code, 'en') ||
+                                   data.name;
+        if (localizedNameResult) {
+          localizedName = localizedNameResult;
+        }
+      } catch (e) {
+        // Fallback to default name if localization fails
+        // eslint-disable-next-line no-console
+        console.debug('Failed to get localized country name:', e);
+      }
+      
       return {
         code: data.code,
-        name: data.name,
+        name: localizedName,
         dialCode: data.dial_code,
         flag: data.flag,
       };
@@ -229,12 +269,12 @@ export class DtMultiText extends DtText {
       // Prefer the country marked as preferred, otherwise take the first one
       let country = matchingCountries.find(c => c.data.preferred);
       if (!country && matchingCountries.length > 0) {
-        country = matchingCountries[0];
+        [country] = matchingCountries;
       }
       
       return {
         countryCode: country ? country.data.code : 'US',
-        phoneNumber: phoneNumber,
+        phoneNumber,
       };
     }
     
@@ -391,6 +431,7 @@ export class DtMultiText extends DtText {
   _phoneIntlFieldTemplate(item, itemCount) {
     const parsed = this._parsePhoneValue(item.value);
     const countryOptions = this._getCountryOptions();
+    const selectedCountry = countryOptions.find(c => c.code === parsed.countryCode) || countryOptions.find(c => c.code === 'US');
     
     return html`
       <div class="field-container">
@@ -407,10 +448,11 @@ export class DtMultiText extends DtText {
                 value="${country.code}"
                 ?selected=${country.code === parsed.countryCode}
               >
-                ${country.flag} ${country.dialCode} ${country.name}
+                ${country.flag}
               </option>
             `)}
           </select>
+          <div class="dial-code">${selectedCountry?.dialCode || '+1'}</div>
           <input
             data-key="${item.key ?? item.tempKey}"
             data-type="phone"
@@ -496,7 +538,15 @@ export class DtMultiText extends DtText {
     if (key) {
       const countryCode = e.target.value;
       const phoneInput = e.target.parentElement.querySelector('input[data-type="phone"]');
+      const dialCodeDisplay = e.target.parentElement.querySelector('.dial-code');
       const phoneNumber = phoneInput ? phoneInput.value : '';
+      
+      // Update the dial code display
+      const countryOptions = this._getCountryOptions();
+      const selectedCountry = countryOptions.find(c => c.code === countryCode);
+      if (dialCodeDisplay && selectedCountry) {
+        dialCodeDisplay.textContent = selectedCountry.dialCode;
+      }
       
       const newValue = this._formatPhoneValue(countryCode, phoneNumber);
       
