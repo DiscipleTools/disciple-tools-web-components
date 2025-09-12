@@ -4,6 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { when } from 'lit/directives/when.js';
 import { DtText } from '../dt-text/dt-text.js';
 import '../../icons/dt-icon.js';
+import CountryList from 'country-list-with-dial-code-and-flag';
 
 /**
  * Field to edit multiple text values with ability to add/remove values.
@@ -144,6 +145,43 @@ export class DtMultiText extends DtText {
         .field-container:has(.btn-remove) ~ .icon-overlay {
           inset-inline-end: 5.5rem;
         }
+        
+        /* Phone-intl specific styles */
+        .phone-intl-container {
+          display: flex;
+          flex-direction: row;
+          gap: 0.25rem;
+        }
+        .phone-intl-container .country-select {
+          flex-shrink: 0;
+          min-width: 120px;
+          padding: var(--dt-form-padding, 0.5333333333rem);
+          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
+          border-radius: var(--dt-multi-text-border-radius, 0);
+          background-color: var(--dt-multi-text-background-color, #fefefe);
+          box-shadow: var(
+            --dt-multi-text-box-shadow,
+            var(
+              --dt-form-input-box-shadow,
+              inset 0 1px 2px hsl(0deg 0% 4% / 10%)
+            )
+          );
+          font-family: inherit;
+          font-size: 1rem;
+          color: var(--dt-form-text-color, #000);
+        }
+        .phone-intl-container .country-select:disabled {
+          background-color: var(
+            --dt-text-disabled-background-color,
+            var(--dt-form-disabled-background-color, #e6e6e6)
+          );
+          cursor: not-allowed;
+        }
+        .phone-intl-container input[data-type="phone"] {
+          flex-grow: 1;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
       `,
     ];
   }
@@ -156,6 +194,58 @@ export class DtMultiText extends DtText {
         reflect: true,
       },
     };
+  }
+
+  constructor() {
+    super();
+    this._countries = CountryList.getAll();
+  }
+
+  _getCountryOptions() {
+    return this._countries.map(country => {
+      const data = country.data;
+      return {
+        code: data.code,
+        name: data.name,
+        dialCode: data.dial_code,
+        flag: data.flag,
+      };
+    });
+  }
+
+  _parsePhoneValue(value) {
+    if (!value) return { countryCode: 'US', phoneNumber: '' };
+    
+    // Try to extract country code and phone number from the value
+    // Expected format: "+1 555-123-4567" or similar
+    const match = value.match(/^(\+\d{1,4})\s*(.*)$/);
+    if (match) {
+      const dialCode = match[1];
+      const phoneNumber = match[2];
+      
+      // Find countries by dial code
+      const matchingCountries = this._countries.filter(c => c.data.dial_code === dialCode);
+      
+      // Prefer the country marked as preferred, otherwise take the first one
+      let country = matchingCountries.find(c => c.data.preferred);
+      if (!country && matchingCountries.length > 0) {
+        country = matchingCountries[0];
+      }
+      
+      return {
+        countryCode: country ? country.data.code : 'US',
+        phoneNumber: phoneNumber,
+      };
+    }
+    
+    // If no country code detected, assume it's just a phone number
+    return { countryCode: 'US', phoneNumber: value };
+  }
+
+  _formatPhoneValue(countryCode, phoneNumber) {
+    const country = this._countries.find(c => c.data.code === countryCode);
+    const dialCode = country ? country.data.dial_code : '+1';
+    return phoneNumber ? `${dialCode} ${phoneNumber}` : '';
   }
 
   updated(changedProperties) {
@@ -253,6 +343,10 @@ export class DtMultiText extends DtText {
   }
 
   _inputFieldTemplate(item, itemCount) {
+    if (this.type === 'phone-intl') {
+      return this._phoneIntlFieldTemplate(item, itemCount);
+    }
+    
     return html`
       <div class="field-container">
         <input
@@ -268,6 +362,70 @@ export class DtMultiText extends DtText {
           @change=${this._change}
           novalidate
         />
+
+        ${when(
+          itemCount > 1 || item.key || item.value,
+          () => html`
+            <button
+              class="input-addon btn-remove"
+              @click=${this._removeItem}
+              data-key="${item.key ?? item.tempKey}"
+              ?disabled=${this.disabled}
+            >
+              <dt-icon icon="mdi:close"></dt-icon>
+            </button>
+          `,
+          () => html``,
+        )}
+        <button
+          class="input-addon btn-add"
+          @click=${this._addItem}
+          ?disabled=${this.disabled}
+        >
+          <dt-icon icon="mdi:plus-thick"></dt-icon>
+        </button>
+      </div>
+    `;
+  }
+
+  _phoneIntlFieldTemplate(item, itemCount) {
+    const parsed = this._parsePhoneValue(item.value);
+    const countryOptions = this._getCountryOptions();
+    
+    return html`
+      <div class="field-container">
+        <div class="phone-intl-container">
+          <select 
+            class="country-select"
+            data-key="${item.key ?? item.tempKey}"
+            data-type="country"
+            ?disabled=${this.disabled}
+            @change=${this._changeCountry}
+          >
+            ${countryOptions.map(country => html`
+              <option 
+                value="${country.code}"
+                ?selected=${country.code === parsed.countryCode}
+              >
+                ${country.flag} ${country.dialCode} ${country.name}
+              </option>
+            `)}
+          </select>
+          <input
+            data-key="${item.key ?? item.tempKey}"
+            data-type="phone"
+            name="${this.name}"
+            aria-label="${this.label} phone number"
+            type="tel"
+            placeholder="${this.placeholder || 'Phone number'}"
+            ?disabled=${this.disabled}
+            ?required=${this.required}
+            class="${classMap(this.classes)}"
+            .value="${parsed.phoneNumber || ''}"
+            @change=${this._changePhone}
+            novalidate
+          />
+        </div>
 
         ${when(
           itemCount > 1 || item.key || item.value,
@@ -330,6 +488,62 @@ export class DtMultiText extends DtText {
     } else {
       this.invalid = false;
       this.internals.setValidity({});
+    }
+  }
+
+  _changeCountry(e) {
+    const key = e?.currentTarget?.dataset?.key;
+    if (key) {
+      const countryCode = e.target.value;
+      const phoneInput = e.target.parentElement.querySelector('input[data-type="phone"]');
+      const phoneNumber = phoneInput ? phoneInput.value : '';
+      
+      const newValue = this._formatPhoneValue(countryCode, phoneNumber);
+      
+      const event = new CustomEvent('change', {
+        detail: {
+          field: this.name,
+          oldValue: this.value,
+        },
+      });
+
+      // update this item's value in the list
+      this.value = this.value.map(x => ({
+        ...x,
+        value: x.key === key || x.tempKey === key ? newValue : x.value,
+      }));
+      event.detail.newValue = this.value;
+
+      this._setFormValue(this.value);
+      this.dispatchEvent(event);
+    }
+  }
+
+  _changePhone(e) {
+    const key = e?.currentTarget?.dataset?.key;
+    if (key) {
+      const phoneNumber = e.target.value;
+      const countrySelect = e.target.parentElement.querySelector('.country-select');
+      const countryCode = countrySelect ? countrySelect.value : 'US';
+      
+      const newValue = this._formatPhoneValue(countryCode, phoneNumber);
+      
+      const event = new CustomEvent('change', {
+        detail: {
+          field: this.name,
+          oldValue: this.value,
+        },
+      });
+
+      // update this item's value in the list
+      this.value = this.value.map(x => ({
+        ...x,
+        value: x.key === key || x.tempKey === key ? newValue : x.value,
+      }));
+      event.detail.newValue = this.value;
+
+      this._setFormValue(this.value);
+      this.dispatchEvent(event);
     }
   }
 

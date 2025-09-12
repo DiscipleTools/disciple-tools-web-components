@@ -22,7 +22,7 @@ export default {
     placeholder: { control: 'text' },
     type: {
       control: 'select',
-      options: ['text', 'password', 'email', 'number', 'tel', 'url'],
+      options: ['text', 'password', 'email', 'number', 'tel', 'url', 'phone-intl'],
       defaultValue: 'text',
     },
     disabled: { control: 'boolean' },
@@ -195,4 +195,30 @@ LocalizeRTL.args = {
       key: 'comm_channel_1',
     },
   ],
+};
+
+export const PhoneIntl = Template.bind({});
+PhoneIntl.args = {
+  type: 'phone-intl',
+  label: 'Phone Numbers',
+  placeholder: 'Enter phone number',
+  value: [
+    {
+      verified: false,
+      value: '+1 555-123-4567',
+      key: 'phone_1',
+    },
+    {
+      verified: false,
+      value: '+44 20 7946 0958',
+      key: 'phone_2',
+    },
+  ],
+};
+
+export const PhoneIntlEmpty = Template.bind({});
+PhoneIntlEmpty.args = {
+  type: 'phone-intl',
+  label: 'Phone Numbers',
+  placeholder: 'Enter phone number',
 };

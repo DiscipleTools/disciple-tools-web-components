@@ -168,4 +168,44 @@ describe('DtMultiText', () => {
     expect(detail.newValue[0].value).to.equal('Value 1')
     expect(detail.newValue[0].delete).to.equal(true);
   });
+
+  describe('phone-intl type', () => {
+    it('renders country code dropdown for phone-intl type', async () => {
+      const el = await fixture(
+        html`<dt-multi-text type="phone-intl"></dt-multi-text>`
+      );
+
+      const countrySelect = el.shadowRoot.querySelector('.country-select');
+      expect(countrySelect).to.exist;
+    });
+
+    it('renders phone number input for phone-intl type', async () => {
+      const el = await fixture(
+        html`<dt-multi-text type="phone-intl"></dt-multi-text>`
+      );
+
+      const phoneInput = el.shadowRoot.querySelector('input[data-type="phone"]');
+      expect(phoneInput).to.exist;
+    });
+
+    it('handles phone-intl value format', async () => {
+      const el = await fixture(
+        html`<dt-multi-text
+          type="phone-intl"
+          value="${JSON.stringify([{
+            key: 'phone01',
+            value: '+1 555-123-4567',
+            countryCode: 'US',
+            verified: true,
+          }])}"
+        ></dt-multi-text>`
+      );
+
+      const countrySelect = el.shadowRoot.querySelector('.country-select');
+      const phoneInput = el.shadowRoot.querySelector('input[data-type="phone"]');
+      
+      expect(countrySelect.value).to.equal('US');
+      expect(phoneInput.value).to.equal('555-123-4567');
+    });
+  });
 });
