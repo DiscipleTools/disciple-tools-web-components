@@ -151,7 +151,7 @@ export class DtMultiText extends DtText {
         .phone-intl-container {
           display: flex;
           flex-direction: row;
-          align-items: center;
+          align-items: stretch;
           gap: 0;
           position: relative;
         }
@@ -164,6 +164,7 @@ export class DtMultiText extends DtText {
           border-radius: var(--dt-multi-text-border-radius, 0);
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
+          border-right: none;
           background-color: var(--dt-multi-text-background-color, #fefefe);
           box-shadow: var(
             --dt-multi-text-box-shadow,
@@ -242,6 +243,8 @@ export class DtMultiText extends DtText {
           padding: var(--dt-form-padding, 0.5333333333rem);
           border-top: 1px solid var(--dt-multi-text-border-color, #fefefe);
           border-bottom: 1px solid var(--dt-multi-text-border-color, #fefefe);
+          border-left: none;
+          border-right: none;
           background-color: var(--dt-multi-text-background-color, #f8f8f8);
           font-family: inherit;
           font-size: 1rem;
@@ -250,6 +253,8 @@ export class DtMultiText extends DtText {
           line-height: 1.5;
           display: flex;
           align-items: center;
+          min-width: 50px;
+          justify-content: center;
         }
         .phone-intl-container input[data-type="phone"] {
           flex-grow: 1;
@@ -713,8 +718,11 @@ export class DtMultiText extends DtText {
       this._setFormValue(this.value);
       this.dispatchEvent(event);
       
-      // Close the dropdown
+      // Close the dropdown and trigger a re-render to update the flag
       this._closeDropdown();
+      
+      // Force re-render to update the flag button
+      this.requestUpdate();
     }
   }
 
