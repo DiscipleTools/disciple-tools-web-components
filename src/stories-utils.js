@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { action } from '@storybook/addon-actions';
+// import { action } from '@storybook/addon-actions';
 
 export const LocaleDecorator = (story, context) =>
   html`<div
@@ -13,10 +13,9 @@ export function onAutoSave(event) {
   if (event?.target) {
     event.target.setAttribute('loading', true);
     console.log(
-      `Value changed from ${ 
-      JSON.stringify(event.detail.oldValue) 
-      } to ${ 
-      JSON.stringify(event.detail.newValue)}`
+      `Value changed from ${JSON.stringify(
+        event.detail.oldValue,
+      )} to ${JSON.stringify(event.detail.newValue)}`,
     );
     setTimeout(() => {
       event.target.removeAttribute('loading');
@@ -38,7 +37,7 @@ export function onSubmit(event) {
     el: {},
   };
   formData.forEach((value, key) => (data.form[key] = value));
-  Array.from(form.elements).forEach((el) => {
+  Array.from(form.elements).forEach(el => {
     if (el.localName.startsWith('dt-')) {
       data.el[el.name] = el.value;
     }
@@ -50,17 +49,19 @@ export function clearForm(event) {
     event.preventDefault();
   }
   const form = event.target;
-  Array.from(form.elements).forEach((el) => {
+  Array.from(form.elements).forEach(el => {
     if (el.localName.startsWith('dt-')) {
       el.reset();
     }
   });
 }
-export const FormDecorator = story => html`<form
-  method="post"
-  @submit="${(e) => onSubmit(e)}"
-  @reset="${(e) => clearForm(e)}"
-  style="background-color: var(--surface-0);">
+export const FormDecorator = story =>
+  html`<form
+    method="post"
+    @submit="${e => onSubmit(e)}"
+    @reset="${e => clearForm(e)}"
+    style="background-color: var(--surface-0);"
+  >
     ${story()}
 
     <button type="submit">Submit</button>

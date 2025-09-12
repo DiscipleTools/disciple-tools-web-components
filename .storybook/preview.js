@@ -1,5 +1,5 @@
 import { withCssFileTheme } from './themeDecorator.js';
-import { setCustomElementsManifest } from '@storybook/web-components';
+import { setCustomElementsManifest } from '@storybook/web-components-vite';
 import customElements from '../custom-elements.json';
 setCustomElementsManifest(customElements);
 
@@ -30,7 +30,7 @@ registerServiceWorker();
 document.documentElement.setAttribute('lang', 'en');
 document.documentElement.setAttribute('dir', 'ltr');
 
-/** @type { import('@storybook/web-components').Preview } */
+/** @type { import('@storybook/web-components-vite').Preview } */
 export default {
   parameters: {
     docs: {
@@ -44,6 +44,8 @@ export default {
       },
     },
   },
+
+  tags: ['autodocs']
 };
 
 export const decorators = [

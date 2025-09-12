@@ -7,15 +7,13 @@ const config = {
     "../src/**/*.mdx",
     "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
+
   framework: {
     name: "@storybook/web-components-vite",
     options: {},
   },
-  docs: {
-    autodocs: true,
-  },
+
   addons: [
-    '@storybook/addon-essentials',
     '@storybook/addon-links',
     '@storybook/addon-themes',
     '@chromatic-com/storybook',
@@ -28,8 +26,9 @@ const config = {
           },
         },
       },
-    },
+    }
   ],
-  staticDirs: ['../assets', '../src/styles'],
+
+  staticDirs: ['../assets', '../src/styles']
 };
 export default config;

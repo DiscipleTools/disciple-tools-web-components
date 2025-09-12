@@ -1,6 +1,6 @@
-import { useEffect } from '@storybook/preview-api';
+import { useEffect } from 'storybook/preview-api';
 import { DecoratorHelpers } from '@storybook/addon-themes';
-import { DecoratorFunction, Renderer } from '@storybook/types';
+import { DecoratorFunction, Renderer } from 'storybook/internal/types';
 
 const { initializeThemeState, pluckThemeFromContext } = DecoratorHelpers;
 
