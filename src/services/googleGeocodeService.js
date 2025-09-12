@@ -4,7 +4,7 @@ export default class GoogleGeocodeService {
     this.window = window;
 
     if (!window.google?.maps?.places?.AutocompleteService) {
-      let script = document.createElement('script');
+      const script = document.createElement('script');
       script.src = `https://maps.googleapis.com/maps/api/js?libraries=places&key=${token}`;
       document.body.appendChild(script);
     }

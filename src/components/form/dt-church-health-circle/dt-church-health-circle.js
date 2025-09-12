@@ -125,7 +125,7 @@ export class DtChurchHealthCircle extends DtBase {
 
     const entries = Object.entries(settings);
 
-    //We don't want to show church commitment in the circle
+    // We don't want to show church commitment in the circle
     return entries.filter(([key, value]) => key !== 'church_commitment');
   }
 
@@ -166,7 +166,7 @@ export class DtChurchHealthCircle extends DtBase {
   async fetch() {
     try {
       const promises = [this.fetchSettings(), this.fetchGroup()];
-      let [settings, group] = await Promise.all(promises);
+      const [settings, group] = await Promise.all(promises);
       this.settings = settings;
       this.post = group;
       if (!settings) {
@@ -287,9 +287,9 @@ export class DtChurchHealthCircle extends DtBase {
     );
     const items = container.querySelectorAll('dt-church-health-icon');
 
-    let n_items = items.length;
-    let m = n_items; /* how many are ON the circle */
-    let tan = Math.tan(Math.PI / m); /* tangent of half the base angle */
+    const n_items = items.length;
+    const m = n_items; /* how many are ON the circle */
+    const tan = Math.tan(Math.PI / m); /* tangent of half the base angle */
 
     container.style.setProperty('--m', m);
     container.style.setProperty('--tan', + tan.toFixed(2));
@@ -302,8 +302,8 @@ export class DtChurchHealthCircle extends DtBase {
       return;
     }
 
-    let toggle = this.renderRoot.querySelector('dt-toggle');
-    let church_commitment = toggle.toggleAttribute('checked');
+    const toggle = this.renderRoot.querySelector('dt-toggle');
+    const church_commitment = toggle.toggleAttribute('checked');
     if (!this.group.health_metrics) {
       this.group.health_metrics = [];
     }
