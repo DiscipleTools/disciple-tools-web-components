@@ -615,7 +615,7 @@ export default class DtLocationMapItem extends LitElement {
   }
 
   _renderOptions() {
-    let options = [];
+    const options = [];
     if (!this.filteredOptions.length) {
       if (this.loading) {
         options.push(html`<li><div>${msg('Loading...')}</div></li>`);

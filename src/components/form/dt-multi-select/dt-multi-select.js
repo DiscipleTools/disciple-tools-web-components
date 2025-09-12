@@ -180,7 +180,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
       ...super.properties,
       /** Placeholder displayed when no value is entered */
       placeholder: { type: String },
-      /** Override height of container **/
+      /** Override height of container * */
       containerHeight: {
         type: Number,
         state: true,

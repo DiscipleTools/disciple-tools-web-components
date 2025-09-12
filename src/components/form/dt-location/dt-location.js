@@ -201,8 +201,7 @@ export class DtLocation extends DtTags {
     return (this.value || [])
       .filter(i => !i.delete)
       .map(
-        opt => {
-          return html`
+        opt => html`
           <div class="selected-option">
             <a
               href="${opt.link}"
@@ -218,7 +217,7 @@ export class DtLocation extends DtTags {
               x
             </button>
           </div>
-        `}
+        `
       );
   }
 

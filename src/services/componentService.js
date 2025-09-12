@@ -88,9 +88,9 @@ export default class ComponentService {
     if (elements) {
       elements.forEach(el => {
         // prevent multiple event attachments if this is called multiple times
-        if (!el.dataset['eventDtGetData']) {
+        if (!el.dataset.eventDtGetData) {
           el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this));
-          el.dataset['eventDtGetData'] = true;
+          el.dataset.eventDtGetData = true;
         }
       });
     }
