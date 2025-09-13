@@ -706,8 +706,8 @@ export class DtMultiText extends DtText {
     e.preventDefault();
     e.stopPropagation();
 
-    const key = e.currentTarget.dataset.key;
-    const countryCode = e.currentTarget.dataset.countryCode;
+    const { key } = e.currentTarget.dataset;
+    const { countryCode } = e.currentTarget.dataset;
 
     if (key && countryCode) {
       // Find the phone input for this item
