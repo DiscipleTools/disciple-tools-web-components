@@ -710,19 +710,12 @@ export class DtMultiText extends DtText {
     const countryCode = e.currentTarget.dataset.countryCode;
 
     if (key && countryCode) {
-      // Find the phone input and dial code display for this item
+      // Find the phone input for this item
       const container = e.currentTarget.closest('.phone-intl-container');
       const phoneInput = container?.querySelector('input[data-type="phone"]');
-      const dialCodeDisplay = container?.querySelector('.dial-code');
       const phoneNumber = phoneInput ? phoneInput.value : '';
 
-      // Update the dial code display
-      const countryOptions = this._countryOptions || [];
-      const selectedCountry = countryOptions.find(c => c.code === countryCode);
-      if (dialCodeDisplay && selectedCountry) {
-        dialCodeDisplay.textContent = selectedCountry.dialCode;
-      }
-
+      // Update the value for this item
       const newValue = this._formatPhoneValue(countryCode, phoneNumber);
 
       const event = new CustomEvent('change', {
@@ -744,9 +737,7 @@ export class DtMultiText extends DtText {
 
       // Close the dropdown and trigger a re-render to update the flag
       this._closeDropdown();
-
-      // Force re-render to update the flag button
-      this.requestUpdate();
+      // No need to manually update dial code display; let Lit re-render
     }
   }
 
