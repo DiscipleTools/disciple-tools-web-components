@@ -3,7 +3,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { when } from 'lit/directives/when.js';
 import CountryList from 'country-list-with-dial-code-and-flag';
-import countries from 'i18n-iso-countries';
+import { countryNames } from '../../../i18n/country-names.js';
 import { DtText } from '../dt-text/dt-text.js';
 import '../../icons/dt-icon.js';
 
@@ -146,7 +146,7 @@ export class DtMultiText extends DtText {
         .field-container:has(.btn-remove) ~ .icon-overlay {
           inset-inline-end: 5.5rem;
         }
-        
+
         /* Phone-intl specific styles */
         .phone-intl-container {
           display: flex;
@@ -205,10 +205,7 @@ export class DtMultiText extends DtText {
           border-radius: var(--dt-multi-text-border-radius, 0);
           box-shadow: var(
             --dt-multi-text-box-shadow,
-            var(
-              --dt-form-input-box-shadow,
-              0 2px 8px hsl(0deg 0% 4% / 20%)
-            )
+            var(--dt-form-input-box-shadow, 0 2px 8px hsl(0deg 0% 4% / 20%))
           );
           max-height: 200px;
           overflow-y: auto;
@@ -256,7 +253,7 @@ export class DtMultiText extends DtText {
           min-width: 50px;
           justify-content: center;
         }
-        .phone-intl-container input[data-type="phone"] {
+        .phone-intl-container input[data-type='phone'] {
           flex-grow: 1;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
@@ -278,6 +275,8 @@ export class DtMultiText extends DtText {
         type: String,
         state: true,
       },
+      _countryOptions: { type: Array, state: true },
+      _countryOptionsLoading: { type: Boolean, state: true },
     };
   }
 
@@ -285,37 +284,47 @@ export class DtMultiText extends DtText {
     super();
     this._countries = CountryList.getAll();
     this._openDropdownKey = null;
-    
-    // Register some common locales with i18n-iso-countries
-    // We'll register them on-demand in _getCountryOptions to avoid bundling all locales
-    
+    this._countryOptions = [];
+    this._countryOptionsLoading = false;
     // Bind click outside handler
     this._handleClickOutside = this._handleClickOutside.bind(this);
+    // Do not call _loadCountryOptions here; wait for first update so locale is set
+    this._countryOptionsLoadedOnce = false;
   }
 
-  _getCountryOptions() {
-    return this._countries.map(country => {
-      const { data } = country;
-      // Use localized country names when possible, fallback to default
-      let localizedName = data.name;
-      try {
-        const locale = this.locale || 'en';
-        // Convert locale format: 'en_US' -> 'en', 'fr_FR' -> 'fr', etc.
-        const [isoLanguage] = locale.split('_');
-        
-        // Try to get localized name, fallback to English or default
-        const localizedNameResult = countries.getName(data.code, isoLanguage) || 
-                                   countries.getName(data.code, 'en') ||
-                                   data.name;
-        if (localizedNameResult) {
-          localizedName = localizedNameResult;
-        }
-      } catch (e) {
-        // Fallback to default name if localization fails
-        // eslint-disable-next-line no-console
-        console.debug('Failed to get localized country name:', e);
+  willUpdate(changedProps) {
+    super.willUpdate?.(changedProps);
+    // Always load country options on first update (when locale is set), or when locale changes
+    if (!this._countryOptionsLoadedOnce || changedProps.has('locale')) {
+      this._countryOptionsLoadedOnce = true;
+      this._loadCountryOptions();
+    }
+    // if length of value was changed, focus the last element (which is new)
+    if (changedProps.has('value')) {
+      const old = changedProps.get('value');
+      if (old && old?.length !== this.value?.length) {
+        this.focusNewItem();
       }
-      
+    }
+  }
+
+  async _loadCountryOptions() {
+    this._countryOptionsLoading = true;
+    this._countryOptions = await this._getCountryOptions();
+    console.log('Country Options:', this._countryOptions);
+    this._countryOptionsLoading = false;
+    this.requestUpdate();
+  }
+
+  async _getCountryOptions() {
+    const locale = this.locale || 'en';
+    const [isoLanguage] = locale.split('_');
+    const countryData =
+      countryNames[isoLanguage]?.countries || countryNames.en.countries;
+    const collator = new Intl.Collator(locale);
+    const options = this._countries.map(country => {
+      const { data } = country;
+      const localizedName = countryData[data.code] || data.name;
       return {
         code: data.code,
         name: localizedName,
@@ -323,33 +332,37 @@ export class DtMultiText extends DtText {
         flag: data.flag,
       };
     });
+    options.sort((a, b) => collator.compare(a.name, b.name));
+    return options;
   }
 
   _parsePhoneValue(value) {
     if (!value) return { countryCode: 'US', phoneNumber: '' };
-    
+
     // Try to extract country code and phone number from the value
     // Expected format: "+1 555-123-4567" or similar
     const match = value.match(/^(\+\d{1,4})\s*(.*)$/);
     if (match) {
       const dialCode = match[1];
       const phoneNumber = match[2];
-      
+
       // Find countries by dial code
-      const matchingCountries = this._countries.filter(c => c.data.dial_code === dialCode);
-      
+      const matchingCountries = this._countries.filter(
+        c => c.data.dial_code === dialCode,
+      );
+
       // Prefer the country marked as preferred, otherwise take the first one
       let country = matchingCountries.find(c => c.data.preferred);
       if (!country && matchingCountries.length > 0) {
         [country] = matchingCountries;
       }
-      
+
       return {
         countryCode: country ? country.data.code : 'US',
         phoneNumber,
       };
     }
-    
+
     // If no country code detected, assume it's just a phone number
     return { countryCode: 'US', phoneNumber: value };
   }
@@ -378,7 +391,6 @@ export class DtMultiText extends DtText {
   focusNewItem() {
     const items = this.shadowRoot.querySelectorAll('input');
     if (items && items.length) {
-      // console.log('trigger focus');
       items[items.length - 1].focus();
     }
   }
@@ -463,7 +475,7 @@ export class DtMultiText extends DtText {
     if (this.type === 'phone-intl') {
       return this._phoneIntlFieldTemplate(item, itemCount);
     }
-    
+
     return html`
       <div class="field-container">
         <input
@@ -507,15 +519,17 @@ export class DtMultiText extends DtText {
 
   _phoneIntlFieldTemplate(item, itemCount) {
     const parsed = this._parsePhoneValue(item.value);
-    const countryOptions = this._getCountryOptions();
-    const selectedCountry = countryOptions.find(c => c.code === parsed.countryCode) || countryOptions.find(c => c.code === 'US');
+    const countryOptions = this._countryOptions || [];
+    const selectedCountry =
+      countryOptions.find(c => c.code === parsed.countryCode) ||
+      countryOptions.find(c => c.code === 'US');
     const dropdownKey = item.key ?? item.tempKey;
     const isDropdownOpen = this._openDropdownKey === dropdownKey;
-    
+
     return html`
       <div class="field-container">
         <div class="phone-intl-container">
-          <button 
+          <button
             class="country-button"
             data-key="${dropdownKey}"
             data-type="country-button"
@@ -527,19 +541,26 @@ export class DtMultiText extends DtText {
             <dt-icon icon="mdi:chevron-down" size="0.8em"></dt-icon>
           </button>
           <div class="country-dropdown ${isDropdownOpen ? 'open' : ''}">
-            ${countryOptions.map(country => html`
-              <button 
-                class="country-option ${country.code === parsed.countryCode ? 'selected' : ''}"
-                data-key="${dropdownKey}"
-                data-country-code="${country.code}"
-                @click=${this._selectCountry}
-                type="button"
-              >
-                <span>${country.flag}</span>
-                <span>${country.name}</span>
-                <span>${country.dialCode}</span>
-              </button>
-            `)}
+            ${this._countryOptionsLoading
+              ? html`<div class="country-loading">Loading...</div>`
+              : countryOptions.map(
+                  country => html`
+                    <button
+                      class="country-option ${country.code ===
+                      parsed.countryCode
+                        ? 'selected'
+                        : ''}"
+                      data-key="${dropdownKey}"
+                      data-country-code="${country.code}"
+                      @click=${this._selectCountry}
+                      type="button"
+                    >
+                      <span>${country.flag}</span>
+                      <span>${country.name}</span>
+                      <span>${country.dialCode}</span>
+                    </button>
+                  `,
+                )}
           </div>
           <div class="dial-code">${selectedCountry?.dialCode || '+1'}</div>
           <input
@@ -628,19 +649,22 @@ export class DtMultiText extends DtText {
     const key = e?.currentTarget?.dataset?.key;
     if (key) {
       const countryCode = e.target.value;
-      const phoneInput = e.target.parentElement.querySelector('input[data-type="phone"]');
-      const dialCodeDisplay = e.target.parentElement.querySelector('.dial-code');
+      const phoneInput = e.target.parentElement.querySelector(
+        'input[data-type="phone"]',
+      );
+      const dialCodeDisplay =
+        e.target.parentElement.querySelector('.dial-code');
       const phoneNumber = phoneInput ? phoneInput.value : '';
-      
+
       // Update the dial code display
-      const countryOptions = this._getCountryOptions();
+      const countryOptions = this._countryOptions || [];
       const selectedCountry = countryOptions.find(c => c.code === countryCode);
       if (dialCodeDisplay && selectedCountry) {
         dialCodeDisplay.textContent = selectedCountry.dialCode;
       }
-      
+
       const newValue = this._formatPhoneValue(countryCode, phoneNumber);
-      
+
       const event = new CustomEvent('change', {
         detail: {
           field: this.name,
@@ -663,10 +687,10 @@ export class DtMultiText extends DtText {
   _toggleCountryDropdown(e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (this.disabled) return;
-    
-    const key = e.currentTarget.dataset.key;
+
+    const { key } = e.currentTarget.dataset;
     if (this._openDropdownKey === key) {
       this._closeDropdown();
     } else {
@@ -681,26 +705,26 @@ export class DtMultiText extends DtText {
   _selectCountry(e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const key = e.currentTarget.dataset.key;
     const countryCode = e.currentTarget.dataset.countryCode;
-    
+
     if (key && countryCode) {
       // Find the phone input and dial code display for this item
       const container = e.currentTarget.closest('.phone-intl-container');
       const phoneInput = container?.querySelector('input[data-type="phone"]');
       const dialCodeDisplay = container?.querySelector('.dial-code');
       const phoneNumber = phoneInput ? phoneInput.value : '';
-      
+
       // Update the dial code display
-      const countryOptions = this._getCountryOptions();
+      const countryOptions = this._countryOptions || [];
       const selectedCountry = countryOptions.find(c => c.code === countryCode);
       if (dialCodeDisplay && selectedCountry) {
         dialCodeDisplay.textContent = selectedCountry.dialCode;
       }
-      
+
       const newValue = this._formatPhoneValue(countryCode, phoneNumber);
-      
+
       const event = new CustomEvent('change', {
         detail: {
           field: this.name,
@@ -717,10 +741,10 @@ export class DtMultiText extends DtText {
 
       this._setFormValue(this.value);
       this.dispatchEvent(event);
-      
+
       // Close the dropdown and trigger a re-render to update the flag
       this._closeDropdown();
-      
+
       // Force re-render to update the flag button
       this.requestUpdate();
     }
@@ -742,11 +766,12 @@ export class DtMultiText extends DtText {
     const key = e?.currentTarget?.dataset?.key;
     if (key) {
       const phoneNumber = e.target.value;
-      const countrySelect = e.target.parentElement.querySelector('.country-select');
+      const countrySelect =
+        e.target.parentElement.querySelector('.country-select');
       const countryCode = countrySelect ? countrySelect.value : 'US';
-      
+
       const newValue = this._formatPhoneValue(countryCode, phoneNumber);
-      
+
       const event = new CustomEvent('change', {
         detail: {
           field: this.name,
