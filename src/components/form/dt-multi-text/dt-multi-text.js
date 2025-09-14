@@ -146,35 +146,19 @@ export class DtMultiText extends DtText {
           inset-inline-end: 5.5rem;
         }
 
-        /* Phone messaging button styles */
-        .phone-messaging-button {
-          margin-left: 0.5rem;
-          padding: 0.5rem;
-          border: none;
-          background: var(--dt-form-background-color, #f9f9f9);
-          border-radius: 0.25rem;
-          color: var(--dt-form-text-color, #333);
-          cursor: pointer;
-          display: inline-flex;
+        .input-addon.btn-phone-open {
+          color: var(--primary-color, #0073aa);
+          display: flex;
           align-items: center;
-          justify-content: center;
-          min-width: 2.5rem;
-          min-height: 2.5rem;
-          transition: background-color 0.2s ease;
-        }
-
-        .phone-messaging-button:hover {
-          background: var(--dt-form-hover-background-color, #e5e5e5);
-        }
-
-        .phone-messaging-button:focus {
-          outline: 2px solid var(--dt-form-focus-color, #0073aa);
-          outline-offset: 2px;
-        }
-
-        .phone-messaging-button dt-icon {
-          width: 1.2rem;
-          height: 1.2rem;
+          gap: 0.25rem;
+          white-space: nowrap;
+          &:disabled {
+            color: var(--dt-text-placeholder-color, #999);
+          }
+          &:hover:not([disabled]) {
+            background-color: var(--primary-color, #0073aa);
+            color: var(--dt-multi-text-button-hover-color, #ffffff);
+          }
         }
       `,
     ];
@@ -321,14 +305,14 @@ export class DtMultiText extends DtText {
           hasPhoneValue,
           () => html`
             <button
-              class="phone-messaging-button"
+              class="input-addon btn-phone-open"
               @click=${this._openPhoneModal}
               data-phone-number="${item.value}"
               ?disabled=${this.disabled}
               title="Send a message"
               aria-label="Send a message to ${item.value}"
             >
-              <dt-icon icon="mdi:phone-outgoing"></dt-icon>
+              <dt-icon icon="mdi:phone-outgoing"></dt-icon> Open
             </button>
           `,
         )}
