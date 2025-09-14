@@ -4,6 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { when } from 'lit/directives/when.js';
 import { DtText } from '../dt-text/dt-text.js';
 import '../../icons/dt-icon.js';
+import '../../layout/dt-phone-modal/dt-phone-modal.js';
 
 /**
  * Field to edit multiple text values with ability to add/remove values.
@@ -144,6 +145,37 @@ export class DtMultiText extends DtText {
         .field-container:has(.btn-remove) ~ .icon-overlay {
           inset-inline-end: 5.5rem;
         }
+
+        /* Phone messaging button styles */
+        .phone-messaging-button {
+          margin-left: 0.5rem;
+          padding: 0.5rem;
+          border: none;
+          background: var(--dt-form-background-color, #f9f9f9);
+          border-radius: 0.25rem;
+          color: var(--dt-form-text-color, #333);
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 2.5rem;
+          min-height: 2.5rem;
+          transition: background-color 0.2s ease;
+        }
+
+        .phone-messaging-button:hover {
+          background: var(--dt-form-hover-background-color, #e5e5e5);
+        }
+
+        .phone-messaging-button:focus {
+          outline: 2px solid var(--dt-form-focus-color, #0073aa);
+          outline-offset: 2px;
+        }
+
+        .phone-messaging-button dt-icon {
+          width: 1.2rem;
+          height: 1.2rem;
+        }
       `,
     ];
   }
@@ -252,7 +284,23 @@ export class DtMultiText extends DtText {
     }
   }
 
+  _openPhoneModal(e) {
+    const phoneNumber = e.currentTarget.dataset.phoneNumber;
+    if (phoneNumber) {
+      // Get or create the phone modal
+      let modal = document.querySelector('dt-phone-modal');
+      if (!modal) {
+        modal = document.createElement('dt-phone-modal');
+        document.body.appendChild(modal);
+      }
+      modal.open(phoneNumber);
+    }
+  }
+
   _inputFieldTemplate(item, itemCount) {
+    const isPhone = this.type === 'phone';
+    const hasPhoneValue = isPhone && item.value && item.value.trim() !== '';
+
     return html`
       <div class="field-container">
         <input
@@ -268,6 +316,22 @@ export class DtMultiText extends DtText {
           @change=${this._change}
           novalidate
         />
+
+        ${when(
+          hasPhoneValue,
+          () => html`
+            <button
+              class="phone-messaging-button"
+              @click=${this._openPhoneModal}
+              data-phone-number="${item.value}"
+              ?disabled=${this.disabled}
+              title="Send a message"
+              aria-label="Send a message to ${item.value}"
+            >
+              <dt-icon icon="mdi:phone-outgoing"></dt-icon>
+            </button>
+          `,
+        )}
 
         ${when(
           itemCount > 1 || item.key || item.value,
