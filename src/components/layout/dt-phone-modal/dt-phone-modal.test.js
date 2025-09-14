@@ -121,7 +121,7 @@ describe('DtPhoneModal', () => {
     // Check that each service has proper structure
     serviceLinks.forEach(service => {
       expect(service.href).to.exist;
-      expect(service.querySelector('dt-icon')).to.exist;
+      expect(service.querySelector('.service-icon')).to.exist;
       expect(service.querySelector('.service-text')).to.exist;
     });
   });
