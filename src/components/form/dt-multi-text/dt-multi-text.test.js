@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { fixture, expect, oneEvent, aTimeout, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 import './dt-multi-text.js';
+import '../../layout/dt-phone-modal/dt-phone-modal.js';
 
 describe('DtMultiText', () => {
 
@@ -167,5 +168,144 @@ describe('DtMultiText', () => {
     expect(detail.newValue).to.have.length(2);
     expect(detail.newValue[0].value).to.equal('Value 1')
     expect(detail.newValue[0].delete).to.equal(true);
+  });
+
+  describe('Phone type functionality', () => {
+    it('shows "Open" button when type is phone and field has value', async () => {
+      const el = await fixture(
+        html`<dt-multi-text
+          type="phone"
+          value="${JSON.stringify([{
+            key: 'cc01',
+            value: '+1-555-123-4567',
+            verified: true,
+          }])}"
+        ></dt-multi-text>`
+      );
+
+      await nextFrame();
+
+      const phoneButton = el.shadowRoot.querySelector('.btn-phone-open');
+      expect(phoneButton).to.exist;
+      expect(phoneButton.textContent.trim()).to.include('Open');
+      expect(phoneButton.dataset.phoneNumber).to.equal('+1-555-123-4567');
+    });
+
+    it('hides "Open" button when phone field is empty', async () => {
+      const el = await fixture(
+        html`<dt-multi-text type="phone"></dt-multi-text>`
+      );
+
+      await nextFrame();
+
+      const phoneButton = el.shadowRoot.querySelector('.btn-phone-open');
+      expect(phoneButton).to.not.exist;
+    });
+
+    it('shows "Open" button when type is phone-intl and field has value', async () => {
+      const el = await fixture(
+        html`<dt-multi-text
+          type="phone-intl"
+          value="${JSON.stringify([{
+            key: 'cc01',
+            value: '+33123456789',
+            verified: true,
+          }])}"
+        ></dt-multi-text>`
+      );
+
+      await nextFrame();
+
+      const phoneButton = el.shadowRoot.querySelector('.btn-phone-open');
+      expect(phoneButton).to.exist;
+      expect(phoneButton.dataset.phoneNumber).to.equal('+33123456789');
+    });
+
+    it('does not show "Open" button for non-phone types', async () => {
+      const el = await fixture(
+        html`<dt-multi-text
+          type="email"
+          value="${JSON.stringify([{
+            key: 'cc01',
+            value: 'test@example.com',
+            verified: true,
+          }])}"
+        ></dt-multi-text>`
+      );
+
+      await nextFrame();
+
+      const phoneButton = el.shadowRoot.querySelector('.btn-phone-open');
+      expect(phoneButton).to.not.exist;
+    });
+
+    it('opens phone modal when "Open" button is clicked', async () => {
+      const el = await fixture(
+        html`<dt-multi-text
+          type="phone"
+          value="${JSON.stringify([{
+            key: 'cc01',
+            value: '+1-555-123-4567',
+            verified: true,
+          }])}"
+        ></dt-multi-text>`
+      );
+
+      await nextFrame();
+
+      // Remove any existing phone modals
+      const existingModals = document.querySelectorAll('dt-phone-modal');
+      existingModals.forEach(modal => modal.remove());
+
+      const phoneButton = el.shadowRoot.querySelector('.btn-phone-open');
+      expect(phoneButton).to.exist;
+
+      phoneButton.click();
+      await aTimeout(50);
+
+      // Check that a phone modal was created
+      const phoneModal = document.querySelector('dt-phone-modal');
+      expect(phoneModal).to.exist;
+      expect(phoneModal.phoneNumber).to.equal('+1-555-123-4567');
+      expect(phoneModal.isOpen).to.be.true;
+
+      // Clean up
+      phoneModal.remove();
+    });
+
+    it('updates "Open" button visibility when phone value changes', async () => {
+      const el = await fixture(
+        html`<dt-multi-text type="phone"></dt-multi-text>`
+      );
+
+      await nextFrame();
+
+      // Initially no button should be visible
+      let phoneButton = el.shadowRoot.querySelector('.btn-phone-open');
+      expect(phoneButton).to.not.exist;
+
+      // Add a phone number value
+      const input = el.shadowRoot.querySelector('input');
+      input.focus();
+      input.value = '+1-555-123-4567';
+      input.dispatchEvent(new Event('change'));
+
+      await nextFrame();
+
+      // Now button should be visible
+      phoneButton = el.shadowRoot.querySelector('.btn-phone-open');
+      expect(phoneButton).to.exist;
+      expect(phoneButton.dataset.phoneNumber).to.equal('+1-555-123-4567');
+
+      // Clear the value
+      input.value = '';
+      input.dispatchEvent(new Event('change'));
+
+      await nextFrame();
+
+      // Button should be hidden again
+      phoneButton = el.shadowRoot.querySelector('.btn-phone-open');
+      expect(phoneButton).to.not.exist;
+    });
   });
 });
