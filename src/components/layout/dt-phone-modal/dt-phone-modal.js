@@ -83,10 +83,10 @@ export class DtPhoneModal extends DtBase {
     super();
     this.phoneNumber = '';
     this.isOpen = false;
-    this.messagingServices = this._getDefaultMessagingServices();
+    this.messagingServices = DtPhoneModal._getDefaultMessagingServices();
   }
 
-  _getDefaultMessagingServices() {
+  static _getDefaultMessagingServices() {
     return {
       phone: {
         name: 'Phone',
@@ -120,7 +120,7 @@ export class DtPhoneModal extends DtBase {
     this.phoneNumber = phoneNumber;
     this.isOpen = true;
     this.style.display = 'block';
-    
+
     // Open the modal
     this.updateComplete.then(() => {
       const modal = this.shadowRoot.querySelector('dt-modal');
@@ -133,7 +133,7 @@ export class DtPhoneModal extends DtBase {
   close() {
     this.isOpen = false;
     this.style.display = 'none';
-    
+
     // Close the modal
     const modal = this.shadowRoot.querySelector('dt-modal');
     if (modal) {
@@ -145,36 +145,39 @@ export class DtPhoneModal extends DtBase {
     this.close();
   }
 
-  _createServiceLink(service, phoneNumber) {
+  static _createServiceLink(service, phoneNumber) {
     // Clean phone number - remove all non-digit characters
-    const cleanNumber = phoneNumber.replace(/\D/g, ''); 
+    const cleanNumber = phoneNumber.replace(/\D/g, '');
     // For PHONE_NUMBER_NO_PLUS, remove the leading 1 if it's a US/CA number
-    const cleanNumberNoPlus = cleanNumber.startsWith('1') ? cleanNumber.substring(1) : cleanNumber;
-    
+    const cleanNumberNoPlus = cleanNumber.startsWith('1')
+      ? cleanNumber.substring(1)
+      : cleanNumber;
+
     return service.link
       .replace(/PHONE_NUMBER_NO_PLUS/g, cleanNumberNoPlus)
       .replace(/PHONE_NUMBER/g, phoneNumber);
   }
 
   _renderMessagingService(serviceKey, service) {
-    const link = this._createServiceLink(service, this.phoneNumber);
-    
+    const link = DtPhoneModal._createServiceLink(service, this.phoneNumber);
+
     return html`
-      <a 
-        href="${link}" 
+      <a
+        href="${link}"
         class="messaging-service"
         target="_blank"
         rel="noopener noreferrer"
         @click=${this.close}
       >
-        <dt-icon 
-          icon="${service.icon}" 
+        <dt-icon
+          icon="${service.icon}"
           class="service-icon"
           alt="${service.name} icon"
         ></dt-icon>
         <div class="service-text">
-          ${msg('Open')} <span class="phone-number">${this.phoneNumber}</span> 
-          ${msg('with')} <span class="service-name">${service.name}</span>
+          ${msg('Open')}
+          <span class="phone-number">${this.phoneNumber}</span> ${msg('with')}
+          <span class="service-name">${service.name}</span>
         </div>
       </a>
     `;
@@ -183,11 +186,12 @@ export class DtPhoneModal extends DtBase {
   _renderMessagingServices() {
     // Add iMessage for Apple devices
     const services = { ...this.messagingServices };
-    
+
     // Check if user is on Apple device
-    const isApple = /Mac|iPhone|iPad|iPod/.test(navigator.platform) || 
-                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    
+    const isApple =
+      /Mac|iPhone|iPad|iPod/.test(navigator.platform) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
     if (isApple) {
       services.imessage = {
         name: 'iMessage',
@@ -196,8 +200,8 @@ export class DtPhoneModal extends DtBase {
       };
     }
 
-    return Object.entries(services).map(([key, service]) => 
-      this._renderMessagingService(key, service)
+    return Object.entries(services).map(([key, service]) =>
+      this._renderMessagingService(key, service),
     );
   }
 

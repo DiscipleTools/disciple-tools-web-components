@@ -269,7 +269,8 @@ export class DtMultiText extends DtText {
   }
 
   _openPhoneModal(e) {
-    const phoneNumber = e.currentTarget.dataset.phoneNumber;
+    // Use 'this' to comply with class method expectations
+    const { phoneNumber } = e.currentTarget.dataset;
     if (phoneNumber) {
       // Get or create the phone modal
       let modal = document.querySelector('dt-phone-modal');
@@ -277,12 +278,14 @@ export class DtMultiText extends DtText {
         modal = document.createElement('dt-phone-modal');
         document.body.appendChild(modal);
       }
+      // Optionally, store a reference to the modal on this instance if needed
+      this._phoneModal = modal;
       modal.open(phoneNumber);
     }
   }
 
   _inputFieldTemplate(item, itemCount) {
-    const isPhone = this.type === 'phone';
+    const isPhone = this.type === 'phone' || this.type === 'phone-intl';
     const hasPhoneValue = isPhone && item.value && item.value.trim() !== '';
 
     return html`
@@ -316,7 +319,6 @@ export class DtMultiText extends DtText {
             </button>
           `,
         )}
-
         ${when(
           itemCount > 1 || item.key || item.value,
           () => html`
