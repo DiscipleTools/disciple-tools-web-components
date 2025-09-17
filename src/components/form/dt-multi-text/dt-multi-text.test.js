@@ -286,5 +286,30 @@ describe('DtMultiText', () => {
         expect(el.value[0].value).to.equal('+44 ');
       }
     });
+
+    it('handles various international phone number formats', async () => {
+      const el = await fixture(
+        html`<dt-multi-text type="phone-intl"></dt-multi-text>`,
+      );
+
+      await nextFrame(); // Allow country options to load
+
+      // Test various phone number formats
+      const testCases = [
+        { input: '+96112345678', expectedDialCode: '+961', expectedPhone: '12345678' },
+        { input: '+1 555 555 5555', expectedDialCode: '+1', expectedPhone: '555 555 5555' },
+        { input: '+15555555555', expectedDialCode: '+1', expectedPhone: '5555555555' },
+        { input: '0096112345678', expectedDialCode: '+961', expectedPhone: '12345678' },
+        { input: '001 555 555 5555', expectedDialCode: '+1', expectedPhone: '555 555 5555' },
+        { input: '00155555555555', expectedDialCode: '+1', expectedPhone: '55555555555' },
+      ];
+
+      for (const testCase of testCases) {
+        const parsed = el._parsePhoneValue(testCase.input);
+        const country = el._countries.find(c => c.data.dial_code === testCase.expectedDialCode);
+        expect(parsed.countryCode).to.equal(country?.data?.code || 'US', `Failed for input: ${testCase.input}`);
+        expect(parsed.phoneNumber).to.equal(testCase.expectedPhone, `Failed for input: ${testCase.input}`);
+      }
+    });
   });
 });

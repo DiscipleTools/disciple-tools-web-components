@@ -342,16 +342,68 @@ export class DtMultiText extends DtText {
   _parsePhoneValue(value) {
     if (!value) return { countryCode: 'US', phoneNumber: '' };
 
-    // Try to extract country code and phone number from the value
-    // Expected format: "+1 555-123-4567" or "+1 " for empty phone number
-    const match = value.match(/^(\+\d{1,4})\s*(.*)$/);
-    if (match) {
-      const dialCode = match[1];
-      const phoneNumber = match[2].trim(); // Trim to handle "+1 " case
+    // Clean the value by removing common formatting characters
+    const cleanValue = value.replace(/[\s\-\(\)]/g, '');
 
+    // Handle various international formats:
+    // +1 555 555 5555, +15555555555, 001 555 555 5555, 00155555555555
+    let dialCodeToFind = null;
+    let phoneNumber = '';
+
+    // Check for + prefix format (most common international format)
+    if (cleanValue.startsWith('+')) {
+      // Extract potential dial codes in order of specificity: 4-digit, 3-digit, 2-digit, 1-digit
+      const numberPart = cleanValue.substring(1); // Remove the +
+      
+      // Try dial codes from longest to shortest for better accuracy
+      for (let length = 4; length >= 1; length--) {
+        if (numberPart.length >= length) {
+          const testDialCode = `+${numberPart.substring(0, length)}`;
+          const matchingCountries = this._countries.filter(
+            c => c.data.dial_code === testDialCode,
+          );
+          
+          if (matchingCountries.length > 0) {
+            dialCodeToFind = testDialCode;
+            phoneNumber = numberPart.substring(length);
+            break;
+          }
+        }
+      }
+    }
+    // Check for 00 prefix format (alternative international format)
+    else if (cleanValue.startsWith('00')) {
+      const numberPart = cleanValue.substring(2); // Remove the 00
+      
+      // Try dial codes from longest to shortest
+      for (let length = 4; length >= 1; length--) {
+        if (numberPart.length >= length) {
+          const testDialCode = `+${numberPart.substring(0, length)}`;
+          const matchingCountries = this._countries.filter(
+            c => c.data.dial_code === testDialCode,
+          );
+          
+          if (matchingCountries.length > 0) {
+            dialCodeToFind = testDialCode;
+            phoneNumber = numberPart.substring(length);
+            break;
+          }
+        }
+      }
+    }
+    // Check if it's already in stored format: "+1 555-123-4567" or "+1 "
+    else {
+      const match = value.match(/^(\+\d{1,4})\s*(.*)$/);
+      if (match) {
+        dialCodeToFind = match[1];
+        phoneNumber = match[2].trim(); // Trim to handle "+1 " case
+      }
+    }
+
+    if (dialCodeToFind) {
       // Find countries by dial code
       const matchingCountries = this._countries.filter(
-        c => c.data.dial_code === dialCode,
+        c => c.data.dial_code === dialCodeToFind,
       );
 
       // Prefer the country marked as preferred, otherwise take the first one
@@ -362,12 +414,12 @@ export class DtMultiText extends DtText {
 
       return {
         countryCode: country ? country.data.code : 'US',
-        phoneNumber,
+        phoneNumber: phoneNumber || '', // Ensure phoneNumber is never undefined
       };
     }
 
     // If no country code detected, assume it's just a phone number
-    return { countryCode: 'US', phoneNumber: value };
+    return { countryCode: 'US', phoneNumber: cleanValue || value };
   }
 
   _formatPhoneValue(countryCode, phoneNumber) {
@@ -377,7 +429,15 @@ export class DtMultiText extends DtText {
     return phoneNumber ? `${dialCode} ${phoneNumber}` : `${dialCode} `;
   }
 
-  updated(changedProperties) {
+  _hasActualValue(item) {
+    if (this.type === 'phone-intl') {
+      // For phone-intl, check if there's an actual phone number, not just dial code
+      const parsed = this._parsePhoneValue(item.value || '');
+      return parsed.phoneNumber && parsed.phoneNumber.trim() !== '';
+    }
+    // For other types, use the standard check
+    return !!item.value;
+  }
     // if length of value was changed, focus the last element (which is new)
     if (changedProperties.has('value')) {
       const old = changedProperties.get('value');
@@ -497,7 +557,7 @@ export class DtMultiText extends DtText {
         />
 
         ${when(
-          itemCount > 1 || item.key || item.value,
+          itemCount > 1 || item.key || this._hasActualValue(item),
           () => html`
             <button
               class="input-addon btn-remove"
@@ -584,7 +644,7 @@ export class DtMultiText extends DtText {
         </div>
 
         ${when(
-          itemCount > 1 || item.key || item.value,
+          itemCount > 1 || item.key || this._hasActualValue(item),
           () => html`
             <button
               class="input-addon btn-remove"
@@ -719,25 +779,43 @@ export class DtMultiText extends DtText {
       const phoneInput = container?.querySelector('input[data-type="phone"]');
       const phoneNumber = phoneInput ? phoneInput.value : '';
 
+      // Get current item to check if it's really changing
+      const currentItem = this.value.find(x => x.key === key || x.tempKey === key);
+      const currentParsed = this._parsePhoneValue(currentItem?.value || '');
+      
       // Update the value for this item
       const newValue = this._formatPhoneValue(countryCode, phoneNumber);
 
-      const event = new CustomEvent('change', {
-        detail: {
-          field: this.name,
-          oldValue: this.value,
-        },
-      });
+      // Only trigger change event if phone number is not empty or if country actually changed
+      const shouldTriggerChange = phoneNumber.trim() !== '' || currentParsed.countryCode !== countryCode;
 
-      // update this item's value in the list
-      this.value = this.value.map(x => ({
-        ...x,
-        value: x.key === key || x.tempKey === key ? newValue : x.value,
-      }));
-      event.detail.newValue = this.value;
+      if (shouldTriggerChange) {
+        const event = new CustomEvent('change', {
+          detail: {
+            field: this.name,
+            oldValue: this.value,
+          },
+        });
 
-      this._setFormValue(this.value);
-      this.dispatchEvent(event);
+        // update this item's value in the list
+        this.value = this.value.map(x => ({
+          ...x,
+          value: x.key === key || x.tempKey === key ? newValue : x.value,
+        }));
+        event.detail.newValue = this.value;
+
+        this._setFormValue(this.value);
+        this.dispatchEvent(event);
+      } else {
+        // Just update the value without triggering change event for empty phone numbers
+        this.value = this.value.map(x => ({
+          ...x,
+          value: x.key === key || x.tempKey === key ? newValue : x.value,
+        }));
+        this._setFormValue(this.value);
+        // Trigger a re-render to update the UI
+        this.requestUpdate();
+      }
 
       // Close the dropdown and trigger a re-render to update the flag
       this._closeDropdown();
