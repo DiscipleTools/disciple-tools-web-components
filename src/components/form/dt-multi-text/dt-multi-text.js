@@ -83,11 +83,13 @@ export class DtMultiText extends DtText {
         }
         .field-container {
           display: flex;
+          width: 100%;
         }
         .field-container input {
           flex-grow: 1;
         }
         .field-container .input-addon {
+          flex-shrink: 0;
           flex-shrink: 1;
           display: flex;
           justify-content: center;
@@ -154,6 +156,7 @@ export class DtMultiText extends DtText {
           align-items: stretch;
           gap: 0;
           position: relative;
+          flex-grow: 1;
         }
         .phone-intl-container .country-button {
           flex-shrink: 0;
@@ -250,7 +253,7 @@ export class DtMultiText extends DtText {
           line-height: 1.5;
           display: flex;
           align-items: center;
-          min-width: 50px;
+          min-width: 40px;
           justify-content: center;
         }
         .phone-intl-container input[data-type='phone'] {
@@ -340,11 +343,11 @@ export class DtMultiText extends DtText {
     if (!value) return { countryCode: 'US', phoneNumber: '' };
 
     // Try to extract country code and phone number from the value
-    // Expected format: "+1 555-123-4567" or similar
+    // Expected format: "+1 555-123-4567" or "+1 " for empty phone number
     const match = value.match(/^(\+\d{1,4})\s*(.*)$/);
     if (match) {
       const dialCode = match[1];
-      const phoneNumber = match[2];
+      const phoneNumber = match[2].trim(); // Trim to handle "+1 " case
 
       // Find countries by dial code
       const matchingCountries = this._countries.filter(
@@ -370,7 +373,8 @@ export class DtMultiText extends DtText {
   _formatPhoneValue(countryCode, phoneNumber) {
     const country = this._countries.find(c => c.data.code === countryCode);
     const dialCode = country ? country.data.dial_code : '+1';
-    return phoneNumber ? `${dialCode} ${phoneNumber}` : '';
+    // Always include dial code for international phone numbers, even if phone number is empty
+    return phoneNumber ? `${dialCode} ${phoneNumber}` : `${dialCode} `;
   }
 
   updated(changedProperties) {
@@ -757,10 +761,42 @@ export class DtMultiText extends DtText {
     const key = e?.currentTarget?.dataset?.key;
     if (key) {
       const phoneNumber = e.target.value;
-      const countrySelect =
-        e.target.parentElement.querySelector('.country-select');
-      const countryCode = countrySelect ? countrySelect.value : 'US';
+      
+      // Get current item to preserve country code unless phone number contains a country code
+      const currentItem = this.value.find(x => x.key === key || x.tempKey === key);
+      const currentParsed = this._parsePhoneValue(currentItem?.value || '');
+      let countryCode = currentParsed.countryCode;
+      
+      // Check if user entered a full international number (starts with +)
+      if (phoneNumber.startsWith('+')) {
+        const parsed = this._parsePhoneValue(phoneNumber);
+        if (parsed.countryCode && parsed.countryCode !== 'US') {
+          // User entered a full international number, use detected country
+          countryCode = parsed.countryCode;
+          // Update the phone number to just the local part
+          const newValue = this._formatPhoneValue(countryCode, parsed.phoneNumber);
+          
+          const event = new CustomEvent('change', {
+            detail: {
+              field: this.name,
+              oldValue: this.value,
+            },
+          });
 
+          // update this item's value in the list
+          this.value = this.value.map(x => ({
+            ...x,
+            value: x.key === key || x.tempKey === key ? newValue : x.value,
+          }));
+          event.detail.newValue = this.value;
+
+          this._setFormValue(this.value);
+          this.dispatchEvent(event);
+          return;
+        }
+      }
+
+      // Normal case: just update the phone number part, keep existing country
       const newValue = this._formatPhoneValue(countryCode, phoneNumber);
 
       const event = new CustomEvent('change', {

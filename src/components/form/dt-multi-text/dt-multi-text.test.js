@@ -234,5 +234,57 @@ describe('DtMultiText', () => {
       );
       expect(phoneInput.value).to.equal('555-123-4567');
     });
+
+    it('detects country code when entering full international number', async () => {
+      const el = await fixture(
+        html`<dt-multi-text type="phone-intl"></dt-multi-text>`,
+      );
+      
+      await nextFrame(); // Allow country options to load
+
+      const phoneInput = el.shadowRoot.querySelector(
+        'input[data-type="phone"]',
+      );
+      
+      // Simulate typing a full international number
+      phoneInput.value = '+961 12345678';
+      phoneInput.dispatchEvent(new Event('change', { bubbles: true }));
+      
+      await nextFrame();
+      
+      // Check that Lebanon (+961) was detected
+      const dialCode = el.shadowRoot.querySelector('.dial-code');
+      expect(dialCode.textContent.trim()).to.equal('+961');
+      expect(phoneInput.value).to.equal('12345678');
+    });
+
+    it('allows country selection when field is empty', async () => {
+      const el = await fixture(
+        html`<dt-multi-text type="phone-intl"></dt-multi-text>`,
+      );
+      
+      await nextFrame(); // Allow country options to load
+
+      // Click the country button to open dropdown
+      const countryButton = el.shadowRoot.querySelector('.country-button');
+      countryButton.click();
+      await nextFrame();
+
+      // Select a different country (e.g., UK)
+      const ukOption = el.shadowRoot.querySelector(
+        '.country-option[data-country-code="GB"]',
+      );
+      if (ukOption) {
+        ukOption.click();
+        await nextFrame();
+
+        // Check that the dial code was updated
+        const dialCode = el.shadowRoot.querySelector('.dial-code');
+        expect(dialCode.textContent.trim()).to.equal('+44');
+        
+        // Check that a change event was triggered with the dial code
+        expect(el.value[0].value).to.equal('+44 ');
+      }
+    });
   });
 });
