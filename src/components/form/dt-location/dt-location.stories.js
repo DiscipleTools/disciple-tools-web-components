@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { action } from '@storybook/addon-actions';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-location.js';
@@ -47,6 +48,26 @@ const defaultFilters = [
     label: 'All Locations',
   },
 ];
+
+function onLoadEvent(event) {
+  console.log('fetching data', event);
+  const { field, query, onSuccess, onError } = event.detail;
+  fetch('https://jsonplaceholder.typicode.com/posts')
+    .then(response => response.json())
+    .then(json => {
+      onSuccess(
+        json
+          .filter(
+            post =>
+              !query || post.title.includes(query) || post.id === query
+          )
+          .map(post => ({
+            id: post.id.toString(),
+            label: post.title,
+          }))
+      );
+    });
+}
 export default {
   title: 'Form/dt-location',
   component: 'dt-location',
@@ -129,7 +150,7 @@ export default {
         },
       },
     },
-    onload: {
+    onLoad: {
       control: 'text',
       description:
         'Javascript code to be executed when the search value changes and data should be loaded from API.<br/>' +
@@ -146,7 +167,7 @@ export default {
   args: {
     theme: 'default',
     placeholder: 'Search Locations',
-    onload: 'onLoad(event)',
+    onLoad: action('on-load'),
   },
 };
 
@@ -169,7 +190,7 @@ function Template(args) {
     onchange,
     open,
     slot,
-    onload,
+    onLoad,
     allowAdd,
     i18n,
   } = args;
@@ -177,27 +198,6 @@ function Template(args) {
     <style>
       ${themeCss(args)}
     </style>
-    <script>
-      function onLoad(event) {
-        console.log('fetching data', event);
-        const { field, query, onSuccess, onError } = event.detail;
-        fetch('https://jsonplaceholder.typicode.com/posts')
-          .then(response => response.json())
-          .then(json => {
-            onSuccess(
-              json
-                .filter(
-                  post =>
-                    !query || post.title.includes(query) || post.id === query
-                )
-                .map(post => ({
-                  id: post.id.toString(),
-                  label: post.title,
-                }))
-            );
-          });
-      }
-    </script>
     <dt-location
       name="${name}"
       label=${label}
@@ -207,7 +207,6 @@ function Template(args) {
       filters="${JSON.stringify(filters)}"
       value="${JSON.stringify(value)}"
       onchange="${onchange}"
-      onload="${onload}"
       ?disabled=${disabled}
       icon="${icon}"
       iconAltText="${iconAltText}"
@@ -217,6 +216,7 @@ function Template(args) {
       ?loading="${loading}"
       ?saved="${saved}"
       .open="${open}"
+      @dt:get-data=${onLoad}
       i18n="${JSON.stringify(i18n)}"
     >
       ${slot}
@@ -256,7 +256,7 @@ SelectedValue.args = {
 
 export const LoadOptionsFromAPI = Template.bind({});
 LoadOptionsFromAPI.args = {
-  onload: 'onLoad(event)',
+  'onLoad': onLoadEvent
 };
 
 export const AddNewOption = Template.bind({});

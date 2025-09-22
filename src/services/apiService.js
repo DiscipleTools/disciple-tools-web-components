@@ -188,6 +188,17 @@ export default class ApiService {
     );
   }
 
+  async getLocations(postType, field, query = '') {
+    const params = new URLSearchParams({
+      s: query,
+      field,
+    });
+    return this.makeRequest(
+      'GET',
+      `mapping_module/search_location_grid_by_name?${params}`
+    );
+  }
+
   /**
    * Transfer contact to another site
    * @param {number} contactId

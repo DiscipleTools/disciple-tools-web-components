@@ -48,7 +48,8 @@ export default class ComponentService {
       'dt-tags',
       'dt-modal',
       'dt-list',
-      'dt-button'
+      'dt-button',
+      'dt-location'
     ]
     
     this.debouncedSearch = ComponentService.debounce(ComponentService.changeEvent, 1000);
@@ -178,6 +179,18 @@ export default class ComponentService {
             if (filteredConnectionResponse?.posts) {
               values = ComponentService.convertApiValue('dt-connection', filteredConnectionResponse?.posts);
             }
+            break;
+          }
+          case 'dt-location': {
+            values = await this._api.getLocations(
+              this.postType,
+              field,
+              query
+            );
+            values = values.location_grid.map(value => ({
+              id: value.ID,
+              label: value.name,
+            }));
             break;
           }
           case 'dt-tags':

@@ -94,7 +94,7 @@ export class DtLocation extends DtTags {
         const val = {
           ...i,
         };
-        if (i.id === e.target.dataset.value) {
+        if (i.id.toString() === e.target.dataset.value) {
           val.delete = true;
         }
         return val;
@@ -132,7 +132,7 @@ export class DtLocation extends DtTags {
   _filterOptions() {
     const selectedValues = (this.value || [])
       .filter(i => !i.delete)
-      .map(v => v?.id);
+      .map(v => v?.id.toString());
 
     if (this.options?.length) {
       this.filteredOptions = (this.options || []).filter(
@@ -143,7 +143,7 @@ export class DtLocation extends DtTags {
               .toLocaleLowerCase()
               .includes(this.query.toLocaleLowerCase()))
       );
-    } else {
+    } else if (this.open || this.canUpdate) {
       this.loading = true;
       this.filteredOptions = [];
 
@@ -201,8 +201,7 @@ export class DtLocation extends DtTags {
     return (this.value || [])
       .filter(i => !i.delete)
       .map(
-        opt => {
-          return html`
+        opt => html`
           <div class="selected-option">
             <a
               href="${opt.link}"
@@ -218,7 +217,7 @@ export class DtLocation extends DtTags {
               x
             </button>
           </div>
-        `}
+        `
       );
   }
 
