@@ -21,6 +21,7 @@ export default class ComponentService {
     this.postType = postType;
     this.postId = postId;
     this.nonce = nonce;
+    this.debounceTimers = {};
 
     this._api = new ApiService(this.nonce, apiRoot);
     this.apiRoot = this._api.apiRoot;
@@ -231,29 +232,22 @@ export default class ComponentService {
         oldValue
       );
 
+      event.target.removeAttribute('saved');
       event.target.setAttribute('loading', true);
 
-      // Update post via API
-      try {
-        let apiResponse;
-        switch(component) {
-          case 'dt-users-connection': {
-            // todo: this doesn't look like it will actually edit the field itself. And this logic should not be done inside this service. Move to theme.
-            if (remove === true) {
-              apiResponse = await this._api.removePostShare(this.postType, this.postId, apiValue);
-              break;
-            }
-            apiResponse = await this._api.addPostShare(this.postType, this.postId, apiValue)
-            break;
-          }
-          case 'dt-number': {
-            this.debouncedSearch(field, apiValue, component, this._api, this.postType, this.postId);
-            break;
-          }
-          default: {
-            apiResponse = await this._api.updatePost(this.postType, this.postId, {
-              [field]: apiValue,
-            });
+      if (component === 'dt-number') {
+        // Debounce updates for dt-number component
+        // Since this can't be done in an async function like the below,
+        // we'll handle it separately from the rest of the components
+        const debounceKey = `${this.postType}-${this.postId}-${field}`;
+        this.debounce(debounceKey, async () => {
+          try {
+            const apiResponse = await this._api.updatePost(
+              this.postType, 
+              this.postId, 
+              {
+                [field]: apiValue,
+              });
 
             document.dispatchEvent(new CustomEvent('dt:post:update', {
               detail: {
@@ -263,50 +257,72 @@ export default class ComponentService {
                 'component': component,
               },
             }));
-            break;
-          }
-        }
 
-        event.target.removeAttribute('loading');
-        event.target.setAttribute('error', '');
-        event.target.setAttribute('saved', true);
-      } catch (error) {
-        console.error(error);
-        event.target.removeAttribute('loading');
-        event.target.setAttribute('invalid', true); // this isn't hooked up yet
-        event.target.setAttribute('error', error.message || error.toString());
+            event.target.removeAttribute('loading');
+            event.target.setAttribute('error', '');
+            event.target.setAttribute('saved', true);
+          } catch (error) {
+            console.error(error);
+            event.target.removeAttribute('loading');
+            event.target.setAttribute('invalid', true); // this isn't hooked up yet
+            event.target.setAttribute('error', error.message || error.toString());
+          }
+        }, 1000);
+      } else {
+        // Update post via API
+        try {
+          let apiResponse;
+          switch(component) {
+            case 'dt-users-connection': {
+              // todo: this doesn't look like it will actually edit the field itself. And this logic should not be done inside this service. Move to theme.
+              if (remove === true) {
+                apiResponse = await this._api.removePostShare(this.postType, this.postId, apiValue);
+                break;
+              }
+              apiResponse = await this._api.addPostShare(this.postType, this.postId, apiValue)
+              break;
+            }
+            default: {
+              apiResponse = await this._api.updatePost(this.postType, this.postId, {
+                [field]: apiValue,
+              });
+
+              document.dispatchEvent(new CustomEvent('dt:post:update', {
+                detail: {
+                  'response': apiResponse,
+                  'field': field,
+                  'value': apiValue,
+                  'component': component,
+                },
+              }));
+              break;
+            }
+          }
+
+          event.target.removeAttribute('loading');
+          event.target.setAttribute('error', '');
+          event.target.setAttribute('saved', true);
+        } catch (error) {
+          console.error(error);
+          event.target.removeAttribute('loading');
+          event.target.setAttribute('invalid', true); // this isn't hooked up yet
+          event.target.setAttribute('error', error.message || error.toString());
+        }
       }
     }
   }
 
-  static debounce(callback, delay) {
-    let timeoutId; // This variable holds the timer ID
+  debounce(key, callback, delay) {
+    // Clear any existing timer
+    if (this.debounceTimers[key]) {
+      clearTimeout(this.debounceTimers[key]);
+    }
 
-    return (...args) => {
-      // Clear any existing timer
-      clearTimeout(timeoutId);
-
-      // Set a new timer
-      timeoutId = setTimeout(() => {
-        // Execute the callback function with the provided arguments
-        callback(...args);
-      }, delay);
-    };
-  }
-
-  static async changeEvent(field, apiValue, component, thisApi, postType, postId) {
-    const apiResponse = await thisApi.updatePost(postType, postId, {
-              [field]: apiValue,
-            });
-
-    document.dispatchEvent(new CustomEvent('dt:post:update', {
-      detail: {
-        'response': apiResponse,
-        'field': field,
-        'value': apiValue,
-        'component': component,
-      },
-    }));
+    // Set a new timer
+    this.debounceTimers[key] = setTimeout(() => {
+      // Execute the callback function with the provided arguments
+      callback();
+    }, delay);
   }
 
   /**
