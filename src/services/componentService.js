@@ -52,8 +52,6 @@ export default class ComponentService {
       'dt-button',
       'dt-location'
     ]
-    
-    this.debouncedSearch = ComponentService.debounce(ComponentService.changeEvent, 1000);
   }
 
   /**
