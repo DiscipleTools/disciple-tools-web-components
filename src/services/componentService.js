@@ -241,8 +241,8 @@ export default class ComponentService {
         this.debounce(debounceKey, async () => {
           try {
             const apiResponse = await this._api.updatePost(
-              this.postType, 
-              this.postId, 
+              this.postType,
+              this.postId,
               {
                 [field]: apiValue,
               });
