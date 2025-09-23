@@ -1,7 +1,7 @@
 import { html, css } from 'lit';
-import DtFormBase from '../dt-form-base.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { classMap } from 'lit/directives/class-map.js';
+import DtFormBase from '../dt-form-base.js';
 import '../dt-button/dt-button.js';
 
 /**
@@ -51,7 +51,8 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       `
     ];
   };
-  //border: 1px solid var(--dt-text-border-color-alert, var(--alert-color));
+
+  // border: 1px solid var(--dt-text-border-color-alert, var(--alert-color));
   constructor() {
     super();
     this.options = [];
