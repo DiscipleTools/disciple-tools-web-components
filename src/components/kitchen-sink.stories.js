@@ -78,8 +78,7 @@ export default {
   title: 'Components/All',
   argTypes,
   tags: ['!autodocs'],
-  render: args => {
-    return html`
+  render: args => html`
     <dt-tile
       title="Kitchen Sink Tile"
       expands: true,
@@ -173,8 +172,7 @@ export default {
          ?disabled=${args.disabled}
        >Click Me</dt-button>
     </dt-tile>
-  `;
-  },
+  `,
 };
 
 export const Components = {};

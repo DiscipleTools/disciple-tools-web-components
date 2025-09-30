@@ -50,7 +50,7 @@ export class DtMapModal extends DtBase {
     this.canEdit = !this.metadata;
 
     if (!window.mapboxgl) {
-      let script = document.createElement('script');
+      const script = document.createElement('script');
       script.src = 'https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js';
       script.onload = this.initMap.bind(this);
       document.body.appendChild(script);
@@ -106,11 +106,11 @@ export class DtMapModal extends DtBase {
     if (this.metadata) {
       const { lng, lat, level } = this.metadata;
       let zoom = 15
-      if ('admin0' === level) {
+      if (level === 'admin0') {
         zoom = 3
-      } else if ('admin1' === level) {
+      } else if (level === 'admin1') {
         zoom = 6
-      } else if ('admin2' === level) {
+      } else if (level === 'admin2') {
         zoom = 10
       }
 
@@ -146,6 +146,7 @@ export class DtMapModal extends DtBase {
       }));
     }
   }
+
   render() {
     return html`      
       <dt-modal

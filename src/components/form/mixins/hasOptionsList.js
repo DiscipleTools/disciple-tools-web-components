@@ -13,7 +13,7 @@ export const HasOptionsList = (superClass) => class extends superClass {
   static get properties() {
     return {
       ...super.properties,
-      /** Selected value(s) in the list **/
+      /** Selected value(s) in the list * */
       value: {
         type: Array,
         reflect: true,

@@ -1,8 +1,7 @@
 import { html } from 'lit';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils.js';
+import { LocaleDecorator , FormDecorator } from '../../../stories-utils.js';
 import './dt-location-map.js';
-import { FormDecorator } from '../../../stories-utils';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 const GOOGLE_GEOCODE_TOKEN = import.meta.env.VITE_GOOGLE_GEOCODE_TOKEN;
@@ -233,7 +232,7 @@ BasicForm.args = {
   value: [basicOptions[0]],
 };
 
-/*export const Loading = Template.bind({});
+/* export const Loading = Template.bind({});
 Loading.args = {
   value: [
     {
@@ -254,7 +253,7 @@ Saved.args = {
   ],
   options: basicOptions,
   saved: true,
-};*/
+}; */
 
 export const LocalizeRTL = Template.bind({});
 LocalizeRTL.decorators = [LocaleDecorator];

@@ -172,7 +172,7 @@ export const Loading = Template.bind({});
 Loading.args = {
   loading: true,
 };
-/*export const Saved = Template.bind({});
+/* export const Saved = Template.bind({});
 Saved.args = {
   value: [
     {
@@ -182,7 +182,7 @@ Saved.args = {
   ],
   options: basicOptions,
   saved: true,
-};*/
+}; */
 
 export const LocalizeRTL = Template.bind({});
 LocalizeRTL.decorators = [LocaleDecorator];

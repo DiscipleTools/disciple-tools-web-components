@@ -1,6 +1,6 @@
 import { css, html } from 'lit';
-import { DtDate } from '../dt-date/dt-date.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { DtDate } from '../dt-date/dt-date.js';
 
 export class DtDatetime extends DtDate {
   static get styles() {
@@ -13,6 +13,7 @@ export class DtDatetime extends DtDate {
       `,
     ];
   }
+
   static get properties() {
     return {
       ...super.properties,

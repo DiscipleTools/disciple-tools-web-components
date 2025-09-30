@@ -52,8 +52,6 @@ export default class ComponentService {
       'dt-button',
       'dt-location'
     ]
-    
-    this.debouncedSearch = ComponentService.debounce(ComponentService.changeEvent, 1000);
   }
 
   /**
@@ -91,9 +89,9 @@ export default class ComponentService {
     if (elements) {
       elements.forEach(el => {
         // prevent multiple event attachments if this is called multiple times
-        if (!el.dataset['eventDtGetData']) {
+        if (!el.dataset.eventDtGetData) {
           el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this));
-          el.dataset['eventDtGetData'] = true;
+          el.dataset.eventDtGetData = true;
         }
       });
     }
@@ -244,8 +242,8 @@ export default class ComponentService {
         this.debounce(debounceKey, async () => {
           try {
             const apiResponse = await this._api.updatePost(
-              this.postType, 
-              this.postId, 
+              this.postType,
+              this.postId,
               {
                 [field]: apiValue,
               });
