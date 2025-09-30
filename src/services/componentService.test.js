@@ -173,7 +173,7 @@ describe('ComponentService', () => {
         expect(result).to.be.null;
       });
       it('handles unexpected: string', () => {
-        const result = ComponentService.convertValue('dt-location', 'opt1');
+        const result = ComponentService.convertValue('dt-location', 'opt1', []);
         expect(result).to.eql({
           values: [
             {
@@ -193,7 +193,7 @@ describe('ComponentService', () => {
             id: 'opt2',
             label: 'Option 2',
           },
-        ]);
+        ], []);
         expect(result).to.eql({
           values: [
             {
@@ -217,7 +217,7 @@ describe('ComponentService', () => {
             label: 'Option 2',
             delete: true,
           },
-        ]);
+        ], []);
         expect(result).to.eql({
           values: [
             {

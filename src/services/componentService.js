@@ -435,10 +435,7 @@ export default class ComponentService {
           break;
         }
         case 'dt-connection':
-        case 'dt-location':
-          const idsToRemove = new Set(oldValue.map(item => item.id));
-          returnValue = value.filter(item => !(idsToRemove.has(item.id) && !item.delete));
-              if (typeof value === 'string') {
+          if (typeof value === 'string') {
                 returnValue = [
                   {
                     id: value,
@@ -457,6 +454,30 @@ export default class ComponentService {
                 }),
                 force_values: false,
               };
+          break;
+        case 'dt-location':
+          const idsToRemove = new Set(oldValue.map(item => item.id));
+          if (typeof value === 'string') {
+            returnValue = [
+              {
+                id: value,
+              },
+            ];
+          } else {
+            returnValue = value.filter(item => !(idsToRemove.has(item.id) && !item.delete));
+          }
+          returnValue = {
+            values: returnValue.map(item => {
+              const ret = {
+                value: item.id,
+              };
+              if (item.delete) {
+                ret.delete = item.delete;
+              }
+              return ret;
+            }),
+            force_values: false,
+          };
           break;
         case 'dt-multi-text':
           if (Array.isArray(value)) {
