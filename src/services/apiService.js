@@ -188,10 +188,11 @@ export default class ApiService {
     );
   }
 
-  async getLocations(postType, field, query = '') {
+  async getLocations(postType, field, filter, query = '') {
     const params = new URLSearchParams({
       s: query,
       field,
+      filter,
     });
     return this.makeRequest(
       'GET',

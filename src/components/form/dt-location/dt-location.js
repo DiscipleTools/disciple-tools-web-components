@@ -301,7 +301,7 @@ export class DtLocation extends DtTags {
                   ></dt-checkmark>`
                 : null}
             </div>
-            <select class="filter-list" ?disabled="${this.disabled}">
+            <select class="filter-list" ?disabled="${this.disabled}" @change="${this._filterOptions}">
               ${map(
                 this.filters,
                 f => html`<option value="${f.id}">${f.label}</option>`

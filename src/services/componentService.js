@@ -186,6 +186,7 @@ export default class ComponentService {
             values = await this._api.getLocations(
               this.postType,
               field,
+              details.filter,
               query
             );
             values = values.location_grid.map(value => ({
@@ -437,6 +438,8 @@ export default class ComponentService {
         }
         case 'dt-connection':
         case 'dt-location':
+          const idsToRemove = new Set(oldValue.map(item => item.id));
+          returnValue = value.filter(item => !(idsToRemove.has(item.id) && !item.delete));
               if (typeof value === 'string') {
                 returnValue = [
                   {
