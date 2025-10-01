@@ -259,6 +259,27 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     }
   }
 
+  // Add or modify this method in your DtMultiSelect class
+
+  updated() {
+      super.updated();
+
+      this._updateContainerHeight();
+  }
+
+  _updateContainerHeight() {
+    const container = this.shadowRoot.querySelector('.field-container');
+
+    if (container) {
+      const newHeight = container.offsetHeight;
+      
+      if (this.containerHeight !== newHeight) {
+        this.containerHeight = newHeight;
+        this.requestUpdate();
+      }
+    }
+  }
+
   /**
    * Filter to options that:
    *   1: are not selected
