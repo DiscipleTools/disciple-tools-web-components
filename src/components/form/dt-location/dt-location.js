@@ -121,8 +121,6 @@ export class DtLocation extends DtTags {
     if (!currentValue && select?.clientWidth > 0) {
       container.style.setProperty('--select-width', `${select.clientWidth}px`);
     }
-
-    this._updateContainerHeight();
   }
 
   /**
