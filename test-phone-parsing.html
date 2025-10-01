@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone International Parsing Test</title>
+    <script type="module" src="./src/components/form/dt-multi-text/dt-multi-text.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-case {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-results {
+            background: #f5f5f5;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 3px;
+        }
+        .pass { color: green; }
+        .fail { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Phone International Component Test</h1>
+    
+    <h2>Country Code Auto-Detection Tests</h2>
+    <div id="test-results"></div>
+    
+    <h2>Interactive Test</h2>
+    <div class="test-case">
+        <h3>Empty Phone International</h3>
+        <dt-multi-text type="phone-intl" label="Phone Numbers"></dt-multi-text>
+    </div>
+    
+    <div class="test-case">
+        <h3>With Lebanon Number for Testing (+961)</h3>
+        <dt-multi-text 
+            type="phone-intl" 
+            label="Phone Numbers"
+            value='[{"value": "+961 12345678", "key": "phone1"}]'>
+        </dt-multi-text>
+    </div>
+    
+    <h3>Test Instructions:</h3>
+    <ol>
+        <li>Try typing: +96112345678 in the empty field</li>
+        <li>Expected: Should detect Lebanon (+961) and separate the dial code</li>
+        <li>Try selecting different countries when the field is empty</li>
+        <li>Expected: Should not show remove button for empty phone number</li>
+        <li>Try various formats: +1 555 555 5555, +15555555555, 001 555 555 5555</li>
+    </ol>
+
+    <script>
+        // Test the parsing logic
+        function runParsingTests() {
+            const testResults = document.getElementById('test-results');
+            
+            // Create a test component to access the parsing methods
+            const testComponent = document.createElement('dt-multi-text');
+            testComponent.type = 'phone-intl';
+            document.body.appendChild(testComponent);
+            
+            // Wait for component to be ready
+            setTimeout(() => {
+                const testCases = [
+                    { input: '+96112345678', expectedDialCode: '+961', expectedPhone: '12345678', description: 'Lebanon number with +' },
+                    { input: '+1 555 555 5555', expectedDialCode: '+1', expectedPhone: '555 555 5555', description: 'US number with spaces' },
+                    { input: '+15555555555', expectedDialCode: '+1', expectedPhone: '5555555555', description: 'US number compact' },
+                    { input: '0096112345678', expectedDialCode: '+961', expectedPhone: '12345678', description: 'Lebanon number with 00' },
+                    { input: '001 555 555 5555', expectedDialCode: '+1', expectedPhone: '555 555 5555', description: 'US number with 00 and spaces' },
+                    { input: '00155555555555', expectedDialCode: '+1', expectedPhone: '55555555555', description: 'US number with 00 compact' },
+                ];
+                
+                let resultsHtml = '';
+                
+                testCases.forEach((testCase, index) => {
+                    try {
+                        const parsed = testComponent._parsePhoneValue(testCase.input);
+                        const country = testComponent._countries.find(c => c.data.dial_code === testCase.expectedDialCode);
+                        const expectedCountryCode = country?.data?.code || 'US';
+                        
+                        const dialCodeMatch = country && country.data.dial_code === testCase.expectedDialCode;
+                        const phoneMatch = parsed.phoneNumber === testCase.expectedPhone;
+                        const countryMatch = parsed.countryCode === expectedCountryCode;
+                        
+                        const passed = dialCodeMatch && phoneMatch && countryMatch;
+                        
+                        resultsHtml += `
+                            <div class="test-results">
+                                <strong>Test ${index + 1}: ${testCase.description}</strong><br>
+                                Input: ${testCase.input}<br>
+                                Expected: ${testCase.expectedDialCode} | ${testCase.expectedPhone} | ${expectedCountryCode}<br>
+                                Actual: ${country?.data?.dial_code || 'N/A'} | ${parsed.phoneNumber} | ${parsed.countryCode}<br>
+                                <span class="${passed ? 'pass' : 'fail'}">${passed ? 'PASS' : 'FAIL'}</span>
+                            </div>
+                        `;
+                    } catch (error) {
+                        resultsHtml += `
+                            <div class="test-results">
+                                <strong>Test ${index + 1}: ${testCase.description}</strong><br>
+                                <span class="fail">ERROR: ${error.message}</span>
+                            </div>
+                        `;
+                    }
+                });
+                
+                testResults.innerHTML = resultsHtml;
+                
+                // Clean up
+                document.body.removeChild(testComponent);
+            }, 1000); // Wait for country data to load
+        }
+        
+        // Run tests when page loads
+        window.addEventListener('load', runParsingTests);
+    </script>
+</body>
+</html>
