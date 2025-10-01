@@ -94,7 +94,7 @@ export class DtLocation extends DtTags {
         const val = {
           ...i,
         };
-        if (i.id === e.target.dataset.value) {
+        if (i.id.toString() === e.target.dataset.value) {
           val.delete = true;
         }
         return val;
@@ -132,7 +132,7 @@ export class DtLocation extends DtTags {
   _filterOptions() {
     const selectedValues = (this.value || [])
       .filter(i => !i.delete)
-      .map(v => v?.id);
+      .map(v => v?.id.toString());
 
     if (this.options?.length) {
       this.filteredOptions = (this.options || []).filter(
@@ -143,7 +143,7 @@ export class DtLocation extends DtTags {
               .toLocaleLowerCase()
               .includes(this.query.toLocaleLowerCase()))
       );
-    } else {
+    } else if (this.open || this.canUpdate) {
       this.loading = true;
       this.filteredOptions = [];
 
@@ -301,7 +301,7 @@ export class DtLocation extends DtTags {
                   ></dt-checkmark>`
                 : null}
             </div>
-            <select class="filter-list" ?disabled="${this.disabled}">
+            <select class="filter-list" ?disabled="${this.disabled}" @change="${this._filterOptions}">
               ${map(
                 this.filters,
                 f => html`<option value="${f.id}">${f.label}</option>`

@@ -49,8 +49,9 @@ export default class ComponentService {
       'dt-tags',
       'dt-modal',
       'dt-list',
-      'dt-button'
-    ];
+      'dt-button',
+      'dt-location'
+    ]
   }
 
   /**
@@ -179,6 +180,19 @@ export default class ComponentService {
             }
             break;
           }
+          case 'dt-location': {
+            values = await this._api.getLocations(
+              this.postType,
+              field,
+              details.filter,
+              query
+            );
+            values = values.location_grid.map(value => ({
+              id: value.ID,
+              label: value.name,
+            }));
+            break;
+          }
           case 'dt-tags':
           default:
             values = await this._api.getMultiSelectValues(
@@ -228,8 +242,8 @@ export default class ComponentService {
         this.debounce(debounceKey, async () => {
           try {
             const apiResponse = await this._api.updatePost(
-              this.postType, 
-              this.postId, 
+              this.postType,
+              this.postId,
               {
                 [field]: apiValue,
               });
@@ -337,9 +351,10 @@ export default class ComponentService {
    * Convert value returned from a component into what is expected by DT API
    * @param {string} component Tag name of component. E.g. dt-text
    * @param {mixed} value
+   * @param {mixed} oldValue (Optional) Previous value of component, if available
    * @returns {mixed}
    */
-  static convertValue(component, value, oldValue) {
+  static convertValue(component, value, oldValue = null) {
     let returnValue = value;
 
     // Convert component value format into what the API expects
@@ -421,8 +436,7 @@ export default class ComponentService {
           break;
         }
         case 'dt-connection':
-        case 'dt-location':
-              if (typeof value === 'string') {
+          if (typeof value === 'string') {
                 returnValue = [
                   {
                     id: value,
@@ -441,6 +455,30 @@ export default class ComponentService {
                 }),
                 force_values: false,
               };
+          break;
+        case 'dt-location':
+          const idsToRemove = new Set((oldValue || []).map(item => item.id));
+          if (typeof value === 'string') {
+            returnValue = [
+              {
+                id: value,
+              },
+            ];
+          } else {
+            returnValue = value.filter(item => !(idsToRemove.has(item.id) && !item.delete));
+          }
+          returnValue = {
+            values: returnValue.map(item => {
+              const ret = {
+                value: item.id,
+              };
+              if (item.delete) {
+                ret.delete = item.delete;
+              }
+              return ret;
+            }),
+            force_values: false,
+          };
           break;
         case 'dt-multi-text':
           if (Array.isArray(value)) {
