@@ -351,9 +351,10 @@ export default class ComponentService {
    * Convert value returned from a component into what is expected by DT API
    * @param {string} component Tag name of component. E.g. dt-text
    * @param {mixed} value
+   * @param {mixed} oldValue (Optional) Previous value of component, if available
    * @returns {mixed}
    */
-  static convertValue(component, value, oldValue) {
+  static convertValue(component, value, oldValue = null) {
     let returnValue = value;
 
     // Convert component value format into what the API expects
@@ -456,7 +457,7 @@ export default class ComponentService {
               };
           break;
         case 'dt-location':
-          const idsToRemove = new Set(oldValue.map(item => item.id));
+          const idsToRemove = new Set((oldValue || []).map(item => item.id));
           if (typeof value === 'string') {
             returnValue = [
               {

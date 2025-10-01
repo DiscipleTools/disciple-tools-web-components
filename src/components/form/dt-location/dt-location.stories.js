@@ -52,6 +52,7 @@ const defaultFilters = [
 function onLoadEvent(event) {
   console.log('fetching data', event);
   const { query, onSuccess } = event.detail;
+  action('on-load')(event);
   fetch('https://jsonplaceholder.typicode.com/posts')
     .then(response => response.json())
     .then(json => {
@@ -83,6 +84,7 @@ export default {
   args: {
     theme: 'default',
     placeholder: 'Search Locations',
+    onChange: action('on-change'),
     onLoad: action('on-load'),
   },
 };

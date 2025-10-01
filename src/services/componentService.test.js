@@ -183,6 +183,22 @@ describe('ComponentService', () => {
           force_values: false,
         });
       });
+      it('handles null oldValue', async () => {
+        const result = ComponentService.convertValue('dt-location', [
+          {
+            id: 'opt1',
+            label: 'Option 1',
+          },
+        ], null);
+        expect(result).to.eql({
+          values: [
+            {
+              value: 'opt1',
+            },
+          ],
+          force_values: false,
+        });
+      });
       it('handles expected: array of tags', async () => {
         const result = ComponentService.convertValue('dt-location', [
           {
@@ -206,6 +222,31 @@ describe('ComponentService', () => {
           force_values: false,
         });
       });
+      it('handles expected: added item', async () => {
+        const result = ComponentService.convertValue('dt-location', [
+          {
+            id: 'opt1',
+            label: 'Option 1',
+          },
+          {
+            id: 'opt2',
+            label: 'Option 2',
+          },
+        ], [
+          {
+            id: 'opt1',
+            label: 'Option 1',
+          },
+        ]);
+        expect(result).to.eql({
+          values: [
+            {
+              value: 'opt2',
+            },
+          ],
+          force_values: false,
+        });
+      });
       it('handles expected: deleted items', () => {
         const result = ComponentService.convertValue('dt-location', [
           {
@@ -217,12 +258,18 @@ describe('ComponentService', () => {
             label: 'Option 2',
             delete: true,
           },
-        ], []);
+        ], [
+          {
+            id: 'opt1',
+            label: 'Option 1',
+          },
+          {
+            id: 'opt2',
+            label: 'Option 2',
+          }
+        ]);
         expect(result).to.eql({
           values: [
-            {
-              value: 'opt1',
-            },
             {
               value: 'opt2',
               delete: true,
