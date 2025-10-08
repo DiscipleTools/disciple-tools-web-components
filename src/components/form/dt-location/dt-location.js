@@ -50,6 +50,7 @@ export class DtLocation extends DtTags {
         return result;
       }, null);
       this._select(option);
+      this._clearSearch();
     }
   }
 
