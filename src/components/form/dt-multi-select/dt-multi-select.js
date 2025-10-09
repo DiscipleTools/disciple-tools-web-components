@@ -235,6 +235,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     if (this.query) {
       this.query = '';
     }
+    this._clearSearch();
   }
 
   _remove(e) {

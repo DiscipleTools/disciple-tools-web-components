@@ -92,6 +92,7 @@ export class DtUsersConnection extends DtTags {
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
     this._setFormValue(this.value);
+    this._clearSearch();
   }
 
   _clickOption(e) {
@@ -106,7 +107,6 @@ export class DtUsersConnection extends DtTags {
       if (option) {
         this._select(option);
       }
-      this._clearSearch();
       this.query = '';
     }
   }
@@ -138,7 +138,6 @@ export class DtUsersConnection extends DtTags {
       } else {
         this._select(this.filteredOptions[this.activeIndex]);
       }
-      this._clearSearch();
       this.query = '';
     }
   }
