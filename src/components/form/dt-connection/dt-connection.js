@@ -66,7 +66,6 @@ export class DtConnection extends DtTags {
       if (option) {
         this._select(option);
       }
-      this._clearSearch();
     }
   }
 
@@ -96,7 +95,6 @@ export class DtConnection extends DtTags {
       } else {
         this._select(this.filteredOptions[this.activeIndex]);
       }
-      this._clearSearch();
     }
   }
 

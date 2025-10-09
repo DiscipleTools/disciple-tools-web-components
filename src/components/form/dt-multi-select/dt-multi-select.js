@@ -232,6 +232,10 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
     this._setFormValue(this.value);
+    if (this.query) {
+      this.query = '';
+    }
+    this._clearSearch();
   }
 
   _remove(e) {
