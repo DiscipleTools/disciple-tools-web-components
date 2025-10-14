@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone International Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            margin: 40px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+    </style>
+    <script type="module" src="../dist/index.js"></script>
+</head>
+<body>
+    <h1>Phone International Component Test</h1>
+    
+    <div class="test-section">
+        <h2>Empty Phone International</h2>
+        <dt-multi-text 
+            type="phone-intl" 
+            label="Phone Numbers"
+            placeholder="Enter phone number">
+        </dt-multi-text>
+    </div>
+
+    <div class="test-section">
+        <h2>Populated Phone International</h2>
+        <dt-multi-text 
+            type="phone-intl" 
+            label="Phone Numbers"
+            value='[{"value": "+1 555-123-4567", "key": "phone1"}, {"value": "+44 20 7946 0958", "key": "phone2"}]'>
+        </dt-multi-text>
+    </div>
+
+    <div class="test-section">
+        <h2>French Localized Phone International</h2>
+        <dt-multi-text 
+            type="phone-intl" 
+            label="Numéros de téléphone"
+            locale="fr"
+            value='[{"value": "+33 1 42 86 83 26", "key": "phone1"}]'>
+        </dt-multi-text>
+    </div>
+
+    <script>
+        // Add some event logging to see if changes are working
+        document.addEventListener('change', (e) => {
+            if (e.target.tagName.toLowerCase() === 'dt-multi-text') {
+                console.log('Phone number changed:', e.detail);
+            }
+        });
+    </script>
+</body>
+</html>
