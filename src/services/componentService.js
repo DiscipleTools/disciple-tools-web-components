@@ -31,6 +31,7 @@ export default class ComponentService {
       'dt-date',
       'dt-datetime',
       'dt-location',
+      'dt-location-map',
       'dt-multi-select',
       'dt-number',
       'dt-single-select',
@@ -478,6 +479,12 @@ export default class ComponentService {
               return ret;
             }),
             force_values: false,
+          };
+          break;
+        case 'dt-location-map':
+          returnValue = {
+            values: returnValue.map(item => item),
+            force_values: true,
           };
           break;
         case 'dt-multi-text':
