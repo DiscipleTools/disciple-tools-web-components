@@ -482,9 +482,22 @@ export default class ComponentService {
           };
           break;
         case 'dt-location-map':
+          returnValue = value.filter(item => !(oldValue.includes(item) && !item.delete));
+          for (const item of oldValue) {
+            if (!value.includes(item)) {
+              item.delete = true;
+              returnValue.push(item);
+            }
+          }
           returnValue = {
-            values: returnValue.map(item => item),
-            force_values: true,
+            values: returnValue.map(item => {
+              const ret = item;
+              if (item.delete) {
+                ret.delete = item.delete;
+              }
+              return ret;
+            }),
+            force_values: false,
           };
           break;
         case 'dt-multi-text':
