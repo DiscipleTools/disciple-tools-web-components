@@ -271,32 +271,36 @@ export default class ComponentService {
       } else {
         // Update post via API
         try {
-          let apiResponse;
-          switch(component) {
-            case 'dt-users-connection': {
-              // todo: this doesn't look like it will actually edit the field itself. And this logic should not be done inside this service. Move to theme.
-              if (remove === true) {
-                apiResponse = await this._api.removePostShare(this.postType, this.postId, apiValue);
-                break;
-              }
-              apiResponse = await this._api.addPostShare(this.postType, this.postId, apiValue)
-              break;
-            }
-            default: {
-              apiResponse = await this._api.updatePost(this.postType, this.postId, {
-                [field]: apiValue,
-              });
+          const body = {
+            [field]: apiValue,
+          }
+          if (component === 'dt-location-map') {
+            const val = apiValue.values.filter(loc => !loc.lng || !loc.lat);
+            body[field].values = apiValue.values.filter(loc => loc.lng && loc.lat);
+            body.contact_address = val;
 
-              document.dispatchEvent(new CustomEvent('dt:post:update', {
-                detail: {
-                  'response': apiResponse,
-                  'field': field,
-                  'value': apiValue,
-                  'component': component,
-                },
-              }));
-              break;
+            if (body.contact_address.length === 0) {
+              delete body.contact_address;
             }
+            if (body[field].values.length === 0) {
+              delete body[field];
+            }
+          }
+          
+          const apiResponse = await this._api.updatePost(this.postType, this.postId, body);
+
+          document.dispatchEvent(new CustomEvent('dt:post:update', {
+            detail: {
+              'response': apiResponse,
+              'field': field,
+              'value': apiValue,
+              'component': component,
+            },
+          }));
+
+          if (component === 'dt-location-map') {
+            const componentTarget = event.target;
+            componentTarget.value = apiResponse[field];
           }
 
           event.target.removeAttribute('loading');

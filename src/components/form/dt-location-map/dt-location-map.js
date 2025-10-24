@@ -180,8 +180,11 @@ export class DtLocationMap extends DtFormBase {
     if (gridMetaId) {
       // remove this item from the value
       this.value = (this.value || []).filter(m => m.grid_meta_id !== gridMetaId);
+    } else if (!item.lat || !item.lng) {
+      // if value has no lat/lng, remove item by key
+      this.value = (this.value || []).filter(m => !m.key || m.key !== item.key);
     } else {
-      // remove by lat/lng
+      // otherwise remove by lat/lng
       this.value = (this.value || []).filter(m => m.lat !== item.lat && m.lng !== item.lng);
     }
 
