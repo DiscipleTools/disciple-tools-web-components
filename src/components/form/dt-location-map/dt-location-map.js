@@ -50,6 +50,19 @@ export class DtLocationMap extends DtFormBase {
         .field-container {
           position: relative;
         }
+
+        .dt-btn {
+            /* Background, Text, and Border Color (Green-600 approximation: #16a34a) */
+            background-color: white;
+            color: #4CAF50;
+            border: 1px solid #4CAF50;
+            
+            /* Rounded Corners (rounded-xl approximation) */
+            border-radius: 0.5rem; 
+            
+            /* Padding (px-6 py-3 approximation) */
+            padding: 0.25rem .25rem;
+        }
       `,
     ];
   }
@@ -167,8 +180,11 @@ export class DtLocationMap extends DtFormBase {
     if (gridMetaId) {
       // remove this item from the value
       this.value = (this.value || []).filter(m => m.grid_meta_id !== gridMetaId);
+    } else if (!item.lat || !item.lng) {
+      // if value has no lat/lng, remove item by key
+      this.value = (this.value || []).filter(m => !m.key || m.key !== item.key);
     } else {
-      // remove by lat/lng
+      // otherwise remove by lat/lng
       this.value = (this.value || []).filter(m => m.lat !== item.lat && m.lng !== item.lng);
     }
 
@@ -212,7 +228,7 @@ export class DtLocationMap extends DtFormBase {
 
       ${repeat(this.locations || [], (opt) => opt.id, (opt, idx) => this.renderItem(opt, idx))}
       ${!this.open && (this.limit == 0 || this.locations.length < this.limit)
-        ? html`<button @click="${this.addNew}">Add New</button>`
+        ? html`<button @click="${this.addNew}" class="dt-btn">+ Add New</button>`
         : null}
     `;
   }
