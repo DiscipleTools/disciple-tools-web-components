@@ -51,7 +51,7 @@ const basicOptions = [
   }
 ];
 export default {
-  title: 'Form/dt-location-map',
+  title: 'Components/Form/dt-location-map',
   component: 'dt-location-map',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes) },
@@ -137,6 +137,8 @@ function Template(args) {
     placeholder,
     value,
     disabled = false,
+    required = false,
+    requiredMessage,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
     iconAltText = 'Icon Alt Text',
     isPrivate,
@@ -162,6 +164,8 @@ function Template(args) {
       value="${JSON.stringify(value)}"
       onchange="${onchange}"
       ?disabled=${disabled}
+      ?required=${required}
+      requiredMessage=${requiredMessage}
       icon="${icon}"
       iconAltText="${iconAltText}"
       ?private=${isPrivate}
@@ -230,6 +234,21 @@ export const BasicForm = Template.bind({});
 BasicForm.decorators = [LocaleDecorator, FormDecorator];
 BasicForm.args = {
   value: [basicOptions[0]],
+};
+
+export const Required = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+  },
+};
+
+export const RequiredCustomMessage = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+    requiredMessage: 'Custom error message',
+  },
 };
 
 /* export const Loading = Template.bind({});

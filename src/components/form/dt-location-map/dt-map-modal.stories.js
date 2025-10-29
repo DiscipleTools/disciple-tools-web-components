@@ -11,7 +11,7 @@ import './dt-map-modal.js';
 const MAPBOX_TOKEN = import.meta.env.VITE_STORYBOOK_MAPBOX_TOKEN;
 
 export default {
-  title: 'Form/dt-location-map/dt-map-modal',
+  title: 'Components/Form/dt-location-map/dt-map-modal',
   component: 'dt-map-modal',
   argTypes: {
     theme: {

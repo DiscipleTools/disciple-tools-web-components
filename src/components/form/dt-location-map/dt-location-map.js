@@ -204,6 +204,22 @@ export class DtLocationMap extends DtFormBase {
     }
   }
 
+  _validateRequired() {
+    const { value } = this;
+    if (this.required && (!value || value.every(item => !item.value))) {
+      this.invalid = true;
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        this.requiredMessage || 'This field is required',
+      );
+    } else {
+      this.invalid = false;
+      this.internals.setValidity({});
+    }
+  }
+
   renderItem(opt) {
     return html`
       <dt-location-map-item
@@ -214,6 +230,8 @@ export class DtLocationMap extends DtFormBase {
         @delete=${this.deleteItem}
         @select=${this.selectLocation}
         ?disabled=${this.disabled}
+        ?invalid=${this.invalid && this.touched}
+        validationMessage=${this.internals.validationMessage}
       ></dt-location-map-item>
     `;
   }

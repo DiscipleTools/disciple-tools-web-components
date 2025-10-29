@@ -317,7 +317,6 @@ export class DtMultiText extends DtText {
 
   _validateRequired() {
     const { value } = this;
-
     if (this.required && (!value || value.every(item => !item.value))) {
       this.invalid = true;
       this.internals.setValidity(

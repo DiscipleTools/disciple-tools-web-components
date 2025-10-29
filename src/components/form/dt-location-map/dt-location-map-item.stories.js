@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-location-map-item.js';
@@ -45,7 +46,7 @@ const basicOptions = [
   }
 ];
 export default {
-  title: 'Form/dt-location-map/dt-location-map-item',
+  title: 'Components/Form/dt-location-map/dt-location-map-item',
   component: 'dt-location-map-item',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes) },
@@ -103,6 +104,7 @@ function Template(args) {
     disabled = false,
     loading = false,
     saved = false,
+    error,
     onchange,
     open,
     i18n,
@@ -120,6 +122,7 @@ function Template(args) {
       ?disabled=${disabled}
       ?loading="${loading}"
       ?saved="${saved}"
+      error="${ifDefined(error)}"
       .open="${open}"
       i18n="${JSON.stringify(i18n)}"
     >
@@ -172,7 +175,8 @@ export const Loading = Template.bind({});
 Loading.args = {
   loading: true,
 };
-/* export const Saved = Template.bind({});
+
+export const Saved = Template.bind({});
 Saved.args = {
   value: [
     {
@@ -182,7 +186,12 @@ Saved.args = {
   ],
   options: basicOptions,
   saved: true,
-}; */
+};
+
+export const Error = Template.bind({});
+Error.args = {
+  error: 'Custom error message',
+};
 
 export const LocalizeRTL = Template.bind({});
 LocalizeRTL.decorators = [LocaleDecorator];
