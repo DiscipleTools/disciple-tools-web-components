@@ -83,7 +83,6 @@ export class DtLocationMap extends DtFormBase {
 
   willUpdate(...args) {
     super.willUpdate(...args);
-
     if (this.value) {
       if (this.value.filter((opt) => !opt.id)) {
         this.value = [
@@ -156,7 +155,7 @@ export class DtLocationMap extends DtFormBase {
       id: Date.now(),
     }
     this.value = [
-      ...(this.value || []).filter(i => i.label),
+      ...(this.value || []).filter(i => i.label && (!i.key || i.key !== evt.detail.metadata.key)),
       newLocation,
     ];
     this.updateLocationList();
@@ -220,7 +219,7 @@ export class DtLocationMap extends DtFormBase {
     }
   }
 
-  renderItem(opt) {
+  renderItem(opt, idx) {
     return html`
       <dt-location-map-item
         placeholder="${this.placeholder}"
@@ -232,6 +231,7 @@ export class DtLocationMap extends DtFormBase {
         ?disabled=${this.disabled}
         ?invalid=${this.invalid && this.touched}
         validationMessage=${this.internals.validationMessage}
+        ?loading=${idx === 0 ? this.loading : false}
       ></dt-location-map-item>
     `;
   }

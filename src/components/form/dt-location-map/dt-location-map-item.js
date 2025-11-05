@@ -228,9 +228,8 @@ export default class DtLocationMapItem extends LitElement {
         /* === Inline Icons === */
         .icon-overlay {
           position: absolute;
-          inset-inline-end: 1rem;
           top: 0;
-          inset-inline-end: 3rem;
+          inset-inline-end: 3.5rem;
           height: 100%;
           display: flex;
           justify-content: center;
@@ -242,6 +241,9 @@ export default class DtLocationMapItem extends LitElement {
         }
         .icon-overlay.success {
           color: var(--success-color);
+        }
+        .icon-overlay.selected {
+          inset-inline-end: 6.25rem;
         }
       `,
     ];
@@ -323,7 +325,11 @@ export default class DtLocationMapItem extends LitElement {
   _clickOption(e) {
     const target = e.currentTarget ?? e.target;
     if (target && target.value) {
-      this._select(JSON.parse(target.value));
+      const targetData = JSON.parse(target.value);
+      this._select({
+          ...targetData,
+          key: this.metadata?.key,
+      });
     }
   }
 
@@ -358,6 +364,7 @@ export default class DtLocationMapItem extends LitElement {
         this._select({
           value: this.query,
           label: this.query,
+          key: this.metadata?.key,
         })
       }
     }
@@ -700,17 +707,17 @@ export default class DtLocationMapItem extends LitElement {
         <ul class="option-list" style=${styleMap(optionListStyles)}>
           ${this._renderOptions()}
         </ul>
-        ${this.invalid
+        ${this.invalid || this.error
           ? html`<dt-icon
             icon="mdi:alert-circle"
             class="icon-overlay alert"
-            tooltip="${this.validationMessage}"
+            tooltip="${this.validationMessage ? this.validationMessage : this.error}"
             size="2rem"
           ></dt-icon>` : null}
         ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>` : null}
+          ? html`<dt-spinner class="icon-overlay ${hasGeometry ? 'selected' : ''}"></dt-spinner>` : null}
         ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}
+          ? html`<dt-checkmark class="icon-overlay success ${hasGeometry ? 'selected' : ''}"></dt-checkmark>` : null}
       </div>
 
       <dt-map-modal

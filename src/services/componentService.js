@@ -488,9 +488,13 @@ export default class ComponentService {
         case 'dt-location-map':
           returnValue = value.filter(item => !(oldValue.includes(item) && !item.delete));
           for (const item of oldValue) {
-            if (!value.includes(item)) {
-              item.delete = true;
-              returnValue.push(item);
+            const itemExists = value.some(newItem => 
+                (item.id && newItem.id && item.id === newItem.id) || 
+                (item.key && newItem.key && item.key === newItem.key && (!newItem.lat || !newItem.lng))
+            );
+            if (!itemExists) {
+                item.delete = true;
+                returnValue.push(item);
             }
           }
           returnValue = {
