@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import {
   themes,
-  themeCss,
   argTypes,
 } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
@@ -11,7 +10,7 @@ import './dt-map-modal.js';
 const MAPBOX_TOKEN = import.meta.env.VITE_STORYBOOK_MAPBOX_TOKEN;
 
 export default {
-  title: 'Components/Form/Location Meta/dt-map-modal',
+  title: 'Components/Form/Location Meta/Map Modal',
   component: 'dt-map-modal',
   argTypes: {
     theme: {
@@ -31,9 +30,6 @@ export default {
       mapboxToken = MAPBOX_TOKEN,
     } = args;
     return html`
-      <style>
-        ${themeCss(args)}
-      </style>
       <dt-map-modal
         ?isopen="${args.isOpen}"
         metadata="${JSON.stringify(args.metadata)}"

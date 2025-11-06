@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
 import {
@@ -118,6 +119,7 @@ export default {
   },
   args: {
     theme: 'default',
+    id: 'field-id',
     placeholder: 'Search Locations',
     onChange: action('on-change'),
   },
@@ -134,7 +136,6 @@ export default {
       requiredMessage,
       icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
       iconAltText = 'Icon Alt Text',
-      isPrivate,
       privateLabel,
       loading = false,
       saved = false,
@@ -143,27 +144,30 @@ export default {
       slot,
       i18n,
       limit,
+      error,
     } = args;
     return html`
       <dt-location-map
-        name="${name}"
-        label=${label}
-        mapbox-token=${mapboxToken}
-        google-token=${googleToken}
-        placeholder="${placeholder}"
-        value="${JSON.stringify(value)}"
+        id=${ifDefined(args.id)}
+        name=${ifDefined(name)}
+        label=${ifDefined(label)}
+        mapbox-token=${ifDefined(mapboxToken)}
+        google-token=${ifDefined(googleToken)}
+        placeholder=${ifDefined(placeholder)}
+        value=${ifDefined(value ? JSON.stringify(value) : undefined)}
         ?disabled=${disabled}
         ?required=${required}
-        requiredMessage=${requiredMessage}
-        icon="${icon}"
-        iconAltText="${iconAltText}"
-        ?private=${isPrivate}
-        privateLabel="${privateLabel}"
-        ?loading="${loading}"
-        ?saved="${saved}"
-        .open="${open}"
-        i18n="${JSON.stringify(i18n)}"
-        limit="${limit}"
+        requiredMessage=${ifDefined(requiredMessage)}
+        icon=${ifDefined(icon)}
+        iconAltText=${ifDefined(iconAltText)}
+        ?private=${args.private}
+        privateLabel=${ifDefined(privateLabel)}
+        ?loading=${loading}
+        ?saved=${saved}
+        .open=${open}
+        i18n=${ifDefined(i18n ? JSON.stringify(i18n) : undefined)}
+        limit=${ifDefined(limit)}
+        error=${ifDefined(error)}
         @change=${onChange}
       >
         ${slot}
@@ -224,6 +228,35 @@ export const Disabled = {
   args: {
     value: [basicOptions[0]],
     disabled: true,
+  },
+};
+
+export const PrivateField = {
+  args: {
+    value: [basicOptions[0]],
+    private: true,
+    privateLabel: 'Private field',
+  },
+};
+
+export const Loading = {
+  args: {
+    value: [basicOptions[0]],
+    loading: true,
+  },
+};
+
+export const Saved = {
+  args: {
+    value: [basicOptions[0]],
+    saved: true,
+  },
+};
+
+export const Error = {
+  args: {
+    value: [basicOptions[0]],
+    error: 'There was an error',
   },
 };
 

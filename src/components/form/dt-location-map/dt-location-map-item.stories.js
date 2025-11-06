@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { themes, argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-location-map-item.js';
 
@@ -47,7 +47,7 @@ const basicOptions = [
   }
 ];
 export default {
-  title: 'Components/Form/Location Meta/dt-location-map-item',
+  title: 'Components/Form/Location Meta/Map Item',
   component: 'dt-location-map-item',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes) },
@@ -96,25 +96,22 @@ export default {
       error,
       onChange,
       open,
-      i18n,
+      slot,
     } = args;
     return html`
-      <style>
-        ${themeCss(args)}
-      </style>
       <dt-location-map-item
-        placeholder="${placeholder}"
-        mapbox-token=${mapboxToken}
-        google-token=${googleToken}
-        metadata="${JSON.stringify(metadata)}"
+        placeholder=${ifDefined(placeholder)}
+        mapbox-token=${ifDefined(mapboxToken)}
+        google-token=${ifDefined(googleToken)}
+        metadata=${ifDefined(metadata ? JSON.stringify(metadata) : undefined)}
         ?disabled=${disabled}
-        ?loading="${loading}"
-        ?saved="${saved}"
-        error="${ifDefined(error)}"
-        .open="${open}"
-        i18n="${JSON.stringify(i18n)}"
+        ?loading=${loading}
+        ?saved=${saved}
+        error=${ifDefined(error)}
+        .open=${open}
         @change=${onChange}
       >
+        ${slot}
       </dt-location-map-item>
     `;
   },
