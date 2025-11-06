@@ -710,7 +710,7 @@ export default class DtLocationMapItem extends LitElement {
         ${this.invalid || this.error
           ? html`<dt-icon
             icon="mdi:alert-circle"
-            class="icon-overlay alert"
+            class="icon-overlay alert ${hasGeometry ? 'selected' : ''}"
             tooltip="${this.validationMessage ? this.validationMessage : this.error}"
             size="2rem"
           ></dt-icon>` : null}

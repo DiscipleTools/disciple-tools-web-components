@@ -232,6 +232,8 @@ export class DtLocationMap extends DtFormBase {
         ?invalid=${this.invalid && this.touched}
         validationMessage=${this.internals.validationMessage}
         ?loading=${idx === 0 ? this.loading : false}
+        ?saved=${idx === 0 ? this.saved : false}
+        error=${idx === 0 ? this.error : ''}
       ></dt-location-map-item>
     `;
   }
