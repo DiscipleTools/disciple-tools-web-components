@@ -88,7 +88,7 @@ export class DtLocationMap extends DtFormBase {
         this.value = [
           ...this.value.map((opt) => ({
             ...opt,
-            id: opt.grid_meta_id,
+            id: opt.id || opt.grid_meta_id,
           }))
         ];
       }
@@ -155,7 +155,10 @@ export class DtLocationMap extends DtFormBase {
       id: Date.now(),
     }
     this.value = [
-      ...(this.value || []).filter(i => i.label && (!i.key || i.key !== evt.detail.metadata.key)),
+      ...(this.value || []).filter(i => 
+        i.label && 
+        (!i.key || i.key !== newLocation.key) &&
+        (!i.id || i.id !== newLocation.id)),
       newLocation,
     ];
     this.updateLocationList();
@@ -179,12 +182,15 @@ export class DtLocationMap extends DtFormBase {
     if (gridMetaId) {
       // remove this item from the value
       this.value = (this.value || []).filter(m => m.grid_meta_id !== gridMetaId);
-    } else if (!item.lat || !item.lng) {
-      // if value has no lat/lng, remove item by key
-      this.value = (this.value || []).filter(m => !m.key || m.key !== item.key);
-    } else {
-      // otherwise remove by lat/lng
+    } else if (item.lat && item.lng) {
+      // remove by lat/lng
       this.value = (this.value || []).filter(m => m.lat !== item.lat && m.lng !== item.lng);
+    } else {
+      // if value has no lat/lng, remove item by key/id
+      this.value = (this.value || []).filter(m => 
+        (!m.key || m.key !== item.key) &&
+        (!m.id || m.id !== item.id)
+      );
     }
 
     this.updateLocationList();
