@@ -1,6 +1,12 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { action } from '@storybook/addon-actions';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator , FormDecorator } from '../../../stories-utils.js';
+import {
+  FormDecorator,
+  LocaleDecorator,
+  onAutoSave,
+} from '../../../stories-utils.js';
 import './dt-location-map.js';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -51,7 +57,7 @@ const basicOptions = [
   }
 ];
 export default {
-  title: 'Form/dt-location-map',
+  title: 'Components/Form/Location Meta',
   component: 'dt-location-map',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes) },
@@ -99,17 +105,6 @@ export default {
         },
       },
     },
-    onchange: {
-      control: 'text',
-      description:
-        'Javascript code to be executed when the value of the field changes. Makes available a `event` variable that includes field name, old value, and new value in `event.details`',
-      table: {
-        type: {
-          summary: 'onChange(event)',
-          detail: '<dt-location onchange="onChange(event)" />',
-        },
-      },
-    },
     limit: {
       control: 'number',
       description: 'Maximum number of locations that can be selected',
@@ -124,162 +119,197 @@ export default {
   },
   args: {
     theme: 'default',
+    id: 'field-id',
     placeholder: 'Search Locations',
+    onChange: action('on-change'),
+  },
+  render: args => {
+    const {
+      name = 'field-name',
+      label = 'Field Name',
+      mapboxToken = MAPBOX_TOKEN,
+      googleToken = GOOGLE_GEOCODE_TOKEN,
+      placeholder,
+      value,
+      disabled = false,
+      required = false,
+      requiredMessage,
+      icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+      iconAltText = 'Icon Alt Text',
+      privateLabel,
+      loading = false,
+      saved = false,
+      onChange,
+      open,
+      slot,
+      i18n,
+      limit,
+      error,
+    } = args;
+    return html`
+      <dt-location-map
+        id=${ifDefined(args.id)}
+        name=${ifDefined(name)}
+        label=${ifDefined(label)}
+        mapbox-token=${ifDefined(mapboxToken)}
+        google-token=${ifDefined(googleToken)}
+        placeholder=${ifDefined(placeholder)}
+        value=${ifDefined(value ? JSON.stringify(value) : undefined)}
+        ?disabled=${disabled}
+        ?required=${required}
+        requiredMessage=${ifDefined(requiredMessage)}
+        icon=${ifDefined(icon)}
+        iconAltText=${ifDefined(iconAltText)}
+        ?private=${args.private}
+        privateLabel=${ifDefined(privateLabel)}
+        ?loading=${loading}
+        ?saved=${saved}
+        .open=${open}
+        i18n=${ifDefined(i18n ? JSON.stringify(i18n) : undefined)}
+        limit=${ifDefined(limit)}
+        error=${ifDefined(error)}
+        @change=${onChange}
+      >
+        ${slot}
+      </dt-location-map>
+    `;
   },
 };
 
-function Template(args) {
-  const {
-    name = 'field-name',
-    label = 'Field Name',
-    mapboxToken = MAPBOX_TOKEN,
-    googleToken = GOOGLE_GEOCODE_TOKEN,
-    placeholder,
-    value,
-    disabled = false,
-    icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
-    iconAltText = 'Icon Alt Text',
-    isPrivate,
-    privateLabel,
-    loading = false,
-    saved = false,
-    onchange,
-    open,
-    slot,
-    i18n,
-    limit,
-  } = args;
-  return html`
-    <style>
-      ${themeCss(args)}
-    </style>
-    <dt-location-map
-      name="${name}"
-      label=${label}
-      mapbox-token=${mapboxToken}
-      google-token=${googleToken}
-      placeholder="${placeholder}"
-      value="${JSON.stringify(value)}"
-      onchange="${onchange}"
-      ?disabled=${disabled}
-      icon="${icon}"
-      iconAltText="${iconAltText}"
-      ?private=${isPrivate}
-      privateLabel="${privateLabel}"
-      ?loading="${loading}"
-      ?saved="${saved}"
-      .open="${open}"
-      i18n="${JSON.stringify(i18n)}"
-      limit="${limit}"
-    >
-      ${slot}
-    </dt-location-map>
-  `;
-}
+export const Empty = {};
 
-export const Empty = Template.bind({});
-Empty.args = {};
-
-export const SvgIcon = Template.bind({});
-SvgIcon.args = {
-  icon: null,
-  // prettier-ignore
-  slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
+export const SvgIcon = {
+  args: {
+    icon: null,
+    // prettier-ignore
+    slot: 'SvgIcon',
+  },
 };
 
-export const CustomPlaceholder = Template.bind({});
-CustomPlaceholder.args = {
-  placeholder: 'Custom Placeholder',
+export const CustomPlaceholder = {
+  args: {
+    placeholder: 'Custom Placeholder',
+  },
 };
 
-export const SelectedValueMaps = Template.bind({});
-SelectedValueMaps.args = {
-  value: [basicOptions[1], basicOptions[2]],
+export const SelectedValueMaps = {
+  args: {
+    value: [basicOptions[1], basicOptions[2]],
+  },
 };
 
-export const SelectedValueMixed = Template.bind({});
-SelectedValueMixed.args = {
-  value: [
-    basicOptions[1],
-    {
-      label: 'Custom address',
-      key: 'contact_addres_1fe',
-    },
-  ],
+export const SelectedValueMixed = {
+  args: {
+    value: [
+      basicOptions[1],
+      {
+        label: 'Custom address',
+        key: 'contact_addres_1fe',
+      },
+    ],
+  },
 };
 
-export const Open = Template.bind({});
-Open.args = {
-  value: [basicOptions[1], basicOptions[2]],
-  open: true,
+export const Open = {
+  args: {
+    value: [basicOptions[1], basicOptions[2]],
+    open: true,
+  },
 };
 
-export const AutoSave = Template.bind({});
-AutoSave.args = {
-  value: [basicOptions[0]],
-  onchange: 'onAutoSave(event)',
+export const AutoSave = {
+  args: {
+    value: [basicOptions[0]],
+    onChange: onAutoSave,
+  },
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  value: [basicOptions[0]],
-  disabled: true,
+export const Disabled = {
+  args: {
+    value: [basicOptions[0]],
+    disabled: true,
+  },
 };
 
-export const BasicForm = Template.bind({});
-BasicForm.decorators = [LocaleDecorator, FormDecorator];
-BasicForm.args = {
-  value: [basicOptions[0]],
+export const PrivateField = {
+  args: {
+    value: [basicOptions[0]],
+    private: true,
+    privateLabel: 'Private field',
+  },
 };
 
-/* export const Loading = Template.bind({});
-Loading.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
-  options: basicOptions,
-  loading: true,
-};
-export const Saved = Template.bind({});
-Saved.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
-  options: basicOptions,
-  saved: true,
-}; */
-
-export const LocalizeRTL = Template.bind({});
-LocalizeRTL.decorators = [LocaleDecorator];
-LocalizeRTL.args = {
-  lang: 'ar',
-  dir: 'rtl',
-  label: 'حقل الموقع',
-  placeholder: 'اختر موقعا',
-  value: [
-    {
-      "grid_meta_id": "65",
-      "post_id": "43",
-      "post_type": "contacts",
-      "postmeta_id_location_grid": "1671",
-      "grid_id": "100366112",
-      "lng": "-73.9866",
-      "lat": "40.7306",
-      "level": "place",
-      "source": "user",
-      "label": "نيويورك ، نيويورك ، الولايات المتحدة"
-    },
-  ],
+export const Loading = {
+  args: {
+    value: [basicOptions[0]],
+    loading: true,
+  },
 };
 
-export const WithLimit = Template.bind({});
-WithLimit.args = {
-  value: [basicOptions[0]],
-  limit: 1,
+export const Saved = {
+  args: {
+    value: [basicOptions[0]],
+    saved: true,
+  },
+};
+
+export const Error = {
+  args: {
+    value: [basicOptions[0]],
+    error: 'There was an error',
+  },
+};
+
+export const BasicForm = {
+  decorators: [LocaleDecorator, FormDecorator],
+  args: {
+    value: [basicOptions[0]],
+  },
+};
+
+export const Required = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+    options: basicOptions,
+  },
+};
+
+export const RequiredCustomMessage = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+    requiredMessage: 'Custom message',
+  },
+};
+
+export const LocalizeRTL = {
+  decorators: [LocaleDecorator],
+  args: {
+    lang: 'ar',
+    dir: 'rtl',
+    label: 'حقل الموقع',
+    placeholder: 'اختر موقعا',
+    value: [
+      {
+        "grid_meta_id": "65",
+        "post_id": "43",
+        "post_type": "contacts",
+        "postmeta_id_location_grid": "1671",
+        "grid_id": "100366112",
+        "lng": "-73.9866",
+        "lat": "40.7306",
+        "level": "place",
+        "source": "user",
+        "label": "نيويورك ، نيويورك ، الولايات المتحدة"
+      },
+    ],
+  },
+};
+
+export const WithLimit = {
+  args: {
+    value: [basicOptions[0]],
+    limit: 1,
+  },
 };

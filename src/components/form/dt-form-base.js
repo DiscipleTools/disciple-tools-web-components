@@ -292,7 +292,7 @@ export default class DtFormBase extends DtBase {
   }
 
   reset() {
-    if (this._field.reset) {
+    if (this._field?.reset) {
       this._field.reset();
     }
     this.value = '';
