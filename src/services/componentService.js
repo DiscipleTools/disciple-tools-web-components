@@ -418,6 +418,12 @@ export default class ComponentService {
         case 'dt-users-connection': {
            // Initialize an empty array to hold the differences found.
             const userDataDifferences=[];
+            // For single-select, just return the user ID
+            const activeUsers = returnValue.filter(item => !item.delete);
+            if (activeUsers.length <= 1) {
+              returnValue = activeUsers.length === 1 ? parseInt(activeUsers[0].id, 10) : '';
+              break;
+            }
             // Create a Map from oldValue for quick lookups by ID.
             const oldUsersMap = new Map((oldValue || []).map(user => [user.id,user]));
 
