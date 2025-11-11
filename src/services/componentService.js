@@ -286,7 +286,7 @@ export default class ComponentService {
               delete body[field];
             }
           }
-          
+
           const apiResponse = await this._api.updatePost(this.postType, this.postId, body);
 
           document.dispatchEvent(new CustomEvent('dt:post:update', {
@@ -346,6 +346,21 @@ export default class ComponentService {
           status: post.status,
         }));
         break;
+      case 'dt-users-connection':
+        if (value && !Array.isArray(value) && (value.id || value.ID)) {
+          returnValue = [{
+            id: value.id || value.ID,
+            label: value.display,
+            avatar: value.avatar || '',
+          }];
+        } else if (Array.isArray(value)) {
+          returnValue = value.map(user => ({
+            id: user.id || user.ID,
+            label: user.display || user.name,
+            avatar: user.avatar || '',
+          }));
+        }
+        break;
       default:
         break;
     }
@@ -404,7 +419,7 @@ export default class ComponentService {
            // Initialize an empty array to hold the differences found.
             const userDataDifferences=[];
             // Create a Map from oldValue for quick lookups by ID.
-            const oldUsersMap = new Map(oldValue.map(user => [user.id,user]));
+            const oldUsersMap = new Map((oldValue || []).map(user => [user.id,user]));
 
             for (const newUserObj of returnValue) {
             // Retrieve the corresponding old object from the map using the ID.
@@ -488,8 +503,8 @@ export default class ComponentService {
         case 'dt-location-map':
           returnValue = value.filter(item => !(oldValue.includes(item) && !item.delete));
           for (const item of oldValue) {
-            const itemExists = value.some(newItem => 
-                (item.id && newItem.id && item.id === newItem.id) || 
+            const itemExists = value.some(newItem =>
+                (item.id && newItem.id && item.id === newItem.id) ||
                 (item.key && newItem.key && item.key === newItem.key && (!newItem.lat || !newItem.lng))
             );
             if (!itemExists) {
