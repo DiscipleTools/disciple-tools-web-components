@@ -419,7 +419,7 @@ export default class ComponentService {
            // Initialize an empty array to hold the differences found.
             const userDataDifferences=[];
             // Create a Map from oldValue for quick lookups by ID.
-            const oldUsersMap = new Map(oldValue.map(user => [user.id,user]));
+            const oldUsersMap = new Map((oldValue || []).map(user => [user.id,user]));
 
             for (const newUserObj of returnValue) {
             // Retrieve the corresponding old object from the map using the ID.
