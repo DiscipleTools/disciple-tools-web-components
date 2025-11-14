@@ -236,7 +236,7 @@ export class DtPhoneModal extends DtBase {
     if (!this.isOpen) {
       return; // Already closed, prevent infinite loop
     }
-    
+
     this.isOpen = false;
     this.removeAttribute('open');
 
@@ -255,16 +255,32 @@ export class DtPhoneModal extends DtBase {
   }
 
   static _createServiceLink(service, phoneNumber) {
+    // Remove hidden Unicode characters (e.g., LRM, RLM, etc.) and clean phone number
+    const sanitized = phoneNumber.replace(
+      /[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g,
+      '',
+    );
     // Clean phone number - remove all non-digit characters
-    const cleanNumber = phoneNumber.replace(/\D/g, '');
+    const cleanNumber = sanitized.replace(/\D/g, '');
     // For PHONE_NUMBER_NO_PLUS, remove the leading 1 if it's a US/CA number
     const cleanNumberNoPlus = cleanNumber.startsWith('1')
       ? cleanNumber.substring(1)
       : cleanNumber;
 
-    return service.link
-      .replace(/PHONE_NUMBER_NO_PLUS/g, cleanNumberNoPlus)
-      .replace(/PHONE_NUMBER/g, phoneNumber);
+    let resultLink = service.link;
+    // For Viber, encode + as %2B
+    if (service.icon === 'viber') {
+      // Use sanitized number, but encode + if present
+      const viberNumber = sanitized.startsWith('+')
+        ? `%2B${sanitized.substring(1)}`
+        : sanitized;
+      resultLink = resultLink.replace(/PHONE_NUMBER/g, viberNumber);
+    } else {
+      resultLink = resultLink
+        .replace(/PHONE_NUMBER_NO_PLUS/g, cleanNumberNoPlus)
+        .replace(/PHONE_NUMBER/g, sanitized);
+    }
+    return resultLink;
   }
 
   _renderMessagingService(serviceKey, service) {
