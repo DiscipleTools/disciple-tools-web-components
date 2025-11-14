@@ -255,15 +255,17 @@ export class DtPhoneModal extends DtBase {
   }
 
   static _createServiceLink(service, phoneNumber) {
-    // Remove hidden Unicode characters (e.g., LRM, RLM, etc.) and clean phone number
-    const sanitized = phoneNumber.replace(
+    // Remove hidden Unicode characters (e.g., LRM, RLM, etc.)
+    let sanitized = phoneNumber.replace(
       /[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g,
       '',
     );
+    // Remove all spaces and minus signs, keep only digits and a leading +
+    sanitized = sanitized.replace(/[^\d+]/g, '');
     // Clean phone number - remove all non-digit characters
     const cleanNumber = sanitized.replace(/\D/g, '');
-    // For PHONE_NUMBER_NO_PLUS, remove the leading 1 if it's a US/CA number
-    const cleanNumberNoPlus = cleanNumber.startsWith('1')
+    // For PHONE_NUMBER_NO_PLUS, remove the leading + sign only
+    const cleanNumberNoPlus = cleanNumber.startsWith('+')
       ? cleanNumber.substring(1)
       : cleanNumber;
 
