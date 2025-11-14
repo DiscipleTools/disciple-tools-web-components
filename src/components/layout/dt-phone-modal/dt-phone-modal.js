@@ -11,7 +11,7 @@ export class DtPhoneModal extends DtBase {
   static get styles() {
     return css`
       :host {
-        display: none;
+        display: block;
       }
 
       dt-modal {
@@ -221,7 +221,7 @@ export class DtPhoneModal extends DtBase {
   open(phoneNumber) {
     this.phoneNumber = phoneNumber;
     this.isOpen = true;
-    this.style.display = 'block';
+    this.setAttribute('open', '');
 
     // Open the modal
     this.updateComplete.then(() => {
@@ -233,18 +233,25 @@ export class DtPhoneModal extends DtBase {
   }
 
   close() {
+    if (!this.isOpen) {
+      return; // Already closed, prevent infinite loop
+    }
+    
     this.isOpen = false;
-    this.style.display = 'none';
+    this.removeAttribute('open');
 
-    // Close the modal
+    // Close the modal without triggering another close event
     const modal = this.shadowRoot.querySelector('dt-modal');
     if (modal) {
-      modal.dispatchEvent(new CustomEvent('close'));
+      modal._closeModal(); // Call internal close method directly
     }
   }
 
   _handleModalClose() {
-    this.close();
+    // Don't call close() to avoid infinite loop
+    // Just update our state
+    this.isOpen = false;
+    this.removeAttribute('open');
   }
 
   static _createServiceLink(service, phoneNumber) {
@@ -314,8 +321,8 @@ export class DtPhoneModal extends DtBase {
       <dt-modal
         title="${msg('Send a Message')}"
         bottom
-        hide-button
-        close-button
+        .hideButton=${true}
+        .closeButton=${true}
         @close=${this._handleModalClose}
       >
         <div slot="content">

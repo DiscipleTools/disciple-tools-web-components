@@ -152,6 +152,7 @@ export class DtMultiText extends DtText {
           align-items: center;
           gap: 0.25rem;
           white-space: nowrap;
+          aspect-ratio: auto;
           &:disabled {
             color: var(--dt-text-placeholder-color, #999);
           }

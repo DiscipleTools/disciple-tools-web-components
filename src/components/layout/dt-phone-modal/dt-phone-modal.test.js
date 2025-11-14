@@ -29,7 +29,7 @@ describe('DtPhoneModal', () => {
     
     expect(el.phoneNumber).to.equal('+1-555-123-4567');
     expect(el.isOpen).to.be.true;
-    expect(el.style.display).to.equal('block');
+    expect(el.hasAttribute('open')).to.be.true;
   });
 
   it('closes modal', async () => {
@@ -45,7 +45,7 @@ describe('DtPhoneModal', () => {
     await nextFrame();
     
     expect(el.isOpen).to.be.false;
-    expect(el.style.display).to.equal('none');
+    expect(el.hasAttribute('open')).to.be.false;
   });
 
   it('renders modal content when open', async () => {
@@ -150,18 +150,23 @@ describe('DtPhoneModal', () => {
     const serviceLink = el.shadowRoot.querySelector('.messaging-service');
     expect(serviceLink).to.exist;
     
-    // Mock the close behavior
-    let closeCalled = false;
-    const originalClose = el.close.bind(el);
-    el.close = () => {
-      closeCalled = true;
-      originalClose();
-    };
+    // Check that modal is open before click
+    expect(el.isOpen).to.be.true;
+    
+    // Add event listener to prevent navigation and check state
+    serviceLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Check state immediately after click handler runs
+      setTimeout(() => {
+        expect(el.isOpen).to.be.false;
+      }, 0);
+    }, { once: true });
     
     serviceLink.click();
     await aTimeout(50);
     
-    expect(closeCalled).to.be.true;
+    // Verify modal is closed
+    expect(el.isOpen).to.be.false;
   });
 
   it('adds iMessage on Apple devices', async () => {
@@ -205,6 +210,6 @@ describe('DtPhoneModal', () => {
     await nextFrame();
     
     expect(el.isOpen).to.be.false;
-    expect(el.style.display).to.equal('none');
+    expect(el.hasAttribute('open')).to.be.false;
   });
 });
