@@ -342,7 +342,31 @@ export class DtMultiText extends DtText {
   _parsePhoneValue(value) {
     if (!value) return { countryCode: 'US', phoneNumber: '' };
 
-    // Clean the value by removing common formatting characters
+    // First, check if it's already in stored format: "+1 555-123-4567" or "+1 "
+    // This preserves formatting for already formatted numbers
+    const storedFormatMatch = value.match(/^(\+\d{1,4})\s+(.*)$/);
+    if (storedFormatMatch) {
+      const dialCodeToFind = storedFormatMatch[1];
+      const phoneNumber = storedFormatMatch[2].trim(); // Trim to handle "+1 " case
+      
+      // Find countries by dial code
+      const matchingCountries = this._countries.filter(
+        c => c.data.dial_code === dialCodeToFind,
+      );
+
+      // Prefer the country marked as preferred, otherwise take the first one
+      let country = matchingCountries.find(c => c.data.preferred);
+      if (!country && matchingCountries.length > 0) {
+        [country] = matchingCountries;
+      }
+
+      return {
+        countryCode: country ? country.data.code : 'US',
+        phoneNumber: phoneNumber || '', // Preserve formatting
+      };
+    }
+
+    // Clean the value by removing common formatting characters for unformatted numbers
     const cleanValue = value.replace(/[\s\-\(\)]/g, '');
 
     // Handle various international formats:
@@ -391,14 +415,6 @@ export class DtMultiText extends DtText {
         }
       }
     }
-    // Check if it's already in stored format: "+1 555-123-4567" or "+1 "
-    else {
-      const match = value.match(/^(\+\d{1,4})\s*(.*)$/);
-      if (match) {
-        dialCodeToFind = match[1];
-        phoneNumber = match[2].trim(); // Trim to handle "+1 " case
-      }
-    }
 
     if (dialCodeToFind) {
       // Find countries by dial code
@@ -438,6 +454,8 @@ export class DtMultiText extends DtText {
     // For other types, use the standard check
     return !!item.value;
   }
+
+  updated(changedProperties) {
     // if length of value was changed, focus the last element (which is new)
     if (changedProperties.has('value')) {
       const old = changedProperties.get('value');
