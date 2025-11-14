@@ -31,6 +31,7 @@ export default class ComponentService {
       'dt-date',
       'dt-datetime',
       'dt-location',
+      'dt-location-map',
       'dt-multi-select',
       'dt-number',
       'dt-single-select',
@@ -49,8 +50,9 @@ export default class ComponentService {
       'dt-tags',
       'dt-modal',
       'dt-list',
-      'dt-button'
-    ];
+      'dt-button',
+      'dt-location'
+    ]
   }
 
   /**
@@ -88,9 +90,9 @@ export default class ComponentService {
     if (elements) {
       elements.forEach(el => {
         // prevent multiple event attachments if this is called multiple times
-        if (!el.dataset['eventDtGetData']) {
+        if (!el.dataset.eventDtGetData) {
           el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this));
-          el.dataset['eventDtGetData'] = true;
+          el.dataset.eventDtGetData = true;
         }
       });
     }
@@ -179,6 +181,19 @@ export default class ComponentService {
             }
             break;
           }
+          case 'dt-location': {
+            values = await this._api.getLocations(
+              this.postType,
+              field,
+              details.filter,
+              query
+            );
+            values = values.location_grid.map(value => ({
+              id: value.ID,
+              label: value.name,
+            }));
+            break;
+          }
           case 'dt-tags':
           default:
             values = await this._api.getMultiSelectValues(
@@ -228,8 +243,8 @@ export default class ComponentService {
         this.debounce(debounceKey, async () => {
           try {
             const apiResponse = await this._api.updatePost(
-              this.postType, 
-              this.postId, 
+              this.postType,
+              this.postId,
               {
                 [field]: apiValue,
               });
@@ -256,32 +271,36 @@ export default class ComponentService {
       } else {
         // Update post via API
         try {
-          let apiResponse;
-          switch(component) {
-            case 'dt-users-connection': {
-              // todo: this doesn't look like it will actually edit the field itself. And this logic should not be done inside this service. Move to theme.
-              if (remove === true) {
-                apiResponse = await this._api.removePostShare(this.postType, this.postId, apiValue);
-                break;
-              }
-              apiResponse = await this._api.addPostShare(this.postType, this.postId, apiValue)
-              break;
-            }
-            default: {
-              apiResponse = await this._api.updatePost(this.postType, this.postId, {
-                [field]: apiValue,
-              });
+          const body = {
+            [field]: apiValue,
+          }
+          if (component === 'dt-location-map') {
+            const val = apiValue.values.filter(loc => !loc.lng || !loc.lat);
+            body[field].values = apiValue.values.filter(loc => loc.lng && loc.lat);
+            body.contact_address = val;
 
-              document.dispatchEvent(new CustomEvent('dt:post:update', {
-                detail: {
-                  'response': apiResponse,
-                  'field': field,
-                  'value': apiValue,
-                  'component': component,
-                },
-              }));
-              break;
+            if (body.contact_address.length === 0) {
+              delete body.contact_address;
             }
+            if (body[field].values.length === 0) {
+              delete body[field];
+            }
+          }
+
+          const apiResponse = await this._api.updatePost(this.postType, this.postId, body);
+
+          document.dispatchEvent(new CustomEvent('dt:post:update', {
+            detail: {
+              'response': apiResponse,
+              'field': field,
+              'value': apiValue,
+              'component': component,
+            },
+          }));
+
+          if (component === 'dt-location-map') {
+            const componentTarget = event.target;
+            componentTarget.value = apiResponse[field];
           }
 
           event.target.removeAttribute('loading');
@@ -327,6 +346,21 @@ export default class ComponentService {
           status: post.status,
         }));
         break;
+      case 'dt-users-connection':
+        if (value && !Array.isArray(value) && (value.id || value.ID)) {
+          returnValue = [{
+            id: value.id || value.ID,
+            label: value.display,
+            avatar: value.avatar || '',
+          }];
+        } else if (Array.isArray(value)) {
+          returnValue = value.map(user => ({
+            id: user.id || user.ID,
+            label: user.display || user.name,
+            avatar: user.avatar || '',
+          }));
+        }
+        break;
       default:
         break;
     }
@@ -337,9 +371,10 @@ export default class ComponentService {
    * Convert value returned from a component into what is expected by DT API
    * @param {string} component Tag name of component. E.g. dt-text
    * @param {mixed} value
+   * @param {mixed} oldValue (Optional) Previous value of component, if available
    * @returns {mixed}
    */
-  static convertValue(component, value, oldValue) {
+  static convertValue(component, value, oldValue = null) {
     let returnValue = value;
 
     // Convert component value format into what the API expects
@@ -383,8 +418,14 @@ export default class ComponentService {
         case 'dt-users-connection': {
            // Initialize an empty array to hold the differences found.
             const userDataDifferences=[];
+            // For single-select, just return the user ID
+            const activeUsers = returnValue.filter(item => !item.delete);
+            if (activeUsers.length <= 1) {
+              returnValue = activeUsers.length === 1 ? parseInt(activeUsers[0].id, 10) : '';
+              break;
+            }
             // Create a Map from oldValue for quick lookups by ID.
-            const oldUsersMap = new Map(oldValue.map(user => [user.id,user]));
+            const oldUsersMap = new Map((oldValue || []).map(user => [user.id,user]));
 
             for (const newUserObj of returnValue) {
             // Retrieve the corresponding old object from the map using the ID.
@@ -421,8 +462,7 @@ export default class ComponentService {
           break;
         }
         case 'dt-connection':
-        case 'dt-location':
-              if (typeof value === 'string') {
+          if (typeof value === 'string') {
                 returnValue = [
                   {
                     id: value,
@@ -441,6 +481,53 @@ export default class ComponentService {
                 }),
                 force_values: false,
               };
+          break;
+        case 'dt-location':
+          const idsToRemove = new Set((oldValue || []).map(item => item.id));
+          if (typeof value === 'string') {
+            returnValue = [
+              {
+                id: value,
+              },
+            ];
+          } else {
+            returnValue = value.filter(item => !(idsToRemove.has(item.id) && !item.delete));
+          }
+          returnValue = {
+            values: returnValue.map(item => {
+              const ret = {
+                value: item.id,
+              };
+              if (item.delete) {
+                ret.delete = item.delete;
+              }
+              return ret;
+            }),
+            force_values: false,
+          };
+          break;
+        case 'dt-location-map':
+          returnValue = value.filter(item => !(oldValue.includes(item) && !item.delete));
+          for (const item of oldValue) {
+            const itemExists = value.some(newItem =>
+                (item.id && newItem.id && item.id === newItem.id) ||
+                (item.key && newItem.key && item.key === newItem.key && (!newItem.lat || !newItem.lng))
+            );
+            if (!itemExists) {
+                item.delete = true;
+                returnValue.push(item);
+            }
+          }
+          returnValue = {
+            values: returnValue.map(item => {
+              const ret = item;
+              if (item.delete) {
+                ret.delete = item.delete;
+              }
+              return ret;
+            }),
+            force_values: false,
+          };
           break;
         case 'dt-multi-text':
           if (Array.isArray(value)) {

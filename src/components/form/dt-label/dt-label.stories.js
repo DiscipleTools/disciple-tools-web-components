@@ -42,6 +42,15 @@ export const Basic = {
   },
 };
 
+export const TextOverflow = {
+  args: {
+    label: 'My <Field> Label that is "long" & \'longer\' and longerer and longererer and longerererer',
+  },
+  globals: {
+    viewport: 'mobile1',
+  },
+};
+
 export const UrlIcon = {
   args: {
     icon: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',

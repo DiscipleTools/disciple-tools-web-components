@@ -50,6 +50,19 @@ export class DtLocationMap extends DtFormBase {
         .field-container {
           position: relative;
         }
+
+        .dt-btn {
+            /* Background, Text, and Border Color (Green-600 approximation: #16a34a) */
+            background-color: white;
+            color: #4CAF50;
+            border: 1px solid #4CAF50;
+            
+            /* Rounded Corners (rounded-xl approximation) */
+            border-radius: 0.5rem; 
+            
+            /* Padding (px-6 py-3 approximation) */
+            padding: 0.25rem .25rem;
+        }
       `,
     ];
   }
@@ -70,13 +83,12 @@ export class DtLocationMap extends DtFormBase {
 
   willUpdate(...args) {
     super.willUpdate(...args);
-
     if (this.value) {
       if (this.value.filter((opt) => !opt.id)) {
         this.value = [
           ...this.value.map((opt) => ({
             ...opt,
-            id: opt.grid_meta_id,
+            id: opt.id || opt.grid_meta_id,
           }))
         ];
       }
@@ -143,7 +155,10 @@ export class DtLocationMap extends DtFormBase {
       id: Date.now(),
     }
     this.value = [
-      ...(this.value || []).filter(i => i.label),
+      ...(this.value || []).filter(i => 
+        i.label && 
+        (!i.key || i.key !== newLocation.key) &&
+        (!i.id || i.id !== newLocation.id)),
       newLocation,
     ];
     this.updateLocationList();
@@ -167,9 +182,15 @@ export class DtLocationMap extends DtFormBase {
     if (gridMetaId) {
       // remove this item from the value
       this.value = (this.value || []).filter(m => m.grid_meta_id !== gridMetaId);
-    } else {
+    } else if (item.lat && item.lng) {
       // remove by lat/lng
       this.value = (this.value || []).filter(m => m.lat !== item.lat && m.lng !== item.lng);
+    } else {
+      // if value has no lat/lng, remove item by key/id
+      this.value = (this.value || []).filter(m => 
+        (!m.key || m.key !== item.key) &&
+        (!m.id || m.id !== item.id)
+      );
     }
 
     this.updateLocationList();
@@ -188,7 +209,23 @@ export class DtLocationMap extends DtFormBase {
     }
   }
 
-  renderItem(opt) {
+  _validateRequired() {
+    const { value } = this;
+    if (this.required && (!value || value.every(item => !item.value))) {
+      this.invalid = true;
+      this.internals.setValidity(
+        {
+          valueMissing: true,
+        },
+        this.requiredMessage || 'This field is required',
+      );
+    } else {
+      this.invalid = false;
+      this.internals.setValidity({});
+    }
+  }
+
+  renderItem(opt, idx) {
     return html`
       <dt-location-map-item
         placeholder="${this.placeholder}"
@@ -198,6 +235,11 @@ export class DtLocationMap extends DtFormBase {
         @delete=${this.deleteItem}
         @select=${this.selectLocation}
         ?disabled=${this.disabled}
+        ?invalid=${this.invalid && this.touched}
+        validationMessage=${this.internals.validationMessage}
+        ?loading=${idx === 0 ? this.loading : false}
+        ?saved=${idx === 0 ? this.saved : false}
+        error=${idx === 0 ? this.error : ''}
       ></dt-location-map-item>
     `;
   }
@@ -212,7 +254,7 @@ export class DtLocationMap extends DtFormBase {
 
       ${repeat(this.locations || [], (opt) => opt.id, (opt, idx) => this.renderItem(opt, idx))}
       ${!this.open && (this.limit == 0 || this.locations.length < this.limit)
-        ? html`<button @click="${this.addNew}">Add New</button>`
+        ? html`<button @click="${this.addNew}" class="dt-btn">+ Add New</button>`
         : null}
     `;
   }

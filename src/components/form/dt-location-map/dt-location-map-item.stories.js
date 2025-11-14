@@ -1,5 +1,7 @@
 import { html } from 'lit';
-import { themes, themeCss, argTypes } from '../../../stories-theme.js';
+import { action } from '@storybook/addon-actions';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { themes, argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-location-map-item.js';
 
@@ -45,7 +47,7 @@ const basicOptions = [
   }
 ];
 export default {
-  title: 'Form/dt-location-map/dt-location-map-item',
+  title: 'Components/Form/Location Meta/Map Item',
   component: 'dt-location-map-item',
   argTypes: {
     theme: { control: 'select', options: Object.keys(themes) },
@@ -75,135 +77,147 @@ export default {
         },
       },
     },
-    onchange: {
-      control: 'text',
-      description:
-        'Javascript code to be executed when the value of the field changes. Makes available a `event` variable that includes field name, old value, and new value in `event.details`',
-      table: {
-        type: {
-          summary: 'onChange(event)',
-          detail: '<dt-location onchange="onChange(event)" />',
-        },
-      },
-    },
     ...argTypes,
   },
   args: {
     theme: 'default',
     placeholder: 'Search Locations',
+    onChange: action('on-change'),
+  },
+  render: args => {
+    const {
+      placeholder,
+      mapboxToken = MAPBOX_TOKEN,
+      googleToken,
+      metadata,
+      disabled = false,
+      loading = false,
+      saved = false,
+      error,
+      onChange,
+      open,
+      slot,
+    } = args;
+    return html`
+      <dt-location-map-item
+        placeholder=${ifDefined(placeholder)}
+        mapbox-token=${ifDefined(mapboxToken)}
+        google-token=${ifDefined(googleToken)}
+        metadata=${ifDefined(metadata ? JSON.stringify(metadata) : undefined)}
+        ?disabled=${disabled}
+        ?loading=${loading}
+        ?saved=${saved}
+        error=${ifDefined(error)}
+        .open=${open}
+        @change=${onChange}
+      >
+        ${slot}
+      </dt-location-map-item>
+    `;
   },
 };
 
-function Template(args) {
-  const {
-    placeholder,
-    mapboxToken = MAPBOX_TOKEN,
-    googleToken,
-    metadata,
-    disabled = false,
-    loading = false,
-    saved = false,
-    onchange,
-    open,
-    i18n,
-  } = args;
-  return html`
-    <style>
-      ${themeCss(args)}
-    </style>
-    <dt-location-map-item
-      placeholder="${placeholder}"
-      mapbox-token=${mapboxToken}
-      google-token=${googleToken}
-      metadata="${JSON.stringify(metadata)}"
-      onchange="${onchange}"
-      ?disabled=${disabled}
-      ?loading="${loading}"
-      ?saved="${saved}"
-      .open="${open}"
-      i18n="${JSON.stringify(i18n)}"
-    >
-    </dt-location-map-item>
-  `;
-}
+export const Empty = {};
 
-export const Empty = Template.bind({});
-Empty.args = {};
-
-export const CustomPlaceholder = Template.bind({});
-CustomPlaceholder.args = {
-  placeholder: 'Custom Placeholder',
-};
-
-export const SelectedValueMap = Template.bind({});
-SelectedValueMap.args = {
-  metadata: basicOptions[1],
-};
-export const SelectedValueAddress = Template.bind({});
-SelectedValueAddress.args = {
-  metadata: {
-    label: 'Custom address',
-    key: 'contact_address_1fe',
+export const CustomPlaceholder = {
+  args: {
+    placeholder: 'Custom Placeholder',
   },
 };
 
-export const GoogleGeocode = Template.bind({});
-GoogleGeocode.args = {
-  googleToken: GOOGLE_GEOCODE_TOKEN,
+export const SelectedValueMap = {
+  args: {
+    metadata: basicOptions[1],
+  },
 };
-
-export const Open = Template.bind({});
-Open.args = {
-  open: true,
-}
-
-export const AutoSave = Template.bind({});
-AutoSave.args = {
-  onchange: 'onAutoSave(event)',
-};
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-  value: [basicOptions[0]],
-  disabled: true,
-};
-
-export const Loading = Template.bind({});
-Loading.args = {
-  loading: true,
-};
-/*export const Saved = Template.bind({});
-Saved.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
+export const SelectedValueAddress = {
+  args: {
+    metadata: {
+      label: 'Custom address',
+      key: 'contact_address_1fe',
     },
-  ],
-  options: basicOptions,
-  saved: true,
-};*/
+  },
+};
 
-export const LocalizeRTL = Template.bind({});
-LocalizeRTL.decorators = [LocaleDecorator];
-LocalizeRTL.args = {
-  lang: 'ar',
-  dir: 'rtl',
-  label: 'حقل الموقع',
-  placeholder: 'اختر موقعا',
-  loading: true,
-  value: [
-    {
-      "grid_meta_id": "65",
-      "post_id": "43",
-      "post_type": "contacts",
-      "postmeta_id_location_grid": "1671",
-      "grid_id": "100366112",
-      "lng": "-73.9866",
-      "lat": "40.7306",
-      "level": "place",
-      "source": "user",
-      "label": "نيويورك ، نيويورك ، الولايات المتحدة"
-    },
-  ],
+export const GoogleGeocode = {
+  args: {
+    googleToken: GOOGLE_GEOCODE_TOKEN,
+  },
+};
+
+export const Open = {
+  args: {
+    open: true,
+  },
+};
+
+export const Disabled = {
+  args: {
+    value: [basicOptions[0]],
+    disabled: true,
+  },
+};
+
+export const Loading = {
+  args: {
+    loading: true,
+  },
+};
+
+export const Saved = {
+  args: {
+    value: [
+      {
+        id: '2',
+        label: 'qui est esse',
+      },
+    ],
+    options: basicOptions,
+    saved: true,
+  },
+};
+
+export const Error = {
+  args: {
+    error: 'Custom error message',
+  },
+};
+
+export const SelectedValueLoading = {
+  args: {
+    metadata: basicOptions[1],
+    loading: true,
+  },
+};
+
+export const SelectedValueSaved = {
+  args: {
+    metadata: basicOptions[1],
+    saved: true,
+  },
+};
+
+export const LocalizeRTL = {
+  decorators: [LocaleDecorator],
+  args: {
+    lang: 'ar',
+    dir: 'rtl',
+    label: 'حقل الموقع',
+    placeholder: 'اختر موقعا',
+    loading: true,
+    value: [
+      {
+        "grid_meta_id": "65",
+        "post_id": "43",
+        "post_type": "contacts",
+        "postmeta_id_location_grid": "1671",
+        "grid_id": "100366112",
+        "lng": "-73.9866",
+        "lat": "40.7306",
+        "level": "place",
+        "source": "user",
+        "label": "نيويورك ، نيويورك ، الولايات المتحدة"
+      },
+    ],
+  },
 };

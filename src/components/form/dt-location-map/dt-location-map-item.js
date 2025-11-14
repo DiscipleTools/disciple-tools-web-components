@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { msg } from '@lit/localize';
 import MapboxService from '../../../services/mapboxService.js';
 import GoogleGeocodeService from '../../../services/googleGeocodeService.js';
@@ -13,6 +14,7 @@ export default class DtLocationMapItem extends LitElement {
       placeholder: { type: String },
       mapboxToken: { type: String, attribute: 'mapbox-token' },
       googleToken: { type: String, attribute: 'google-token' },
+      validationMessage: { type: String },
       metadata: { type: Object },
       disabled: { type: Boolean },
       open: {
@@ -33,6 +35,8 @@ export default class DtLocationMapItem extends LitElement {
       },
       loading: { type: Boolean },
       saved: { type: Boolean },
+      error: { type: String },
+      invalid: { type: Boolean },
       filteredOptions: { type: Array, state: true },
     };
   }
@@ -206,6 +210,9 @@ export default class DtLocationMapItem extends LitElement {
           background-color: var(--dt-location-map-button-hover-background-color, #cc4b37);
           color: var(--dt-location-map-button-hover-color, #ffffff);
         }
+        .field-container.invalid {
+          border: 1px solid var(--dt-text-border-color-alert, var(--alert-color));
+        }
 
         .input-addon:disabled {
           background-color: var(--dt-form-disabled-background-color);
@@ -221,9 +228,8 @@ export default class DtLocationMapItem extends LitElement {
         /* === Inline Icons === */
         .icon-overlay {
           position: absolute;
-          inset-inline-end: 1rem;
           top: 0;
-          inset-inline-end: 3rem;
+          inset-inline-end: 3.5rem;
           height: 100%;
           display: flex;
           justify-content: center;
@@ -235,6 +241,9 @@ export default class DtLocationMapItem extends LitElement {
         }
         .icon-overlay.success {
           color: var(--success-color);
+        }
+        .icon-overlay.selected {
+          inset-inline-end: 6.25rem;
         }
       `,
     ];
@@ -316,7 +325,11 @@ export default class DtLocationMapItem extends LitElement {
   _clickOption(e) {
     const target = e.currentTarget ?? e.target;
     if (target && target.value) {
-      this._select(JSON.parse(target.value));
+      const targetData = JSON.parse(target.value);
+      this._select({
+          ...targetData,
+          key: this.metadata?.key,
+      });
     }
   }
 
@@ -351,6 +364,7 @@ export default class DtLocationMapItem extends LitElement {
         this._select({
           value: this.query,
           label: this.query,
+          key: this.metadata?.key,
         })
       }
     }
@@ -615,7 +629,7 @@ export default class DtLocationMapItem extends LitElement {
   }
 
   _renderOptions() {
-    let options = [];
+    const options = [];
     if (!this.filteredOptions.length) {
       if (this.loading) {
         options.push(html`<li><div>${msg('Loading...')}</div></li>`);
@@ -633,6 +647,14 @@ export default class DtLocationMapItem extends LitElement {
     return options;
   }
 
+  get classes() {
+    const classes = {
+      'field-container': true,
+      invalid: this.invalid,
+    }
+    return classes;
+  }
+
   render() {
     const optionListStyles = {
       display: this.open ? 'block' : 'none',
@@ -642,7 +664,7 @@ export default class DtLocationMapItem extends LitElement {
     const hasGeometry = this.metadata?.lat && this.metadata?.lng;
     return html`
       <div class="input-group">
-        <div class="field-container">
+        <div class="${classMap(this.classes)}">
           <input
             type="text"
             class="${this.disabled ? 'disabled' : null}"
@@ -685,13 +707,17 @@ export default class DtLocationMapItem extends LitElement {
         <ul class="option-list" style=${styleMap(optionListStyles)}>
           ${this._renderOptions()}
         </ul>
-        ${(this.touched && this.invalid) || this.error
-          ? html`<dt-exclamation-circle class="icon-overlay alert"></dt-exclamation-circle>`
-            : null}
+        ${this.invalid || this.error
+          ? html`<dt-icon
+            icon="mdi:alert-circle"
+            class="icon-overlay alert ${hasGeometry ? 'selected' : ''}"
+            tooltip="${this.validationMessage ? this.validationMessage : this.error}"
+            size="2rem"
+          ></dt-icon>` : null}
         ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>` : null}
+          ? html`<dt-spinner class="icon-overlay ${hasGeometry ? 'selected' : ''}"></dt-spinner>` : null}
         ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>` : null}
+          ? html`<dt-checkmark class="icon-overlay success ${hasGeometry ? 'selected' : ''}"></dt-checkmark>` : null}
       </div>
 
       <dt-map-modal

@@ -313,7 +313,7 @@ describe('dt-users-connection', () => {
     expect(optionList).not.to.contain('button[value="3"]');
   });
 
-  //not allowing to add new user
+  // not allowing to add new user
   // it('allows adding new option', async () => {
   //   const el = await fixture(
   //     html`<dt-users-connection options="${JSON.stringify(options)}" allowAdd></dt-users-connection>`

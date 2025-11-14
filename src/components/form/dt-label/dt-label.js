@@ -18,6 +18,10 @@ export class DtLabel extends DtBase {
         white-space: nowrap;
       }
 
+      .label {
+        text-overflow: ellipsis;
+        overflow: clip;
+      }
       .icon {
         height: var(--dt-label-font-size, 14px);
         width: auto;
@@ -70,11 +74,24 @@ export class DtLabel extends DtBase {
 
   firstUpdated() {
     // handle img or svg content that may be bigger than the space allotted
-    const slot = this.shadowRoot.querySelector('slot[name=icon-start]');
-    const elements = slot.assignedElements({ flatten: true });
-    for (const element of elements) {
+    const iconSlot = this.shadowRoot.querySelector('slot[name=icon-start]');
+    const iconElements = iconSlot.assignedElements({ flatten: true });
+    for (const element of iconElements) {
       element.style.height = '100%';
       element.style.width = 'auto';
+    }
+
+    // Get default slot content and set as title attribute
+    const defaultSlot = this.shadowRoot.querySelector('slot:not([name])');
+    const labelElement = this.shadowRoot.querySelector('.label');
+    if (defaultSlot && labelElement) {
+      const slotText = defaultSlot.assignedNodes()
+        .map(node => node.textContent?.trim())
+        .filter(text => text)
+        .join(' ');
+      if (slotText) {
+        labelElement.setAttribute('title', slotText);
+      }
     }
   }
 

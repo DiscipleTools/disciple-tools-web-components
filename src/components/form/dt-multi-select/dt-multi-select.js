@@ -180,7 +180,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
       ...super.properties,
       /** Placeholder displayed when no value is entered */
       placeholder: { type: String },
-      /** Override height of container **/
+      /** Override height of container * */
       containerHeight: {
         type: Number,
         state: true,
@@ -232,6 +232,10 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
     this._setFormValue(this.value);
+    if (this.query) {
+      this.query = '';
+    }
+    this._clearSearch();
   }
 
   _remove(e) {
@@ -255,6 +259,27 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
       // If option was de-selected while list was open, re-focus input
       if (this.open) {
         this.shadowRoot.querySelector('input').focus();
+      }
+    }
+  }
+
+  // Add or modify this method in your DtMultiSelect class
+
+  updated() {
+      super.updated();
+
+      this._updateContainerHeight();
+  }
+
+  _updateContainerHeight() {
+    const container = this.shadowRoot.querySelector('.field-container');
+
+    if (container) {
+      const newHeight = container.offsetHeight;
+      
+      if (this.containerHeight !== newHeight) {
+        this.containerHeight = newHeight;
+        this.requestUpdate();
       }
     }
   }
