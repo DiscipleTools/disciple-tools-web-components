@@ -2,6 +2,7 @@ import { css, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import DtFormBase from '../dt-form-base.js';
 import './dt-location-map-item.js';
+import '../../icons/dt-icon.js';
 
 export class DtLocationMap extends DtFormBase {
   static get properties() {
@@ -51,17 +52,13 @@ export class DtLocationMap extends DtFormBase {
           position: relative;
         }
 
-        .dt-btn {
-            /* Background, Text, and Border Color (Green-600 approximation: #16a34a) */
-            background-color: white;
-            color: #4CAF50;
-            border: 1px solid #4CAF50;
-            
-            /* Rounded Corners (rounded-xl approximation) */
-            border-radius: 0.5rem; 
-            
-            /* Padding (px-6 py-3 approximation) */
-            padding: 0.25rem .25rem;
+        .icon-btn {
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+            color: var(--success-color, #cc4b37);
+            transform: scale(1.5);
         }
       `,
     ];
@@ -225,6 +222,35 @@ export class DtLocationMap extends DtFormBase {
     }
   }
 
+  labelTemplate() {
+    if (!this.label) {
+      return '';
+    }
+
+    return html`
+      <dt-label
+        ?private=${this.private}
+        privateLabel="${this.privateLabel}"
+        iconAltText="${this.iconAltText}"
+        icon="${this.icon}"
+      >
+      ${!this.icon
+        ? html`<slot name="icon-start" slot="icon-start"></slot>`
+        : null}
+      ${this.label}
+      ${!this.open && (this.limit == 0 || this.locations.length < this.limit)
+        ? html`
+        <slot name="icon-end" slot="icon-end">
+          <button @click="${this.addNew}" class="icon-btn" id="add-item" type="button">
+            <dt-icon icon="mdi:plus"></dt-icon>
+          </button>
+        </slot>
+        `
+        : null}
+      </dt-label>
+    `;
+  }
+
   renderItem(opt, idx) {
     return html`
       <dt-location-map-item
@@ -253,9 +279,6 @@ export class DtLocationMap extends DtFormBase {
       ${this.labelTemplate()}
 
       ${repeat(this.locations || [], (opt) => opt.id, (opt, idx) => this.renderItem(opt, idx))}
-      ${!this.open && (this.limit == 0 || this.locations.length < this.limit)
-        ? html`<button @click="${this.addNew}" class="dt-btn">+ Add New</button>`
-        : null}
     `;
   }
 }
