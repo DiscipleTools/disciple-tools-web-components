@@ -113,7 +113,7 @@ export class DtLabel extends DtBase {
           </slot>
         </span>
         <slot></slot>
-        <span class="icon">
+        <span class="icon"  style="float: right; padding-right:1em;">
           <slot name="icon-end">
           </slot>
         </span>

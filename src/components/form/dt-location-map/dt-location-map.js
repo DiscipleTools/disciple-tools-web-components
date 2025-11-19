@@ -56,6 +56,7 @@ export class DtLocationMap extends DtFormBase {
           background-color: transparent;
           border: none;
           cursor: pointer;
+          height: .9em;
           padding: 0;
             color: var(--success-color, #cc4b37);
             transform: scale(1.5);
@@ -242,7 +243,7 @@ export class DtLocationMap extends DtFormBase {
         ? html`
         <slot name="icon-end" slot="icon-end">
           <button @click="${this.addNew}" class="icon-btn" id="add-item" type="button">
-            <dt-icon icon="mdi:plus"></dt-icon>
+            <dt-icon icon="mdi:plus-thick"></dt-icon>
           </button>
         </slot>
         `
