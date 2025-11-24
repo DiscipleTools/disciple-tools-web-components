@@ -507,15 +507,17 @@ export default class ComponentService {
           };
           break;
         case 'dt-location-map':
-          returnValue = value.filter(item => !(oldValue.includes(item) && !item.delete));
-          for (const item of oldValue) {
-            const itemExists = value.some(newItem =>
-                (item.id && newItem.id && item.id === newItem.id) ||
-                (item.key && newItem.key && item.key === newItem.key && (!newItem.lat || !newItem.lng))
-            );
-            if (!itemExists) {
-                item.delete = true;
-                returnValue.push(item);
+          returnValue = value.filter(item => !((oldValue || []).includes(item) && !item.delete));
+          if (oldValue) {
+            for (const item of oldValue) {
+              const itemExists = value.some(newItem =>
+                  (item.id && newItem.id && item.id === newItem.id) ||
+                  (item.key && newItem.key && item.key === newItem.key && (!newItem.lat || !newItem.lng))
+              );
+              if (!itemExists) {
+                  item.delete = true;
+                  returnValue.push(item);
+              }
             }
           }
           returnValue = {
