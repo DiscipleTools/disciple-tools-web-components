@@ -375,12 +375,17 @@ export default class DtLocationMapItem extends LitElement {
       // Google Places autocomplete will give a place_id instead of geometry details,
       // so we need to get those details by geocoding the full address from Place lookup
       this.loading = true;
-      const place = await this.googleGeocodeService.getPlaceDetails(metadata.label, this.locale);
+      const place = await this.googleGeocodeService.getPlaceDetails(metadata, this.locale);
       this.loading = false;
       if (place) {
-        metadata.lat = place.geometry.location.lat;
-        metadata.lng = place.geometry.location.lng;
-        metadata.level = place.types && place.types.length ? place.types[0] : null;
+        if (place.error) {
+          console.error(place.error);
+          this.error = place.error.message;
+          return;
+        }
+        metadata.lat = place.lat;
+        metadata.lng = place.lng;
+        metadata.level = place.level;
       }
     }
 
