@@ -9,23 +9,130 @@ export default class GoogleGeocodeService {
       document.body.appendChild(script);
     }
   }
-
   /**
    * Search places via Mapbox API
    * @param query
    * @returns {Promise<any>}
    */
   async getPlacePredictions(query, language = 'en') {
-    if (this.window.google) {
-      const service = new this.window.google.maps.places.AutocompleteService();
-      const { predictions } = await service.getPlacePredictions({
-        input: query,
-        language,
-      });
+    try {
+      const result = await this._getPlacePredictionsLegacy(query, language);
+      return result;
+    } catch (err) {
+      const suggestions = await this._getPlaceSuggestionsRest(query, language);
+      if (suggestions) {
+        return suggestions;
+      }
+      throw {
+        message: err,
+      }
+    }
+  }
 
-      return predictions;
+
+  /**
+   * Get predictions from Legacy Google Autocomplete Service
+   * @param query
+   * @param language
+   * @returns {Promise<unknown>}
+   * @private
+   */
+  async _getPlacePredictionsLegacy(query, language = 'en') {
+    if (this.window.google) {
+      return new Promise((resolve, reject) => {
+        // Catch auth failures if there is a referrer restriction
+        const service = new this.window.google.maps.places.AutocompleteService();
+        window.gm_authFailure = function() {
+          reject('Google Maps API Key authentication failed');
+        };
+        service.getPlacePredictions({
+          input: query,
+          language,
+        }, (predictions, status) => {
+          if (status !== 'OK') {
+            reject(status);
+
+          } else {
+            resolve(predictions);
+          }
+        });
+      })
     }
     return null;
+  }
+
+  /**
+   * Get predictions from Google Places Autocomplete REST API
+   * @param query
+   * @param language
+   * @returns {Promise<({description: *|string, place_id: string}|null)[]>}
+   * @private
+   */
+  async _getPlaceSuggestionsRest(query, language = 'en') {
+    // Legacy failed; fallback to Places v1 REST
+    const url =
+      'https://places.googleapis.com/v1/places:autocomplete?key=' +
+      encodeURIComponent(this.token);
+    const body = {
+      input: query,
+      // language,
+    };
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok && data.error) {
+      throw data.error;
+    }
+
+    const suggestions = Array.isArray(
+      data && data.suggestions,
+    )
+      ? data.suggestions
+      : [];
+
+    const googlePredictions = suggestions
+      .map((sug) =>
+        sug && sug.placePrediction
+          ? sug.placePrediction
+          : null,
+      )
+      .filter(Boolean);
+
+    const predictions = googlePredictions
+      .map((pred) => {
+        const placeId =
+          pred.placeId ||
+          (pred.place
+            ? String(pred.place).replace('places/', '')
+            : null);
+        const description =
+          (pred.text && pred.text.text) ||
+          [
+            pred.structuredFormat &&
+            pred.structuredFormat.mainText &&
+            pred.structuredFormat.mainText.text,
+            pred.structuredFormat &&
+            pred.structuredFormat.secondaryText &&
+            pred.structuredFormat.secondaryText.text,
+          ]
+            .filter(Boolean)
+            .join(', ');
+        return placeId && description
+          ? {
+            description,
+            place_id: placeId
+          }
+          : null;
+      })
+      .filter(Boolean);
+
+    return predictions;
   }
 
   /**

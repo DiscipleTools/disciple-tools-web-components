@@ -511,7 +511,7 @@ export default class DtLocationMapItem extends LitElement {
           this.loading = false;
         } catch (ex) {
           console.error(ex);
-          this.error = true;
+          this.error = ex.message || 'An error occurred while searching for locations.';
           this.loading = false;
           return;
         }
