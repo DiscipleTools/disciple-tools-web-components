@@ -21,8 +21,6 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         }
 
         .input-group {
-          display: flex;
-          flex-wrap: wrap; /* Allows tags to wrap to new lines */
           cursor: text; /* Indicates the area is clickable */
           color: var(--dt-multi-select-text-color, #0a0a0a);
         }

@@ -206,7 +206,9 @@ export class DtTags extends DtMultiSelect {
             link = window.SHAREDFUNCTIONS.create_url_for_list_query(this.postType, query, labels);
           }
           return html`
-          <div class="selected-option">
+          <div class="selected-option"
+              @click="${this._handleItemClick}"
+              @keydown="${this._handleItemClick}">
             <a
               href="${link || '#'}"
               ?disabled="${this.disabled}"
@@ -233,7 +235,9 @@ export class DtTags extends DtMultiSelect {
     return html`
       ${this.labelTemplate()}
 
-      <div class="input-group ${this.disabled ? 'disabled' : ''} ${this.allowAdd ? 'allowAdd' : ''}">
+      <div class="input-group ${this.disabled ? 'disabled' : ''} ${this.allowAdd ? 'allowAdd' : ''}"
+          @click="${this._handleDivClick}"
+          @keydown="${this._handleDivClick}">
         <div
           class="${classMap(this.classes)}"
           @click="${this._focusInput}"
