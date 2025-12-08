@@ -273,8 +273,11 @@ export default class DtLocationMapItem extends DtBase {
     if (this.mapboxToken) {
       this.mapboxService = new MapboxService(this.mapboxToken);
     }
+  }
 
-    if (this.googleToken) {
+  firstUpdated() {
+    // Only load Google Maps API for new/empty location items
+    if (this.googleToken && !this.metadata?.lat) {
       this.googleGeocodeService = new GoogleGeocodeService(this.googleToken, window, document);
     }
   }
