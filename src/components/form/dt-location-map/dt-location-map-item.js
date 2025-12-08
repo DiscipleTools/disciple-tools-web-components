@@ -1,13 +1,14 @@
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { msg } from '@lit/localize';
+import DtBase from '../../dt-base.js';
 import MapboxService from '../../../services/mapboxService.js';
 import GoogleGeocodeService from '../../../services/googleGeocodeService.js';
 import '../../icons/dt-icon.js';
 import './dt-map-modal.js';
 
-export default class DtLocationMapItem extends LitElement {
+export default class DtLocationMapItem extends DtBase {
   static get properties() {
     return {
       id: { type: String, reflect: true },

@@ -92,6 +92,19 @@ export default class DtBase extends LitElement {
       }
     }
 
+    // If this is nested in another component and we can't find a [lang] attribute,
+    // try to get the locale from the parent
+    if (!this.locale) {
+      const rootNode = this.getRootNode();
+      if (rootNode instanceof ShadowRoot && rootNode.host) {
+        const parentComponent = rootNode.host;
+        // Access attributes or properties of the parent component
+        if (parentComponent.locale) {
+          this.locale = parentComponent.locale;
+        }
+      }
+    }
+
     // if locale is changing, update lit-localize
     if (props && props.has('locale') && this.locale) {
       try {
