@@ -2,6 +2,10 @@
   "name": "@disciple.tools/web-components",
   "description": "Disciple.Tools Web components following open-wc recommendations",
   "author": "disciple.tools",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DiscipleTools/disciple-tools-web-components"
+  },
   "license": "GPL-2.0-or-later",
   "homepage": "https://github.com/DiscipleTools/disciple-tools-web-components",
   "version": "0.8.4",
