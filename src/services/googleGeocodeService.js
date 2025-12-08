@@ -4,9 +4,13 @@ export default class GoogleGeocodeService {
     this.window = window;
 
     if (!window.google?.maps?.places?.AutocompleteService) {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?libraries=places&key=${token}`;
-      document.body.appendChild(script);
+      // Check if a Google Maps script tag already exists (may still be loading)
+      const existingScript = document.querySelector('script[src*="maps.googleapis.com/maps/api/js"]');
+      if (!existingScript) {
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?libraries=places&key=${token}`;
+        document.body.appendChild(script);
+      }
     }
   }
   /**
