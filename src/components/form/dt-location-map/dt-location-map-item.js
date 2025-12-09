@@ -131,6 +131,7 @@ export default class DtLocationMapItem extends DtBase {
           font-weight: 300;
           line-height: 1.5;
           margin: 0;
+          height: 2.5rem;
           padding: var(--dt-form-padding, 0.5333333333rem);
           transition: var(
             --dt-form-transition,
@@ -184,6 +185,7 @@ export default class DtLocationMapItem extends DtBase {
           border-width: var(--dt-form-border-width, 1px);
         }
         .field-container .input-addon {
+          height: 2.5rem;
           flex-shrink: 1;
           display: flex;
           justify-content: center;
