@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone International Component Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .test-section h3 {
+            margin-top: 0;
+        }
+        dt-multi-text {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Phone International Component Test</h1>
+    
+    <div class="test-section">
+        <h3>Test 1: Empty Field Country Selection</h3>
+        <p>This field should allow country selection when empty and trigger change events.</p>
+        <dt-multi-text 
+            type="phone-intl" 
+            label="Empty Phone International"
+            placeholder="Select country and enter phone number">
+        </dt-multi-text>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 2: Full Width Layout</h3>
+        <p>This field should take the full width of its container.</p>
+        <dt-multi-text 
+            type="phone-intl" 
+            label="Full Width Phone International"
+            placeholder="This should be full width">
+        </dt-multi-text>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 3: Country Code Auto-Detection</h3>
+        <p>Try typing "+96112345678" in the phone input - it should detect Lebanon and switch to +961.</p>
+        <dt-multi-text 
+            type="phone-intl" 
+            label="Auto-Detection Test"
+            placeholder="Type +96112345678">
+        </dt-multi-text>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 4: Existing Values</h3>
+        <p>Pre-populated values showing dial code sizing and alignment.</p>
+        <dt-multi-text 
+            type="phone-intl" 
+            label="Pre-populated Phone Numbers"
+            value='[{"value": "+1 555-123-4567", "key": "phone1"}, {"value": "+44 20 7946 0958", "key": "phone2"}]'>
+        </dt-multi-text>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 5: Lebanon Number Test</h3>
+        <p>Testing with Lebanon (+961) dial code to check 40px min-width.</p>
+        <dt-multi-text 
+            type="phone-intl" 
+            label="Lebanon Number"
+            value='[{"value": "+961 12345678", "key": "phone1"}]'>
+        </dt-multi-text>
+    </div>
+
+    <script type="module" src="./dist/index.js"></script>
+    <script>
+        // Add change event listeners to test events
+        document.querySelectorAll('dt-multi-text').forEach((el, index) => {
+            el.addEventListener('change', (e) => {
+                console.log(`Test ${index + 1} change event:`, e.detail);
+            });
+        });
+    </script>
+</body>
+</html>
