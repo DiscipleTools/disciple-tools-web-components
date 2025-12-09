@@ -54,7 +54,6 @@ export class DtMapModal extends DtBase {
       script.src = 'https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js';
       script.onload = this.initMap.bind(this);
       document.body.appendChild(script);
-      console.log('injected script')
     } else {
       this.initMap();
     }
@@ -148,7 +147,7 @@ export class DtMapModal extends DtBase {
   }
 
   render() {
-    return html`      
+    return html`
       <dt-modal
         .title=${this.metadata?.label}
         ?isopen=${this.isOpen}
@@ -158,10 +157,10 @@ export class DtMapModal extends DtBase {
         <div slot="content">
           <div class="map" id="map"></div>
         </div>
-       
+
         ${this.canEdit ? html`<div slot="close-button">${msg('Save')}</div>` : null}
       </dt-modal>
-      
+
       <link href='https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css' rel='stylesheet' />
     `;
   }
