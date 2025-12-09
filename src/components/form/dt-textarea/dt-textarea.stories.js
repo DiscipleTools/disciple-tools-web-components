@@ -2,7 +2,11 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
-import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
+import {
+  FormDecorator,
+  LocaleDecorator,
+  onAutoSave,
+} from '../../../stories-utils.js';
 import './dt-textarea.js';
 
 export default {
@@ -29,7 +33,10 @@ export default {
   args: {
     onChange: action('on-change'),
   },
-  render: (args) => {
+  parameters: {
+    viewport: { defaultViewport: 'desktop' },
+  },
+  render: args => {
     const {
       id = 'name',
       name = 'field-name',
@@ -48,27 +55,27 @@ export default {
       onChange,
     } = args;
     return html`
-    <dt-textarea
-      id=${ifDefined(id)}
-      name=${ifDefined(name)}
-      label=${ifDefined(label)}
-      value=${ifDefined(value)}
-      ?disabled=${disabled}
-      ?required=${required}
-      requiredMessage=${ifDefined(requiredMessage)}
-      icon="${ifDefined(icon)}"
-      iconAltText="${ifDefined(iconAltText)}"
-      ?private=${args.private}
-      privateLabel="${ifDefined(privateLabel)}"
-      ?loading=${loading}
-      ?saved=${saved}
-      error="${ifDefined(error)}"
-      @change=${onChange}
-    >
-      ${slot}
-    </dt-textarea>
-  `;
-  }
+      <dt-textarea
+        id=${ifDefined(id)}
+        name=${ifDefined(name)}
+        label=${ifDefined(label)}
+        value=${ifDefined(value)}
+        ?disabled=${disabled}
+        ?required=${required}
+        requiredMessage=${ifDefined(requiredMessage)}
+        icon="${ifDefined(icon)}"
+        iconAltText="${ifDefined(iconAltText)}"
+        ?private=${args.private}
+        privateLabel="${ifDefined(privateLabel)}"
+        ?loading=${loading}
+        ?saved=${saved}
+        error="${ifDefined(error)}"
+        @change=${onChange}
+      >
+        ${slot}
+      </dt-textarea>
+    `;
+  },
 };
 
 export const Empty = {};
@@ -77,26 +84,26 @@ export const SvgIcon = {
   args: {
     icon: null,
     slot: 'SvgIcon',
-  }
+  },
 };
 
 export const EnteredValue = {
   args: {
     value: 'Lorem Ipsum',
-  }
+  },
 };
 
 export const AutoSave = {
   args: {
     onChange: onAutoSave,
-  }
+  },
 };
 
 export const Disabled = {
   args: {
     disabled: true,
     value: 'Lorem Ipsum',
-  }
+  },
 };
 
 export const PrivateField = {
@@ -104,39 +111,48 @@ export const PrivateField = {
     private: true,
     value: 'Lorem Ipsum',
     privateLabel: 'This is a custom tooltip',
-  }
+  },
 };
 
 export const Loading = {
   args: {
     loading: true,
-  }
+  },
 };
 
 export const Saved = {
   args: {
     saved: true,
-  }
+  },
 };
 
 export const Error = {
   args: {
     error: 'Custom error message',
-  }
+  },
+};
+
+export const IconPosition = {
+  parameters: { viewport: { defaultViewport: 'mobile1' } },
+  args: {
+    value:
+      'Long option that is too long to fit in the field. It should wrap to a new line.',
+    error: 'Top-right within inline-end padding',
+  },
 };
 
 export const BasicForm = {
   decorators: [FormDecorator],
   args: {
     value: 'Lorem Ipsum',
-  }
+  },
 };
 
 export const Required = {
   decorators: [FormDecorator],
   args: {
     required: true,
-  }
+  },
 };
 
 export const RequiredCustomMessage = {
@@ -144,7 +160,7 @@ export const RequiredCustomMessage = {
   args: {
     required: true,
     requiredMessage: 'Custom error message',
-  }
+  },
 };
 
 export const LocalizeRTL = {
@@ -154,5 +170,5 @@ export const LocalizeRTL = {
     dir: 'rtl',
     label: 'اسم الإدخال',
     value: 'راد أن يشع',
-  }
+  },
 };

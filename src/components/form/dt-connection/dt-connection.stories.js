@@ -2,7 +2,11 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator, FormDecorator, onAutoSave } from '../../../stories-utils.js';
+import {
+  LocaleDecorator,
+  FormDecorator,
+  onAutoSave,
+} from '../../../stories-utils.js';
 import './dt-connection.js';
 
 const basicOptions = [
@@ -54,7 +58,8 @@ const basicOptions = [
   },
   {
     id: 8,
-    label: 'Option 8',
+    label:
+      'Long option that is too long to fit in the dropdown. It should be truncated with an ellipsis.',
     link: '/#opt8',
   },
 ];
@@ -185,6 +190,20 @@ SelectedValue.args = {
     },
   ],
   options: basicOptions,
+};
+
+export const SmallWidth = Template.bind({});
+SmallWidth.parameters = { viewport: { defaultViewport: 'mobile1' } };
+SmallWidth.args = {
+  value: [basicOptions[7]],
+  options: basicOptions,
+};
+export const SmallWidthWithAdd = Template.bind({});
+SmallWidthWithAdd.parameters = { viewport: { defaultViewport: 'mobile1' } };
+SmallWidthWithAdd.args = {
+  value: [basicOptions[7]],
+  options: basicOptions,
+  allowAdd: true,
 };
 
 export const OptionsOpen = Template.bind({});

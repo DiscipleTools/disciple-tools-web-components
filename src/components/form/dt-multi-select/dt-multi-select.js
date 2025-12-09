@@ -54,6 +54,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           text-transform: none;
           display: flex;
           flex-wrap: wrap;
+          min-width: 0;
         }
 
         .field-container input,
@@ -75,6 +76,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           margin-inline-end: 4px;
           margin-block-start: 0.375rem;
           box-sizing: border-box;
+          min-width: 0;
         }
         .selected-option > *:first-child {
           padding-inline-start: 4px;
