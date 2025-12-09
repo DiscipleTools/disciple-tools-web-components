@@ -2,7 +2,11 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator, FormDecorator, onAutoSave } from '../../../stories-utils.js';
+import {
+  LocaleDecorator,
+  FormDecorator,
+  onAutoSave,
+} from '../../../stories-utils.js';
 import './dt-tags.js';
 
 const basicOptions = [
@@ -35,7 +39,9 @@ const basicOptions = [
     link: '/#opt7',
   },
   {
-    id: 'Option 8',
+    id: 'opt8',
+    label:
+      'Long option that is too long to fit in the dropdown. It should be truncated with an ellipsis.',
     link: '/#opt8',
   },
 ];
@@ -161,18 +167,27 @@ SelectedValue.args = {
 export const SelectedValueWithLabels = Template.bind({});
 SelectedValueWithLabels.args = {
   value: ['opt1'],
-  options: [{
-    id: 'opt1',
-    label: 'Option 1',
-  }, {
-    id: 'opt2',
-    label: 'Option 2',
-  }],
+  options: [
+    {
+      id: 'opt1',
+      label: 'Option 1',
+    },
+    {
+      id: 'opt2',
+      label: 'Option 2',
+    },
+  ],
+};
+export const SmallWidth = Template.bind({});
+SmallWidth.parameters = { viewport: { defaultViewport: 'mobile1' } };
+SmallWidth.args = {
+  value: ['opt8'],
+  options: basicOptions,
 };
 
 export const LoadOptionsFromAPI = Template.bind({});
 LoadOptionsFromAPI.args = {
-  'onLoad': onLoadEvent
+  onLoad: onLoadEvent,
 };
 
 export const AddNewOption = Template.bind({});
@@ -224,7 +239,7 @@ Required.decorators = [FormDecorator];
 Required.args = {
   required: true,
   options: basicOptions,
-}
+};
 
 export const RequiredCustomMessage = Template.bind({});
 RequiredCustomMessage.args = {

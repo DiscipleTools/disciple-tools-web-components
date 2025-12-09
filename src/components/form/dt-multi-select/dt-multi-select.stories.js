@@ -2,7 +2,11 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator, FormDecorator, onAutoSave } from '../../../stories-utils.js';
+import {
+  LocaleDecorator,
+  FormDecorator,
+  onAutoSave,
+} from '../../../stories-utils.js';
 import './dt-multi-select.js';
 
 const basicOptions = [
@@ -36,7 +40,8 @@ const basicOptions = [
   },
   {
     id: 'opt8',
-    label: 'Option 8',
+    label:
+      'Long option that is too long to fit in the dropdown. It should be truncated with an ellipsis.',
   },
 ];
 export default {
@@ -52,6 +57,9 @@ export default {
   },
   args: {
     onChange: action('on-change'),
+  },
+  parameters: {
+    viewport: { defaultViewport: 'desktop' },
   },
 };
 
@@ -126,8 +134,15 @@ SelectedValue.args = {
   options: basicOptions,
 };
 export const OptionsWrap = Template.bind({});
+OptionsWrap.parameters = { viewport: { defaultViewport: 'mobile1' } };
 OptionsWrap.args = {
   value: ['opt1', 'opt2', 'opt3', 'opt4', 'opt5', 'opt6', 'opt7'],
+  options: basicOptions,
+};
+export const SmallWidth = Template.bind({});
+SmallWidth.parameters = { viewport: { defaultViewport: 'mobile1' } };
+SmallWidth.args = {
+  value: ['opt8'],
   options: basicOptions,
 };
 export const OptionsOpen = Template.bind({});
@@ -171,6 +186,13 @@ export const Error = Template.bind({});
 Error.args = {
   error: 'Custom error message',
 };
+export const IconPosition = Template.bind({});
+IconPosition.parameters = { viewport: { defaultViewport: 'mobile1' } };
+IconPosition.args = {
+  value: ['opt8', 'opt2'],
+  options: basicOptions,
+  error: 'Should be bottom-right',
+};
 
 export const BasicForm = Template.bind({});
 BasicForm.decorators = [FormDecorator];
@@ -184,7 +206,7 @@ Required.decorators = [FormDecorator];
 Required.args = {
   required: true,
   options: basicOptions,
-}
+};
 
 export const RequiredCustomMessage = Template.bind({});
 RequiredCustomMessage.args = {
@@ -192,7 +214,6 @@ RequiredCustomMessage.args = {
   requiredMessage: 'Custom error message',
   options: basicOptions,
 };
-
 
 export const LocalizeRTL = Template.bind({});
 LocalizeRTL.decorators = [LocaleDecorator];

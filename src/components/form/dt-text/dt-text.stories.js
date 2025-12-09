@@ -33,6 +33,9 @@ export default {
   args: {
     onChange: action('on-change'),
   },
+  parameters: {
+    viewport: { defaultViewport: 'desktop' },
+  },
   render: args => {
     const {
       id = 'name',
@@ -132,6 +135,15 @@ export const ErrorSlot = {
   args: {
     error: '[Should show link here]',
     slot: 'ErrorSlot',
+  },
+};
+
+export const IconPosition = {
+  parameters: { viewport: { defaultViewport: 'mobile1' } },
+  args: {
+    value:
+      'Long option that is too long to fit in the field. It should overflow.',
+    error: 'Top-right within inline-end padding',
   },
 };
 
