@@ -23,7 +23,7 @@ export class DtLocationMap extends DtFormBase {
       },
       limit: {
         type: Number,
-        attribute: 'limit',      
+        attribute: 'limit',
       },
       onchange: { type: String },
       mapboxToken: {
@@ -46,6 +46,8 @@ export class DtLocationMap extends DtFormBase {
         }
         .input-group {
           display: flex;
+          flex-direction: column;
+          gap: 5px;
         }
 
         .field-container {
@@ -56,10 +58,10 @@ export class DtLocationMap extends DtFormBase {
           background-color: transparent;
           border: none;
           cursor: pointer;
-          height: .9em;
+          height: 0.9em;
           padding: 0;
-            color: var(--success-color, #cc4b37);
-            transform: scale(1.5);
+          color: var(--success-color, #cc4b37);
+          transform: scale(1.5);
         }
       `,
     ];
@@ -69,9 +71,11 @@ export class DtLocationMap extends DtFormBase {
     super();
     this.limit = 0; // 0 means no limit
     this.value = [];
-    this.locations = [{
-      id: Date.now(),
-    }];
+    this.locations = [
+      {
+        id: Date.now(),
+      },
+    ];
   }
 
   _setFormValue(value) {
@@ -82,12 +86,12 @@ export class DtLocationMap extends DtFormBase {
   willUpdate(...args) {
     super.willUpdate(...args);
     if (this.value) {
-      if (this.value.filter((opt) => !opt.id)) {
+      if (this.value.filter(opt => !opt.id)) {
         this.value = [
-          ...this.value.map((opt) => ({
+          ...this.value.map(opt => ({
             ...opt,
             id: opt.id || opt.grid_meta_id,
-          }))
+          })),
         ];
       }
     }
@@ -128,16 +132,15 @@ export class DtLocationMap extends DtFormBase {
     if (!this.disabled && (this.open || !this.value || !this.value.length)) {
       this.open = true;
       const currentLocations = (this.value || []).filter(i => i.label);
-      const canAddMore = this.limit === 0 || currentLocations.length < this.limit;
-      
+      const canAddMore =
+        this.limit === 0 || currentLocations.length < this.limit;
+
       this.locations = [
         ...currentLocations,
-        ...(canAddMore ? [{ id: Date.now() }] : [])
+        ...(canAddMore ? [{ id: Date.now() }] : []),
       ];
     } else {
-      this.locations = [
-        ...(this.value || []).filter(i => i.label),
-      ];
+      this.locations = [...(this.value || []).filter(i => i.label)];
     }
   }
 
@@ -151,12 +154,14 @@ export class DtLocationMap extends DtFormBase {
     const newLocation = {
       ...evt.detail.metadata,
       id: Date.now(),
-    }
+    };
     this.value = [
-      ...(this.value || []).filter(i => 
-        i.label && 
-        (!i.key || i.key !== newLocation.key) &&
-        (!i.id || i.id !== newLocation.id)),
+      ...(this.value || []).filter(
+        i =>
+          i.label &&
+          (!i.key || i.key !== newLocation.key) &&
+          (!i.id || i.id !== newLocation.id),
+      ),
       newLocation,
     ];
     this.updateLocationList();
@@ -179,15 +184,18 @@ export class DtLocationMap extends DtFormBase {
     const gridMetaId = item?.grid_meta_id;
     if (gridMetaId) {
       // remove this item from the value
-      this.value = (this.value || []).filter(m => m.grid_meta_id !== gridMetaId);
+      this.value = (this.value || []).filter(
+        m => m.grid_meta_id !== gridMetaId,
+      );
     } else if (item.lat && item.lng) {
       // remove by lat/lng
-      this.value = (this.value || []).filter(m => m.lat !== item.lat && m.lng !== item.lng);
+      this.value = (this.value || []).filter(
+        m => m.lat !== item.lat && m.lng !== item.lng,
+      );
     } else {
       // if value has no lat/lng, remove item by key/id
-      this.value = (this.value || []).filter(m => 
-        (!m.key || m.key !== item.key) &&
-        (!m.id || m.id !== item.id)
+      this.value = (this.value || []).filter(
+        m => (!m.key || m.key !== item.key) && (!m.id || m.id !== item.id),
       );
     }
 
@@ -235,19 +243,24 @@ export class DtLocationMap extends DtFormBase {
         iconAltText="${this.iconAltText}"
         icon="${this.icon}"
       >
-      ${!this.icon
-        ? html`<slot name="icon-start" slot="icon-start"></slot>`
-        : null}
-      ${this.label}
-      ${!this.open && (this.limit == 0 || this.locations.length < this.limit)
-        ? html`
-        <slot name="icon-end" slot="icon-end">
-          <button @click="${this.addNew}" class="icon-btn" id="add-item" type="button">
-            <dt-icon icon="mdi:plus-thick"></dt-icon>
-          </button>
-        </slot>
-        `
-        : null}
+        ${!this.icon
+          ? html`<slot name="icon-start" slot="icon-start"></slot>`
+          : null}
+        ${this.label}
+        ${!this.open && (this.limit == 0 || this.locations.length < this.limit)
+          ? html`
+              <slot name="icon-end" slot="icon-end">
+                <button
+                  @click="${this.addNew}"
+                  class="icon-btn"
+                  id="add-item"
+                  type="button"
+                >
+                  <dt-icon icon="mdi:plus-thick"></dt-icon>
+                </button>
+              </slot>
+            `
+          : null}
       </dt-label>
     `;
   }
@@ -263,10 +276,8 @@ export class DtLocationMap extends DtFormBase {
         @select=${this.selectLocation}
         ?disabled=${this.disabled}
         ?invalid=${this.invalid && this.touched}
-        validationMessage=${this.internals.validationMessage}
         ?loading=${idx === 0 ? this.loading : false}
         ?saved=${idx === 0 ? this.saved : false}
-        error=${idx === 0 ? this.error : ''}
       ></dt-location-map-item>
     `;
   }
@@ -278,8 +289,14 @@ export class DtLocationMap extends DtFormBase {
     });
     return html`
       ${this.labelTemplate()}
-
-      ${repeat(this.locations || [], (opt) => opt.id, (opt, idx) => this.renderItem(opt, idx))}
+      <div class="input-group">
+        ${repeat(
+          this.locations || [],
+          opt => opt.id,
+          (opt, idx) => this.renderItem(opt, idx),
+        )}
+        ${this.renderError()} ${this.renderIconInvalid()}
+      </div>
     `;
   }
 }

@@ -14,47 +14,45 @@ const GOOGLE_GEOCODE_TOKEN = import.meta.env.VITE_GOOGLE_GEOCODE_TOKEN;
 
 const basicOptions = [
   {
-    "grid_meta_id": "65",
-    "post_id": "43",
-    "post_type": "contacts",
-    "postmeta_id_location_grid": "1671",
-    "grid_id": "100366112",
-    "lng": "-73.9866",
-    "lat": "40.7306",
-    "level": "place",
-    "source": "user",
-    "label": "New York, New York, United States"
+    grid_meta_id: '65',
+    post_id: '43',
+    post_type: 'contacts',
+    postmeta_id_location_grid: '1671',
+    grid_id: '100366112',
+    lng: '-73.9866',
+    lat: '40.7306',
+    level: 'place',
+    source: 'user',
+    label: 'New York, New York, United States',
   },
   {
-    "grid_meta_id": "66",
-    "post_id": "43",
-    "post_type": "contacts",
-    "postmeta_id_location_grid": "1673",
-    "grid_id": "100364858",
-    "lng": "-87.624421",
-    "lat": "41.875562",
-    "level": "place",
-    "source": "user",
-    "label": "Chicago, Illinois, United States"
+    grid_meta_id: '66',
+    post_id: '43',
+    post_type: 'contacts',
+    postmeta_id_location_grid: '1673',
+    grid_id: '100364858',
+    lng: '-87.624421',
+    lat: '41.875562',
+    level: 'place',
+    source: 'user',
+    label: 'Chicago, Illinois, United States',
   },
   {
-    "grid_meta_id": "67",
-    "post_id": "43",
-    "post_type": "contacts",
-    "postmeta_id_location_grid": "1675",
-    "grid_id": "100364452",
-    "lng": "-118.242766",
-    "lat": "34.053691",
-    "level": "place",
-    "source": "user",
-    "label": "Los Angeles, California, United States"
+    grid_meta_id: '67',
+    post_id: '43',
+    post_type: 'contacts',
+    postmeta_id_location_grid: '1675',
+    grid_id: '100364452',
+    lng: '-118.242766',
+    lat: '34.053691',
+    level: 'place',
+    source: 'user',
+    label: 'Los Angeles, California, United States',
   },
   {
-    "label": [
-      "Test"
-    ],
-    "key": "contact_address_861"
-  }
+    label: ['Test'],
+    key: 'contact_address_861',
+  },
 ];
 export default {
   title: 'Components/Form/Location Meta',
@@ -241,22 +239,22 @@ export const PrivateField = {
 
 export const Loading = {
   args: {
-    value: [basicOptions[0]],
+    value: [basicOptions[0], basicOptions[1]],
     loading: true,
   },
 };
 
 export const Saved = {
   args: {
-    value: [basicOptions[0]],
+    value: [basicOptions[0], basicOptions[1]],
     saved: true,
   },
 };
 
 export const Error = {
   args: {
-    value: [basicOptions[0]],
-    error: 'There was an error',
+    value: [basicOptions[0], basicOptions[1]],
+    error: 'Custom error message',
   },
 };
 
@@ -292,16 +290,16 @@ export const LocalizeRTL = {
     placeholder: 'اختر موقعا',
     value: [
       {
-        "grid_meta_id": "65",
-        "post_id": "43",
-        "post_type": "contacts",
-        "postmeta_id_location_grid": "1671",
-        "grid_id": "100366112",
-        "lng": "-73.9866",
-        "lat": "40.7306",
-        "level": "place",
-        "source": "user",
-        "label": "نيويورك ، نيويورك ، الولايات المتحدة"
+        grid_meta_id: '65',
+        post_id: '43',
+        post_type: 'contacts',
+        postmeta_id_location_grid: '1671',
+        grid_id: '100366112',
+        lng: '-73.9866',
+        lat: '40.7306',
+        level: 'place',
+        source: 'user',
+        label: 'نيويورك ، نيويورك ، الولايات المتحدة',
       },
     ],
   },

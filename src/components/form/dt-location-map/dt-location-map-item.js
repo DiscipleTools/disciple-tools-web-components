@@ -54,7 +54,6 @@ export default class DtLocationMapItem extends DtBase {
 
         .input-group {
           color: var(--dt-multi-select-text-color, #0a0a0a);
-          margin-bottom: 1rem;
         }
         .input-group.disabled input,
         .input-group.disabled .field-container {
@@ -170,7 +169,6 @@ export default class DtLocationMapItem extends DtBase {
         .field-container {
           --dt-location-map-border-radius: var(--dt-form-border-radius, 0);
           display: flex;
-          margin-bottom: 0.5rem;
         }
         .field-container > *:first-child {
           border-start-start-radius: var(--dt-location-map-border-radius);
@@ -195,7 +193,8 @@ export default class DtLocationMapItem extends DtBase {
           border-collapse: collapse;
           color: var(--dt-location-map-button-color, #cc4b37);
           background-color: var(--dt-location-map-background-color, buttonface);
-          border: var(--dt-form-border-width, 1px) solid var(--dt-location-map-border-color);
+          border: var(--dt-form-border-width, 1px) solid
+            var(--dt-location-map-border-color);
           box-shadow: var(
             --dt-location-map-box-shadow,
             var(
@@ -210,11 +209,15 @@ export default class DtLocationMapItem extends DtBase {
           font-size: var(--dt-location-map-icon-size, 1rem);
         }
         .field-container .input-addon:hover {
-          background-color: var(--dt-location-map-button-hover-background-color, #cc4b37);
+          background-color: var(
+            --dt-location-map-button-hover-background-color,
+            #cc4b37
+          );
           color: var(--dt-location-map-button-hover-color, #ffffff);
         }
         .field-container.invalid {
-          border: 1px solid var(--dt-text-border-color-alert, var(--alert-color));
+          border: 1px solid
+            var(--dt-text-border-color-alert, var(--alert-color));
         }
 
         .input-addon:disabled {
@@ -280,7 +283,11 @@ export default class DtLocationMapItem extends DtBase {
   firstUpdated() {
     // Only load Google Maps API for new/empty location items
     if (this.googleToken && !this.metadata?.lat) {
-      this.googleGeocodeService = new GoogleGeocodeService(this.googleToken, window, document);
+      this.googleGeocodeService = new GoogleGeocodeService(
+        this.googleToken,
+        window,
+        document,
+      );
     }
   }
 
@@ -298,7 +305,7 @@ export default class DtLocationMapItem extends DtBase {
     if (!currentValue) {
       container.style.setProperty(
         '--container-width',
-        `${container.clientWidth}px`
+        `${container.clientWidth}px`,
       );
     }
   }
@@ -333,8 +340,8 @@ export default class DtLocationMapItem extends DtBase {
     if (target && target.value) {
       const targetData = JSON.parse(target.value);
       this._select({
-          ...targetData,
-          key: this.metadata?.key,
+        ...targetData,
+        key: this.metadata?.key,
       });
     }
   }
@@ -371,7 +378,7 @@ export default class DtLocationMapItem extends DtBase {
           value: this.query,
           label: this.query,
           key: this.metadata?.key,
-        })
+        });
       }
     }
   }
@@ -381,7 +388,10 @@ export default class DtLocationMapItem extends DtBase {
       // Google Places autocomplete will give a place_id instead of geometry details,
       // so we need to get those details by geocoding the full address from Place lookup
       this.loading = true;
-      const place = await this.googleGeocodeService.getPlaceDetails(metadata, this.locale);
+      const place = await this.googleGeocodeService.getPlaceDetails(
+        metadata,
+        this.locale,
+      );
       this.loading = false;
       if (place) {
         if (place.error) {
@@ -485,7 +495,7 @@ export default class DtLocationMapItem extends DtBase {
   _listHighlightNext() {
     this.activeIndex = Math.min(
       this.filteredOptions.length,
-      this.activeIndex + 1
+      this.activeIndex + 1,
     );
   }
 
@@ -505,9 +515,13 @@ export default class DtLocationMapItem extends DtBase {
         this.loading = true;
 
         try {
-          const predictions = await this.googleGeocodeService.getPlacePredictions(this.query, this.locale);
+          const predictions =
+            await this.googleGeocodeService.getPlacePredictions(
+              this.query,
+              this.locale,
+            );
 
-          this.filteredOptions = (predictions || []).map((i) => ({
+          this.filteredOptions = (predictions || []).map(i => ({
             label: i.description,
             place_id: i.place_id,
             source: 'user',
@@ -517,21 +531,25 @@ export default class DtLocationMapItem extends DtBase {
           this.loading = false;
         } catch (ex) {
           console.error(ex);
-          this.error = ex.message || 'An error occurred while searching for locations.';
+          this.error =
+            ex.message || 'An error occurred while searching for locations.';
           this.loading = false;
           return;
         }
       } else if (this.mapboxToken && this.mapboxService) {
         this.loading = true;
 
-        const results = await this.mapboxService.searchPlaces(this.query, this.locale);
+        const results = await this.mapboxService.searchPlaces(
+          this.query,
+          this.locale,
+        );
 
-        this.filteredOptions = results.map((i) => ({
+        this.filteredOptions = results.map(i => ({
           lng: i.center[0],
           lat: i.center[1],
           level: i.place_type[0],
           label: i.place_name,
-          source: 'user'
+          source: 'user',
         }));
 
         this.loading = false;
@@ -566,9 +584,7 @@ export default class DtLocationMapItem extends DtBase {
     }
   }
 
-  _change() {
-
-  }
+  _change() {}
 
   _delete() {
     const options = {
@@ -581,7 +597,9 @@ export default class DtLocationMapItem extends DtBase {
   }
 
   _openMapModal() {
-    this.shadowRoot.querySelector('dt-map-modal').dispatchEvent(new Event('open'));
+    this.shadowRoot
+      .querySelector('dt-map-modal')
+      .dispatchEvent(new Event('open'));
   }
 
   async _onMapModalSubmit(e) {
@@ -591,7 +609,11 @@ export default class DtLocationMapItem extends DtBase {
 
       // reverse geocode location and save
       if (this.googleGeocodeService) {
-        const results = await this.googleGeocodeService.reverseGeocode(lng, lat, this.locale);
+        const results = await this.googleGeocodeService.reverseGeocode(
+          lng,
+          lat,
+          this.locale,
+        );
         if (results && results.length) {
           const place = results[0];
           this._select({
@@ -603,7 +625,11 @@ export default class DtLocationMapItem extends DtBase {
           });
         }
       } else if (this.mapboxService) {
-        const results = await this.mapboxService.reverseGeocode(lng, lat, this.locale);
+        const results = await this.mapboxService.reverseGeocode(
+          lng,
+          lat,
+          this.locale,
+        );
         if (results && results.length) {
           const place = results[0];
           this._select({
@@ -630,8 +656,8 @@ export default class DtLocationMapItem extends DtBase {
           @touchend="${this._touchEnd}"
           tabindex="-1"
           class="${this.activeIndex > -1 && this.activeIndex === idx
-      ? 'active'
-      : ''}"
+            ? 'active'
+            : ''}"
         >
           ${label ?? opt.label}
         </button>
@@ -648,13 +674,21 @@ export default class DtLocationMapItem extends DtBase {
         options.push(html`<li><div>${msg('No Data Available')}</div></li>`);
       }
     } else {
-      options.push(...this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx)));
+      options.push(
+        ...this.filteredOptions.map((opt, idx) => this._renderOption(opt, idx)),
+      );
     }
 
-    options.push(this._renderOption({
-      value: this.query,
-      label: this.query,
-    }, (this.filteredOptions || []).length, html`<strong>${msg('Use')}: "${this.query}"</strong>`));
+    options.push(
+      this._renderOption(
+        {
+          value: this.query,
+          label: this.query,
+        },
+        (this.filteredOptions || []).length,
+        html`<strong>${msg('Use')}: "${this.query}"</strong>`,
+      ),
+    );
     return options;
   }
 
@@ -662,7 +696,7 @@ export default class DtLocationMapItem extends DtBase {
     const classes = {
       'field-container': true,
       invalid: this.invalid,
-    }
+    };
     return classes;
   }
 
@@ -688,47 +722,56 @@ export default class DtLocationMapItem extends DtBase {
             @keyup="${this._inputKeyUp}"
           />
 
-          ${existingValue && hasGeometry ? html`
-          <button
-            class="input-addon btn-map"
-            @click=${this._openMapModal}
-            ?disabled=${this.disabled}
-          >
-            <slot name="map-icon"><dt-icon icon="mdi:map"></dt-icon></slot>
-          </button>
-          ` : null }
-          ${existingValue ? html`
-          <button
-            class="input-addon btn-delete"
-            @click=${this._delete}
-            ?disabled=${this.disabled}
-          >
-            <slot name="delete-icon"><dt-icon icon="mdi:trash-can-outline"></dt-icon></slot>
-          </button>
-          ` : html`
-          <button
-            class="input-addon btn-pin"
-            @click=${this._openMapModal}
-            ?disabled=${this.disabled}
-          >
-            <slot name="pin-icon"><dt-icon icon="mdi:map-marker-radius"></dt-icon></slot>
-          </button>
-          ` }
+          ${existingValue && hasGeometry
+            ? html`
+                <button
+                  class="input-addon btn-map"
+                  @click=${this._openMapModal}
+                  ?disabled=${this.disabled}
+                >
+                  <slot name="map-icon"
+                    ><dt-icon icon="mdi:map"></dt-icon
+                  ></slot>
+                </button>
+              `
+            : null}
+          ${existingValue
+            ? html`
+                <button
+                  class="input-addon btn-delete"
+                  @click=${this._delete}
+                  ?disabled=${this.disabled}
+                >
+                  <slot name="delete-icon"
+                    ><dt-icon icon="mdi:trash-can-outline"></dt-icon
+                  ></slot>
+                </button>
+              `
+            : html`
+                <button
+                  class="input-addon btn-pin"
+                  @click=${this._openMapModal}
+                  ?disabled=${this.disabled}
+                >
+                  <slot name="pin-icon"
+                    ><dt-icon icon="mdi:map-marker-radius"></dt-icon
+                  ></slot>
+                </button>
+              `}
         </div>
         <ul class="option-list" style=${styleMap(optionListStyles)}>
           ${this._renderOptions()}
         </ul>
-        ${this.invalid || this.error
-          ? html`<dt-icon
-            icon="mdi:alert-circle"
-            class="icon-overlay alert ${hasGeometry ? 'selected' : ''}"
-            tooltip="${this.validationMessage ? this.validationMessage : this.error}"
-            size="2rem"
-          ></dt-icon>` : null}
         ${this.loading
-          ? html`<dt-spinner class="icon-overlay ${hasGeometry ? 'selected' : ''}"></dt-spinner>` : null}
+          ? html`<dt-spinner
+              class="icon-overlay ${hasGeometry ? 'selected' : ''}"
+            ></dt-spinner>`
+          : null}
         ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success ${hasGeometry ? 'selected' : ''}"></dt-checkmark>` : null}
+          ? html`<dt-checkmark
+              class="icon-overlay success ${hasGeometry ? 'selected' : ''}"
+            ></dt-checkmark>`
+          : null}
       </div>
 
       <dt-map-modal
@@ -736,8 +779,7 @@ export default class DtLocationMapItem extends DtBase {
         mapbox-token="${this.mapboxToken}"
         @submit=${this._onMapModalSubmit}
       ></dt-map-modal>
-
-`;
+    `;
   }
 }
 window.customElements.define('dt-location-map-item', DtLocationMapItem);
