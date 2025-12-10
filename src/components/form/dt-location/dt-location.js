@@ -8,8 +8,6 @@ export class DtLocation extends DtTags {
     return {
       ...super.properties,
       filters: { type: Array },
-      mapboxKey: { type: String },
-      dtMapbox: { type: Object },
     };
   }
 
@@ -31,9 +29,10 @@ export class DtLocation extends DtTags {
         }
         .selected-option > *:first-child {
           max-width: calc(
-            var(--container-width) - var(--select-width) -
-              var(--container-padding) - var(--option-padding) -
-              var(--option-button) - 8px
+            var(--container-width) - var(--select-width) - var(
+                --container-padding
+              ) - var(--option-padding) - var(--option-button) -
+              8px
           );
         }
       `,
@@ -141,7 +140,7 @@ export class DtLocation extends DtTags {
           (!this.query ||
             opt.label
               .toLocaleLowerCase()
-              .includes(this.query.toLocaleLowerCase()))
+              .includes(this.query.toLocaleLowerCase())),
       );
     } else if (this.open || this.canUpdate) {
       this.loading = true;
@@ -161,7 +160,7 @@ export class DtLocation extends DtTags {
 
             // filter out selected values from list
             self.filteredOptions = result.filter(
-              opt => !selectedValues.includes(opt.id)
+              opt => !selectedValues.includes(opt.id),
             );
           },
           onError: error => {
@@ -188,8 +187,8 @@ export class DtLocation extends DtTags {
           @touchend="${this._touchEnd}"
           tabindex="-1"
           class="${this.activeIndex > -1 && this.activeIndex === idx
-      ? 'active'
-      : ''}"
+            ? 'active'
+            : ''}"
         >
           ${opt.label}
         </button>
@@ -217,7 +216,7 @@ export class DtLocation extends DtTags {
               x
             </button>
           </div>
-        `
+        `,
       );
   }
 
@@ -226,92 +225,44 @@ export class DtLocation extends DtTags {
       display: this.open ? 'block' : 'none',
       top: `${this.containerHeight}px`,
     };
-    return this.mapboxKey
-      ? html` ${this.labelTemplate()}
-          <div id="mapbox-wrapper">
-            <div
-              id="mapbox-autocomplete"
-              class="mapbox-autocomplete input-group"
-              data-autosubmit="true"
-              data-add-address="true"
-            >
-              <input
-                id="mapbox-search"
-                type="text"
-                name="mapbox_search"
-                class="input-group-field"
-                autocomplete="off"
-                dir="auto"
-                placeholder="Search Location"
-              />
-              <div class="input-group-button">
-                <button
-                  id="mapbox-spinner-button"
-                  class="button hollow"
-                  style="display:none;border-color:lightgrey;"
-                >
-                  <span
-                    class=""
-                    style="border-radius: 50%;width: 24px;height: 24px;border: 0.25rem solid lightgrey;border-top-color: black;animation: spin 1s infinite linear;display: inline-block;"
-                  ></span>
-                </button>
-                <button
-                  id="mapbox-clear-autocomplete"
-                  class="button alert input-height delete-button-style mapbox-delete-button"
-                  type="button"
-                  title="Clear"
-                  style="display:none;"
-                >
-                  ×
-                </button>
-              </div>
-              <div
-                id="mapbox-autocomplete-list"
-                class="mapbox-autocomplete-items"
-              ></div>
-            </div>
-            <div id="location-grid-meta-results"></div>
-          </div>`
-      : html`
-          ${this.labelTemplate()}
+    return html`
+      ${this.labelTemplate()}
 
-          <div class="input-group ${this.disabled ? 'disabled' : ''}">
-            <div
-              class="field-container"
-              @click="${this._focusInput}"
-              @keydown="${this._focusInput}"
-            >
-              ${this._renderSelectedOptions()}
-              <input
-                type="text"
-                placeholder="${this.placeholder}"
-                @focusin="${this._inputFocusIn}"
-                @blur="${this._inputFocusOut}"
-                @keydown="${this._inputKeyDown}"
-                @keyup="${this._inputKeyUp}"
-                ?disabled="${this.disabled}"
-              />
+      <div class="input-group ${this.disabled ? 'disabled' : ''}">
+        <div
+          class="field-container"
+          @click="${this._focusInput}"
+          @keydown="${this._focusInput}"
+        >
+          ${this._renderSelectedOptions()}
+          <input
+            type="text"
+            placeholder="${this.placeholder}"
+            @focusin="${this._inputFocusIn}"
+            @blur="${this._inputFocusOut}"
+            @keydown="${this._inputKeyDown}"
+            @keyup="${this._inputKeyUp}"
+            ?disabled="${this.disabled}"
+          />
 
-              ${this.loading
-                ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-                : null}
-              ${this.saved
-                ? html`<dt-checkmark
-                    class="icon-overlay success"
-                  ></dt-checkmark>`
-                : null}
-            </div>
-            <select class="filter-list" ?disabled="${this.disabled}" @change="${this._filterOptions}">
-              ${map(
-                this.filters,
-                f => html`<option value="${f.id}">${f.label}</option>`
-              )}
-            </select>
-            <ul class="option-list" style=${styleMap(optionListStyles)}>
-              ${this._renderOptions()}
-            </ul>
-          </div>
-        `;
+          ${this.renderIconLoading()} ${this.renderIconSaved()}
+        </div>
+        <select
+          class="filter-list"
+          ?disabled="${this.disabled}"
+          @change="${this._filterOptions}"
+        >
+          ${map(
+            this.filters,
+            f => html`<option value="${f.id}">${f.label}</option>`,
+          )}
+        </select>
+        <ul class="option-list" style=${styleMap(optionListStyles)}>
+          ${this._renderOptions()}
+        </ul>
+        ${this.renderIconInvalid()} ${this.renderError()}
+      </div>
+    `;
   }
 }
 

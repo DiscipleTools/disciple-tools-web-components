@@ -327,40 +327,44 @@ export default class DtFormBase extends DtBase {
   }
   renderIcons() {
     return html`
-      ${this.touched && this.invalid
-        ? html`<div class="${classMap(this._errorClasses())}">
-            <dt-icon
-              icon="mdi:alert-circle"
-              class="alert"
-              size="1.4rem"
-            ></dt-icon>
-            <span class="error-text">
-              ${this.internals.validationMessage}
-            </span>
-          </div> `
-        : null}
-      ${this.error
-        ? html`<div class="${classMap(this._errorClasses())}">
-            <dt-icon
-              icon="mdi:alert-circle"
-              class="alert"
-              size="1rem"
-            ></dt-icon>
-            <span class="error-text">
-              <slot name="error"></slot>
-              <span class="attr-msg">${this.error}</span>
-            </span>
-          </div>`
-        : null}
-      ${this.loading
-        ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-        : null}
-      ${this.saved
-        ? html`<dt-checkmark
-            class="icon-overlay success fade-out"
-          ></dt-checkmark>`
-        : null}
+      ${this.renderIconInvalid()} ${this.renderError()}
+      ${this.renderIconLoading()} ${this.renderIconSaved()}
     `;
+  }
+  renderIconInvalid() {
+    return this.touched && this.invalid
+      ? html`<div class="${classMap(this._errorClasses())}">
+          <dt-icon
+            icon="mdi:alert-circle"
+            class="alert"
+            size="1.4rem"
+          ></dt-icon>
+          <span class="error-text"> ${this.internals.validationMessage} </span>
+        </div> `
+      : null;
+  }
+  renderIconLoading() {
+    return this.loading
+      ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
+      : null;
+  }
+  renderIconSaved() {
+    return this.saved
+      ? html`<dt-checkmark
+          class="icon-overlay success fade-out"
+        ></dt-checkmark>`
+      : null;
+  }
+  renderError() {
+    return this.error
+      ? html`<div class="${classMap(this._errorClasses())}">
+          <dt-icon icon="mdi:alert-circle" class="alert" size="1rem"></dt-icon>
+          <span class="error-text">
+            <slot name="error"></slot>
+            <span class="attr-msg">${this.error}</span>
+          </span>
+        </div>`
+      : null;
   }
 
   /**

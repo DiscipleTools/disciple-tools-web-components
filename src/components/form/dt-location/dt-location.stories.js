@@ -1,8 +1,9 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils.js';
+import { FormDecorator, LocaleDecorator } from '../../../stories-utils.js';
 import './dt-location.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const basicOptions = [
   {
@@ -59,13 +60,12 @@ function onLoadEvent(event) {
       onSuccess(
         json
           .filter(
-            post =>
-              !query || post.title.includes(query) || post.id === query
+            post => !query || post.title.includes(query) || post.id === query,
           )
           .map(post => ({
             id: post.id.toString(),
             label: post.title,
-          }))
+          })),
       );
     });
 }
@@ -87,177 +87,206 @@ export default {
     onChange: action('on-change'),
     onLoad: action('on-load'),
   },
+  render: args => {
+    const {
+      name = 'field-name',
+      label = 'Field Name',
+      options,
+      filters = defaultFilters,
+      placeholder,
+      value,
+      disabled = false,
+      required = false,
+      requiredMessage,
+      icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+      iconAltText = 'Icon Alt Text',
+      isPrivate,
+      privateLabel,
+      loading = false,
+      saved = false,
+      onchange,
+      open,
+      slot,
+      error,
+      onChange,
+      onLoad,
+      allowAdd,
+    } = args;
+    return html`
+      <dt-location
+        name="${name}"
+        label=${label}
+        placeholder="${placeholder}"
+        options="${JSON.stringify(options)}"
+        filters="${JSON.stringify(filters)}"
+        value="${JSON.stringify(value)}"
+        onchange="${onchange}"
+        ?disabled=${disabled}
+        ?required=${required}
+        requiredMessage=${ifDefined(requiredMessage)}
+        icon="${icon}"
+        iconAltText="${iconAltText}"
+        ?private=${isPrivate}
+        privateLabel="${privateLabel}"
+        ?allowAdd="${allowAdd}"
+        ?loading="${loading}"
+        ?saved="${saved}"
+        error="${ifDefined(error)}"
+        .open="${open}"
+        @change=${onChange}
+        @dt:get-data=${onLoad}
+      >
+        ${slot}
+      </dt-location>
+    `;
+  },
 };
 
-function Template(args) {
-  const {
-    name = 'field-name',
-    label = 'Field Name',
-    mapboxKey,
-    options,
-    filters = defaultFilters,
-    placeholder,
-    value,
-    disabled = false,
-    icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
-    iconAltText = 'Icon Alt Text',
-    isPrivate,
-    privateLabel,
-    loading = false,
-    saved = false,
-    onchange,
-    open,
-    slot,
-    onChange,
-    onLoad,
-    allowAdd,
-  } = args;
-  return html`
-    <dt-location
-      name="${name}"
-      label=${label}
-      mapboxKey=${mapboxKey}
-      placeholder="${placeholder}"
-      options="${JSON.stringify(options)}"
-      filters="${JSON.stringify(filters)}"
-      value="${JSON.stringify(value)}"
-      onchange="${onchange}"
-      ?disabled=${disabled}
-      icon="${icon}"
-      iconAltText="${iconAltText}"
-      ?private=${isPrivate}
-      privateLabel="${privateLabel}"
-      ?allowAdd="${allowAdd}"
-      ?loading="${loading}"
-      ?saved="${saved}"
-      .open="${open}"
-      @change=${onChange}
-      @dt:get-data=${onLoad}
-    >
-      ${slot}
-    </dt-location>
-  `;
-}
+export const Empty = {};
 
-export const Empty = Template.bind({});
-Empty.args = {};
-
-export const withMapboxKey = Template.bind({});
-withMapboxKey.args = {
-  mapboxKey: 'XXXXXXXXXXXXXXX',
+export const SvgIcon = {
+  args: {
+    icon: null,
+    // prettier-ignore
+    slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
+  },
 };
 
-export const SvgIcon = Template.bind({});
-SvgIcon.args = {
-  icon: null,
-  // prettier-ignore
-  slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
+export const StaticOptions = {
+  args: {
+    options: basicOptions,
+  },
 };
 
-export const StaticOptions = Template.bind({});
-StaticOptions.args = {
-  options: basicOptions,
+export const CustomPlaceholder = {
+  args: {
+    placeholder: 'Search Options',
+  },
 };
 
-export const CustomPlaceholder = Template.bind({});
-CustomPlaceholder.args = {
-  placeholder: 'Search Options',
+export const SelectedValue = {
+  args: {
+    value: [basicOptions[1]],
+  },
 };
 
-export const SelectedValue = Template.bind({});
-SelectedValue.args = {
-  value: [basicOptions[1]],
+export const LoadOptionsFromAPI = {
+  args: {
+    onLoad: onLoadEvent,
+  },
 };
 
-export const LoadOptionsFromAPI = Template.bind({});
-LoadOptionsFromAPI.args = {
-  'onLoad': onLoadEvent
+export const AddNewOption = {
+  args: {
+    allowAdd: true,
+    options: basicOptions,
+  },
 };
 
-export const AddNewOption = Template.bind({});
-AddNewOption.args = {
-  allowAdd: true,
-  options: basicOptions,
+export const AutoSave = {
+  args: {
+    options: basicOptions,
+    onchange: 'onAutoSave(event)',
+  },
 };
 
-export const AutoSave = Template.bind({});
-AutoSave.args = {
-  options: basicOptions,
-  onchange: 'onAutoSave(event)',
+export const Disabled = {
+  args: {
+    value: [basicOptions[1]],
+    options: basicOptions,
+    disabled: true,
+  },
+};
+export const PrivateField = {
+  args: {
+    private: true,
+    privateLabel: 'This is a custom tooltip',
+    value: [basicOptions[1]],
+  },
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
-  options: basicOptions,
-  disabled: true,
+export const Loading = {
+  args: {
+    value: [basicOptions[1]],
+    options: basicOptions,
+    loading: true,
+  },
+};
+export const Saved = {
+  args: {
+    value: [basicOptions[1]],
+    options: basicOptions,
+    saved: true,
+  },
+};
+export const Error = {
+  args: {
+    value: [basicOptions[1]],
+    options: basicOptions,
+    error: 'Custom error message',
+  },
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
-  options: basicOptions,
-  loading: true,
-};
-export const Saved = Template.bind({});
-Saved.args = {
-  value: [
-    {
-      id: '2',
-      label: 'qui est esse',
-    },
-  ],
-  options: basicOptions,
-  saved: true,
+export const BasicForm = {
+  decorators: [FormDecorator],
+  args: {
+    value: [basicOptions[1]],
+  },
 };
 
-export const LocalizeRTL = Template.bind({});
-LocalizeRTL.decorators = [LocaleDecorator];
-LocalizeRTL.args = {
-  lang: 'ar',
-  dir: 'rtl',
-  label: 'اسم الإدخال',
-  placeholder: 'حدد العلامات',
-  allowAdd: true,
-  loading: true,
-  value: [
-    {
-      id: 'opt1',
-      label: 'تنكر هؤلاء الرجال المفتونون',
-    },
-  ],
-  options: [
-    {
-      id: 'opt1',
-      label: 'تنكر هؤلاء الرجال المفتونون',
-    },
-    {
-      id: 'opt2',
-      label: 'م فيتساوي مع هؤلاء',
-    },
-    {
-      id: 'opt3',
-      label: 'فلا أحد يرفض',
-    },
-  ],
-  filters: [
-    {
-      id: 'focus',
-      label: 'منطقة التركيز',
-    },
-    {
-      id: 'all',
-      label: 'جميع المواقع',
-    },
-  ],
+export const Required = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+  },
+};
+
+export const RequiredCustomMessage = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+    requiredMessage: 'Custom error message',
+  },
+};
+
+export const LocalizeRTL = {
+  decorators: [LocaleDecorator],
+  args: {
+    lang: 'ar',
+    dir: 'rtl',
+    label: 'اسم الإدخال',
+    placeholder: 'حدد العلامات',
+    allowAdd: true,
+    loading: true,
+    value: [
+      {
+        id: 'opt1',
+        label: 'تنكر هؤلاء الرجال المفتونون',
+      },
+    ],
+    options: [
+      {
+        id: 'opt1',
+        label: 'تنكر هؤلاء الرجال المفتونون',
+      },
+      {
+        id: 'opt2',
+        label: 'م فيتساوي مع هؤلاء',
+      },
+      {
+        id: 'opt3',
+        label: 'فلا أحد يرفض',
+      },
+    ],
+    filters: [
+      {
+        id: 'focus',
+        label: 'منطقة التركيز',
+      },
+      {
+        id: 'all',
+        label: 'جميع المواقع',
+      },
+    ],
+  },
 };
