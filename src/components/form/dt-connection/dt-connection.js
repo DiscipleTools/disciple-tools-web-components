@@ -42,7 +42,7 @@ export class DtConnection extends DtTags {
         li button svg {
           width: 1.5em;
           height: auto;
-          margin-bottom: -.25em;
+          margin-bottom: -0.25em;
         }
         li button svg use {
           fill: var(--dt-connection-icon-fill, var(--primary-color));
@@ -155,7 +155,7 @@ export class DtConnection extends DtTags {
           (!this.query ||
             opt.label
               .toLocaleLowerCase()
-              .includes(this.query.toLocaleLowerCase()))
+              .includes(this.query.toLocaleLowerCase())),
       );
     } else if (this.open || this.canUpdate) {
       // Only run this filtering if the list is open.
@@ -176,7 +176,7 @@ export class DtConnection extends DtTags {
 
             // filter out selected values from list
             self.filteredOptions = result.filter(
-              opt => !selectedValues.includes(opt.id)
+              opt => !selectedValues.includes(opt.id),
             );
           },
           onError: error => {
@@ -194,14 +194,17 @@ export class DtConnection extends DtTags {
   _validateRequired() {
     const { value } = this;
 
-    if (this.required && (!value || value.every((item) => !item || item.delete))) {
+    if (
+      this.required &&
+      (!value || value.every(item => !item || item.delete))
+    ) {
       this.invalid = true;
       this.internals.setValidity(
         {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        this._field
+        this._field,
       );
     } else {
       this.invalid = false;
@@ -214,9 +217,11 @@ export class DtConnection extends DtTags {
       .filter(i => !i.delete)
       .map(
         opt => html`
-          <div class="selected-option"
-              @click="${this._handleItemClick}"
-              @keydown="${this._handleItemClick}">
+          <div
+            class="selected-option"
+            @click="${this._handleItemClick}"
+            @keydown="${this._handleItemClick}"
+          >
             <a
               href="${opt.link}"
               style="border-inline-start-color: ${opt.status
@@ -235,7 +240,7 @@ export class DtConnection extends DtTags {
               x
             </button>
           </div>
-        `
+        `,
       );
   }
 
@@ -283,9 +288,13 @@ export class DtConnection extends DtTags {
     return html`
       ${this.labelTemplate()}
 
-      <div class="input-group ${this.disabled ? 'disabled' : ''} ${this.allowAdd ? 'allowAdd' : ''}"
-          @click="${this._handleDivClick}"
-          @keydown="${this._handleDivClick}">
+      <div
+        class="input-group ${this.disabled ? 'disabled' : ''} ${this.allowAdd
+          ? 'allowAdd'
+          : ''}"
+        @click="${this._handleDivClick}"
+        @keydown="${this._handleDivClick}"
+      >
         <div
           class="${classMap(this.classes)}"
           @click="${this._focusInput}"
@@ -305,40 +314,16 @@ export class DtConnection extends DtTags {
           />
         </div>
         ${this.allowAdd
-          ? html`<button
-          class="input-addon btn-add"
-          @click=${this._addRecord}
-          >
-            <dt-icon icon="mdi:account-plus-outline"></dt-icon>
-          </button>`
+          ? html`<button class="input-addon btn-add" @click=${this._addRecord}>
+              <dt-icon icon="mdi:account-plus-outline"></dt-icon>
+            </button>`
           : null}
         <ul class="option-list" style=${styleMap(optionListStyles)}>
           ${this._renderOptions()}
         </ul>
-        ${this.touched && this.invalid
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.internals.validationMessage}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
-        ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
-        ${this.error
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.error}"
-              size="2rem"
-              ></dt-icon>`
-            : null}
-        </div>
-`;
+        ${this.renderIcons()}
+      </div>
+    `;
   }
 }
 

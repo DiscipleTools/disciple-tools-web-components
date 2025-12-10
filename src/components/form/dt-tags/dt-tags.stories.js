@@ -191,6 +191,14 @@ export const SmallWidth = {
     options: basicOptions,
   },
 };
+export const SmallWidthWithAdd = {
+  parameters: { viewport: { defaultViewport: 'mobile1' } },
+  args: {
+    value: ['opt8'],
+    options: basicOptions,
+    allowAdd: true,
+  },
+};
 
 export const LoadOptionsFromAPI = {
   args: {
