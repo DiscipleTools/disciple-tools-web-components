@@ -138,15 +138,6 @@ export const ErrorSlot = {
   },
 };
 
-export const IconPosition = {
-  parameters: { viewport: { defaultViewport: 'mobile1' } },
-  args: {
-    value:
-      'Long option that is too long to fit in the field. It should overflow.',
-    error: 'Top-right within inline-end padding',
-  },
-};
-
 export const BasicForm = {
   decorators: [FormDecorator],
   args: {

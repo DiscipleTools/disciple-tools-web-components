@@ -62,6 +62,9 @@ export class DtText extends DtFormBase {
         }
         input.invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          + .error-container {
+            border-top: none;
+          }
         }
       `,
     ];

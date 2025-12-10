@@ -184,6 +184,7 @@ Saved.args = {
 };
 export const Error = Template.bind({});
 Error.args = {
+  options: basicOptions,
   error: 'Custom error message',
 };
 export const IconPosition = Template.bind({});

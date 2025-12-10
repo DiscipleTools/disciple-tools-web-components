@@ -5,6 +5,7 @@ import './dt-label/dt-label.js';
 import '../icons/dt-spinner.js';
 import '../icons/dt-icon.js';
 import '../icons/dt-checkmark.js';
+import { classMap } from 'lit/directives/class-map.js';
 
 /**
  * Extends `DtBase` to add features specific to form components, including base styles
@@ -32,12 +33,15 @@ export default class DtFormBase extends DtBase {
         /* === Inline Icons === */
         .icon-overlay {
           position: absolute;
-          inset-inline-end: 1rem;
+          inset-inline-end: 0.5rem;
           top: 0;
           height: 100%;
           display: flex;
           justify-content: center;
-          align-items: center;
+          align-items: flex-end;
+          padding-block: 0.5rem;
+          box-sizing: border-box;
+          pointer-events: none;
         }
 
         .icon-overlay.alert {
@@ -46,6 +50,47 @@ export default class DtFormBase extends DtBase {
         }
         .icon-overlay.success {
           color: var(--success-color);
+          width: 1.4rem;
+        }
+      `,
+      css`
+        @keyframes fadeOut {
+          0% {
+            opacity: 1;
+          }
+          75% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0;
+          }
+        }
+        .icon-overlay.fade-out {
+          opacity: 0;
+          animation: fadeOut 4s;
+        }
+      `,
+      css`
+        .error-container {
+          display: flex;
+          align-items: center;
+          font-family: var(--font-family);
+          font-size: 0.875rem;
+          font-weight: 300;
+          padding: 3px 0.5rem;
+          gap: 0.5rem;
+
+          border: solid 1px var(--alert-color);
+          background-color: color-mix(
+            in hsl,
+            var(--dt-form-background-color),
+            var(--alert-color) 15%
+          );
+          color: var(--alert-color);
+
+          &.slotted .attr-msg {
+            display: none;
+          }
         }
       `,
     ];
@@ -107,6 +152,8 @@ export default class DtFormBase extends DtBase {
       loading: { type: Boolean },
       /** Enables display of saved indicator. */
       saved: { type: Boolean },
+
+      errorSlotted: { type: Boolean, attribute: false },
     };
   }
 
@@ -144,6 +191,27 @@ export default class DtFormBase extends DtBase {
 
   firstUpdated(...args) {
     super.firstUpdated(...args);
+
+    // Check if tooltip slot has any content to add CSS class and
+    // hide standard tooltip content
+    const slot = this.shadowRoot.querySelector('slot[name=error]');
+    if (slot) {
+      slot.addEventListener('slotchange', event => {
+        const changedSlot = event.target;
+        const nodes = changedSlot.assignedNodes();
+        let value = false;
+        // dt-icon has a nested slot that comes from the form-base and is passed along,
+        // so we need to check if slot is a slot and then check if that has assignedNodes.
+        if (nodes.length > 0) {
+          if (nodes[0].tagName === 'SLOT') {
+            value = nodes[0].assignedNodes().length > 0;
+          } else {
+            value = true;
+          }
+        }
+        this.errorSlotted = value;
+      });
+    }
 
     // set initial form value
     const formdata = DtFormBase._jsonToFormData(this.value, this.name);
@@ -252,30 +320,46 @@ export default class DtFormBase extends DtBase {
     `;
   }
 
+  _errorClasses() {
+    return {
+      'error-container': true,
+      slotted: this.errorSlotted,
+    };
+  }
   renderIcons() {
     return html`
       ${this.touched && this.invalid
-        ? html`<dt-icon
-            icon="mdi:alert-circle"
-            class="icon-overlay alert"
-            tooltip="${this.internals.validationMessage}"
-            size="2rem"
-          ></dt-icon>`
+        ? html`<div class="${classMap(this._errorClasses())}">
+            <dt-icon
+              icon="mdi:alert-circle"
+              class="alert"
+              size="1.4rem"
+            ></dt-icon>
+            <span class="error-text">
+              ${this.internals.validationMessage}
+            </span>
+          </div> `
         : null}
       ${this.error
-        ? html`<dt-icon
-            icon="mdi:alert-circle"
-            class="icon-overlay alert"
-            tooltip="${this.error}"
-            size="2rem"
-            ><slot name="error" slot="tooltip"></slot
-          ></dt-icon>`
+        ? html`<div class="${classMap(this._errorClasses())}">
+            <dt-icon
+              icon="mdi:alert-circle"
+              class="alert"
+              size="1rem"
+            ></dt-icon>
+            <span class="error-text">
+              <slot name="error"></slot>
+              <span class="attr-msg">${this.error}</span>
+            </span>
+          </div>`
         : null}
       ${this.loading
         ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
         : null}
       ${this.saved
-        ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
+        ? html`<dt-checkmark
+            class="icon-overlay success fade-out"
+          ></dt-checkmark>`
         : null}
     `;
   }

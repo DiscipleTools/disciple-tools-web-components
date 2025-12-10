@@ -6,6 +6,9 @@ import { classMap } from 'lit/directives/class-map.js';
 export class DtIcon extends DtBase {
   static get styles() {
     return css`
+      :root {
+        pointer-events: none;
+      }
       :root,
       .icon-container {
         font-size: inherit;
@@ -15,6 +18,7 @@ export class DtIcon extends DtBase {
         height: fit-content;
         position: relative;
         font-family: var(--font-family);
+        pointer-events: auto;
       }
       .tooltip {
         --tt-padding: 0.25rem;
@@ -23,7 +27,10 @@ export class DtIcon extends DtBase {
         top: calc(-1lh - var(--tt-padding) - var(--tt-padding) - 4px);
         min-width: max-content;
         border: solid 1px currentcolor;
-        background-color: var(--dt-form-background-color, var(--surface-1));
+        background-color: color(
+          from var(--dt-form-background-color, var(--surface-1)) srgb 1 1 1 /
+            0.7
+        );
         padding: var(--tt-padding);
         border-radius: 0.25rem;
         text-align: end;
@@ -45,6 +52,10 @@ export class DtIcon extends DtBase {
 
       .tooltip.slotted .attr-msg {
         display: none;
+      }
+
+      .tooltip:hover {
+        opacity: 0.25;
       }
     `;
   }
@@ -83,7 +94,7 @@ export class DtIcon extends DtBase {
     }
   }
 
-  _showTooltip() {
+  _toggleTooltip() {
     if (this.tooltip_open) {
       this.tooltip_open = false;
     } else {
@@ -103,6 +114,7 @@ export class DtIcon extends DtBase {
       ? html`<div
           class="${classMap(this.tooltipClasses())}"
           ?hidden=${this.tooltip_open}
+          @click="${this._toggleTooltip}"
         >
           <slot name="tooltip"></slot>
           <span class="attr-msg">${this.tooltip}</span>
@@ -113,7 +125,7 @@ export class DtIcon extends DtBase {
         <iconify-icon
           icon=${this.icon}
           width="${this.size}"
-          @click=${this._showTooltip}
+          @click=${this._toggleTooltip}
         ></iconify-icon>
         ${tooltip}
       </div>

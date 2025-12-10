@@ -54,13 +54,12 @@ function onLoadEvent(event) {
       onSuccess(
         json
           .filter(
-            post =>
-              !query || post.title.includes(query) || post.id === query
+            post => !query || post.title.includes(query) || post.id === query,
           )
           .map(post => ({
             id: post.id.toString(),
             label: post.title,
-          }))
+          })),
       );
     });
 }
@@ -82,6 +81,9 @@ export default {
     onLoad: action('on-load'),
     onChange: action('on-change'),
     onNew: action('on-new'),
+  },
+  parameters: {
+    viewport: { defaultViewport: 'desktop' },
   },
 };
 
@@ -224,6 +226,8 @@ Saved.args = {
 
 export const Error = Template.bind({});
 Error.args = {
+  allowAdd: true,
+  options: basicOptions,
   error: 'Custom error message',
 };
 

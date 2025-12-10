@@ -3,7 +3,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { msg } from '@lit/localize';
 import DtFormBase from '../dt-form-base.js';
-import {HasOptionsList} from '../mixins/hasOptionsList.js';
+import { HasOptionsList } from '../mixins/hasOptionsList.js';
 import '../../icons/dt-spinner.js';
 import '../../icons/dt-checkmark.js';
 
@@ -49,11 +49,13 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           margin: 0;
           padding-top: 0.25rem;
           padding-bottom: 0.25rem;
-          padding-inline: 0.25rem 1.6rem;
+          padding-inline: 0.5rem;
           box-sizing: border-box;
           width: 100%;
           text-transform: none;
           display: flex;
+          column-gap: 4px;
+          row-gap: 0.2rem;
           flex-wrap: wrap;
           min-width: 0;
         }
@@ -75,9 +77,6 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           font-size: 0.875rem;
           position: relative;
           border-radius: 2px;
-          margin-inline-end: 4px;
-          margin-block-start: 0.1rem;
-          margin-block-end: 0.1rem;
           box-sizing: border-box;
           min-width: 0;
         }
@@ -88,12 +87,13 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
-          --container-padding: calc(0.5rem + 1.6rem + 2px);
+          --container-padding: calc(0.5rem + 0.5rem + 2px);
           --option-padding: 8px;
           --option-button: 20px;
           max-width: calc(
-            var(--container-width) - var(--container-padding) -
-              var(--option-padding) - var(--option-button)
+            var(--container-width) - var(--container-padding) - var(
+                --option-padding
+              ) - var(--option-button)
           );
         }
         .selected-option * {
@@ -273,9 +273,9 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   // Add or modify this method in your DtMultiSelect class
 
   updated() {
-      super.updated();
+    super.updated();
 
-      this._updateContainerHeight();
+    this._updateContainerHeight();
   }
 
   _updateContainerHeight() {
@@ -283,7 +283,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
 
     if (container) {
       const newHeight = container.offsetHeight;
-      
+
       if (this.containerHeight !== newHeight) {
         this.containerHeight = newHeight;
         this.requestUpdate();
@@ -341,7 +341,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
       this.options &&
       this.value &&
       this.value
-      .filter(val => val.charAt(0) !== '-')
+        .filter(val => val.charAt(0) !== '-')
       .map(
           val => html`
             <div class="selected-option"
@@ -419,30 +419,10 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         <ul class="option-list" style=${styleMap(optionListStyles)}>
           ${this._renderOptions()}
         </ul>
-        ${this.touched && this.invalid
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.internals.validationMessage}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
-        ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
-        ${this.error
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.error}"
-              size="2rem"
-              ></dt-icon>`
-            : null}
-        </div>
-`;
+
+        ${this.renderIcons()}
+      </div>
+    `;
   }
 }
 

@@ -30,9 +30,6 @@ export class DtTags extends DtMultiSelect {
         .invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
         }
-        .input-group {
-          display: flex;
-        }
 
         .field-container {
           flex: 1;
@@ -158,8 +155,8 @@ export class DtTags extends DtMultiSelect {
           @touchend="${this._touchEnd}"
           tabindex="-1"
           class="${this.activeIndex > -1 && this.activeIndex === idx
-      ? 'active'
-      : ''}"
+            ? 'active'
+            : ''}"
         >
           ${opt.label || opt.id}
         </button>
@@ -194,9 +191,9 @@ export class DtTags extends DtMultiSelect {
           let label = tag;
           if (options) {
             const option = options.filter(o => o === tag || o.id === tag);
-            if (option.length) {
-              label = option[0].label || option[0].id || tag;
-            }
+          if (option.length) {
+            label = option[0].label || option[0].id || tag;
+          }
           }
           let link;
           if (!link && window?.SHAREDFUNCTIONS?.createCustomFilter) {
@@ -255,42 +252,23 @@ export class DtTags extends DtMultiSelect {
             ?disabled="${this.disabled}"
             ?required=${this.required}
           />
+
+          ${this.allowAdd
+            ? html`<button
+                class="input-addon btn-add"
+                @click=${this._addRecord}
+              >
+                <dt-icon icon="mdi:tag-plus-outline"></dt-icon>
+              </button>`
+            : null}
         </div>
-        ${this.allowAdd
-          ? html`<button
-          class="input-addon btn-add"
-          @click=${this._addRecord}
-          >
-            <dt-icon icon="mdi:tag-plus-outline"></dt-icon>
-          </button>`
-          : null}
         <ul class="option-list" style=${styleMap(optionListStyles)}>
           ${this._renderOptions()}
         </ul>
-        ${this.touched && this.invalid
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.internals.validationMessage}"
-              size="2rem"
-            ></dt-icon>`
-          : null}
-        ${this.loading
-          ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
-          : null}
-        ${this.saved
-          ? html`<dt-checkmark class="icon-overlay success"></dt-checkmark>`
-          : null}
-        ${this.error
-          ? html`<dt-icon
-              icon="mdi:alert-circle"
-              class="icon-overlay alert"
-              tooltip="${this.error}"
-              size="2rem"
-              ></dt-icon>`
-            : null}
-        </div>
-`;
+
+        ${this.renderIcons()}
+      </div>
+    `;
   }
 }
 

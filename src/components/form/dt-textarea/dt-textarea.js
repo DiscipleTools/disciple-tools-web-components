@@ -50,12 +50,11 @@ export class DtTextArea extends DtFormBase {
           cursor: not-allowed;
         }
 
-        .icon-overlay {
-          align-items: flex-start;
-          padding-block: 1rem;
-        }
         textarea.invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          + .error-container {
+            border-top: none;
+          }
         }
       `,
     ];
