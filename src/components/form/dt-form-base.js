@@ -80,17 +80,16 @@ export default class DtFormBase extends DtBase {
           padding: 3px 0.5rem;
           gap: 0.5rem;
 
-          border: solid 1px var(--alert-color);
-          background-color: color-mix(
-            in hsl,
-            var(--dt-form-background-color),
-            var(--alert-color) 15%
-          );
-          color: var(--alert-color);
+          border: solid 1px var(--color-alert);
+          background-color: var(--color-alert-container);
+          color: var(--color-on-alert-container);
 
           &.slotted .attr-msg {
             display: none;
           }
+        }
+        .invalid ~ .error-container {
+          border-top: none;
         }
       `,
     ];

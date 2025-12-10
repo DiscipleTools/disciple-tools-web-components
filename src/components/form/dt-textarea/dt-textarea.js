@@ -52,9 +52,6 @@ export class DtTextArea extends DtFormBase {
 
         textarea.invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
-          + .error-container {
-            border-top: none;
-          }
         }
       `,
     ];
@@ -105,7 +102,7 @@ export class DtTextArea extends DtFormBase {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        this._field
+        this._field,
       );
     } else {
       this.invalid = false;

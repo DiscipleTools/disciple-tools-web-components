@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
-import { userEvent, within } from '@storybook/test';
 import { argTypes } from '../../../stories-theme.js';
 import {
   FormDecorator,
