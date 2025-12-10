@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { argTypes } from '../stories-theme.js';
 
 import './layout/dt-tile/dt-tile.js';
@@ -8,6 +9,8 @@ import './form/dt-textarea/dt-textarea.js';
 import './form/dt-number/dt-number.js';
 import './form/dt-date/dt-date.js';
 import './form/dt-datetime/dt-datetime.js';
+import './form/dt-location/dt-location.js';
+import './form/dt-location-map/dt-location-map.js';
 import './form/dt-multi-select/dt-multi-select.js';
 import './form/dt-multi-select-button-group/dt-multi-select-button-group.js';
 import './form/dt-multi-text/dt-multi-text.js';
@@ -73,6 +76,16 @@ const posts = [
     label: 'Jane Meldrum',
   },
 ];
+const locationFilters = [
+  {
+    id: 'focus',
+    label: 'Region of Focus',
+  },
+  {
+    id: 'all',
+    label: 'All Locations',
+  },
+];
 
 export default {
   title: 'Components/All',
@@ -89,6 +102,7 @@ export default {
         value=''
         label="Text Field"
         ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
       ></dt-text>
 
       <dt-textarea
@@ -97,6 +111,7 @@ export default {
         value=''
         label="Textarea Field"
         ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
       ></dt-textarea>
 
       <dt-number
@@ -104,6 +119,7 @@ export default {
         name='numberField'
         label="Number Field"
         ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
       ></dt-number>
 
       <dt-multi-text
@@ -111,6 +127,7 @@ export default {
         name="multiTextField"
         label="MultiText Field"
         ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
       ></dt-multi-text>
 
       <dt-date
@@ -118,6 +135,7 @@ export default {
         name="dateField"
         label="Date Field"
         ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
       ></dt-date>
 
       <dt-datetime
@@ -125,6 +143,7 @@ export default {
         name="dateTimeField"
         label="Date Time Field"
         ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
       ></dt-datetime>
 
       <dt-single-select
@@ -133,6 +152,7 @@ export default {
         value="opt1"
         options="${JSON.stringify(options)}"
         ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
       ></dt-single-select>
 
       <dt-multi-select
@@ -141,6 +161,7 @@ export default {
         value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
         options="${JSON.stringify(options)}"
         ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
       ></dt-multi-select>
 
       <dt-multi-select-button-group
@@ -149,6 +170,7 @@ export default {
         value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
         options="${JSON.stringify(options)}"
         ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
       ></dt-multi-select-button-group>
 
       <dt-tags
@@ -156,13 +178,30 @@ export default {
         value="${JSON.stringify(['personal'])}"
         options="${JSON.stringify(tags)}"
         ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
       ></dt-tags>
 
       <dt-connection
         label="Connection Field"
         options="${JSON.stringify(posts)}"
         ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
       ></dt-connection>
+
+      <dt-location
+        label="Location Field"
+        options="${JSON.stringify(posts)}"
+        filters="${JSON.stringify(locationFilters)}"
+        ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
+      ></dt-location>
+
+      <dt-location-map
+        label="Location Meta Field"
+        options="${JSON.stringify(posts)}"
+        ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
+      ></dt-location-map>
 
        <dt-button
          id="buttonField"
@@ -170,6 +209,7 @@ export default {
          label="Button"
          context="primary"
          ?disabled=${args.disabled}
+         error="${ifDefined(args.error)}"
        >Click Me</dt-button>
     </dt-tile>
   `,
@@ -180,5 +220,11 @@ export const Components = {};
 export const Disabled = {
   args: {
     disabled: true,
+  },
+};
+
+export const Error = {
+  args: {
+    error: 'Custom error message',
   },
 };
