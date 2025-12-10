@@ -89,7 +89,7 @@ export default class DtFormBase extends DtBase {
           }
         }
         .invalid ~ .error-container {
-          border-top: none;
+          border-top-width: 0;
         }
       `,
     ];

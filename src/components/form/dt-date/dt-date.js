@@ -63,16 +63,12 @@ export class DtDate extends DtFormBase {
           font-weight: var(--dt-date-placeholder-font-weight, 400);
           letter-spacing: var(--dt-date-placeholder-letter-spacing, normal);
         }
-        input.invalid {
+        .invalid,
+        .field-container.invalid .input-addon {
           border-color: var(--dt-date-border-color-alert, var(--alert-color));
         }
       `,
       css`
-        .input-group {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
         .field-container {
           display: flex;
         }
@@ -212,6 +208,12 @@ export class DtDate extends DtFormBase {
     };
     return classes;
   }
+  get fieldContainerClasses() {
+    return {
+      'field-container': true,
+      invalid: this.touched && this.invalid,
+    };
+  }
 
   render() {
     if (this.timestamp) {
@@ -224,7 +226,7 @@ export class DtDate extends DtFormBase {
       ${this.labelTemplate()}
 
       <div class="input-group">
-        <div class="field-container">
+        <div class="${classMap(this.fieldContainerClasses)}">
           <input
             id="${this.id}"
             class="${classMap(this.classes)}"

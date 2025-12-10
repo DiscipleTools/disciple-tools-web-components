@@ -39,7 +39,7 @@ export class DtDatetime extends DtDate {
       ${this.labelTemplate()}
 
       <div class="input-group">
-        <div class="field-container">
+        <div class="${classMap(this.fieldContainerClasses)}">
           <input
             id="${this.id}"
             class="${classMap(this.classes)}"

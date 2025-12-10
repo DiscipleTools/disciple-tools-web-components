@@ -56,7 +56,7 @@ export class DtNumberField extends DtFormBase {
         }
 
         .icon-overlay {
-          inset-inline-end: 2.5rem;
+          inset-inline-end: 2rem;
         }
       `,
     ];
