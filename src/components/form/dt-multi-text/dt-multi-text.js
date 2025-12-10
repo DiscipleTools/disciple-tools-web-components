@@ -35,7 +35,7 @@ export class DtMultiText extends DtText {
           font-family: inherit;
           font-size: 1rem;
           font-weight: 300;
-          height: auto;
+          height: 2.5rem;
           line-height: 1.5;
           margin: 0;
           padding: var(--dt-form-padding, 0.5333333333rem);
@@ -86,6 +86,7 @@ export class DtMultiText extends DtText {
           flex-grow: 1;
         }
         .field-container .input-addon {
+          height: 2.5rem;
           flex-shrink: 1;
           display: flex;
           justify-content: center;

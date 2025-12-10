@@ -46,9 +46,9 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           min-height: 2.5rem;
           line-height: 1.5;
           margin: 0;
-          padding-top: calc(0.5rem - 0.375rem);
-          padding-bottom: 0.5rem;
-          padding-inline: 0.5rem 1.6rem;
+          padding-top: 0.25rem;
+          padding-bottom: 0.25rem;
+          padding-inline: 0.25rem 1.6rem;
           box-sizing: border-box;
           width: 100%;
           text-transform: none;
@@ -74,7 +74,8 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           position: relative;
           border-radius: 2px;
           margin-inline-end: 4px;
-          margin-block-start: 0.375rem;
+          margin-block-start: 0.1rem;
+          margin-block-end: 0.1rem;
           box-sizing: border-box;
           min-width: 0;
         }

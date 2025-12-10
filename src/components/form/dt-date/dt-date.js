@@ -28,7 +28,7 @@ export class DtDate extends DtFormBase {
           font-family: inherit;
           font-size: 1rem;
           font-weight: 300;
-          height: auto;
+          height: 2.5rem;
           line-height: 1.5;
           margin: 0;
           padding: var(--dt-form-padding, 0.5333333333rem);
@@ -115,6 +115,7 @@ export class DtDate extends DtFormBase {
         }
 
         .input-addon.btn-clear {
+          height: 2.5rem;
           color: var(--alert-color, #cc4b37);
           &:disabled {
             color: var(--dt-date-placeholder-color, #999);
