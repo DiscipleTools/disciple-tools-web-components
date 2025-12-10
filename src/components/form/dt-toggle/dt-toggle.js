@@ -10,33 +10,28 @@ export class DtToggle extends DtFormBase {
           display: inline-block;
         }
 
-        .Toggle {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
+        .toggle {
           position: relative;
-          margin-bottom: 1em;
           cursor: pointer;
-          gap: 1ch;
         }
 
-        button.Toggle {
+        button.toggle {
           border: 0;
           padding: 0;
           background-color: transparent;
           font: inherit;
         }
 
-        .Toggle__input {
+        .toggle-input {
           position: absolute;
           opacity: 0;
           width: 100%;
           height: 100%;
         }
 
-        .Toggle__display {
-          --offset: 0.25em;
-          --diameter: 1.2em;
+        .toggle-display {
+          --offset: 2px;
+          --diameter: 1em;
 
           display: inline-flex;
           align-items: center;
@@ -47,11 +42,14 @@ export class DtToggle extends DtFormBase {
           border: 0.1em solid rgb(0 0 0 / 0.2);
           position: relative;
           border-radius: 100vw;
-          background-color: var(--dt-toggle-background-color-off, #ecf5fc);
+          background-color: var(
+            --dt-toggle-background-color-off,
+            var(--gray-2)
+          );
           transition: 250ms;
         }
 
-        .Toggle__display::before {
+        .toggle-display::before {
           content: '';
           z-index: 2;
           position: absolute;
@@ -60,7 +58,6 @@ export class DtToggle extends DtFormBase {
           box-sizing: border-box;
           width: var(--diameter);
           height: var(--diameter);
-          border: 0.1em solid rgb(0 0 0 / 0.2);
           border-radius: 50%;
           background-color: white;
           transform: translate(0, -50%);
@@ -68,46 +65,46 @@ export class DtToggle extends DtFormBase {
           transition: inherit;
         }
 
-        .Toggle:focus .Toggle__display,
-        .Toggle__input:focus + .Toggle__display {
+        .toggle:focus .toggle-display,
+        .toggle-input:focus + .toggle-display {
           outline: 1px dotted #212121;
           outline: 1px auto -webkit-focus-ring-color;
           outline-offset: 2px;
         }
 
-        .Toggle:focus,
-        .Toggle:focus:not(:focus-visible) .Toggle__display,
-        .Toggle__input:focus:not(:focus-visible) + .Toggle__display {
+        .toggle:focus,
+        .toggle:focus:not(:focus-visible) .toggle-display,
+        .toggle-input:focus:not(:focus-visible) + .toggle-display {
           outline: 0;
         }
 
-        .Toggle[aria-pressed='true'] .Toggle__display,
-        .Toggle__input:checked + .Toggle__display {
+        .toggle[aria-pressed='true'] .toggle-display,
+        .toggle-input:checked + .toggle-display {
           background-color: var(--primary-color);
         }
 
-        .Toggle[aria-pressed='true'] .Toggle__display::before,
-        .Toggle__input:checked + .Toggle__display::before {
+        .toggle[aria-pressed='true'] .toggle-display::before,
+        .toggle-input:checked + .toggle-display::before {
           transform: translate(100%, -50%);
         }
 
-        .Toggle[disabled] .Toggle__display,
-        .Toggle__input:disabled + .Toggle__display {
+        .toggle[disabled] .toggle-display,
+        .toggle-input:disabled + .toggle-display {
           opacity: 0.6;
           filter: grayscale(40%);
           cursor: not-allowed;
         }
-        [dir='rtl'] .Toggle__display::before {
+        [dir='rtl'] .toggle-display::before {
           left: auto;
           right: var(--offset);
         }
 
-        [dir='rtl'] .Toggle[aria-pressed='true'] + .Toggle__display::before,
-        [dir='rtl'] .Toggle__input:checked + .Toggle__display::before {
+        [dir='rtl'] .toggle[aria-pressed='true'] + .toggle-display::before,
+        [dir='rtl'] .toggle-input:checked + .toggle-display::before {
           transform: translate(-100%, -50%);
         }
 
-        .Toggle__icon {
+        .toggle-icon {
           display: inline-block;
           width: 1em;
           height: 1em;
@@ -117,12 +114,13 @@ export class DtToggle extends DtFormBase {
           overflow: hidden;
         }
 
-        .Toggle__icon--cross {
+        .toggle-icon--cross {
           color: var(--alert-color);
-          font-size: 65%;
+          font-size: 0.55em;
         }
 
-        .Toggle__icon--checkmark {
+        .toggle-icon--checkmark {
+          font-size: 0.65em;
           color: var(--success-color);
         }
       `,
@@ -137,14 +135,13 @@ export class DtToggle extends DtFormBase {
         type: Boolean,
         reflect: true,
       },
-      onchange: { type: String },
-      hideIcons: { type: Boolean, default: true },
+      icons: { type: Boolean, default: false },
     };
   }
 
   constructor() {
     super();
-    this.hideIcons = false;
+    this.icons = false;
   }
 
   onChange(e) {
@@ -164,23 +161,22 @@ export class DtToggle extends DtFormBase {
 
   render() {
     // prettier-ignore
-    const check = html`<svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="Toggle__icon Toggle__icon--checkmark"><path d="M6.08471 10.6237L2.29164 6.83059L1 8.11313L6.08471 13.1978L17 2.28255L15.7175 1L6.08471 10.6237Z" fill="currentcolor" stroke="currentcolor" /></svg>`
+    const check = html`<svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="toggle-icon toggle-icon--checkmark"><path d="M6.08471 10.6237L2.29164 6.83059L1 8.11313L6.08471 13.1978L17 2.28255L15.7175 1L6.08471 10.6237Z" fill="currentcolor" stroke="currentcolor" /></svg>`
     // prettier-ignore
-    const cross = html`<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="Toggle__icon Toggle__icon--cross"><path d="M11.167 0L6.5 4.667L1.833 0L0 1.833L4.667 6.5L0 11.167L1.833 13L6.5 8.333L11.167 13L13 11.167L8.333 6.5L13 1.833L11.167 0Z" fill="currentcolor" /></svg>`
+    const cross = html`<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="toggle-icon toggle-icon--cross"><path d="M11.167 0L6.5 4.667L1.833 0L0 1.833L4.667 6.5L0 11.167L1.833 13L6.5 8.333L11.167 13L13 11.167L8.333 6.5L13 1.833L11.167 0Z" fill="currentcolor" /></svg>`
     return html`
-      <label class="Toggle" for="${this.id}" dir="${this.RTL ? 'rtl' : 'ltr'}">
-        ${this.label}
+      <label class="toggle" for="${this.id}">
         <input
           type="checkbox"
-          name="${this.id}"
+          name="${this.name}"
           id="${this.id}"
-          class="Toggle__input"
+          class="toggle-input"
           ?checked=${this.checked}
           @click=${this.onChange}
           ?disabled=${this.disabled}
         />
-        <span class="Toggle__display" hidden>
-          ${!this.hideIcons ? html` ${check} ${cross} ` : html``}
+        <span class="toggle-display" hidden>
+          ${this.icons ? html` ${check} ${cross} ` : html``}
         </span>
       </label>
     `;
