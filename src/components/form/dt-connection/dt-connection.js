@@ -99,6 +99,7 @@ export class DtConnection extends DtTags {
   }
 
   _remove(e) {
+    e.stopPropagation();
     if (e.target && e.target.dataset && e.target.dataset.value) {
       // check if value from html could be integer and convert if so
       let clickedValue = e.target.dataset.value;
@@ -133,6 +134,7 @@ export class DtConnection extends DtTags {
 
       this._validateRequired();
     }
+    document.activeElement.blur();
   }
 
   /**
@@ -212,7 +214,9 @@ export class DtConnection extends DtTags {
       .filter(i => !i.delete)
       .map(
         opt => html`
-          <div class="selected-option">
+          <div class="selected-option"
+              @click="${this._handleItemClick}"
+              @keydown="${this._handleItemClick}">
             <a
               href="${opt.link}"
               style="border-inline-start-color: ${opt.status
@@ -279,7 +283,9 @@ export class DtConnection extends DtTags {
     return html`
       ${this.labelTemplate()}
 
-      <div class="input-group ${this.disabled ? 'disabled' : ''} ${this.allowAdd ? 'allowAdd' : ''}">
+      <div class="input-group ${this.disabled ? 'disabled' : ''} ${this.allowAdd ? 'allowAdd' : ''}"
+          @click="${this._handleDivClick}"
+          @keydown="${this._handleDivClick}">
         <div
           class="${classMap(this.classes)}"
           @click="${this._focusInput}"

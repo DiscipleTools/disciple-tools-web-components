@@ -21,6 +21,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         }
 
         .input-group {
+          cursor: text; /* Indicates the area is clickable */
           color: var(--dt-multi-select-text-color, #0a0a0a);
         }
         .input-group.disabled input,
@@ -63,6 +64,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         }
 
         .selected-option {
+          cursor: default;
           border: 1px solid var(--dt-multi-select-tag-border-color, #c2e0ff);
           background-color: var(
             --dt-multi-select-tag-background-color,
@@ -242,6 +244,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   }
 
   _remove(e) {
+    e.stopPropagation();
     if (e.target && e.target.dataset && e.target.dataset.value) {
       const event = new CustomEvent('change', {
         bubbles: true,
@@ -264,6 +267,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         this.shadowRoot.querySelector('input').focus();
       }
     }
+    document.activeElement.blur();
   }
 
   // Add or modify this method in your DtMultiSelect class
@@ -320,6 +324,18 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     }
   }
 
+  _handleDivClick() {
+    const input = this.renderRoot.querySelector('input');
+    if (input) {
+      input.focus();
+    }
+  }
+
+  _handleItemClick(e) {
+    e.stopPropagation();
+    document.activeElement.blur();
+  }
+
   _renderSelectedOptions() {
     return (
       this.options &&
@@ -328,7 +344,9 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
       .filter(val => val.charAt(0) !== '-')
       .map(
           val => html`
-            <div class="selected-option">
+            <div class="selected-option"
+              @click="${this._handleItemClick}"
+              @keydown="${this._handleItemClick}">
               <span>${this.options.find(option => option.id === val).label}</span>
               <button
                 @click="${this._remove}"
@@ -377,7 +395,9 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     return html`
       ${this.labelTemplate()}
 
-      <div class="input-group ${this.disabled ? 'disabled' : ''}">
+      <div class="input-group ${this.disabled ? 'disabled' : ''}"
+          @click="${this._handleDivClick}"
+          @keydown="${this._handleDivClick}">
         <div
           class="${classMap(this.classes)}"
           @click="${this._focusInput}"
