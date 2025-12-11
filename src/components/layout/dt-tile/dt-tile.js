@@ -48,6 +48,7 @@ export class DtTile extends DtBase {
           repeat(auto-fill, minmax(200px, 1fr))
         );
         transition: height 1s ease 0s;
+        gap: var(--dt-tile-body-grid-gap, 1rem 1.4rem);
         height: auto;
       }
       .section-body.collapsed {
@@ -89,8 +90,7 @@ export class DtTile extends DtBase {
       title: { type: String },
       expands: { type: Boolean },
       collapsed: { type: Boolean },
-      rowgap: { type: String },
-      columngap: { type: String },
+      gap: { type: String },
     };
   }
 
@@ -135,7 +135,7 @@ export class DtTile extends DtBase {
         <div
           part="body"
           class="section-body ${this.collapsed ? 'collapsed' : null}"
-          style="row-gap: ${this.rowgap ? this.rowgap : "1rem"}; column-gap: ${this.columngap ? this.columngap : "1.4rem"}"
+          style="gap: ${this.gap};"
         >
           <slot></slot>
         </div>
