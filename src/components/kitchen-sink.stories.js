@@ -17,7 +17,6 @@ import './form/dt-multi-text/dt-multi-text.js';
 import './form/dt-single-select/dt-single-select.js';
 import './form/dt-tags/dt-tags.js';
 import './form/dt-connection/dt-connection.js';
-import './form/dt-dropdown/dt-dropdown.js';
 import './form/dt-users-connection/dt-users-connection.js';
 
 const options = [
