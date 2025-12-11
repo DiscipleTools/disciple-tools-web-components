@@ -11,12 +11,15 @@ export class DtToggle extends DtFormBase {
         }
 
         .toggle {
-          position: relative;
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
+          position: relative;
           padding-top: 0.5rem;
-          cursor: pointer;
           width: fit-content;
+          margin-bottom: 1em;
+          cursor: pointer;
+          gap: 1ch;
         }
 
         button.toggle {
@@ -172,6 +175,7 @@ export class DtToggle extends DtFormBase {
       ${this.labelTemplate()}
       
       <label class="toggle" for="${this.id}">
+        ${this.label}
         <input
           type="checkbox"
           name="${this.name}"
