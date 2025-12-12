@@ -135,7 +135,7 @@ export class DtTile extends DtBase {
         <div
           part="body"
           class="section-body ${this.collapsed ? 'collapsed' : null}"
-          style="gap: ${this.gap};"
+          style="${this.gap ? `gap: ${this.gap};` : null}"
         >
           <slot></slot>
         </div>
