@@ -9,6 +9,7 @@ import './form/dt-textarea/dt-textarea.js';
 import './form/dt-number/dt-number.js';
 import './form/dt-date/dt-date.js';
 import './form/dt-datetime/dt-datetime.js';
+import './form/dt-toggle/dt-toggle.js';
 import './form/dt-location/dt-location.js';
 import './form/dt-location-map/dt-location-map.js';
 import './form/dt-multi-select/dt-multi-select.js';
@@ -146,6 +147,14 @@ export default {
         error="${ifDefined(args.error)}"
       ></dt-datetime>
 
+      <dt-toggle
+        id="toggleField"
+        name="toggleField"
+        label="Boolean Field"
+        ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
+      ></dt-toggle>
+      
       <dt-single-select
         label="Single Select Field"
         placeholder="Select Item"

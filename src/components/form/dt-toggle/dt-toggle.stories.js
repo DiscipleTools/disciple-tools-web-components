@@ -50,12 +50,6 @@ export default {
 
 export const Default = {};
 
-export const Label = {
-  args: {
-    label: 'Toggle Label',
-  },
-};
-
 export const ToggledOn = {
   args: {
     checked: true,
