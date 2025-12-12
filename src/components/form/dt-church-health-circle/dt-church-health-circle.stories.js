@@ -133,6 +133,7 @@ export default {
           value="${JSON.stringify(args.value)}"
           options="${JSON.stringify(args.options)}"
           missingIcon="/assets/groups/missing.svg"
+          ?disabled=${args.disabled}
           ?loading="${args.loading}"
           ?saved="${args.saved}"
           error="${ifDefined(args.error)}"

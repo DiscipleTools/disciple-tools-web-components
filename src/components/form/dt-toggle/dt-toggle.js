@@ -6,7 +6,7 @@ export class DtToggle extends DtFormBase {
     return [
       ...super.styles,
       css`
-        :host {
+        .root {
           display: inline-block;
         }
 
@@ -178,22 +178,29 @@ export class DtToggle extends DtFormBase {
     // prettier-ignore
     const cross = html`<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="toggle-icon toggle-icon--cross"><path d="M11.167 0L6.5 4.667L1.833 0L0 1.833L4.667 6.5L0 11.167L1.833 13L6.5 8.333L11.167 13L13 11.167L8.333 6.5L13 1.833L11.167 0Z" fill="currentcolor" /></svg>`
     return html`
-      ${this.labelTemplate()}
+      <div class="root" part="root">
+        ${this.labelTemplate()}
 
-      <label class="toggle" for="${this.id}" aria-label="${this.label}">
-        <input
-          type="checkbox"
-          name="${this.name}"
-          id="${this.id}"
-          class="toggle-input"
-          ?checked=${this.checked}
-          @click=${this.onChange}
-          ?disabled=${this.disabled}
-        />
-        <span class="toggle-display" @click=${this.onClickToggle}>
-          ${this.icons ? html` ${check} ${cross} ` : html``}
-        </span>
-      </label>
+        <label
+          class="toggle"
+          for="${this.id}"
+          aria-label="${this.label}"
+          part="toggle"
+        >
+          <input
+            type="checkbox"
+            name="${this.name}"
+            id="${this.id}"
+            class="toggle-input"
+            ?checked=${this.checked}
+            @click=${this.onChange}
+            ?disabled=${this.disabled}
+          />
+          <span class="toggle-display" @click=${this.onClickToggle}>
+            ${this.icons ? html` ${check} ${cross} ` : html``}
+          </span>
+        </label>
+      </div>
     `;
   }
 }

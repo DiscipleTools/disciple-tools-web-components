@@ -310,6 +310,7 @@ export default class DtFormBase extends DtBase {
         privateLabel="${this.privateLabel}"
         iconAltText="${this.iconAltText}"
         icon="${this.icon}"
+        exportparts="label: label-container"
       >
         ${!this.icon
           ? html`<slot name="icon-start" slot="icon-start"></slot>`

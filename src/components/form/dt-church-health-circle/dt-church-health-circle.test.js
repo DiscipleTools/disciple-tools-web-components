@@ -1,5 +1,11 @@
 import { html } from 'lit';
-import { fixture, expect, nextFrame, oneEvent } from '@open-wc/testing';
+import {
+  fixture,
+  expect,
+  nextFrame,
+  oneEvent,
+  aTimeout,
+} from '@open-wc/testing';
 
 import './dt-church-health-circle.js';
 
@@ -27,12 +33,6 @@ const options = {
   },
 };
 
-async function wait(ms) {
-  return new Promise(r => {
-    setTimeout(r, ms);
-  });
-}
-
 describe('DT-Church-Health-Circle', () => {
   it('passes the a11y audit', async () => {
     const el = await fixture(
@@ -55,17 +55,25 @@ describe('DT-Church-Health-Circle', () => {
     // Should render all metrics except church_commitment
     expect(icons).to.have.lengthOf(Object.keys(options).length - 1);
     expect(
-      el.shadowRoot.querySelector('dt-church-health-icon[data-value="church_baptism"]'),
+      el.shadowRoot.querySelector(
+        'dt-church-health-icon[data-value="church_baptism"]',
+      ),
     ).to.exist;
     expect(
-      el.shadowRoot.querySelector('dt-church-health-icon[data-value="church_bible"]'),
+      el.shadowRoot.querySelector(
+        'dt-church-health-icon[data-value="church_bible"]',
+      ),
     ).to.exist;
     expect(
-      el.shadowRoot.querySelector('dt-church-health-icon[data-value="church_prayer"]'),
+      el.shadowRoot.querySelector(
+        'dt-church-health-icon[data-value="church_prayer"]',
+      ),
     ).to.exist;
     // commitment should not render as an icon
     expect(
-      el.shadowRoot.querySelector('dt-church-health-icon[data-value="church_commitment"]'),
+      el.shadowRoot.querySelector(
+        'dt-church-health-icon[data-value="church_commitment"]',
+      ),
     ).to.not.exist;
   });
 
@@ -122,7 +130,7 @@ describe('DT-Church-Health-Circle', () => {
     );
     // Click the inner element that handles the click in the icon component
     icon.shadowRoot.querySelector('.health-item').click();
-    await wait(100);
+    await aTimeout(100);
     expect(icon).to.have.attribute('active');
     expect(el.value).to.eql(['church_baptism']);
   });
@@ -139,7 +147,7 @@ describe('DT-Church-Health-Circle', () => {
       'dt-church-health-icon[data-value="church_baptism"]',
     );
     icon.shadowRoot.querySelector('.health-item').click();
-    await wait(100);
+    await aTimeout(100);
     expect(el).to.have.attr('value', JSON.stringify(['church_baptism']));
   });
 
@@ -154,7 +162,7 @@ describe('DT-Church-Health-Circle', () => {
       'dt-church-health-icon[data-value="church_baptism"]',
     );
     icon.shadowRoot.querySelector('.health-item').click();
-    await wait(100);
+    await aTimeout(100);
 
     expect(el.value).to.contain('church_bible');
     expect(el.value).to.contain('-church_baptism');
@@ -171,7 +179,7 @@ describe('DT-Church-Health-Circle', () => {
       'dt-church-health-icon[data-value="church_baptism"]',
     );
     icon.shadowRoot.querySelector('.health-item').click();
-    await wait(100);
+    await aTimeout(100);
 
     expect(el.value).to.contain('church_baptism');
     expect(el.value).to.not.contain('-church_baptism');
@@ -235,14 +243,14 @@ describe('DT-Church-Health-Circle', () => {
 
     // Click the toggle input inside its shadow DOM
     toggle.shadowRoot.querySelector('input').click();
-    await wait(50);
+    await aTimeout(50);
 
     expect(circle.classList.contains('health-circle--committed')).to.be.true;
     expect(el.value).to.contain('church_commitment');
 
     // Click again to uncommit -> should hyphenate
     toggle.shadowRoot.querySelector('input').click();
-    await wait(50);
+    await aTimeout(50);
 
     expect(circle.classList.contains('health-circle--committed')).to.be.false;
     expect(el.value).to.contain('-church_commitment');

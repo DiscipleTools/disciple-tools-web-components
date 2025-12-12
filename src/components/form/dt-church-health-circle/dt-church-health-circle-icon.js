@@ -25,31 +25,43 @@ class DtChurchHealthIcon extends DtBase {
       key: { type: String },
       /* Boolean if metric is active */
       active: { type: Boolean, reflect: true },
+      /* Boolean if metric is disabled */
+      disabled: { type: Boolean },
       /* Override icon if metric icon is missing */
       missingIcon: { type: String },
     };
   }
 
   render() {
+    const templateDir = window?.wpApiShare?.template_dir;
     const {
       metric,
       active,
-      missingIcon = `${window.wpApiShare.template_dir}/dt-assets/images/groups/missing.svg`,
+      disabled,
+      missingIcon = `${templateDir}/dt-assets/images/groups/missing.svg`,
     } = this;
 
     return html`<div
       class=${classMap({
         'health-item': true,
         'health-item--active': active,
+        'health-item--disabled': disabled,
       })}
       title="${metric.description}"
       @click="${this._handleClick}"
     >
-      <img src="${metric.icon ? metric.icon : missingIcon}" />
+      <img
+        src="${metric.icon ? metric.icon : missingIcon}"
+        alt="${this.metric}"
+      />
     </div>`;
   }
 
   async _handleClick(e) {
+    if (this.disabled) {
+      return;
+    }
+
     const active = !this.active;
     this.active = active;
 

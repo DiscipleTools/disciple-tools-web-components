@@ -58,6 +58,9 @@ export class DtChurchHealthCircle extends DtMultiSelect {
         .health-circle--committed {
           border: 3px #4caf50 solid !important;
         }
+        .health-circle--disabled dt-church-health-icon {
+          cursor: not-allowed;
+        }
 
         dt-church-health-icon {
           position: absolute;
@@ -75,13 +78,26 @@ export class DtChurchHealthCircle extends DtMultiSelect {
           --az: calc(var(--i) * 1turn / var(--icon-count));
           transform: rotate(var(--az)) translate(var(--radius))
             rotate(calc(-1 * var(--az)));
-          /* Pass icon size down to the inner <img> element */
-          --d: var(--icon-size);
+        }
+      `,
+      css`
+        dt-toggle::part(root) {
+          display: flex;
+          align-items: center;
+        }
+        dt-toggle::part(toggle) {
+          padding-top: 0;
+        }
+        dt-toggle::part(label-container) {
+          font-weight: 300;
         }
       `,
       css`
         .icon-overlay {
           inset-inline-end: 0;
+        }
+        .error-container {
+          margin-block-start: 0.5rem;
         }
       `,
     ];
@@ -90,12 +106,8 @@ export class DtChurchHealthCircle extends DtMultiSelect {
   static get properties() {
     const props = {
       ...super.properties,
-      // groupId: { type: Number },
-      // group: { type: Object, reflect: false },
       settings: { type: Object, reflect: false },
-      // errorMessage: { type: String, attribute: false },
       missingIcon: { type: String },
-      // handleSave: { type: Function },
     };
     delete props.placeholder;
     delete props.containerHeight;
@@ -156,6 +168,7 @@ export class DtChurchHealthCircle extends DtMultiSelect {
             class=${classMap({
               'health-circle': true,
               'health-circle--committed': this.isCommited,
+              'health-circle--disabled': this.disabled,
             })}
           >
             <div class="health-circle__grid">
@@ -167,6 +180,7 @@ export class DtChurchHealthCircle extends DtMultiSelect {
                     .active=${(this.value || []).indexOf(key) !== -1}
                     .style="--i: ${index + 1}"
                     .missingIcon="${this.missingIcon}"
+                    ?disabled=${this.disabled}
                     data-value="${key}"
                     @change="${this.handleIconClick}"
                   >
@@ -181,6 +195,7 @@ export class DtChurchHealthCircle extends DtMultiSelect {
           name="church_commitment"
           label="${this.options.church_commitment.label}"
           @change="${this.handleToggleChange}"
+          ?disabled=${this.disabled}
           ?checked=${this.isCommited}
           data-value="church_commitment"
         >
