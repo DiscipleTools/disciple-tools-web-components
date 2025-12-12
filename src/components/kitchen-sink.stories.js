@@ -154,7 +154,7 @@ export default {
         ?disabled=${args.disabled}
         error="${ifDefined(args.error)}"
       ></dt-toggle>
-      
+
       <dt-single-select
         label="Single Select Field"
         placeholder="Select Item"
