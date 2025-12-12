@@ -11,18 +11,16 @@ export class DtToggle extends DtFormBase {
         }
 
         .toggle {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
           position: relative;
-          margin-bottom: 1em;
+          display: flex;
+          align-items: center;
+          padding-top: 0.5rem;
           cursor: pointer;
-          gap: 1ch;
+          width: fit-content;
         }
 
         button.toggle {
           border: 0;
-          padding: 0;
           background-color: transparent;
           font: inherit;
         }
@@ -30,7 +28,7 @@ export class DtToggle extends DtFormBase {
         .toggle-input {
           position: absolute;
           opacity: 0;
-          width: 100%;
+          width: fit-content;
           height: 100%;
         }
 
@@ -159,8 +157,9 @@ export class DtToggle extends DtFormBase {
     });
     this.checked = e.target.checked;
 
+    console.log(this.checked);
     this._setFormValue(this.checked);
-
+    console.log(event);
     this.dispatchEvent(event);
   }
 
@@ -170,8 +169,9 @@ export class DtToggle extends DtFormBase {
     // prettier-ignore
     const cross = html`<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="toggle-icon toggle-icon--cross"><path d="M11.167 0L6.5 4.667L1.833 0L0 1.833L4.667 6.5L0 11.167L1.833 13L6.5 8.333L11.167 13L13 11.167L8.333 6.5L13 1.833L11.167 0Z" fill="currentcolor" /></svg>`
     return html`
-      <label class="toggle" for="${this.id}">
-        ${this.label}
+      ${this.labelTemplate()}
+
+      <label class="toggle" for="${this.id}" aria-label="${this.label}">
         <input
           type="checkbox"
           name="${this.name}"
