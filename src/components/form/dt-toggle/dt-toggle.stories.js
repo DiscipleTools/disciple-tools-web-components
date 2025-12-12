@@ -1,9 +1,9 @@
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
 import { LocaleDecorator } from '../../../stories-utils.js';
 import './dt-toggle.js';
-import { action } from '@storybook/addon-actions';
-import { ifDefined } from 'lit/directives/if-defined.js';
 
 export default {
   title: 'Components/Form/Toggle',
@@ -25,7 +25,7 @@ export default {
     const {
       id = 'name',
       name = 'field-name',
-      label,
+      label = 'Field Name',
       disabled = false,
       checked = false,
       icons = false,
@@ -34,8 +34,8 @@ export default {
     } = args;
     return html`
       <dt-toggle
-        id=${id}
-        name=${name}
+        id=${ifDefined(id)}
+        name=${ifDefined(name)}
         label=${ifDefined(label)}
         ?checked=${checked}
         ?icons=${icons}
@@ -49,12 +49,6 @@ export default {
 };
 
 export const Default = {};
-
-export const Label = {
-  args: {
-    label: 'Toggle Label',
-  },
-};
 
 export const ToggledOn = {
   args: {
