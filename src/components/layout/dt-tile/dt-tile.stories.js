@@ -27,6 +27,7 @@ const Template = args => html`
     title="${args.title}"
     ?expands="${args.expands}"
     ?collapsed="${args.collapsed}"
+    gap="${args.gap}"
   >
     <div>
       <dt-label>Field 1</dt-label>
@@ -100,6 +101,12 @@ Collapsed.args = {
   title: 'My Tile',
   expands: true,
   collapsed: true,
+};
+
+export const CustomGaps = Template.bind({});
+CustomGaps.args = {
+  title: 'My Tile',
+  gap: '2rem 3rem',
 };
 
 export const LocalizeRTL = templateArabic.bind({});

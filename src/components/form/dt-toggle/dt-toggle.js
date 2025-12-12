@@ -24,7 +24,6 @@ export class DtToggle extends DtFormBase {
 
         button.toggle {
           border: 0;
-          padding: 0;
           background-color: transparent;
           font: inherit;
         }
@@ -161,8 +160,9 @@ export class DtToggle extends DtFormBase {
     });
     this.checked = e.target.checked;
 
+    console.log(this.checked);
     this._setFormValue(this.checked);
-
+    console.log(event);
     this.dispatchEvent(event);
   }
 
