@@ -163,6 +163,15 @@ export class DtToggle extends DtFormBase {
     this.dispatchEvent(event);
   }
 
+  onClickToggle(e) {
+    e.preventDefault();
+    // When dt-toggle is nested in the health circle,
+    // clicks on the toggle icon will not trigger the input click event.
+    // This is a workaround to ensure the input is clicked when the toggle icon is clicked.
+    const target = e.target.closest('label').querySelector('input');
+    target.click();
+  }
+
   render() {
     // prettier-ignore
     const check = html`<svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="toggle-icon toggle-icon--checkmark"><path d="M6.08471 10.6237L2.29164 6.83059L1 8.11313L6.08471 13.1978L17 2.28255L15.7175 1L6.08471 10.6237Z" fill="currentcolor" stroke="currentcolor" /></svg>`
@@ -181,7 +190,7 @@ export class DtToggle extends DtFormBase {
           @click=${this.onChange}
           ?disabled=${this.disabled}
         />
-        <span class="toggle-display" hidden>
+        <span class="toggle-display" @click=${this.onClickToggle}>
           ${this.icons ? html` ${check} ${cross} ` : html``}
         </span>
       </label>

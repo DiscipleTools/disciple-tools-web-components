@@ -21,12 +21,12 @@ class DtChurchHealthIcon extends DtBase {
 
   static get properties() {
     return {
+      /* Key of metric to toggle */
       key: { type: String },
-      metric: { type: Object },
-      group: { type: Object },
+      /* Boolean if metric is active */
       active: { type: Boolean, reflect: true },
+      /* Override icon if metric icon is missing */
       missingIcon: { type: String },
-      handleSave: { type: Function },
     };
   }
 
@@ -49,36 +49,19 @@ class DtChurchHealthIcon extends DtBase {
     </div>`;
   }
 
-  async _handleClick() {
-    if (!this.handleSave) {
-      return;
-    }
-
+  async _handleClick(e) {
     const active = !this.active;
     this.active = active;
-    const payload = {
-      health_metrics: {
-        values: [
-          {
-            value: this.key,
-            delete: !active,
-          },
-        ],
+
+    const event = new CustomEvent('change', {
+      detail: {
+        key: this.key,
+        active,
       },
-    };
+    });
 
-    try {
-      await this.handleSave(this.group.ID, payload);
-    } catch (err) {
-      console.error(err);
-      return;
-    }
-
-    if (active) {
-      this.group.health_metrics.push(this.key);
-    } else {
-      this.group.health_metrics.pop(this.key);
-    }
+    // dispatch event for use with addEventListener from javascript
+    this.dispatchEvent(event);
   }
 }
 
