@@ -30,6 +30,7 @@ export default {
     onchange: { control: 'text' },
     ...argTypes,
   },
+  tags: ['!dev', '!autodocs'], // excluding from Storybook for now until further need for this
 };
 
 function Template(args) {
