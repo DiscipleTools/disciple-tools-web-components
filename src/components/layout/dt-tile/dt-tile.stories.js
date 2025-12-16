@@ -60,6 +60,7 @@ const templateArabic = args => html`
     title="${args.title}"
     ?expands="${args.expands}"
     ?collapsed="${args.collapsed}"
+    gap="${args.gap}"
   >
     <div>
       <dt-label>مجال ١</dt-label>
