@@ -7,16 +7,38 @@ export class DtToggle extends DtFormBase {
       ...super.styles,
       css`
         :host {
-          display: inline-block;
+          display: block;
+        }
+
+        .toggle-wrapper {
+          display: flex; /* Aligns children (label and icons) horizontally */
+          align-items: center; /* Vertically aligns children */
+          gap: 1ch; /* Adds a small gap between the label and the icons */
         }
 
         .toggle {
           position: relative;
+          flex-wrap: wrap;
           display: flex;
           align-items: center;
-          padding-top: 0.5rem;
+          padding-top: 1rem;
+          width: fit-content;
+          margin-bottom: 1em;
           cursor: pointer;
           width: fit-content;
+        }
+
+        .icons {
+          position: relative;
+          flex-wrap: wrap;
+          display: flex;
+          align-items: center;
+          width: fit-content;
+          cursor: pointer;
+        }
+
+        .icon-overlay {
+          inset-inline-end: -1.5rem;
         }
 
         button.toggle {
@@ -170,6 +192,26 @@ export class DtToggle extends DtFormBase {
     const cross = html`<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="toggle-icon toggle-icon--cross"><path d="M11.167 0L6.5 4.667L1.833 0L0 1.833L4.667 6.5L0 11.167L1.833 13L6.5 8.333L11.167 13L13 11.167L8.333 6.5L13 1.833L11.167 0Z" fill="currentcolor" /></svg>`
     return html`
       ${this.labelTemplate()}
+<<<<<<< HEAD
+      
+      <div class="toggle-wrapper">
+        <label class="toggle" for="${this.id}">
+          <input
+            type="checkbox"
+            name="${this.name}"
+            id="${this.id}"
+            class="toggle-input"
+            ?checked=${this.checked}
+            @click=${this.onChange}
+            ?disabled=${this.disabled}
+          />
+          <span class="toggle-display" hidden>
+            ${this.icons ? html` ${check} ${cross} ` : html``}
+          </span>
+        </label>
+        <div class="icons">${this.renderIcons()}</div>
+      </div>
+=======
 
       <label class="toggle" for="${this.id}" aria-label="${this.label}">
         <input
@@ -185,6 +227,7 @@ export class DtToggle extends DtFormBase {
           ${this.icons ? html` ${check} ${cross} ` : html``}
         </span>
       </label>
+>>>>>>> 5b986a76e3d77816e928a5a114253b268f8d1287
     `;
   }
 }

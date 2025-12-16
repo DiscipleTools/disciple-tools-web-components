@@ -2,7 +2,10 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator } from '../../../stories-utils.js';
+import {
+  FormDecorator,
+  LocaleDecorator
+} from '../../../stories-utils.js';
 import './dt-toggle.js';
 
 export default {
@@ -16,6 +19,8 @@ export default {
     icons: { control: 'boolean' },
     disabled: { control: 'boolean' },
     onChange: { control: 'text' },
+    loading: { control: 'boolean' },
+    saved: { control: 'boolean' },
     ...argTypes,
   },
   args: {
@@ -29,6 +34,9 @@ export default {
       disabled = false,
       checked = false,
       icons = false,
+      loading = false,
+      saved = false,
+      error,
       onChange,
       slot,
     } = args;
@@ -40,6 +48,9 @@ export default {
         ?checked=${checked}
         ?icons=${icons}
         ?disabled=${disabled}
+        ?loading=${loading}
+        ?saved=${saved}
+        error="${ifDefined(error)}"
         @change=${onChange}
       >
         ${slot}
@@ -74,6 +85,26 @@ export const DisabledOn = {
     checked: true,
     disabled: true,
   },
+};
+
+export const Loading = {
+  args: {
+    loading: true,
+  },
+};
+export const Saved = {
+  args: {
+    saved: true,
+  },
+};
+export const Error = {
+  args: {
+    error: 'Custom error message',
+  },
+};
+
+export const BasicForm = {
+  decorators: [FormDecorator],
 };
 
 export const LocalizeRTL = {
