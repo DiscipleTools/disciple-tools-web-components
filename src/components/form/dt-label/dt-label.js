@@ -20,26 +20,37 @@ export class DtLabel extends DtBase {
 
       .label {
         text-overflow: ellipsis;
-        overflow: clip;
+        overflow-x: clip;
         display: flex;
         gap: 0.5ch;
         padding-inline-end: 1ch;
 
         > .label-text {
           flex-grow: 1;
+
+          &:has(~ .private) {
+            flex-grow: 0;
+          }
         }
         > .icon {
           flex-grow: 0;
         }
       }
+
       .icon {
         height: var(--dt-label-font-size, 14px);
         width: auto;
         display: inline-block;
+
+        &:empty,
+        &:has(slot:not(.slotted):empty) {
+          display: none;
+        }
       }
 
       .icon.private {
         position: relative;
+        flex-grow: 1;
       }
       .icon.private:hover .tooltip {
         display: block;
@@ -83,6 +94,28 @@ export class DtLabel extends DtBase {
   }
 
   firstUpdated() {
+    // add class to slots that have content
+    const slots = this.shadowRoot.querySelectorAll('slot');
+    if (slots && slots.length) {
+      for (const slot of slots) {
+        slot.addEventListener('slotchange', event => {
+          const nodes = event.target.assignedNodes();
+          let slotted = false;
+          if (nodes.length) {
+            if (nodes[0].tagName === 'SLOT') {
+              slotted =
+                nodes[0].assignedNodes().length || nodes[0].children.length;
+            } else {
+              slotted = true;
+            }
+          }
+          if (slotted) {
+            event.target.classList.add('slotted');
+          }
+        });
+      }
+    }
+
     // handle img or svg content that may be bigger than the space allotted
     const iconSlot = this.shadowRoot.querySelector('slot[name=icon-start]');
     const iconElements = iconSlot.assignedElements({ flatten: true });
@@ -117,16 +150,13 @@ export class DtLabel extends DtBase {
     return html`
       <div class="label" part="label">
         <span class="icon icon-start">
-          <slot name="icon-start">
-            ${this.icon
+          <slot name="icon-start"
+            >${this.icon
               ? html`<img src="${this.icon}" alt="${this.iconAltText}" />`
-              : null}
-          </slot>
+              : null}</slot
+          >
         </span>
         <span class="label-text"><slot></slot></span>
-        <span class="icon icon-end">
-          <slot name="icon-end"></slot>
-        </span>
 
         ${this.private
           ? html`<span class="icon private">
@@ -137,6 +167,10 @@ export class DtLabel extends DtBase {
               >
             </span> `
           : null}
+
+        <span class="icon icon-end">
+          <slot name="icon-end"></slot>
+        </span>
       </div>
     `;
   }

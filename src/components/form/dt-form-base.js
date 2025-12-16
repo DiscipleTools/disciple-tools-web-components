@@ -6,6 +6,7 @@ import '../icons/dt-spinner.js';
 import '../icons/dt-icon.js';
 import '../icons/dt-checkmark.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * Extends `DtBase` to add features specific to form components, including base styles
@@ -307,9 +308,9 @@ export default class DtFormBase extends DtBase {
     return html`
       <dt-label
         ?private=${this.private}
-        privateLabel="${this.privateLabel}"
-        iconAltText="${this.iconAltText}"
-        icon="${this.icon}"
+        privateLabel="${ifDefined(this.privateLabel)}"
+        iconAltText="${ifDefined(this.iconAltText)}"
+        icon="${ifDefined(this.icon)}"
         exportparts="label: label-container"
       >
         ${!this.icon
