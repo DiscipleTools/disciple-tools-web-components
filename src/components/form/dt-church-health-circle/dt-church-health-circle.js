@@ -1,123 +1,121 @@
 import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import DtBase from '../../dt-base.js';
+import { DtMultiSelect } from '../dt-multi-select/dt-multi-select.js';
 import './dt-church-health-circle-icon.js';
+import '../dt-toggle/dt-toggle.js';
 
-export class DtChurchHealthCircle extends DtBase {
+export class DtChurchHealthCircle extends DtMultiSelect {
   static get styles() {
-    return css`
-      .health-circle__container {
-        --d: 55px; /* image size */
-        --rel: 1; /* how much extra space we want between images, 1 = one image size */
-        --r: calc(1 * var(--d) / var(--tan)); /* circle radius */
-        --s: calc(3 * var(--r));
-        margin: 1rem auto;
-        display: flex;
-        justify-content: center;
-        align-items: baseline;
-        padding-top: 100%;
-        height: 0;
-        position: relative;
-        overflow: visible;
-      }
-
-      .health-circle {
-        display: block;
-        border-radius: 100%;
-        border: 3px darkgray dashed;
-        max-width: 100%;
-        position: absolute;
-        transform: translate(-50%, -50%);
-        left: 50%;
-        top: 50%;
-        width: 100%;
-        height: 100%;
-      }
-
-      @media (max-width: 519px) {
+    return [
+      ...super.styles,
+      css`
         .health-circle__container {
-          --d: 40px; /* image size */
+          --icon-count: 9;
+          --circle-size: var(
+            --container-width,
+            250px
+          ); /* Updated based on dynamic width */
+          --icon-size: min(calc(var(--circle-size) / 5), 100px);
+          --circle-padding: max(1rem, calc(var(--circle-size) / 250px * 1rem));
+          --radius: calc(
+            0.5 * var(--circle-size) - 0.5 *
+              var(--icon-size) - var(--circle-padding)
+          ); /* radius from center to icon center, accounting for inner padding */
+
+          margin: 1rem auto;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: var(--circle-size);
+          height: var(--circle-size);
+          position: relative;
+          overflow: visible;
         }
 
         .health-circle {
-          max-width: 300px;
-          max-height: 300px;
-        }
-      }
-
-      @media (max-width: 400px) {
-        .health-circle__container {
-          --d: 30px; /* image size */
-        }
-
-        .health-circle {
-          max-width: 250px;
-          max-height: 250px;
-        }
-      }
-
-      @media (max-width: 321px) {
-        .health-circle__container {
-          --d: 25px; /* image size */
+          display: block;
+          border-radius: 100%;
+          border: 3px darkgray dashed;
+          position: absolute;
+          box-sizing: border-box;
+          width: 100%;
+          height: 100%;
+          left: 0;
+          top: 0;
         }
 
-        .health-circle {
-          max-width: 225px;
-          max-height: 225px;
+        .health-circle__grid {
+          display: inline-block;
+          position: relative;
+          height: 100%;
+          width: 100%;
+          margin-left: auto;
+          margin-right: auto;
+          position: relative;
         }
-      }
 
-      .health-circle__grid {
-        display: inline-block;
-        position: relative;
-        height: 100%;
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        position: relative;
-        width: var(--s);
-        max-width: 100%;
-      }
+        .health-circle--committed {
+          border: 3px #4caf50 solid !important;
+        }
+        .health-circle--disabled dt-church-health-icon {
+          cursor: not-allowed;
+        }
 
-      .health-circle--committed {
-        border: 3px #4caf50 solid !important;
-      }
-
-      dt-church-health-icon {
-        position: absolute;
-        border-radius: 100%;
-        font-size: 16px;
-        color: black;
-        text-align: center;
-        font-style: italic;
-        cursor: pointer;
-        top: 50%;
-        left: 50%;
-        margin: calc(-0.5 * var(--d));
-        width: var(--d);
-        height: var(--d);
-        --az: calc(var(--i) * 1turn / var(--m));
-        transform: rotate(var(--az)) translate(var(--r)) rotate(calc(-1 * var(--az)));
-      }
-    `;
+        dt-church-health-icon {
+          position: absolute;
+          border-radius: 100%;
+          font-size: 16px;
+          color: black;
+          text-align: center;
+          font-style: italic;
+          cursor: pointer;
+          top: 50%;
+          left: 50%;
+          margin: calc(-0.5 * var(--icon-size));
+          width: var(--icon-size);
+          height: var(--icon-size);
+          --az: calc(var(--i) * 1turn / var(--icon-count));
+          transform: rotate(var(--az)) translate(var(--radius))
+            rotate(calc(-1 * var(--az)));
+        }
+      `,
+      css`
+        dt-toggle::part(root) {
+          display: flex;
+          align-items: center;
+        }
+        dt-toggle::part(toggle) {
+          padding-top: 0;
+        }
+        dt-toggle::part(label-container) {
+          font-weight: 300;
+        }
+      `,
+      css`
+        .icon-overlay {
+          inset-inline-end: 0;
+        }
+        .error-container {
+          margin-block-start: 0.5rem;
+        }
+      `,
+    ];
   }
 
   static get properties() {
-    return {
-      groupId: { type: Number },
-      group: { type: Object, reflect: false },
+    const props = {
+      ...super.properties,
       settings: { type: Object, reflect: false },
-      errorMessage: { type: String, attribute: false },
       missingIcon: { type: String },
-      handleSave: { type: Function },
     };
+    delete props.placeholder;
+    delete props.containerHeight;
+    return props;
   }
 
-  /**
-   * Map fields settings as an array and filter out church commitment
-   */
-  get metrics() {
-    const settings = this.settings || [];
+  _filterOptions() {
+    const settings = this.options || [];
 
     if (!Object.values(settings).length) {
       return [];
@@ -126,94 +124,33 @@ export class DtChurchHealthCircle extends DtBase {
     const entries = Object.entries(settings);
 
     // We don't want to show church commitment in the circle
-    return entries.filter(([key, value]) => key !== 'church_commitment');
+    this.filteredOptions = entries.filter(
+      ([key, value]) => key !== 'church_commitment',
+    );
+
+    return this.filteredOptions;
+  }
+
+  willUpdate(props) {
+    super.willUpdate(props);
+
+    if (props) {
+      const valueChanged = props.has('value');
+      const optionsChanged = props.has('options');
+
+      // if value, query, or options change, trigger filter
+      if (valueChanged || optionsChanged) {
+        this._filterOptions();
+      }
+    }
   }
 
   get isCommited() {
-    if (!this.group) {
+    if (!this.value) {
       return false;
     }
 
-    if (!this.group.health_metrics) {
-      return false;
-    }
-
-    return this.group.health_metrics.includes('church_commitment');
-  }
-
-  /**
-   * Fetch group data on component load if it's not provided as a property
-   */
-  connectedCallback() {
-    super.connectedCallback();
-    this.fetch();
-  }
-
-  adoptedCallback() {
-    this.distributeItems();
-  }
-
-  /**
-   * Position the items after the component is rendered
-   */
-  updated() {
-    this.distributeItems();
-  }
-
-  /**
-   * Fetch the group and settings data if not provided by the server
-   */
-  async fetch() {
-    try {
-      const promises = [this.fetchSettings(), this.fetchGroup()];
-      const [settings, group] = await Promise.all(promises);
-      this.settings = settings;
-      this.post = group;
-      if (!settings) {
-        this.errorMessage = 'Error loading settings';
-      }
-      if (!group) {
-        this.errorMessage = 'Error loading group';
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  /**
-   * Fetch the group data if it's not already set
-   * @returns
-   */
-  fetchGroup() {
-    if (this.group) {
-      return Promise.resolve(this.group);
-    }
-    fetch(`/wp-json/dt-posts/v2/groups/${this.groupId}`).then(response =>
-      response.json()
-    );
-  }
-
-  /**
-   * Fetch the settings data if not already set
-   * @returns
-   */
-  fetchSettings() {
-    if (this.settings) {
-      return Promise.resolve(this.settings);
-    }
-    return fetch('/wp-json/dt-posts/v2/groups/settings').then(response =>
-      response.json()
-    );
-  }
-
-  /**
-   * Find a metric by key
-   * @param {*} key
-   * @returns
-   */
-  findMetric(key) {
-    const metric = this.metrics.find(item => item.key === key);
-    return metric ? metric.value : null;
+    return this.value.includes('church_commitment');
   }
 
   /**
@@ -221,129 +158,71 @@ export class DtChurchHealthCircle extends DtBase {
    * @returns
    */
   render() {
-    // Show the spinner if we don't have data
-    if (!this.group || !this.metrics.length) {
-      return html`<dt-spinner></dt-spinner>`;
-    }
-
-    // Setup data
-    const practicedItems = this.group.health_metrics || [];
-
-    // Show the error message if we have one
-    if (this.errorMessage) {
-      html`<dt-alert type="error">${this.errorMessage}</dt-alert>`;
-    }
-
-    // Render the group circle
     return html`
-      <div class="health-circle__wrapper">
-        <div class="health-circle__container">
+      <div class="health-circle__wrapper input-group">
+        <div
+          class="health-circle__container"
+          style="--icon-count: ${this.filteredOptions.length}"
+        >
           <div
             class=${classMap({
               'health-circle': true,
               'health-circle--committed': this.isCommited,
+              'health-circle--disabled': this.disabled,
             })}
           >
             <div class="health-circle__grid">
-              ${this.metrics.map(
+              ${this.filteredOptions.map(
                 ([key, metric], index) =>
                   html`<dt-church-health-icon
                     key="${key}"
-                    .group="${this.group}"
                     .metric=${metric}
-                    .active=${practicedItems.indexOf(key) !== -1}
+                    .active=${(this.value || []).indexOf(key) !== -1}
                     .style="--i: ${index + 1}"
                     .missingIcon="${this.missingIcon}"
-                    .handleSave="${this.handleSave}"
+                    ?disabled=${this.disabled}
+                    data-value="${key}"
+                    @change="${this.handleIconClick}"
                   >
-                  </dt-church-health-icon>`
+                  </dt-church-health-icon>`,
               )}
             </div>
+            ${this.renderIconLoading()} ${this.renderIconSaved()}
           </div>
         </div>
 
         <dt-toggle
-          name="church-commitment"
-          label="${this.settings.church_commitment.label}"
-          requiredmessage=""
-          icon="https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
-          iconalttext="Icon Alt Text"
-          privatelabel=""
-          @click="${this.toggleClick}"
+          name="church_commitment"
+          label="${this.options.church_commitment.label}"
+          @change="${this.handleToggleChange}"
+          ?disabled=${this.disabled}
           ?checked=${this.isCommited}
+          data-value="church_commitment"
         >
         </dt-toggle>
+        ${this.renderError()}
       </div>
     `;
   }
 
-  /**
-   * Dynamically distribute items in Church Health Circle
-   * according to amount of health metric elements
-   */
-  distributeItems() {
-    const container = this.renderRoot.querySelector(
-      '.health-circle__container'
-    );
-    const items = container.querySelectorAll('dt-church-health-icon');
+  handleIconClick(evt) {
+    const { key, active } = evt.detail;
 
-    const n_items = items.length;
-    const m = n_items; /* how many are ON the circle */
-    const tan = Math.tan(Math.PI / m); /* tangent of half the base angle */
-
-    container.style.setProperty('--m', m);
-    container.style.setProperty('--tan', + tan.toFixed(2));
-  }
-
-  async toggleClick(e) {
-    const { handleSave } = this;
-
-    if (!handleSave) {
-      return;
-    }
-
-    const toggle = this.renderRoot.querySelector('dt-toggle');
-    const church_commitment = toggle.toggleAttribute('checked');
-    if (!this.group.health_metrics) {
-      this.group.health_metrics = [];
-    }
-
-    const payload = {
-      health_metrics: {
-        values: [
-          {
-            value: 'church_commitment',
-            delete: !church_commitment,
-          },
-        ],
-      },
-    };
-
-    try {
-      await handleSave(this.group.ID, payload);
-    } catch (err) {
-      toggle.toggleAttribute('checked', !church_commitment);
-      console.error(err);
-      return;
-    }
-
-    if (church_commitment) {
-      this.group.health_metrics.push('church_commitment');
+    if (active) {
+      this._select(key);
     } else {
-      this.group.health_metrics.pop('church_commitment');
+      this._remove(evt);
     }
-
-    this.requestUpdate();
   }
 
-  _isChecked() {
-    if (Object.hasOwn(this.group, 'health_metrics')) {
-      if (this.group.health_metrics.includes('church_commitment')) {
-        return (this.isChurch = true);
-      }
-      return (this.isChurch = false);
+  async handleToggleChange(e) {
+    const { field, newValue } = e.detail;
+
+    if (newValue) {
+      this._select(field);
+    } else {
+      this._remove(e);
     }
-    return (this.isChurch = false);
   }
 }
 

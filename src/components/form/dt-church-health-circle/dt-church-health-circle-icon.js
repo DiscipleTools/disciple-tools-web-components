@@ -21,64 +21,59 @@ class DtChurchHealthIcon extends DtBase {
 
   static get properties() {
     return {
+      /* Key of metric to toggle */
       key: { type: String },
-      metric: { type: Object },
-      group: { type: Object },
+      /* Boolean if metric is active */
       active: { type: Boolean, reflect: true },
+      /* Boolean if metric is disabled */
+      disabled: { type: Boolean },
+      /* Override icon if metric icon is missing */
       missingIcon: { type: String },
-      handleSave: { type: Function },
     };
   }
 
   render() {
+    const templateDir = window?.wpApiShare?.template_dir;
     const {
       metric,
       active,
-      missingIcon = `${window.wpApiShare.template_dir}/dt-assets/images/groups/missing.svg`,
+      disabled,
+      missingIcon = `${templateDir}/dt-assets/images/groups/missing.svg`,
     } = this;
 
     return html`<div
       class=${classMap({
         'health-item': true,
         'health-item--active': active,
+        'health-item--disabled': disabled,
       })}
       title="${metric.description}"
       @click="${this._handleClick}"
     >
-      <img src="${metric.icon ? metric.icon : missingIcon}" />
+      <img
+        src="${metric.icon ? metric.icon : missingIcon}"
+        alt="${this.metric}"
+      />
     </div>`;
   }
 
-  async _handleClick() {
-    if (!this.handleSave) {
+  async _handleClick(e) {
+    if (this.disabled) {
       return;
     }
 
     const active = !this.active;
     this.active = active;
-    const payload = {
-      health_metrics: {
-        values: [
-          {
-            value: this.key,
-            delete: !active,
-          },
-        ],
+
+    const event = new CustomEvent('change', {
+      detail: {
+        key: this.key,
+        active,
       },
-    };
+    });
 
-    try {
-      await this.handleSave(this.group.ID, payload);
-    } catch (err) {
-      console.error(err);
-      return;
-    }
-
-    if (active) {
-      this.group.health_metrics.push(this.key);
-    } else {
-      this.group.health_metrics.pop(this.key);
-    }
+    // dispatch event for use with addEventListener from javascript
+    this.dispatchEvent(event);
   }
 }
 
