@@ -42,7 +42,7 @@ export default class ComponentService {
       'dt-multi-text',
       'dt-multi-select-button-group',
       'dt-list',
-      'dt-button'
+      'dt-button',
     ];
 
     this.dynamicLoadComponents = [
@@ -51,8 +51,8 @@ export default class ComponentService {
       'dt-modal',
       'dt-list',
       'dt-button',
-      'dt-location'
-    ]
+      'dt-location',
+    ];
   }
 
   /**
@@ -73,7 +73,7 @@ export default class ComponentService {
    */
   async attachLoadEvents(selector) {
     const elements = document.querySelectorAll(
-      selector || this.dynamicLoadComponents.join(',')
+      selector || this.dynamicLoadComponents.join(','),
     );
 
     // // check if there is dt-modal and duplicate-detected class with it on DOM.
@@ -91,7 +91,10 @@ export default class ComponentService {
       elements.forEach(el => {
         // prevent multiple event attachments if this is called multiple times
         if (!el.dataset.eventDtGetData) {
-          el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this));
+          el.addEventListener(
+            'dt:get-data',
+            this.handleGetDataEvent.bind(this),
+          );
           el.dataset.eventDtGetData = true;
         }
       });
@@ -102,14 +105,14 @@ export default class ComponentService {
     const dtModal = document.querySelector('dt-modal.duplicate-detected');
     if (dtModal) {
       const button = dtModal.shadowRoot.querySelector(
-        '.duplicates-detected-button'
+        '.duplicates-detected-button',
       );
       if (button) {
         button.style.display = 'none';
       }
       const duplicates = await this._api.checkDuplicateUsers(
         this.postType,
-        this.postId
+        this.postId,
       );
       // showing the button to show duplicates
       if (filteredElements && duplicates.ids.length > 0) {
@@ -126,11 +129,11 @@ export default class ComponentService {
    */
   enableAutoSave(selector) {
     const allElements = document.querySelectorAll(
-      selector || this.autoSaveComponents.join(',')
+      selector || this.autoSaveComponents.join(','),
     );
     if (allElements) {
-      allElements.forEach(el =>{
-        el.addEventListener('change', this.handleChangeEvent.bind(this))
+      allElements.forEach(el => {
+        el.addEventListener('change', this.handleChangeEvent.bind(this));
       });
     }
   }
@@ -186,7 +189,7 @@ export default class ComponentService {
               this.postType,
               field,
               details.filter,
-              query
+              query,
             );
             values = values.location_grid.map(value => ({
               id: value.ID,
@@ -199,7 +202,7 @@ export default class ComponentService {
             values = await this._api.getMultiSelectValues(
               this.postType,
               field,
-              query
+              query,
             );
             values = values.map(value => ({
               id: value,
@@ -229,7 +232,7 @@ export default class ComponentService {
       const apiValue = ComponentService.convertValue(
         component,
         newValue,
-        oldValue
+        oldValue,
       );
 
       event.target.removeAttribute('saved');
@@ -552,5 +555,62 @@ export default class ComponentService {
     }
 
     return returnValue;
+  }
+
+  /**
+   * Computes the difference between two arrays, identifying elements that are unique to each array.
+   * Handles both primitive and object arrays. For object arrays, a unique key is generated using
+   * JSON stringification of the objects.
+   *
+   * @param {Array} value1 The first array to compare. If not an array, defaults to an empty array.
+   * @param {Array} value2 The second array to compare. If not an array, defaults to an empty array.
+   * @return {Object} An object containing two arrays:
+   * - `value1` contains elements from the first array that are not in the second array.
+   * - `value2` contains elements from the second array that are not in the first array.
+   */
+  static valueArrayDiff(value1, value2) {
+    const result = {
+      value1: [],
+      value2: [],
+    };
+
+    if (!Array.isArray(value1)) {
+      value1 = [];
+    }
+    if (!Array.isArray(value2)) {
+      value2 = [];
+    }
+
+    // Handle primitive arrays
+    if (value1.length > 0 && typeof value1[0] !== 'object') {
+      result.value1 = value1.filter(item => !value2.includes(item));
+      result.value2 = value2.filter(item => !value1.includes(item));
+      return result;
+    }
+
+    // Handle object arrays
+    const getObjectKey = obj => {
+      // Use stringified object as key to ensure uniqueness
+      return JSON.stringify(obj);
+    };
+
+    const value1Map = new Map(value1.map(item => [getObjectKey(item), item]));
+    const value2Map = new Map(value2.map(item => [getObjectKey(item), item]));
+
+    // Find items unique to value1
+    for (const [key, item1] of value1Map) {
+      if (!value2Map.has(key)) {
+        result.value1.push(item1);
+      }
+    }
+
+    // Find items unique to value2
+    for (const [key, item2] of value2Map) {
+      if (!value1Map.has(key)) {
+        result.value2.push(item2);
+      }
+    }
+
+    return result;
   }
 }
