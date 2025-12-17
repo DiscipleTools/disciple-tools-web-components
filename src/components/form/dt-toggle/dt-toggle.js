@@ -23,22 +23,14 @@ export class DtToggle extends DtFormBase {
           align-items: center;
           padding-top: 1rem;
           width: fit-content;
-          margin-bottom: 1em;
+          padding-bottom: 1rem;
           cursor: pointer;
           width: fit-content;
-        }
-
-        .icons {
-          position: relative;
-          flex-wrap: wrap;
-          display: flex;
-          align-items: center;
-          width: fit-content;
-          cursor: pointer;
         }
 
         .icon-overlay {
-          inset-inline-end: -1.5rem;
+          inset-inline-end: 0.5rem;
+          align-items: center;
         }
 
         button.toggle {
@@ -169,6 +161,17 @@ export class DtToggle extends DtFormBase {
     this.icons = false;
   }
 
+  firstUpdated() {
+    if (this.checked === undefined) {
+      this.checked = false;
+    }
+
+    const initialFormValue = this.checked ? "1" : "0";
+    this._setFormValue(initialFormValue);
+    
+    this.value = this.checked; 
+  }
+
   onChange(e) {
     const event = new CustomEvent('change', {
       detail: {
@@ -177,11 +180,12 @@ export class DtToggle extends DtFormBase {
         newValue: e.target.checked,
       },
     });
-    this.checked = e.target.checked;
+    this.checked = e.target.checked
 
-    console.log(this.checked);
-    this._setFormValue(this.checked);
-    console.log(event);
+    this.value = e.target.checked;
+
+    this._setFormValue(this.checked ? "1" : "0");
+
     this.dispatchEvent(event);
   }
 
@@ -215,7 +219,7 @@ export class DtToggle extends DtFormBase {
               name="${this.name}"
               id="${this.id}"
               class="toggle-input"
-              ?checked=${this.checked}
+              .checked=${this.checked || 0}
               @click=${this.onChange}
               ?disabled=${this.disabled}
             />
