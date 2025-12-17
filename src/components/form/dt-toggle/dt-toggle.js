@@ -203,26 +203,28 @@ export class DtToggle extends DtFormBase {
       <div class="root" part="root">
         ${this.labelTemplate()}
 
-        <label
-          class="toggle"
-          for="${this.id}"
-          aria-label="${this.label}"
-          part="toggle"
-        >
-          <input
-            type="checkbox"
-            name="${this.name}"
-            id="${this.id}"
-            class="toggle-input"
-            ?checked=${this.checked}
-            @click=${this.onChange}
-            ?disabled=${this.disabled}
-          />
-          <span class="toggle-display" @click=${this.onClickToggle}>
-            ${this.icons ? html` ${check} ${cross} ` : html``}
-          </span>
-        </label>
-        <div class="icons">${this.renderIcons()}</div>
+        <div class="input-group">
+          <label
+            class="toggle"
+            for="${this.id}"
+            aria-label="${this.label}"
+            part="toggle"
+          >
+            <input
+              type="checkbox"
+              name="${this.name}"
+              id="${this.id}"
+              class="toggle-input"
+              ?checked=${this.checked}
+              @click=${this.onChange}
+              ?disabled=${this.disabled}
+            />
+            <span class="toggle-display" @click=${this.onClickToggle}>
+              ${this.icons ? html` ${check} ${cross} ` : html``}
+            </span>
+          </label>
+          ${this.renderIcons()}
+        </div>
       </div>
     `;
   }
