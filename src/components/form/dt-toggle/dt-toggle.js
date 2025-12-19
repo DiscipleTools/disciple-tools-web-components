@@ -7,16 +7,30 @@ export class DtToggle extends DtFormBase {
       ...super.styles,
       css`
         .root {
-          display: inline-block;
+          display: block;
+        }
+
+        .toggle-wrapper {
+          display: flex; /* Aligns children (label and icons) horizontally */
+          align-items: center; /* Vertically aligns children */
+          gap: 1ch; /* Adds a small gap between the label and the icons */
         }
 
         .toggle {
           position: relative;
+          flex-wrap: wrap;
           display: flex;
           align-items: center;
-          padding-top: 0.5rem;
+          padding-top: 1rem;
+          width: fit-content;
+          padding-bottom: 1rem;
           cursor: pointer;
           width: fit-content;
+        }
+
+        .icon-overlay {
+          inset-inline-end: 0.5rem;
+          align-items: center;
         }
 
         button.toggle {
@@ -147,6 +161,17 @@ export class DtToggle extends DtFormBase {
     this.icons = false;
   }
 
+  firstUpdated() {
+    if (this.checked === undefined) {
+      this.checked = false;
+    }
+
+    const initialFormValue = this.checked ? "1" : "0";
+    this._setFormValue(initialFormValue);
+    
+    this.value = this.checked; 
+  }
+
   onChange(e) {
     const event = new CustomEvent('change', {
       detail: {
@@ -155,11 +180,12 @@ export class DtToggle extends DtFormBase {
         newValue: e.target.checked,
       },
     });
-    this.checked = e.target.checked;
+    this.checked = e.target.checked
 
-    console.log(this.checked);
-    this._setFormValue(this.checked);
-    console.log(event);
+    this.value = e.target.checked;
+
+    this._setFormValue(this.checked ? "1" : "0");
+
     this.dispatchEvent(event);
   }
 
@@ -181,25 +207,28 @@ export class DtToggle extends DtFormBase {
       <div class="root" part="root">
         ${this.labelTemplate()}
 
-        <label
-          class="toggle"
-          for="${this.id}"
-          aria-label="${this.label}"
-          part="toggle"
-        >
-          <input
-            type="checkbox"
-            name="${this.name}"
-            id="${this.id}"
-            class="toggle-input"
-            ?checked=${this.checked}
-            @click=${this.onChange}
-            ?disabled=${this.disabled}
-          />
-          <span class="toggle-display" @click=${this.onClickToggle}>
-            ${this.icons ? html` ${check} ${cross} ` : html``}
-          </span>
-        </label>
+        <div class="input-group">
+          <label
+            class="toggle"
+            for="${this.id}"
+            aria-label="${this.label}"
+            part="toggle"
+          >
+            <input
+              type="checkbox"
+              name="${this.name}"
+              id="${this.id}"
+              class="toggle-input"
+              .checked=${this.checked || 0}
+              @click=${this.onChange}
+              ?disabled=${this.disabled}
+            />
+            <span class="toggle-display" @click=${this.onClickToggle}>
+              ${this.icons ? html` ${check} ${cross} ` : html``}
+            </span>
+          </label>
+          ${this.renderIcons()}
+        </div>
       </div>
     `;
   }
