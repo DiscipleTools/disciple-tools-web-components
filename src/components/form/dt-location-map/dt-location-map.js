@@ -23,7 +23,7 @@ export class DtLocationMap extends DtFormBase {
       },
       limit: {
         type: Number,
-        attribute: 'limit',
+        attribute: 'limit',      
       },
       onchange: { type: String },
       mapboxToken: {
@@ -33,6 +33,10 @@ export class DtLocationMap extends DtFormBase {
       googleToken: {
         type: String,
         attribute: 'google-token',
+      },
+      activeItem: {
+        type: String,
+        state: true,
       },
     };
   }
@@ -60,8 +64,8 @@ export class DtLocationMap extends DtFormBase {
           cursor: pointer;
           height: 0.9em;
           padding: 0;
-          color: var(--success-color, #cc4b37);
-          transform: scale(1.5);
+            color: var(--success-color, #cc4b37);
+            transform: scale(1.5);
         }
       `,
     ];
@@ -155,6 +159,13 @@ export class DtLocationMap extends DtFormBase {
       ...evt.detail.metadata,
       id: Date.now(),
     };
+    if (newLocation.lat) {
+      const lat = Math.round(newLocation.lat*(10**7))/10**7;
+      const lng = Math.round(newLocation.lng*(10**7))/10**7;
+      this.activeItem = `${lat}/${lng}`;
+    } else {
+      this.activeItem = newLocation.label; // activeId
+    }
     this.value = [
       ...(this.value || []).filter(
         i =>
@@ -173,6 +184,7 @@ export class DtLocationMap extends DtFormBase {
   }
 
   deleteItem(evt) {
+    this.activeItem = undefined;
     const event = new CustomEvent('change', {
       detail: {
         field: this.name,
@@ -243,7 +255,7 @@ export class DtLocationMap extends DtFormBase {
         iconAltText="${this.iconAltText}"
         icon="${this.icon}"
       >
-        ${!this.icon
+      ${!this.icon
           ? html`<slot name="icon-start" slot="icon-start"></slot>`
           : null}
         ${this.label}
@@ -266,6 +278,11 @@ export class DtLocationMap extends DtFormBase {
   }
 
   renderItem(opt, idx) {
+    const lat = Math.round(opt.lat*(10**7))/10**7;
+    const lng = Math.round(opt.lng*(10**7))/10**7;
+    const latLng = `${lat}/${lng}`;
+    const showStatus = (this.activeItem && (this.activeItem === opt.label || this.activeItem === latLng))
+                    || idx === 0 && !this.activeItem;
     return html`
       <dt-location-map-item
         placeholder="${this.placeholder}"
@@ -276,8 +293,10 @@ export class DtLocationMap extends DtFormBase {
         @select=${this.selectLocation}
         ?disabled=${this.disabled}
         ?invalid=${this.invalid && this.touched}
-        ?loading=${idx === 0 ? this.loading : false}
-        ?saved=${idx === 0 ? this.saved : false}
+        validationMessage=${this.internals.validationMessage}
+        ?loading=${showStatus ? this.loading : false}
+        ?saved=${showStatus ? this.saved : false}
+        error=${showStatus ? this.error : ''}
       ></dt-location-map-item>
     `;
   }
@@ -302,3 +321,4 @@ export class DtLocationMap extends DtFormBase {
 }
 
 window.customElements.define('dt-location-map', DtLocationMap);
+
