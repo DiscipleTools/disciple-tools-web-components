@@ -23,7 +23,7 @@ export class DtLocationMap extends DtFormBase {
       },
       limit: {
         type: Number,
-        attribute: 'limit',      
+        attribute: 'limit',
       },
       onchange: { type: String },
       mapboxToken: {
@@ -64,8 +64,8 @@ export class DtLocationMap extends DtFormBase {
           cursor: pointer;
           height: 0.9em;
           padding: 0;
-            color: var(--success-color, #cc4b37);
-            transform: scale(1.5);
+          color: var(--success-color, #cc4b37);
+          transform: scale(1.5);
         }
       `,
     ];
@@ -255,7 +255,7 @@ export class DtLocationMap extends DtFormBase {
         iconAltText="${this.iconAltText}"
         icon="${this.icon}"
       >
-      ${!this.icon
+        ${!this.icon
           ? html`<slot name="icon-start" slot="icon-start"></slot>`
           : null}
         ${this.label}
