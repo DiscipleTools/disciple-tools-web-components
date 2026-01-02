@@ -25,6 +25,9 @@ export class DtTags extends DtMultiSelect {
         .selected-option a:active,
         .selected-option a:visited {
           text-decoration: none;
+          color: var(--dt-multi-select-text-color, #0a0a0a);
+        }
+        .selected-option a:not([href="#"]) {
           color: var(--primary-color, #3f729b);
         }
         .invalid {
