@@ -173,6 +173,7 @@ export default class DtFormBase extends DtBase {
 
   constructor() {
     super();
+    this.savedTimeout = null;
     this.touched = false;
     this.invalid = false;
     this.internals = this.attachInternals();
@@ -351,6 +352,12 @@ export default class DtFormBase extends DtBase {
       : null;
   }
   renderIconSaved() {
+    if (this.saved && !this.savedTimeout) {
+      this.savedTimeout = setTimeout(() => {
+        this.savedTimeout = null;
+        this.saved = false;
+      }, 5000);
+    }
     return this.saved
       ? html`<dt-checkmark
           class="icon-overlay success fade-out"
