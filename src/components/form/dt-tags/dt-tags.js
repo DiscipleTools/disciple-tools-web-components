@@ -25,10 +25,11 @@ export class DtTags extends DtMultiSelect {
         .selected-option a:active,
         .selected-option a:visited {
           text-decoration: none;
-          color: var(--dt-multi-select-text-color, #0a0a0a);
-        }
-        .selected-option a:not([href="#"]) {
           color: var(--primary-color, #3f729b);
+        }
+        .selected-option a[href="#"] {
+          color: var(--dt-multi-select-text-color, #0a0a0a);
+          pointer-events: none;
         }
         .invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
