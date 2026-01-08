@@ -203,7 +203,7 @@ export class DtLocation extends DtTags {
         opt => html`
           <div class="selected-option">
             <a
-              href="${opt.link || '#'}"
+              href="${opt.link}"
               ?disabled="${this.disabled}"
               alt="${opt.status ? opt.status.label : opt.label}"
               >${opt.label}</a
