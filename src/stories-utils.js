@@ -11,6 +11,7 @@ export const LocaleDecorator = (story, context) =>
 
 export function onAutoSave(event) {
   if (event?.target) {
+    event.target.removeAttribute('saved');
     event.target.setAttribute('loading', true);
     console.log(
       `Value changed from ${ 
