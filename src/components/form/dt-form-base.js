@@ -328,12 +328,14 @@ export default class DtFormBase extends DtBase {
       slotted: this.errorSlotted,
     };
   }
+
   renderIcons() {
     return html`
       ${this.renderIconInvalid()} ${this.renderError()}
       ${this.renderIconLoading()} ${this.renderIconSaved()}
     `;
   }
+
   renderIconInvalid() {
     return this.touched && this.invalid
       ? html`<div class="${classMap(this._errorClasses())}">
@@ -346,13 +348,18 @@ export default class DtFormBase extends DtBase {
         </div> `
       : null;
   }
+
   renderIconLoading() {
     return this.loading
       ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
       : null;
   }
+
   renderIconSaved() {
-    if (this.saved && !this.savedTimeout) {
+    if (this.saved) {
+      if (this.savedTimeout) {
+        clearTimeout(this.savedTimeout);
+      }
       this.savedTimeout = setTimeout(() => {
         this.savedTimeout = null;
         this.saved = false;
@@ -364,6 +371,7 @@ export default class DtFormBase extends DtBase {
         ></dt-checkmark>`
       : null;
   }
+
   renderError() {
     return this.error
       ? html`<div class="${classMap(this._errorClasses())}">

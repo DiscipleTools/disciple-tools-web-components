@@ -293,10 +293,8 @@ export class DtLocationMap extends DtFormBase {
         @select=${this.selectLocation}
         ?disabled=${this.disabled}
         ?invalid=${this.invalid && this.touched}
-        validationMessage=${this.internals.validationMessage}
         ?loading=${showStatus ? this.loading : false}
         ?saved=${showStatus ? this.saved : false}
-        error=${showStatus ? this.error : ''}
       ></dt-location-map-item>
     `;
   }

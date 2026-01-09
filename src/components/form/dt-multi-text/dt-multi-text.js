@@ -295,6 +295,51 @@ export class DtMultiText extends DtText {
     `;
   }
 
+  renderIcons() {
+    let emptyItems = 0;
+    let isDeleting = false;
+    for (const [index, item] of (this.value || []).entries()) {
+      if (!item.value && index !== 0) {
+        emptyItems += 1;
+      } else if (item.delete && !isDeleting) {
+        isDeleting = true;
+      }
+    }
+    let pad = 0.5;
+    if (isDeleting === false) {
+      pad += (3 * emptyItems);
+    }
+    const styleStr = `padding-block-end: ${pad.toString()}rem`;
+    return html`
+      ${this.renderIconInvalid()} ${this.renderError()}
+      ${this.renderIconLoading(styleStr)} ${this.renderIconSaved(styleStr)}
+    `;
+  }
+
+  renderIconLoading(styleStr) {
+    return this.loading
+      ? html`<dt-spinner class="icon-overlay" style="${styleStr}"></dt-spinner>`
+      : null;
+  }
+
+  renderIconSaved(styleStr) {
+    if (this.saved) {
+      if (this.savedTimeout) {
+        clearTimeout(this.savedTimeout);
+      }
+      this.savedTimeout = setTimeout(() => {
+        this.savedTimeout = null;
+        this.saved = false;
+      }, 5000);
+    }
+    return this.saved
+      ? html`<dt-checkmark
+          class="icon-overlay success fade-out"
+          style="${styleStr}"
+        ></dt-checkmark>`
+      : null;
+  }
+
   // rendering the input at 0 index
   _renderInputFields() {
     if (!this.value || !this.value.length) {
