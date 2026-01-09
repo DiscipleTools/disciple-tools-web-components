@@ -27,6 +27,11 @@ export class DtTags extends DtMultiSelect {
           text-decoration: none;
           color: var(--primary-color, #3f729b);
         }
+        .selected-option a[href="#"],
+        .selected-option a[href=""] {
+          color: var(--dt-multi-select-text-color, #0a0a0a);
+          pointer-events: none;
+        }
         .invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
         }
@@ -233,7 +238,7 @@ export class DtTags extends DtMultiSelect {
             @click="${this._handleItemClick}"
             @keydown="${this._handleItemClick}"
           >
-            <a href="${link || '#'}" ?disabled="${this.disabled}" alt="${tag}"
+            <a href="${link}" ?disabled="${this.disabled}" alt="${tag}"
               >${label}</a
             >
             <button
