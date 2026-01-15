@@ -21,11 +21,9 @@ export class DtToggle extends DtFormBase {
           flex-wrap: wrap;
           display: flex;
           align-items: center;
-          padding-top: 1rem;
           width: fit-content;
-          padding-bottom: 1rem;
           cursor: pointer;
-          width: fit-content;
+          min-height: var(--dt-form-input-height, 2.5rem);
         }
 
         .icon-overlay {
@@ -166,10 +164,10 @@ export class DtToggle extends DtFormBase {
       this.checked = false;
     }
 
-    const initialFormValue = this.checked ? "1" : "0";
+    const initialFormValue = this.checked ? '1' : '0';
     this._setFormValue(initialFormValue);
-    
-    this.value = this.checked; 
+
+    this.value = this.checked;
   }
 
   onChange(e) {
@@ -180,11 +178,11 @@ export class DtToggle extends DtFormBase {
         newValue: e.target.checked,
       },
     });
-    this.checked = e.target.checked
+    this.checked = e.target.checked;
 
     this.value = e.target.checked;
 
-    this._setFormValue(this.checked ? "1" : "0");
+    this._setFormValue(this.checked ? '1' : '0');
 
     this.dispatchEvent(event);
   }
