@@ -27,7 +27,7 @@ const basicOptions =[
     }
 ]
 export default {
-  title: 'Form/dt-users-connection',
+  title: 'Components/Form/Users Connection',
   component: 'dt-users-connection',
   argTypes: {
     theme: {

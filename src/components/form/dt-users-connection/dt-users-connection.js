@@ -57,34 +57,12 @@ export class DtUsersConnection extends DtTags {
       bubbles: true,
       detail: {
         field: this.name,
-        oldValue: this.value,
+        oldValue: this.value?.id,
+        newValue: value.id,
       },
     });
 
-    // update value in this component
-    if (this.value && this.value.length) {
-        // If value is array of objects, check for same value with `delete` property
-        let foundPrevious = false;
-        const newVal = this.value.map(i => {
-          const val = {
-            ...i,
-          };
-          if (i.id === value.id && i.delete) {
-            delete val.delete;
-            foundPrevious = true;
-          } else if (this.single && !i.delete) {
-            val.delete = true
-          }
-          return val;
-        });
-        if (!foundPrevious) {
-          newVal.push(value);
-        }
-        this.value = newVal;
-    } else {
-      this.value = [value];
-    }
-    event.detail.newValue = this.value;
+    this.value = value;
     this.open = false; // close options list
     this.activeIndex = -1; // reset keyboard-selected option
     this.canUpdate = true;
@@ -148,24 +126,16 @@ export class DtUsersConnection extends DtTags {
         detail: {
           field: this.name,
           oldValue: this.value,
+          newValue: null,
           remove: true,
         },
       });
-      this.value = (this.value || []).map(i => {
-        const val = {
-          ...i,
-        };
-        // when adding a new connection via AddNew, the ID was set as the label (string)
-        // for pre-existing selections, the ID is a number (int), so it would fail
-        if (i.id.toString() === e.target.dataset.value) {
-          val.delete = true;
-        }
-        return val;
-      });
-      event.detail.newValue = this.value;
+
+      this.value = null;
 
       // dispatch event for use with addEventListener from javascript
       this.dispatchEvent(event);
+      this._setFormValue(null);
 
       // If option was de-selected while list was open, re-focus input
       if (this.open) {
@@ -181,14 +151,10 @@ export class DtUsersConnection extends DtTags {
    * @private
    */
   _filterOptions() {
-    const selectedValues = (this.value || [])
-      .filter(i => !i.delete)
-      .map(v => v?.id);
-
     if (this.options?.length) {
       this.filteredOptions = (this.options || []).filter(
         opt =>
-          !selectedValues.includes(opt.id) &&
+          opt.id !== this.value?.id &&
           (!this.query ||
             opt.label
               .toLocaleLowerCase()
@@ -212,9 +178,7 @@ export class DtUsersConnection extends DtTags {
             self.loading = false;
 
             // filter out selected values from list
-            self.filteredOptions = result.filter(
-              opt => !selectedValues.includes(opt.id)
-            );
+            self.filteredOptions = result;
           },
           onError: error => {
             console.warn(error);
@@ -229,30 +193,29 @@ export class DtUsersConnection extends DtTags {
   }
 
   _renderSelectedOptions() {
-    return (this.value || [])
-      .filter(i => !i.delete)
-      .map(
-        opt => html`
+    if (this.value?.id) {
+      console.log(this.value);
+      return html`
           <div class="selected-option">
             <a
-              href="${opt.link}"
-              style="border-inline-start-color: ${opt.status
-                ? opt.status
+              href="${this.value.link}"
+              style="border-inline-start-color: ${this.value.status
+                ? this.value.status
                 : ''}"
               ?disabled="${this.disabled}"
-              title="${opt.label}"
-              >${opt.label}</a
+              title="${this.value.label}"
+              >${this.value.label}</a
             >
             <button
               @click="${this._remove}"
               ?disabled="${this.disabled}"
-              data-value="${opt.id}"
+              data-value="${this.value.id}"
             >
               x
             </button>
           </div>
         `
-      );
+    }
   }
 
   _renderOption(opt, idx) {

@@ -28,6 +28,7 @@ export default class ComponentService {
 
     this.autoSaveComponents = [
       'dt-connection',
+      'dt-users-connection',
       'dt-date',
       'dt-datetime',
       'dt-location',
@@ -51,7 +52,8 @@ export default class ComponentService {
       'dt-modal',
       'dt-list',
       'dt-button',
-      'dt-location'
+      'dt-location',
+      'dt-users-connection'
     ]
   }
 
@@ -178,6 +180,25 @@ export default class ComponentService {
 
             if (filteredConnectionResponse?.posts) {
               values = ComponentService.convertApiValue('dt-connection', filteredConnectionResponse?.posts);
+            }
+            break;
+          }
+          case 'dt-users-connection': {
+            const postType = details.postType || this.postType;
+            const usersResponse = await this._api.searchUsers(
+              postType,
+              query
+            );
+            // for filtering the user itself from the response.
+            const filteredUsersResponse = {
+              ...usersResponse,
+              posts: usersResponse.filter(
+                post => post.ID !== parseInt(this.postId, 10)
+              ),
+            };
+
+            if (filteredUsersResponse?.posts) {
+              values = ComponentService.convertApiValue('dt-users-connection', filteredUsersResponse?.posts);
             }
             break;
           }
@@ -415,52 +436,6 @@ export default class ComponentService {
             force_values: false,
           };
           break;
-        case 'dt-users-connection': {
-           // Initialize an empty array to hold the differences found.
-            const userDataDifferences=[];
-            // For single-select, just return the user ID
-            const activeUsers = returnValue.filter(item => !item.delete);
-            if (activeUsers.length <= 1) {
-              returnValue = activeUsers.length === 1 ? parseInt(activeUsers[0].id, 10) : '';
-              break;
-            }
-            // Create a Map from oldValue for quick lookups by ID.
-            const oldUsersMap = new Map((oldValue || []).map(user => [user.id,user]));
-
-            for (const newUserObj of returnValue) {
-            // Retrieve the corresponding old object from the map using the ID.
-              const oldUserObj = oldUsersMap.get(newUserObj.id);
-              const diff = { id: newUserObj.id, changes: {} };
-
-            // Check if the old object exists (i.e., the current new object may be new).
-              if (!oldUserObj) {
-                  // New object added
-                  diff.changes = { ...newUserObj }; // Store all properties of the new object as changes.
-                  userDataDifferences.push(diff);
-                  break;
-              } else {
-
-                // Existing object found; we need to compare their properties.
-                  let hasDiff = false;
-                  const allKeys = new Set([...Object.keys(oldUserObj), ...Object.keys(newUserObj)]);
-
-                  // Iterate through all keys to compare values.
-                  for (const key of allKeys) {
-                      if (newUserObj[key] !== oldUserObj[key]) {
-                          diff.changes[key] = Object.prototype.hasOwnProperty.call(newUserObj, key) ? newUserObj[key] : undefined;
-                          // Set the hasDiff flag to true as a difference was found.
-                          hasDiff = true;
-                      }
-                  }
-                  if (hasDiff){ userDataDifferences.push(diff);
-                  break;
-                }
-              }
-          }
-
-          returnValue = userDataDifferences[0].id;
-          break;
-        }
         case 'dt-connection':
           if (typeof value === 'string') {
                 returnValue = [
@@ -547,6 +522,7 @@ export default class ComponentService {
           }
           break;
         default:
+          console.log(returnValue);
           break;
       }
     }
