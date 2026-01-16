@@ -67,52 +67,52 @@ const options = {
   church_baptism: {
     label: 'Baptism',
     description: 'The group is baptising.',
-    icon: '/assets/groups/baptism-2.svg',
+    icon: '/groups/baptism-2.svg',
   },
   church_bible: {
     label: 'Bible Study',
     description: 'The group is studying the bible.',
-    icon: '/assets/groups/word-2.svg',
+    icon: '/groups/word-2.svg',
   },
   church_communion: {
     label: 'Communion',
     description: 'The group is practicing communion.',
-    icon: '/assets/groups/communion-2.svg',
+    icon: '/groups/communion-2.svg',
   },
   church_fellowship: {
     label: 'Fellowship',
     description: 'The group is fellowshiping.',
-    icon: '/assets/groups/heart-2.svg',
+    icon: '/groups/heart-2.svg',
   },
   church_giving: {
     label: 'Giving',
     description: 'The group is giving.',
-    icon: '/assets/groups/giving-2.svg',
+    icon: '/groups/giving-2.svg',
   },
   church_prayer: {
     label: 'Prayer',
     description: 'The group is praying.',
-    icon: '/assets/groups/prayer-2.svg',
+    icon: '/groups/prayer-2.svg',
   },
   church_praise: {
     label: 'Praise',
     description: 'The group is praising.',
-    icon: '/assets/groups/praise-2.svg',
+    icon: '/groups/praise-2.svg',
   },
   church_sharing: {
     label: 'Sharing the Gospel',
     description: 'The group is sharing the gospel.',
-    icon: '/assets/groups/evangelism-2.svg',
+    icon: '/groups/evangelism-2.svg',
   },
   church_leaders: {
     label: 'Leaders',
     description: 'The group has leaders.',
-    icon: '/assets/groups/leadership-2.svg',
+    icon: '/groups/leadership-2.svg',
   },
   church_commitment: {
     label: 'Church Commitment',
     description: 'The group has committed to be church.',
-    icon: '/assets/groups/covenant.svg',
+    icon: '/groups/covenant.svg',
   },
 };
 
@@ -132,7 +132,7 @@ export default {
           name="${args.name}"
           value="${JSON.stringify(args.value)}"
           options="${JSON.stringify(args.options)}"
-          missingIcon="/assets/groups/missing.svg"
+          missingIcon="/groups/missing.svg"
           ?disabled=${args.disabled}
           ?loading="${args.loading}"
           ?saved="${args.saved}"
