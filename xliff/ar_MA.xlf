@@ -8,8 +8,9 @@
       <trans-unit id="s04ceadb276bbe149">
         <source>Loading options...</source>
       </trans-unit>
-      <trans-unit id="sd2e180dab4fbcfb9">
+      <trans-unit id="sd2e180dab4fbcfb9" xml:space="preserve">
         <source>No Data Available</source>
+        <target state="translated" state-qualifier="leveraged-mt">لا تتوفر بيانات</target>
       </trans-unit>
       <trans-unit id="sf9aee319a006c9b4">
         <source>Add</source>
@@ -57,15 +58,16 @@
         <source>Fields</source>
         <target>مجالات</target>
       </trans-unit>
-      <trans-unit id="s9d51bfd93b5dbeca">
+      <trans-unit id="s9d51bfd93b5dbeca" xml:space="preserve">
         <source>Show Archived</source>
+        <target state="translated" state-qualifier="leveraged-mt">إظهار المحفوظات</target>
       </trans-unit>
       <trans-unit id="sb59d68ed12d46377">
         <source>Loading</source>
       </trans-unit>
-<trans-unit id="se32ddb0a9cd4181d">
-  <source>Showing <x id="0" equiv-text="${this.total}"/> of <x id="1" equiv-text="${this.total}"/></source>
-</trans-unit>
+      <trans-unit id="se32ddb0a9cd4181d">
+        <source>Showing <x id="0" equiv-text="${this.total}"/> of <x id="1" equiv-text="${this.total}"/></source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
