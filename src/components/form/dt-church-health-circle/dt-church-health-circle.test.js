@@ -14,17 +14,17 @@ const options = {
   church_baptism: {
     label: 'Baptism',
     description: 'The group is baptising.',
-    icon: '/assets/groups/baptism-2.svg',
+    icon: '/groups/baptism-2.svg',
   },
   church_bible: {
     label: 'Bible Study',
     description: 'The group is studying the bible.',
-    icon: '/assets/groups/word-2.svg',
+    icon: '/groups/word-2.svg',
   },
   church_prayer: {
     label: 'Prayer',
     description: 'The group is praying.',
-    icon: '/assets/groups/prayer-2.svg',
+    icon: '/groups/prayer-2.svg',
   },
   // Special key: excluded from the circle and controlled by the toggle
   church_commitment: {
