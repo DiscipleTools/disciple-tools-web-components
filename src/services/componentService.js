@@ -43,6 +43,7 @@ export default class ComponentService {
       'dt-multi-select-button-group',
       'dt-list',
       'dt-button',
+      'dt-church-health-circle'
     ];
 
     this.dynamicLoadComponents = [
@@ -388,6 +389,7 @@ export default class ComponentService {
             returnValue = value.toLowerCase() === 'true';
           }
           break;
+        case 'dt-church-health-circle':
         case 'dt-multi-select':
         case 'dt-multi-select-button-group':
         case 'dt-tags':
