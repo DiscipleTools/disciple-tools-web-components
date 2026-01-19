@@ -440,9 +440,11 @@ export default class ComponentService {
           };
           break;
         case 'dt-users-connection': {
-            // return the value for now, as only one value is currently implemented
-            return returnValue;
+            // return the id of first entry for now
+            // multi-select is not yet implemented
+            return returnValue[0].id;
 
+            /*
            // Initialize an empty array to hold the differences found.
             const userDataDifferences=[];
             // For single-select, just return the user ID
@@ -487,6 +489,7 @@ export default class ComponentService {
 
             returnValue = userDataDifferences[0].id;
             break;
+            */
           }
         case 'dt-connection':
           if (typeof value === 'string') {
@@ -579,62 +582,5 @@ export default class ComponentService {
     }
 
     return returnValue;
-  }
-
-  /**
-   * Computes the difference between two arrays, identifying elements that are unique to each array.
-   * Handles both primitive and object arrays. For object arrays, a unique key is generated using
-   * JSON stringification of the objects.
-   *
-   * @param {Array} value1 The first array to compare. If not an array, defaults to an empty array.
-   * @param {Array} value2 The second array to compare. If not an array, defaults to an empty array.
-   * @return {Object} An object containing two arrays:
-   * - `value1` contains elements from the first array that are not in the second array.
-   * - `value2` contains elements from the second array that are not in the first array.
-   */
-  static valueArrayDiff(value1, value2) {
-    const result = {
-      value1: [],
-      value2: [],
-    };
-
-    if (!Array.isArray(value1)) {
-      value1 = [];
-    }
-    if (!Array.isArray(value2)) {
-      value2 = [];
-    }
-
-    // Handle primitive arrays
-    if (value1.length > 0 && typeof value1[0] !== 'object') {
-      result.value1 = value1.filter(item => !value2.includes(item));
-      result.value2 = value2.filter(item => !value1.includes(item));
-      return result;
-    }
-
-    // Handle object arrays
-    const getObjectKey = obj => {
-      // Use stringified object as key to ensure uniqueness
-      return JSON.stringify(obj);
-    };
-
-    const value1Map = new Map(value1.map(item => [getObjectKey(item), item]));
-    const value2Map = new Map(value2.map(item => [getObjectKey(item), item]));
-
-    // Find items unique to value1
-    for (const [key, item1] of value1Map) {
-      if (!value2Map.has(key)) {
-        result.value1.push(item1);
-      }
-    }
-
-    // Find items unique to value2
-    for (const [key, item2] of value2Map) {
-      if (!value1Map.has(key)) {
-        result.value2.push(item2);
-      }
-    }
-
-    return result;
   }
 }

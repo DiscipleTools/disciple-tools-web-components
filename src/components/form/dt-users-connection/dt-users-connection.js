@@ -61,11 +61,8 @@ export class DtUsersConnection extends DtTags {
       },
     });
 
-      // update value in this component
-      // only send ID to api
-    if (this.value) {
-      this.value = [value]; // always set as array until multi-select is supported
-    } else if (this.value && this.value.length) {
+      // update value in this component, set to fail until multi-select is supported
+    if (this.value && this.value.length && false) {
         // If value is array of objects, check for same value with `delete` property
         let foundPrevious = false;
         const newVal = this.value.map(i => {
@@ -87,7 +84,7 @@ export class DtUsersConnection extends DtTags {
     } else {
       this.value = [value];
     }
-    event.detail.newValue = value.id; // change back to this.value when multi-select is supported
+    event.detail.newValue = this.value;
     this.open = false; // close options list
     this.activeIndex = -1; // reset keyboard-selected option
     this.canUpdate = true;
@@ -186,7 +183,7 @@ export class DtUsersConnection extends DtTags {
   _filterOptions() {
     const selectedValues = (this.value || [])
       .filter(i => !i.delete)
-      .map(v => v?.id);
+      .map(v => Number(v?.id));
     if (this.options?.length) {
       this.filteredOptions = (this.options || []).filter(
         opt =>
