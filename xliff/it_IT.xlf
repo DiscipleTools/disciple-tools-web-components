@@ -70,9 +70,10 @@
         <source>Loading</source>
         <target>Caricando</target>
       </trans-unit>
-<trans-unit id="se32ddb0a9cd4181d">
-  <source>Showing <x id="0" equiv-text="${this.total}"/> of <x id="1" equiv-text="${this.total}"/></source>
-</trans-unit>
+      <trans-unit id="se32ddb0a9cd4181d" xml:space="preserve">
+        <source>Showing <x id="0" equiv-text="${this.total}"/> of <x id="1" equiv-text="${this.total}"/></source>
+        <target state="translated">Mostrando <x id="0" equiv-text="${this.total}"/> of <x id="1" equiv-text="${this.total}"/></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
