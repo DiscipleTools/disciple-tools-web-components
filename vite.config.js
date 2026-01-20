@@ -1,5 +1,6 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
+import pkg from './package.json' assert { type: 'json' };
 
 export default defineConfig({
   build: {
@@ -17,5 +18,8 @@ export default defineConfig({
       },
     },
     copyPublicDir: false,
+  },
+  define: {
+    __LIB_VERSION__: JSON.stringify(pkg.version),
   },
 })

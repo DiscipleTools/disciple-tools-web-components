@@ -40,3 +40,5 @@ export { default as DtBase } from './src/components/dt-base.js';
 */
 export { default as ComponentService } from './src/services/componentService.js';
 export { default as ApiService } from './src/services/apiService.js';
+
+export const version = __LIB_VERSION__;

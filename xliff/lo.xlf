@@ -64,8 +64,9 @@
         <source>Fields</source>
         <target state="translated">ທົ່ງນາ</target>
       </trans-unit>
-      <trans-unit id="s9d51bfd93b5dbeca">
+      <trans-unit id="s9d51bfd93b5dbeca" xml:space="preserve">
         <source>Show Archived</source>
+        <target state="translated" state-qualifier="leveraged-mt">ສະແດງທີ່ເກັບໄວ້</target>
       </trans-unit>
       <trans-unit id="sb59d68ed12d46377">
         <source>Loading</source>
