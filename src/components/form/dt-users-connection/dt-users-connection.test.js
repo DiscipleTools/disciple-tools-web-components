@@ -186,7 +186,7 @@ describe('dt-users-connection', () => {
     const el = await fixture(
       html`<dt-users-connection
         value="${JSON.stringify([
-          { id: options[0].id, label: options[0].label, delete: true },
+          { id: options[0].id, label: 'old', delete: true },
         ])}"
         options="${JSON.stringify(options)}"
       ></dt-users-connection>`
@@ -200,10 +200,10 @@ describe('dt-users-connection', () => {
     optionBtn.click();
     await wait(100);
 
-    expect(el.value[0]).to.deep.include({ id: 1, label: options[0].label });
+    expect(el.value).to.deep.include({ id: 1, label: 'old' });
     expect(el.value).to.not.deep.include({
       id: 1,
-      label: options[0].label,
+      label: 'old',
       delete: true,
     });
   });
@@ -223,8 +223,7 @@ describe('dt-users-connection', () => {
 
     expect(detail.field).to.equal('custom-name');
     expect(detail.oldValue).to.eql([options[1]]);
-    expect(detail.newValue).to.eql([options[0]]); // multi-select currently not supported
-    //expect(detail.newValue).to.eql([options[1], options[0]]);
+    expect(detail.newValue).to.eql([options[1], options[0]]);
   });
 
   it('triggers change event - item removed', async () => {
@@ -247,13 +246,12 @@ describe('dt-users-connection', () => {
 
     expect(detail.field).to.equal('custom-name');
     expect(detail.oldValue).to.eql([options[0]]);
-    expect(detail.newValue).to.eql(null); // multi-select currently not supported
-    /*expect(detail.newValue).to.eql([
+    expect(detail.newValue).to.eql([
       {
         ...options[0],
         delete: true,
       },
-    ]);*/
+    ]);
   });
 
   it('filters options on text input', async () => {
