@@ -153,6 +153,7 @@ export class DtMapModal extends DtBase {
         ?isopen=${this.isOpen}
         hideButton
         @close=${this.onClose}
+        tabindex="-1"
       >
         <div slot="content">
           <div class="map" id="map"></div>
