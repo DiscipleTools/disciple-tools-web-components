@@ -439,14 +439,6 @@ export default class DtLocationMapItem extends DtBase {
     this.activeIndex = -1; // reset keyboard-selected option
   }
 
-  get _focusTarget() {
-    let target = this._field;
-    if (this.metadata) {
-      target = this.shadowRoot.querySelector('button') || target;
-    }
-    return target;
-  }
-
   _inputFocusIn() {
     this.activeIndex = -1;
   }
