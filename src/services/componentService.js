@@ -439,11 +439,6 @@ export default class ComponentService {
           };
           break;
         case 'dt-users-connection': {
-            // return the id of first entry for now
-            // since single parameter is not yet implemented
-            return returnValue[0].id;
-
-            /*
            // Initialize an empty array to hold the differences found.
             const userDataDifferences=[];
             // For single-select, just return the user ID
@@ -488,7 +483,6 @@ export default class ComponentService {
 
             returnValue = userDataDifferences[0].id;
             break;
-            */
           }
         case 'dt-connection':
           if (typeof value === 'string') {
