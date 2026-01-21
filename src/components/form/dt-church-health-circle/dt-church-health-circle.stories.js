@@ -109,6 +109,17 @@ const options = {
     description: 'The group has leaders.',
     icon: '/groups/leadership-2.svg',
   },
+  custom_img: {
+    label: 'Custom Image',
+    description: 'The group has a custom image.',
+    icon: '/dt-caret.png',
+  },
+  custom_icon: {
+    label: 'Custom Icon',
+    description: 'The group has a custom icon.',
+    icon: null,
+    'font-icon': 'mdi mdi-ab-testing',
+  },
   church_commitment: {
     label: 'Church Commitment',
     description: 'The group has committed to be church.',
@@ -165,17 +176,7 @@ export const Incomplete = {
 
 export const Filled = {
   args: {
-    value: [
-      'church_bible',
-      'church_praise',
-      'church_prayer',
-      'church_giving',
-      'church_leaders',
-      'church_sharing',
-      'church_baptism',
-      'church_fellowship',
-      'church_commitment',
-    ],
+    value: Object.keys(options),
   },
 };
 

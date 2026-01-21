@@ -12,12 +12,14 @@ export class DtChurchHealthCircle extends DtMultiSelect {
       css`
         .health-circle__container {
           --icon-count: 9;
-          --circle-size: var(
-            --container-width,
-            250px
-          ); /* Updated based on dynamic width */
-          --icon-size: min(calc(var(--circle-size) / 5), 100px);
-          --circle-padding: max(1rem, calc(var(--circle-size) / 250px * 1rem));
+          /* Updated circle size based on dynamic width */
+          --circle-size: var(--container-width, 250px);
+          /* Dynamically calculate icon size based on circle size. Max: 125px */
+          --icon-size: min(calc(var(--circle-size) / 5), 125px);
+          --circle-padding: max(
+            0.5rem,
+            calc(var(--circle-size) / 250px * 0.5rem)
+          );
           --radius: calc(
             0.5 * var(--circle-size) - 0.5 *
               var(--icon-size) - var(--circle-padding)
