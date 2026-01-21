@@ -28,6 +28,7 @@ export default class ComponentService {
 
     this.autoSaveComponents = [
       'dt-connection',
+      'dt-users-connection',
       'dt-date',
       'dt-datetime',
       'dt-location',
@@ -53,7 +54,8 @@ export default class ComponentService {
       'dt-list',
       'dt-button',
       'dt-location',
-    ];
+      'dt-users-connection'
+    ]
   }
 
   /**
@@ -74,7 +76,7 @@ export default class ComponentService {
    */
   async attachLoadEvents(selector) {
     const elements = document.querySelectorAll(
-      selector || this.dynamicLoadComponents.join(','),
+      selector || this.dynamicLoadComponents.join(',')
     );
 
     // // check if there is dt-modal and duplicate-detected class with it on DOM.
@@ -92,10 +94,7 @@ export default class ComponentService {
       elements.forEach(el => {
         // prevent multiple event attachments if this is called multiple times
         if (!el.dataset.eventDtGetData) {
-          el.addEventListener(
-            'dt:get-data',
-            this.handleGetDataEvent.bind(this),
-          );
+          el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this));
           el.dataset.eventDtGetData = true;
         }
       });
@@ -106,14 +105,14 @@ export default class ComponentService {
     const dtModal = document.querySelector('dt-modal.duplicate-detected');
     if (dtModal) {
       const button = dtModal.shadowRoot.querySelector(
-        '.duplicates-detected-button',
+        '.duplicates-detected-button'
       );
       if (button) {
         button.style.display = 'none';
       }
       const duplicates = await this._api.checkDuplicateUsers(
         this.postType,
-        this.postId,
+        this.postId
       );
       // showing the button to show duplicates
       if (filteredElements && duplicates.ids.length > 0) {
@@ -130,11 +129,11 @@ export default class ComponentService {
    */
   enableAutoSave(selector) {
     const allElements = document.querySelectorAll(
-      selector || this.autoSaveComponents.join(','),
+      selector || this.autoSaveComponents.join(',')
     );
     if (allElements) {
-      allElements.forEach(el => {
-        el.addEventListener('change', this.handleChangeEvent.bind(this));
+      allElements.forEach(el =>{
+        el.addEventListener('change', this.handleChangeEvent.bind(this))
       });
     }
   }
@@ -185,12 +184,31 @@ export default class ComponentService {
             }
             break;
           }
+          case 'dt-users-connection': {
+            const postType = details.postType || this.postType;
+            const usersResponse = await this._api.searchUsers(
+              postType,
+              query
+            );
+            // for filtering the user itself from the response.
+            const filteredUsersResponse = {
+              ...usersResponse,
+              posts: usersResponse.filter(
+                post => post.ID !== parseInt(this.postId, 10)
+              ),
+            };
+
+            if (filteredUsersResponse?.posts) {
+              values = ComponentService.convertApiValue('dt-users-connection', filteredUsersResponse?.posts);
+            }
+            break;
+          }
           case 'dt-location': {
             values = await this._api.getLocations(
               this.postType,
               field,
               details.filter,
-              query,
+              query
             );
             values = values.location_grid.map(value => ({
               id: value.ID,
@@ -203,7 +221,7 @@ export default class ComponentService {
             values = await this._api.getMultiSelectValues(
               this.postType,
               field,
-              query,
+              query
             );
             values = values.map(value => ({
               id: value,
@@ -233,7 +251,7 @@ export default class ComponentService {
       const apiValue = ComponentService.convertValue(
         component,
         newValue,
-        oldValue,
+        oldValue
       );
 
       event.target.removeAttribute('saved');
@@ -461,11 +479,11 @@ export default class ComponentService {
                   break;
                 }
               }
-          }
+            }
 
-          returnValue = userDataDifferences[0].id;
-          break;
-        }
+            returnValue = userDataDifferences[0].id;
+            break;
+          }
         case 'dt-connection':
           if (typeof value === 'string') {
                 returnValue = [

@@ -62,25 +62,25 @@ export class DtUsersConnection extends DtTags {
     });
 
     // update value in this component
-    if (this.value && this.value.length) {
-        // If value is array of objects, check for same value with `delete` property
-        let foundPrevious = false;
-        const newVal = this.value.map(i => {
-          const val = {
-            ...i,
-          };
-          if (i.id === value.id && i.delete) {
-            delete val.delete;
-            foundPrevious = true;
-          } else if (this.single && !i.delete) {
-            val.delete = true
-          }
-          return val;
-        });
-        if (!foundPrevious) {
-          newVal.push(value);
+    if (this.value && this.value.length && !this.single) {
+      // If value is array of objects, check for same value with `delete` property
+      let foundPrevious = false;
+      const newVal = this.value.map(i => {
+        const val = {
+          ...i,
+        };
+        if (i.id === value.id && i.delete) {
+          delete val.delete;
+          foundPrevious = true;
+        } else if (this.single && !i.delete) {
+          val.delete = true
         }
-        this.value = newVal;
+        return val;
+      });
+      if (!foundPrevious) {
+        newVal.push(value);
+      }
+      this.value = newVal;
     } else {
       this.value = [value];
     }
@@ -91,7 +91,6 @@ export class DtUsersConnection extends DtTags {
 
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
-    this._setFormValue(this.value);
     this._clearSearch();
   }
 
@@ -151,16 +150,17 @@ export class DtUsersConnection extends DtTags {
           remove: true,
         },
       });
+
       this.value = (this.value || []).map(i => {
-        const val = {
-          ...i,
-        };
-        // when adding a new connection via AddNew, the ID was set as the label (string)
-        // for pre-existing selections, the ID is a number (int), so it would fail
-        if (i.id.toString() === e.target.dataset.value) {
-          val.delete = true;
-        }
-        return val;
+      const val = {
+        ...i,
+      };
+      // when adding a new connection via AddNew, the ID was set as the label (string)
+      // for pre-existing selections, the ID is a number (int), so it would fail
+      if (i.id.toString() === e.target.dataset.value) {
+        val.delete = true;
+      }
+      return val;
       });
       event.detail.newValue = this.value;
 
@@ -183,8 +183,7 @@ export class DtUsersConnection extends DtTags {
   _filterOptions() {
     const selectedValues = (this.value || [])
       .filter(i => !i.delete)
-      .map(v => v?.id);
-
+      .map(v => Number(v?.id));
     if (this.options?.length) {
       this.filteredOptions = (this.options || []).filter(
         opt =>
@@ -210,7 +209,6 @@ export class DtUsersConnection extends DtTags {
           query: this.query,
           onSuccess: result => {
             self.loading = false;
-
             // filter out selected values from list
             self.filteredOptions = result.filter(
               opt => !selectedValues.includes(opt.id)

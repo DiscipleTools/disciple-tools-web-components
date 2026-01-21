@@ -450,7 +450,7 @@ export default class ApiService {
    * @param {string} query
    * @returns {Promise<any>}
    */
-  async searchUsers(query='', postType) {
+  async searchUsers(postType, query = '') {
     const params = new URLSearchParams({
       s: query
     });
