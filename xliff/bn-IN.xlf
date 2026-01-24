@@ -11,8 +11,9 @@
       <trans-unit id="sd2e180dab4fbcfb9">
         <source>No Data Available</source>
       </trans-unit>
-      <trans-unit id="sf9aee319a006c9b4">
+      <trans-unit id="sf9aee319a006c9b4" xml:space="preserve">
         <source>Add</source>
+        <target state="translated" state-qualifier="leveraged-mt">যোগ করুন</target>
       </trans-unit>
       <trans-unit id="sbf1ca928ec1deb62">
         <source>Need more help?</source>
@@ -33,8 +34,9 @@
       <trans-unit id="s49730f3d5751a433">
         <source>Loading...</source>
       </trans-unit>
-      <trans-unit id="s625ad019db843f94">
+      <trans-unit id="s625ad019db843f94" xml:space="preserve">
         <source>Use</source>
+        <target state="translated" state-qualifier="leveraged-mt">ব্যবহার করুন</target>
       </trans-unit>
       <trans-unit id="sd1a8dc951b2b6a98">
         <source>Choose which fields to display as columns in the list</source>
