@@ -11,8 +11,9 @@
       <trans-unit id="sd2e180dab4fbcfb9">
         <source>No Data Available</source>
       </trans-unit>
-      <trans-unit id="sf9aee319a006c9b4">
+      <trans-unit id="sf9aee319a006c9b4" xml:space="preserve">
         <source>Add</source>
+        <target state="translated" state-qualifier="leveraged-mt">එක් කරන්න</target>
       </trans-unit>
       <trans-unit id="sbf1ca928ec1deb62">
         <source>Need more help?</source>
@@ -20,8 +21,9 @@
       <trans-unit id="s226be12a5b1a27e8">
         <source>Read the documentation</source>
       </trans-unit>
-      <trans-unit id="s5e8250fb85d64c23">
+      <trans-unit id="s5e8250fb85d64c23" xml:space="preserve">
         <source>Close</source>
+        <target state="translated" state-qualifier="leveraged-mt">වසන්න</target>
       </trans-unit>
       <trans-unit id="s29e25f5e4622f847">
         <source>Open Dialog</source>
@@ -32,8 +34,9 @@
       <trans-unit id="s49730f3d5751a433">
         <source>Loading...</source>
       </trans-unit>
-      <trans-unit id="s625ad019db843f94">
+      <trans-unit id="s625ad019db843f94" xml:space="preserve">
         <source>Use</source>
+        <target state="translated" state-qualifier="leveraged-mt">භාවිතා කරන්න</target>
       </trans-unit>
       <trans-unit id="sd1a8dc951b2b6a98">
         <source>Choose which fields to display as columns in the list</source>
