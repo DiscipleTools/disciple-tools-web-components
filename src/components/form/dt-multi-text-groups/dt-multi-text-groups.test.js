@@ -1,13 +1,13 @@
 import { html } from 'lit';
 import { fixture, expect, oneEvent, aTimeout, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
-import './dt-multi-text-link.js';
+import './dt-multi-text-groups.js';
 
-describe('DtMultiTextLink', () => {
+describe('DtMultiTextGroups', () => {
 
   it('sets placeholder', async () => {
     const el = await fixture(
-      html`<dt-multi-text-link placeholder="Custom Placeholder"></dt-multi-text-link>`
+      html`<dt-multi-text-groups placeholder="Custom Placeholder"></dt-multi-text-groups>`
     );
     const input = el.shadowRoot.querySelector('input');
 
@@ -16,7 +16,7 @@ describe('DtMultiTextLink', () => {
 
   it('sets value from attribute', async () => {
     const el = await fixture(
-      html`<dt-multi-text-link
+      html`<dt-multi-text-groups
         value="${JSON.stringify([{
           key: 'cc01',
           value: 'Value 1',
@@ -26,7 +26,7 @@ describe('DtMultiTextLink', () => {
           value: 'Value 2',
           verified: true,
         }])}"
-      ></dt-multi-text-link>`
+      ></dt-multi-text-groups>`
     );
 
     const inputGroup = el.shadowRoot.querySelector('.input-group');
@@ -41,7 +41,7 @@ describe('DtMultiTextLink', () => {
 
   it('resets value', async () => {
     const el = await fixture(
-      html`<dt-multi-text-link
+      html`<dt-multi-text-groups
         value="${JSON.stringify([{
           key: 'cc01',
           value: 'Value 1',
@@ -51,7 +51,7 @@ describe('DtMultiTextLink', () => {
           value: 'Value 2',
           verified: true,
         }])}"
-      ></dt-multi-text-link>`
+      ></dt-multi-text-groups>`
     );
 
     el.reset();
@@ -68,7 +68,7 @@ describe('DtMultiTextLink', () => {
 
   it('deletes an item on remove button click', async () => {
     const el = await fixture(
-      html`<dt-multi-text-link
+      html`<dt-multi-text-groups
         value="${JSON.stringify([{
         key: 'cc01',
         value: 'Value 1',
@@ -78,7 +78,7 @@ describe('DtMultiTextLink', () => {
         value: 'Value 2',
         verified: true,
       }])}"
-      ></dt-multi-text-link>`
+      ></dt-multi-text-groups>`
     );
 
     expect(el.shadowRoot.querySelectorAll('input')).to.have.length(2);
@@ -107,7 +107,7 @@ describe('DtMultiTextLink', () => {
 
   it('triggers a change event - item added', async () => {
     const el = await fixture(
-      html`<dt-multi-text-link></dt-multi-text-link>`
+      html`<dt-multi-text-groups></dt-multi-text-groups>`
     );
     const input = el.shadowRoot.querySelector('input');
 
@@ -127,7 +127,7 @@ describe('DtMultiTextLink', () => {
 
   it('triggers a change event - item removed', async () => {
     const el = await fixture(
-      html`<dt-multi-text-link
+      html`<dt-multi-text-groups
         value="${JSON.stringify([{
         key: 'cc01',
         value: 'Value 1',
@@ -137,7 +137,7 @@ describe('DtMultiTextLink', () => {
         value: 'Value 2',
         verified: true,
       }])}"
-      ></dt-multi-text-link>`
+      ></dt-multi-text-groups>`
     );
 
     expect(el.shadowRoot.querySelectorAll('input')).to.have.length(2);

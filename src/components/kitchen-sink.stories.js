@@ -15,6 +15,7 @@ import './form/dt-location-map/dt-location-map.js';
 import './form/dt-multi-select/dt-multi-select.js';
 import './form/dt-multi-select-button-group/dt-multi-select-button-group.js';
 import './form/dt-multi-text/dt-multi-text.js';
+import './form/dt-multi-text-groups/dt-multi-text-groups.js'
 import './form/dt-single-select/dt-single-select.js';
 import './form/dt-tags/dt-tags.js';
 import './form/dt-connection/dt-connection.js';
@@ -129,6 +130,14 @@ export default {
         ?disabled=${args.disabled}
         error="${ifDefined(args.error)}"
       ></dt-multi-text>
+
+      <dt-multi-text-groups
+        id="multiTextGroupsField"
+        name="multiTextGroupsField"
+        label="MultiText Groups Field"
+        ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
+      ></dt-multi-text-groups>
 
       <dt-date
         id="dateField"

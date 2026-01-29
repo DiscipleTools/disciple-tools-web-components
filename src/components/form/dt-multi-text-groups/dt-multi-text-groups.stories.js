@@ -7,11 +7,11 @@ import {
   LocaleDecorator,
   onAutoSave,
 } from '../../../stories-utils.js';
-import './dt-multi-text-link.js';
+import './dt-multi-text-groups.js';
 
 export default {
-  title: 'Components/Form/Text - Multi Link',
-  component: 'dt-multi-text-link',
+  title: 'Components/Form/Text - Multi Text Groups',
+  component: 'dt-multi-text-groups',
   argTypes: {
     name: { control: 'text' },
     label: { control: 'text' },
@@ -61,7 +61,7 @@ function Template(args) {
     type,
   } = args;
   return html`
-    <dt-multi-text-link
+    <dt-multi-text-groups
       name=${name}
       label=${label}
       .value=${value}
@@ -81,11 +81,20 @@ function Template(args) {
       @change=${onChange}
     >
       ${slot}
-    </dt-multi-text-link>
+    </dt-multi-text-groups>
   `;
 }
 
-export const Empty = Template.bind({});
+export const Empty = Template.bind({})
+Empty.args = {
+    groups: [
+      { id: 'one', label: 'Group 1' }, 
+      { id: 'two', label: 'Group 2' }
+    ],
+  };
+
+export const EmptyNoGroups = Template.bind({})
+EmptyNoGroups.args = {};
 
 export const SvgIcon = Template.bind({});
 SvgIcon.args = {
@@ -100,16 +109,25 @@ CustomPlaceholder.args = {
 
 export const EnteredValue = Template.bind({});
 EnteredValue.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
   value: [
     {
-      verified: false,
-      value: 'test1',
+      value: 'Lorem Ipsum',
       key: 'comm_channel_1',
+      group: 'one',
     },
     {
-      verified: false,
-      value: 'test2',
+      value: 'Lorem Ipsum 2',
       key: 'comm_channel_2',
+      group: 'two',
+    },
+    {
+      value: 'Lorem Ipsum 3',
+      key: 'comm_channel_3',
+      group: 'two',
     },
   ],
 };
@@ -150,30 +168,6 @@ export const Saved = Template.bind({});
 Saved.args = {
   saved: true,
 };
-export const Groups = Template.bind({});
-Groups.args = {
-  groups: [
-    { id: 'default', label: 'Default' }, 
-    { id: 'one', label: 'Group 1' }
-  ],
-  value: [
-    {
-      value: 'Lorem Ipsum',
-      key: 'comm_channel_1',
-      group: 'default',
-    },
-    {
-      value: 'Lorem Ipsum 2',
-      key: 'comm_channel_2',
-      group: 'one',
-    },
-    {
-      value: 'Lorem Ipsum 3',
-      key: 'comm_channel_3',
-      group: 'one',
-    },
-  ],
-};
 export const Error = Template.bind({});
 Error.args = {
   error: 'Custom error message',
@@ -200,11 +194,6 @@ export const Required = Template.bind({});
 Required.decorators = [FormDecorator];
 Required.args = {
   required: true,
-};
-
-export const password = Template.bind({});
-password.args = {
-  type: 'password',
 };
 
 export const requiredCustomMessage = Template.bind({});

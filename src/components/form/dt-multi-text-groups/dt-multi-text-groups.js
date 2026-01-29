@@ -9,7 +9,7 @@ import '../../icons/dt-icon.js';
  * Field to edit multiple text values with ability to add/remove values.
  * Used primarily for lists of communication channels (e.g. phone, email, social links, etc.)
  */
-export class DtMultiTextLink extends DtMultiText {
+export class DtMultiTextGroups extends DtMultiText {
   static get styles() {
     return [
       ...super.styles,
@@ -37,7 +37,6 @@ export class DtMultiTextLink extends DtMultiText {
           z-index: 10;
           box-shadow: var(--shadow-1);
           max-height: 150px;
-          overflow-y: scroll;
         }
 
         .option-list li {
@@ -65,6 +64,24 @@ export class DtMultiTextLink extends DtMultiText {
           cursor: pointer;
           background: var(--dt-multi-select-option-hover-background, #F5F5F5);
         }
+        .icon-overlay {
+          inset-inline-end: 0.5rem;
+          height: 100%;
+        }
+        .field-container:has(.btn-remove) ~ .icon-overlay {
+          inset-inline-end: 3rem;
+        }
+        .heading {
+          margin-top: .5rem;
+          margin-bottom: 0;
+          font-family: var(--font-family);
+          font-size: var(--dt-label-font-size, 14px);
+          font-weight: var(--dt-label-font-weight, 700);
+          color: var(--dt-label-color, #000);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       `,
     ];
   }
@@ -72,10 +89,6 @@ export class DtMultiTextLink extends DtMultiText {
   static get properties() {
     return {
       ...super.properties,
-      value: {
-        type: Array,
-        reflect: true,
-      },
       groups: { type: Array },
       open: {
         type: Boolean,
@@ -101,7 +114,12 @@ export class DtMultiTextLink extends DtMultiText {
       tempKey: Date.now().toString(),
       group: group.id
     };
-    this.value = [...this.value, newValue];
+    if (this.value[0]?.group) {
+      this.value = [...this.value, newValue];
+      
+    } else {
+      this.value = [newValue];
+    }
     this.open = false;
     this.activeIndex = -1;
 
@@ -116,10 +134,19 @@ export class DtMultiTextLink extends DtMultiText {
   }
 
   handleClick() {
-    this.open = !this.open;
-    this.activeIndex = -1;
-    const firstButton = this.renderRoot.querySelector('.option-list button');
-    firstButton?.focus();
+    if (this.groups) {
+      this.open = !this.open;
+      this.activeIndex = -1;
+      const firstButton = this.renderRoot.querySelector('.option-list button');
+      firstButton?.focus();
+    } else {
+      const newValue = {
+        verified: false,
+        value: '',
+        tempKey: Date.now().toString(),
+      };
+      this.value = [...this.value, newValue];
+    }
   }
 
   _inputKeyDown(e) {
@@ -213,7 +240,7 @@ export class DtMultiTextLink extends DtMultiText {
         />
 
         ${when(
-          itemCount > 1 || item.key || item.value,
+          (this.value[0]?.group) || (!this.groups && itemCount > 1),
           () => html`
             <button
               class="input-addon btn-remove"
@@ -261,25 +288,38 @@ export class DtMultiTextLink extends DtMultiText {
         },
       ];
     }
-    
-    if (this.groups) {
-      return this.groups.map(group => html`
-        <h3>${group.label}</h3>
-        ${repeat(
-          (this.value ?? []).filter(x => !x.delete && x.group === group.id),
-          x => x.id,
-          x => this._inputFieldTemplate(x, this.value.length),
-        )}
-      `);
+
+    const firstIndex = this.value[0];
+    if (this.groups && (firstIndex && firstIndex.group && !firstIndex.delete)) {
+      return this.groups.map(group => {
+        const groupItems = (this.value ?? []).filter(
+          x => !x.delete && x.group === group.id
+        );
+
+        if (groupItems.length > 0) {
+          return html`
+          <h3 class="heading">${group.label}</h3>
+          ${repeat(
+            groupItems,
+            x => x.id,
+            x => this._inputFieldTemplate(x, this.value.length),
+          )}
+        `;
+        }
+      });
     }
 
-    return html`
+    if (!this.groups) {
+      return html`
+      <h3 class="heading">Default</h3>
       ${repeat(
         (this.value ?? []).filter(x => !x.delete),
         x => x.id,
         x => this._inputFieldTemplate(x, this.value.length),
       )}
     `;
+    }
+    
   }
 
   get classes() {
@@ -311,7 +351,6 @@ export class DtMultiTextLink extends DtMultiText {
           <button
             @click="${this.handleClick}"
             @keydown="${this._inputKeyDown}"
-            @focusin="${() => { this.open = true; this.activeIndex = -1; }}"
             class="icon-btn"
             id="add-item"
             type="button"
@@ -332,4 +371,4 @@ export class DtMultiTextLink extends DtMultiText {
   }
 }
 
-window.customElements.define('dt-multi-text-link', DtMultiTextLink);
+window.customElements.define('dt-multi-text-groups', DtMultiTextGroups);
