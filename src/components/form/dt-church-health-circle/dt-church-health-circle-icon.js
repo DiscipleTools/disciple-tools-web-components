@@ -8,13 +8,30 @@ class DtChurchHealthIcon extends DtBase {
       root {
         display: block;
       }
-      .health-item img {
-        width: var(--d);
-        height: var(--d);
-        filter: grayscale(1) opacity(0.75);
-      }
-      .health-item--active img {
-        filter: none !important;
+      .health-item {
+        padding: 0.5rem;
+
+        img,
+        dt-icon {
+          width: 100%;
+          height: 100%;
+        }
+
+        img {
+          /* remove color from images and then semi-transparent */
+          filter: grayscale(1) opacity(0.75);
+        }
+        dt-icon {
+          /* lesser opacity than images because they start as solid black */
+          filter: opacity(0.2);
+        }
+
+        &.health-item--active {
+          img,
+          dt-icon {
+            filter: none !important;
+          }
+        }
       }
     `;
   }
@@ -23,6 +40,8 @@ class DtChurchHealthIcon extends DtBase {
     return {
       /* Key of metric to toggle */
       key: { type: String },
+      /* Metric object */
+      metric: { type: Object },
       /* Boolean if metric is active */
       active: { type: Boolean, reflect: true },
       /* Boolean if metric is disabled */
@@ -32,14 +51,24 @@ class DtChurchHealthIcon extends DtBase {
     };
   }
 
-  render() {
+  renderIcon() {
     const templateDir = window?.wpApiShare?.template_dir;
     const {
       metric,
-      active,
-      disabled,
       missingIcon = `${templateDir}/dt-assets/images/groups/missing.svg`,
     } = this;
+    if (metric['font-icon']) {
+      const iconKey = metric['font-icon'].replace('mdi mdi-', 'mdi:');
+      return html`<dt-icon icon="${iconKey}" size="unset"></dt-icon>`;
+    }
+    return html`<img
+      src="${metric.icon ? metric.icon : missingIcon}"
+      alt="${metric}"
+    />`;
+  }
+
+  render() {
+    const { metric, active, disabled } = this;
 
     return html`<div
       class=${classMap({
@@ -50,10 +79,7 @@ class DtChurchHealthIcon extends DtBase {
       title="${metric.description}"
       @click="${this._handleClick}"
     >
-      <img
-        src="${metric.icon ? metric.icon : missingIcon}"
-        alt="${this.metric}"
-      />
+      ${this.renderIcon()}
     </div>`;
   }
 

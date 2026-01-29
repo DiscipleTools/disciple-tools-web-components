@@ -30,10 +30,6 @@
         <source>Close</source>
         <target>Chiudi</target>
       </trans-unit>
-      <trans-unit id="s29e25f5e4622f847">
-        <source>Open Dialog</source>
-        <target>Apri Dialogo</target>
-      </trans-unit>
       <trans-unit id="s33f85f24c0f5f008" xml:space="preserve">
         <source>Save</source>
         <target state="translated">Salva</target>
@@ -58,10 +54,6 @@
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
         <target><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> Lista</target>
       </trans-unit>
-      <trans-unit id="seafe6ef133ede7da">
-        <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
-        <target>Visualizzando 1 di <x id="0" equiv-text="${this.total}"/></target>
-      </trans-unit>
       <trans-unit id="s41cb4006238ebd3b">
         <source>Bulk Edit</source>
         <target>Modifica in blocco</target>
@@ -77,6 +69,10 @@
       <trans-unit id="sb59d68ed12d46377">
         <source>Loading</source>
         <target>Caricando</target>
+      </trans-unit>
+      <trans-unit id="se32ddb0a9cd4181d" xml:space="preserve">
+        <source>Showing <x id="0" equiv-text="${this.total}"/> of <x id="1" equiv-text="${this.total}"/></source>
+        <target state="translated">Mostrando <x id="0" equiv-text="${this.total}"/> of <x id="1" equiv-text="${this.total}"/></target>
       </trans-unit>
     </body>
   </file>

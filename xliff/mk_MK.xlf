@@ -28,9 +28,6 @@
         <source>Close</source>
         <target>Затвори</target>
       </trans-unit>
-      <trans-unit id="s29e25f5e4622f847">
-        <source>Open Dialog</source>
-      </trans-unit>
       <trans-unit id="s33f85f24c0f5f008">
         <source>Save</source>
         <target>Зачувај</target>
@@ -53,9 +50,6 @@
       <trans-unit id="sac83d7f9358b43db">
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
       </trans-unit>
-      <trans-unit id="seafe6ef133ede7da">
-        <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
-      </trans-unit>
       <trans-unit id="s41cb4006238ebd3b">
         <source>Bulk Edit</source>
         <target>Уреди повеќе</target>
@@ -64,11 +58,15 @@
         <source>Fields</source>
         <target>Полиња</target>
       </trans-unit>
-      <trans-unit id="s9d51bfd93b5dbeca">
+      <trans-unit id="s9d51bfd93b5dbeca" xml:space="preserve">
         <source>Show Archived</source>
+        <target state="translated" state-qualifier="leveraged-mt">Прикажи архивирани</target>
       </trans-unit>
       <trans-unit id="sb59d68ed12d46377">
         <source>Loading</source>
+      </trans-unit>
+      <trans-unit id="se32ddb0a9cd4181d">
+        <source>Showing <x id="0" equiv-text="${this.total}"/> of <x id="1" equiv-text="${this.total}"/></source>
       </trans-unit>
     </body>
   </file>

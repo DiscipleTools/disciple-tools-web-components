@@ -28,6 +28,7 @@ export default class ComponentService {
 
     this.autoSaveComponents = [
       'dt-connection',
+      'dt-users-connection',
       'dt-date',
       'dt-datetime',
       'dt-location',
@@ -42,7 +43,8 @@ export default class ComponentService {
       'dt-multi-text',
       'dt-multi-select-button-group',
       'dt-list',
-      'dt-button'
+      'dt-button',
+      'dt-church-health-circle'
     ];
 
     this.dynamicLoadComponents = [
@@ -51,7 +53,8 @@ export default class ComponentService {
       'dt-modal',
       'dt-list',
       'dt-button',
-      'dt-location'
+      'dt-location',
+      'dt-users-connection'
     ]
   }
 
@@ -178,6 +181,25 @@ export default class ComponentService {
 
             if (filteredConnectionResponse?.posts) {
               values = ComponentService.convertApiValue('dt-connection', filteredConnectionResponse?.posts);
+            }
+            break;
+          }
+          case 'dt-users-connection': {
+            const postType = details.postType || this.postType;
+            const usersResponse = await this._api.searchUsers(
+              postType,
+              query
+            );
+            // for filtering the user itself from the response.
+            const filteredUsersResponse = {
+              ...usersResponse,
+              posts: usersResponse.filter(
+                post => post.ID !== parseInt(this.postId, 10)
+              ),
+            };
+
+            if (filteredUsersResponse?.posts) {
+              values = ComponentService.convertApiValue('dt-users-connection', filteredUsersResponse?.posts);
             }
             break;
           }
@@ -385,6 +407,7 @@ export default class ComponentService {
             returnValue = value.toLowerCase() === 'true';
           }
           break;
+        case 'dt-church-health-circle':
         case 'dt-multi-select':
         case 'dt-multi-select-button-group':
         case 'dt-tags':
@@ -456,11 +479,11 @@ export default class ComponentService {
                   break;
                 }
               }
-          }
+            }
 
-          returnValue = userDataDifferences[0].id;
-          break;
-        }
+            returnValue = userDataDifferences[0].id;
+            break;
+          }
         case 'dt-connection':
           if (typeof value === 'string') {
                 returnValue = [
@@ -552,5 +575,62 @@ export default class ComponentService {
     }
 
     return returnValue;
+  }
+
+  /**
+   * Computes the difference between two arrays, identifying elements that are unique to each array.
+   * Handles both primitive and object arrays. For object arrays, a unique key is generated using
+   * JSON stringification of the objects.
+   *
+   * @param {Array} value1 The first array to compare. If not an array, defaults to an empty array.
+   * @param {Array} value2 The second array to compare. If not an array, defaults to an empty array.
+   * @return {Object} An object containing two arrays:
+   * - `value1` contains elements from the first array that are not in the second array.
+   * - `value2` contains elements from the second array that are not in the first array.
+   */
+  static valueArrayDiff(value1, value2) {
+    const result = {
+      value1: [],
+      value2: [],
+    };
+
+    if (!Array.isArray(value1)) {
+      value1 = [];
+    }
+    if (!Array.isArray(value2)) {
+      value2 = [];
+    }
+
+    // Handle primitive arrays
+    if (value1.length > 0 && typeof value1[0] !== 'object') {
+      result.value1 = value1.filter(item => !value2.includes(item));
+      result.value2 = value2.filter(item => !value1.includes(item));
+      return result;
+    }
+
+    // Handle object arrays
+    const getObjectKey = obj => {
+      // Use stringified object as key to ensure uniqueness
+      return JSON.stringify(obj);
+    };
+
+    const value1Map = new Map(value1.map(item => [getObjectKey(item), item]));
+    const value2Map = new Map(value2.map(item => [getObjectKey(item), item]));
+
+    // Find items unique to value1
+    for (const [key, item1] of value1Map) {
+      if (!value2Map.has(key)) {
+        result.value1.push(item1);
+      }
+    }
+
+    // Find items unique to value2
+    for (const [key, item2] of value2Map) {
+      if (!value1Map.has(key)) {
+        result.value2.push(item2);
+      }
+    }
+
+    return result;
   }
 }

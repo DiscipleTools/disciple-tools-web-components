@@ -184,12 +184,16 @@ describe('ComponentService', () => {
         });
       });
       it('handles null oldValue', async () => {
-        const result = ComponentService.convertValue('dt-location', [
-          {
-            id: 'opt1',
-            label: 'Option 1',
-          },
-        ], null);
+        const result = ComponentService.convertValue(
+          'dt-location',
+          [
+            {
+              id: 'opt1',
+              label: 'Option 1',
+            },
+          ],
+          null,
+        );
         expect(result).to.eql({
           values: [
             {
@@ -200,16 +204,20 @@ describe('ComponentService', () => {
         });
       });
       it('handles expected: array of tags', async () => {
-        const result = ComponentService.convertValue('dt-location', [
-          {
-            id: 'opt1',
-            label: 'Option 1',
-          },
-          {
-            id: 'opt2',
-            label: 'Option 2',
-          },
-        ], []);
+        const result = ComponentService.convertValue(
+          'dt-location',
+          [
+            {
+              id: 'opt1',
+              label: 'Option 1',
+            },
+            {
+              id: 'opt2',
+              label: 'Option 2',
+            },
+          ],
+          [],
+        );
         expect(result).to.eql({
           values: [
             {
@@ -223,21 +231,25 @@ describe('ComponentService', () => {
         });
       });
       it('handles expected: added item', async () => {
-        const result = ComponentService.convertValue('dt-location', [
-          {
-            id: 'opt1',
-            label: 'Option 1',
-          },
-          {
-            id: 'opt2',
-            label: 'Option 2',
-          },
-        ], [
-          {
-            id: 'opt1',
-            label: 'Option 1',
-          },
-        ]);
+        const result = ComponentService.convertValue(
+          'dt-location',
+          [
+            {
+              id: 'opt1',
+              label: 'Option 1',
+            },
+            {
+              id: 'opt2',
+              label: 'Option 2',
+            },
+          ],
+          [
+            {
+              id: 'opt1',
+              label: 'Option 1',
+            },
+          ],
+        );
         expect(result).to.eql({
           values: [
             {
@@ -248,26 +260,30 @@ describe('ComponentService', () => {
         });
       });
       it('handles expected: deleted items', () => {
-        const result = ComponentService.convertValue('dt-location', [
-          {
-            id: 'opt1',
-            label: 'Option 1',
-          },
-          {
-            id: 'opt2',
-            label: 'Option 2',
-            delete: true,
-          },
-        ], [
-          {
-            id: 'opt1',
-            label: 'Option 1',
-          },
-          {
-            id: 'opt2',
-            label: 'Option 2',
-          }
-        ]);
+        const result = ComponentService.convertValue(
+          'dt-location',
+          [
+            {
+              id: 'opt1',
+              label: 'Option 1',
+            },
+            {
+              id: 'opt2',
+              label: 'Option 2',
+              delete: true,
+            },
+          ],
+          [
+            {
+              id: 'opt1',
+              label: 'Option 1',
+            },
+            {
+              id: 'opt2',
+              label: 'Option 2',
+            },
+          ],
+        );
         expect(result).to.eql({
           values: [
             {
@@ -335,11 +351,17 @@ describe('ComponentService', () => {
 
     describe('dt-multi-select-button-group', () => {
       it('handles null', async () => {
-        const result = ComponentService.convertValue('dt-multi-select-button-group', null);
+        const result = ComponentService.convertValue(
+          'dt-multi-select-button-group',
+          null,
+        );
         expect(result).to.be.null;
       });
       it('handles unexpected: string', () => {
-        const result = ComponentService.convertValue('dt-multi-select-button-group', 'opt1');
+        const result = ComponentService.convertValue(
+          'dt-multi-select-button-group',
+          'opt1',
+        );
         expect(result).to.eql({
           values: [
             {
@@ -350,10 +372,10 @@ describe('ComponentService', () => {
         });
       });
       it('handles expected: array of IDs', async () => {
-        const result = ComponentService.convertValue('dt-multi-select-button-group', [
-          'opt1',
-          'opt2',
-        ]);
+        const result = ComponentService.convertValue(
+          'dt-multi-select-button-group',
+          ['opt1', 'opt2'],
+        );
         expect(result).to.eql({
           values: [
             {
@@ -367,10 +389,10 @@ describe('ComponentService', () => {
         });
       });
       it('handles expected: deleted items', () => {
-        const result = ComponentService.convertValue('dt-multi-select-button-group', [
-          'opt1',
-          '-opt2',
-        ]);
+        const result = ComponentService.convertValue(
+          'dt-multi-select-button-group',
+          ['opt1', '-opt2'],
+        );
         expect(result).to.eql({
           values: [
             {
@@ -405,7 +427,7 @@ describe('ComponentService', () => {
       it('handles expected: string', async () => {
         const result = ComponentService.convertValue(
           'dt-single-select',
-          'test'
+          'test',
         );
         expect(result).to.equal('test');
       });
@@ -429,7 +451,8 @@ describe('ComponentService', () => {
       });
       it('handles expected: array of tags', async () => {
         const result = ComponentService.convertValue('dt-tags', [
-           'opt1','opt2',
+          'opt1',
+          'opt2',
         ]);
         expect(result).to.eql({
           values: [
@@ -445,7 +468,8 @@ describe('ComponentService', () => {
       });
       it('handles expected: hyphenated tags', async () => {
         const result = ComponentService.convertValue('dt-tags', [
-          'option-one', 'option-two'
+          'option-one',
+          'option-two',
         ]);
         expect(result).to.eql({
           values: [
@@ -461,7 +485,8 @@ describe('ComponentService', () => {
       });
       it('handles expected: deleted items', () => {
         const result = ComponentService.convertValue('dt-tags', [
-          'opt1','-opt2'
+          'opt1',
+          '-opt2',
         ]);
         expect(result).to.eql({
           values: [
@@ -512,6 +537,133 @@ describe('ComponentService', () => {
       it('handles unexpected: string', async () => {
         const result = ComponentService.convertValue('dt-toggle', 'true');
         expect(result).to.equal(true);
+      });
+    });
+  });
+
+  describe('valueArrayDiff', () => {
+    describe('location_meta', () => {
+      const locationMetaOptions = [
+        {
+          id: '123',
+          grid_meta_id: '65',
+          post_id: '43',
+          post_type: 'contacts',
+          postmeta_id_location_grid: '1671',
+          grid_id: '100366112',
+          lng: '-73.9866',
+          lat: '40.7306',
+          level: 'place',
+          source: 'user',
+          label: 'New York, New York, United States',
+        },
+        {
+          id: '124',
+          grid_meta_id: '66',
+          post_id: '43',
+          post_type: 'contacts',
+          postmeta_id_location_grid: '1673',
+          grid_id: '100364858',
+          lng: '-87.624421',
+          lat: '41.875562',
+          level: 'place',
+          source: 'user',
+          label: 'Chicago, Illinois, United States',
+        },
+        {
+          id: '125',
+          grid_meta_id: '67',
+          post_id: '43',
+          post_type: 'contacts',
+          postmeta_id_location_grid: '1675',
+          grid_id: '100364452',
+          lng: '-118.242766',
+          lat: '34.053691',
+          level: 'place',
+          source: 'user',
+          label: 'Los Angeles, California, United States',
+        },
+        {
+          label: ['Test'],
+          key: 'contact_address_861',
+        },
+      ];
+      it('handles null', async () => {
+        const result = ComponentService.valueArrayDiff(null, null);
+        expect(result).to.have.property('value1').with.lengthOf(0);
+        expect(result).to.have.property('value2').with.lengthOf(0);
+      });
+      it('handles null value1', async () => {
+        const result = ComponentService.valueArrayDiff(null, [
+          locationMetaOptions[0],
+        ]);
+        expect(result).to.have.property('value1');
+        expect(result).to.have.property('value2');
+      });
+      it('handles null value2', async () => {
+        const result = ComponentService.valueArrayDiff(
+          [locationMetaOptions[0]],
+          null,
+        );
+        expect(result).to.have.property('value1');
+        expect(result).to.have.property('value2');
+      });
+
+      it('handles new item', async () => {
+        const result = ComponentService.valueArrayDiff(
+          [locationMetaOptions[0]],
+          [locationMetaOptions[0], locationMetaOptions[1]],
+        );
+        expect(result.value2).to.deep.include(locationMetaOptions[1]);
+      });
+      it('handles deleted item', async () => {
+        const result = ComponentService.valueArrayDiff(
+          [locationMetaOptions[0], locationMetaOptions[1]],
+          [locationMetaOptions[0]],
+        );
+        expect(result.value1).to.deep.include(locationMetaOptions[1]);
+      });
+      it('handles updated item: logical delete', async () => {
+        const deletedOption = { ...locationMetaOptions[0], delete: true };
+        const result = ComponentService.valueArrayDiff(
+          [locationMetaOptions[0]],
+          [deletedOption],
+        );
+        expect(result.value1).to.deep.include(locationMetaOptions[0]);
+        expect(result.value2).to.deep.include(deletedOption);
+      });
+      it('handles update item: logical undelete', async () => {
+        const deletedOption = { ...locationMetaOptions[0], delete: true };
+        const result = ComponentService.valueArrayDiff(
+          [deletedOption],
+          [locationMetaOptions[0]],
+        );
+        expect(result.value1).to.deep.include(deletedOption);
+        expect(result.value2).to.deep.include(locationMetaOptions[0]);
+      });
+
+      it('handles mixed array order', async () => {
+        const result = ComponentService.valueArrayDiff(
+          [locationMetaOptions[1], locationMetaOptions[0]],
+          [locationMetaOptions[0], locationMetaOptions[1]],
+        );
+        expect(result.value1).to.have.lengthOf(0);
+        expect(result.value2).to.have.lengthOf(0);
+      });
+      it('handles mixed property order', async () => {
+        const selection1 = {
+          ...locationMetaOptions[0],
+          lng: locationMetaOptions[0].lng,
+          lat: locationMetaOptions[0].lat,
+        };
+        const selection2 = {
+          ...locationMetaOptions[0],
+          lat: locationMetaOptions[0].lat,
+          lng: locationMetaOptions[0].lng,
+        };
+        const result = ComponentService.valueArrayDiff(selection1, selection2);
+        expect(result.value1).to.have.lengthOf(0);
+        expect(result.value2).to.have.lengthOf(0);
       });
     });
   });

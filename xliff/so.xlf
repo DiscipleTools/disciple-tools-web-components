@@ -8,8 +8,9 @@
       <trans-unit id="s04ceadb276bbe149">
         <source>Loading options...</source>
       </trans-unit>
-      <trans-unit id="sd2e180dab4fbcfb9">
+      <trans-unit id="sd2e180dab4fbcfb9" xml:space="preserve">
         <source>No Data Available</source>
+        <target state="translated" state-qualifier="leveraged-mt">Xog La Heli Karo Ma Jirto</target>
       </trans-unit>
       <trans-unit id="sf9aee319a006c9b4" xml:space="preserve">
         <source>Add</source>
@@ -63,8 +64,9 @@
         <source>Fields</source>
         <target state="translated">Goobaha</target>
       </trans-unit>
-      <trans-unit id="s9d51bfd93b5dbeca">
+      <trans-unit id="s9d51bfd93b5dbeca" xml:space="preserve">
         <source>Show Archived</source>
+        <target state="translated" state-qualifier="leveraged-mt">Muuji Kuwa la Kaydiyay</target>
       </trans-unit>
       <trans-unit id="sb59d68ed12d46377">
         <source>Loading</source>

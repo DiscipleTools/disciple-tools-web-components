@@ -185,14 +185,10 @@ export const CustomPlaceholder = {
 export const SelectedValue = {
   args: {
     value: [
+      basicOptions[1],
       {
-        id: 2,
-        label: 'User 2',
-        status: {
-          key: 'active',
-          label: 'Active',
-          color: '#4CAF50',
-        },
+        id: 99,
+        label: 'Option 99',
       },
     ],
     options: basicOptions,

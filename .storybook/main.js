@@ -3,12 +3,12 @@ import remarkGfm from 'remark-gfm';
 
 const config = {
   stories: [
-    "../src/docs/**/*.mdx",
-    "../src/**/*.mdx",
-    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    '../src/docs/**/*.mdx',
+    '../src/**/*.mdx',
+    '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   framework: {
-    name: "@storybook/web-components-vite",
+    name: '@storybook/web-components-vite',
     options: {},
   },
   docs: {

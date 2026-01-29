@@ -27,7 +27,7 @@ export default {
       <dt-label
         ?private="${args.private}"
         privateLabel="${privateLabel}"
-        icon="${icon}"
+        icon="${ifDefined(icon)}"
         iconAltText="${iconAltText}"
       >
         ${label} ${slotContent}
@@ -54,7 +54,7 @@ export const TextOverflow = {
 export const UrlIcon = {
   args: {
     icon: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
-  }
+  },
 };
 
 export const ImgLabel = {
@@ -73,14 +73,14 @@ export const SvgLabel = {
     label: 'My Field Label',
     // prettier-ignore
     slotContent: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
-  }
+  },
 };
 
 export const Private = {
   args: {
     label: 'My Field Label',
     private: true,
-  }
+  },
 };
 
 export const PrivateCustomTooltip = {
@@ -88,7 +88,7 @@ export const PrivateCustomTooltip = {
     label: 'My Field Label',
     private: true,
     privateLabel: 'Add other language content here',
-  }
+  },
 };
 
 export const LocalizeRTL = {
@@ -98,5 +98,5 @@ export const LocalizeRTL = {
     dir: 'rtl',
     label: 'اسم الإدخال',
     private: true,
-  }
+  },
 };

@@ -6,6 +6,7 @@ import '../icons/dt-spinner.js';
 import '../icons/dt-icon.js';
 import '../icons/dt-checkmark.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
  * Extends `DtBase` to add features specific to form components, including base styles
@@ -172,6 +173,7 @@ export default class DtFormBase extends DtBase {
 
   constructor() {
     super();
+    this.savedTimeout = null;
     this.touched = false;
     this.invalid = false;
     this.internals = this.attachInternals();
@@ -307,9 +309,9 @@ export default class DtFormBase extends DtBase {
     return html`
       <dt-label
         ?private=${this.private}
-        privateLabel="${this.privateLabel}"
-        iconAltText="${this.iconAltText}"
-        icon="${this.icon}"
+        privateLabel="${ifDefined(this.privateLabel)}"
+        iconAltText="${ifDefined(this.iconAltText)}"
+        icon="${ifDefined(this.icon)}"
         exportparts="label: label-container"
       >
         ${!this.icon
@@ -326,12 +328,14 @@ export default class DtFormBase extends DtBase {
       slotted: this.errorSlotted,
     };
   }
+
   renderIcons() {
     return html`
       ${this.renderIconInvalid()} ${this.renderError()}
       ${this.renderIconLoading()} ${this.renderIconSaved()}
     `;
   }
+
   renderIconInvalid() {
     return this.touched && this.invalid
       ? html`<div class="${classMap(this._errorClasses())}">
@@ -344,18 +348,30 @@ export default class DtFormBase extends DtBase {
         </div> `
       : null;
   }
+
   renderIconLoading() {
     return this.loading
       ? html`<dt-spinner class="icon-overlay"></dt-spinner>`
       : null;
   }
+
   renderIconSaved() {
+    if (this.saved) {
+      if (this.savedTimeout) {
+        clearTimeout(this.savedTimeout);
+      }
+      this.savedTimeout = setTimeout(() => {
+        this.savedTimeout = null;
+        this.saved = false;
+      }, 5000);
+    }
     return this.saved
       ? html`<dt-checkmark
           class="icon-overlay success fade-out"
         ></dt-checkmark>`
       : null;
   }
+
   renderError() {
     return this.error
       ? html`<div class="${classMap(this._errorClasses())}">

@@ -295,237 +295,243 @@ self.addEventListener('fetch', async event => {
     },
   ];
   const ChurchHealthEmptyGroup = {
-    "ID":"1",
-    "post_title":"Empty Group",
-    "post_type":"groups",
-    "post_date":{"timestamp":1667920392,"formatted":"2022-11-08"},"coaches":[],
-    "members":[],
-    "leaders":[],
-    "parent_groups":[
-        {"ID":"19",
-        "post_type":"groups",
-        "post_date_gmt":"2022-10-07 19:15:18",
-        "post_date":"2022-10-07 19:15:18",
-        "post_title":"Christ Church",
-        "permalink":"https://test.local/?p=19",
-        "status":{
-            "key":"active",
-            "label":"Active",
-            "color":"#4CAF50"
-        }
-        }
+    ID: '1',
+    post_title: 'Empty Group',
+    post_type: 'groups',
+    post_date: { timestamp: 1667920392, formatted: '2022-11-08' },
+    coaches: [],
+    members: [],
+    leaders: [],
+    parent_groups: [
+      {
+        ID: '19',
+        post_type: 'groups',
+        post_date_gmt: '2022-10-07 19:15:18',
+        post_date: '2022-10-07 19:15:18',
+        post_title: 'Christ Church',
+        permalink: 'https://test.local/?p=19',
+        status: {
+          key: 'active',
+          label: 'Active',
+          color: '#4CAF50',
+        },
+      },
     ],
-    "peer_groups":[],
-    "child_groups":[],
-    "people_groups":[],
-    "meetings":[],
-    "contacts":[],
-    "prayer_request":[],
-    "group_status":{
-        "key":"active",
-        "label":"Active"
+    peer_groups: [],
+    child_groups: [],
+    people_groups: [],
+    meetings: [],
+    contacts: [],
+    prayer_request: [],
+    group_status: {
+      key: 'active',
+      label: 'Active',
     },
-    "last_modified":{
-        "timestamp":1669701376,
-        "formatted":"2022-11-29"
+    last_modified: {
+      timestamp: 1669701376,
+      formatted: '2022-11-29',
     },
-    "group_type":{
-        "key":"pre-group",
-        "label":"Pre-Group"
+    group_type: {
+      key: 'pre-group',
+      label: 'Pre-Group',
     },
-    "start_date":{
-        "timestamp":1667920392,
-        "formatted":"2022-11-08"
+    start_date: {
+      timestamp: 1667920392,
+      formatted: '2022-11-08',
     },
-    "assigned_to":{
-        "id":"1",
-        "type":"user",
-        "display":"micahmills",
-        "assigned-to":"user-1"
+    assigned_to: {
+      id: '1',
+      type: 'user',
+      display: 'micahmills',
+      'assigned-to': 'user-1',
     },
-    "health_metrics":[
-    ],
-    "leader_count":4,
-    "member_count":2,
-    "permalink":"https://test.local/groups/239",
-    "name":"Home Church"
-  }
+    health_metrics: [],
+    leader_count: 4,
+    member_count: 2,
+    permalink: 'https://test.local/groups/239',
+    name: 'Home Church',
+  };
   const ChurchHealthIncompleteGroup = {
-    "ID":"2",
-    "post_title":"Completed Group",
-    "post_type":"groups",
-    "post_date":{"timestamp":1667920392,"formatted":"2022-11-08"},"coaches":[],
-    "members":[],
-    "leaders":[],
-    "parent_groups":[
-        {"ID":"19",
-        "post_type":"groups",
-        "post_date_gmt":"2022-10-07 19:15:18",
-        "post_date":"2022-10-07 19:15:18",
-        "post_title":"Christ Church",
-        "permalink":"https://test.local/?p=19",
-        "status":{
-            "key":"active",
-            "label":"Active",
-            "color":"#4CAF50"
-        }
-        }
+    ID: '2',
+    post_title: 'Completed Group',
+    post_type: 'groups',
+    post_date: { timestamp: 1667920392, formatted: '2022-11-08' },
+    coaches: [],
+    members: [],
+    leaders: [],
+    parent_groups: [
+      {
+        ID: '19',
+        post_type: 'groups',
+        post_date_gmt: '2022-10-07 19:15:18',
+        post_date: '2022-10-07 19:15:18',
+        post_title: 'Christ Church',
+        permalink: 'https://test.local/?p=19',
+        status: {
+          key: 'active',
+          label: 'Active',
+          color: '#4CAF50',
+        },
+      },
     ],
-    "peer_groups":[],
-    "child_groups":[],
-    "people_groups":[],
-    "meetings":[],
-    "contacts":[],
-    "prayer_request":[],
-    "group_status":{
-        "key":"active",
-        "label":"Active"
+    peer_groups: [],
+    child_groups: [],
+    people_groups: [],
+    meetings: [],
+    contacts: [],
+    prayer_request: [],
+    group_status: {
+      key: 'active',
+      label: 'Active',
     },
-    "last_modified":{
-        "timestamp":1669701376,
-        "formatted":"2022-11-29"
+    last_modified: {
+      timestamp: 1669701376,
+      formatted: '2022-11-29',
     },
-    "group_type":{
-        "key":"pre-group",
-        "label":"Pre-Group"
+    group_type: {
+      key: 'pre-group',
+      label: 'Pre-Group',
     },
-    "start_date":{
-        "timestamp":1667920392,
-        "formatted":"2022-11-08"
+    start_date: {
+      timestamp: 1667920392,
+      formatted: '2022-11-08',
     },
-    "assigned_to":{
-        "id":"1",
-        "type":"user",
-        "display":"micahmills",
-        "assigned-to":"user-1"
+    assigned_to: {
+      id: '1',
+      type: 'user',
+      display: 'micahmills',
+      'assigned-to': 'user-1',
     },
-    "health_metrics":[
-        "church_bible",
-        "church_praise",
-        "church_prayer",
-        "church_giving",
+    health_metrics: [
+      'church_bible',
+      'church_praise',
+      'church_prayer',
+      'church_giving',
     ],
-    "leader_count":4,
-    "member_count":2,
-    "permalink":"https://test.local/groups/239",
-    "name":"Home Church"
-  }
+    leader_count: 4,
+    member_count: 2,
+    permalink: 'https://test.local/groups/239',
+    name: 'Home Church',
+  };
   const ChurchHealthCompleteGroup = {
-    "ID":"2",
-    "post_title":"Completed Group",
-    "post_type":"groups",
-    "post_date":{"timestamp":1667920392,"formatted":"2022-11-08"},"coaches":[],
-    "members":[],
-    "leaders":[],
-    "parent_groups":[
-        {"ID":"19",
-        "post_type":"groups",
-        "post_date_gmt":"2022-10-07 19:15:18",
-        "post_date":"2022-10-07 19:15:18",
-        "post_title":"Christ Church",
-        "permalink":"https://test.local/?p=19",
-        "status":{
-            "key":"active",
-            "label":"Active",
-            "color":"#4CAF50"
-        }
-        }
+    ID: '2',
+    post_title: 'Completed Group',
+    post_type: 'groups',
+    post_date: { timestamp: 1667920392, formatted: '2022-11-08' },
+    coaches: [],
+    members: [],
+    leaders: [],
+    parent_groups: [
+      {
+        ID: '19',
+        post_type: 'groups',
+        post_date_gmt: '2022-10-07 19:15:18',
+        post_date: '2022-10-07 19:15:18',
+        post_title: 'Christ Church',
+        permalink: 'https://test.local/?p=19',
+        status: {
+          key: 'active',
+          label: 'Active',
+          color: '#4CAF50',
+        },
+      },
     ],
-    "peer_groups":[],
-    "child_groups":[],
-    "people_groups":[],
-    "meetings":[],
-    "contacts":[],
-    "prayer_request":[],
-    "group_status":{
-        "key":"active",
-        "label":"Active"
+    peer_groups: [],
+    child_groups: [],
+    people_groups: [],
+    meetings: [],
+    contacts: [],
+    prayer_request: [],
+    group_status: {
+      key: 'active',
+      label: 'Active',
     },
-    "last_modified":{
-        "timestamp":1669701376,
-        "formatted":"2022-11-29"
+    last_modified: {
+      timestamp: 1669701376,
+      formatted: '2022-11-29',
     },
-    "group_type":{
-        "key":"pre-group",
-        "label":"Pre-Group"
+    group_type: {
+      key: 'pre-group',
+      label: 'Pre-Group',
     },
-    "start_date":{
-        "timestamp":1667920392,
-        "formatted":"2022-11-08"
+    start_date: {
+      timestamp: 1667920392,
+      formatted: '2022-11-08',
     },
-    "assigned_to":{
-        "id":"1",
-        "type":"user",
-        "display":"micahmills",
-        "assigned-to":"user-1"
+    assigned_to: {
+      id: '1',
+      type: 'user',
+      display: 'micahmills',
+      'assigned-to': 'user-1',
     },
-    "health_metrics":[
-        "church_bible",
-        "church_praise",
-        "church_prayer",
-        "church_giving",
-        "church_leaders",
-        "church_sharing",
-        "church_baptism",
-        "church_fellowship",
-        "church_commitment"
+    health_metrics: [
+      'church_bible',
+      'church_praise',
+      'church_prayer',
+      'church_giving',
+      'church_leaders',
+      'church_sharing',
+      'church_baptism',
+      'church_fellowship',
+      'church_commitment',
     ],
-    "leader_count":4,
-    "member_count":2,
-    "permalink":"https://test.local/groups/239",
-    "name":"Home Church"
-  }
+    leader_count: 4,
+    member_count: 2,
+    permalink: 'https://test.local/groups/239',
+    name: 'Home Church',
+  };
   const ChurchHealthMetrics = {
-    "church_baptism":{
-        "label":"Baptism",
-        "description":"The group is baptising.",
-        "icon":"/assets/groups/baptism-2.svg"},
-    "church_bible":{
-        "label":"Bible Study",
-        "description":"The group is studying the bible.",
-        "icon":"/assets/groups/word-2.svg"
+    church_baptism: {
+      label: 'Baptism',
+      description: 'The group is baptising.',
+      icon: '/groups/baptism-2.svg',
     },
-    "church_communion":{
-        "label":"Communion",
-        "description":"The group is practicing communion.",
-        "icon":"/assets/groups/communion-2.svg"
+    church_bible: {
+      label: 'Bible Study',
+      description: 'The group is studying the bible.',
+      icon: '/groups/word-2.svg',
     },
-    "church_fellowship":{
-        "label":"Fellowship",
-        "description":"The group is fellowshiping.",
-        "icon":"/assets/groups/heart-2.svg"
+    church_communion: {
+      label: 'Communion',
+      description: 'The group is practicing communion.',
+      icon: '/groups/communion-2.svg',
     },
-    "church_giving":{
-        "label":"Giving",
-        "description":"The group is giving.",
-        "icon":"/assets/groups/giving-2.svg"
+    church_fellowship: {
+      label: 'Fellowship',
+      description: 'The group is fellowshiping.',
+      icon: '/groups/heart-2.svg',
     },
-    "church_prayer":{
-        "label":"Prayer",
-        "description":"The group is praying.",
-        "icon":"/assets/groups/prayer-2.svg"
+    church_giving: {
+      label: 'Giving',
+      description: 'The group is giving.',
+      icon: '/groups/giving-2.svg',
     },
-    "church_praise":{
-        "label":"Praise",
-        "description":"The group is praising.",
-        "icon":"/assets/groups/praise-2.svg"
+    church_prayer: {
+      label: 'Prayer',
+      description: 'The group is praying.',
+      icon: '/groups/prayer-2.svg',
     },
-    "church_sharing":{
-        "label":"Sharing the Gospel",
-        "description":"The group is sharing the gospel.",
-        "icon":"/assets/groups/evangelism-2.svg"
+    church_praise: {
+      label: 'Praise',
+      description: 'The group is praising.',
+      icon: '/groups/praise-2.svg',
     },
-    "church_leaders":{
-        "label":"Leaders",
-        "description":"The group has leaders.",
-        "icon":"/assets/groups/leadership-2.svg"
+    church_sharing: {
+      label: 'Sharing the Gospel',
+      description: 'The group is sharing the gospel.',
+      icon: '/groups/evangelism-2.svg',
     },
-    "church_commitment":{
-        "label":"Church Commitment",
-        "description":"The group has committed to be church.",
-        "icon":"/assets/groups/covenant.svg"
-    }
-  }
+    church_leaders: {
+      label: 'Leaders',
+      description: 'The group has leaders.',
+      icon: '/groups/leadership-2.svg',
+    },
+    church_commitment: {
+      label: 'Church Commitment',
+      description: 'The group has committed to be church.',
+      icon: '/groups/covenant.svg',
+    },
+  };
   // API Call Mocks
   // We will need to make a custom response for each api url.
   // Contact List API Call
@@ -558,12 +564,12 @@ self.addEventListener('fetch', async event => {
     }
     if (sortBy === 'name') {
       sortedPostsList = defaultPostsList.sort((a, b) =>
-        a.post_title > b.post_title ? 1 : b.post_title > a.post_title ? -1 : 0
+        a.post_title > b.post_title ? 1 : b.post_title > a.post_title ? -1 : 0,
       );
     }
     if (sortBy === '-name') {
       sortedPostsList = defaultPostsList.sort((a, b) =>
-        a.post_title < b.post_title ? 1 : b.post_title < a.post_title ? -1 : 0
+        a.post_title < b.post_title ? 1 : b.post_title < a.post_title ? -1 : 0,
       );
     }
     if (sortBy === 'last_modified') {
@@ -571,8 +577,8 @@ self.addEventListener('fetch', async event => {
         a.last_modified.timestamp > b.last_modified.timestamp
           ? 1
           : b.last_modified.timestamp > a.last_modified.timestamp
-          ? -1
-          : 0
+            ? -1
+            : 0,
       );
     }
     if (sortBy === '-last_modified') {
@@ -580,8 +586,8 @@ self.addEventListener('fetch', async event => {
         a.last_modified.timestamp < b.last_modified.timestamp
           ? 1
           : b.last_modified.timestamp < a.last_modified.timestamp
-          ? -1
-          : 0
+            ? -1
+            : 0,
       );
     }
     if (sortBy === 'seeker_path') {
@@ -591,8 +597,8 @@ self.addEventListener('fetch', async event => {
         return aSeekerPath > bSeekerPath
           ? 1
           : bSeekerPath > aSeekerPath
-          ? -1
-          : 0;
+            ? -1
+            : 0;
       });
     }
     if (sortBy === '-seeker_path') {
@@ -602,8 +608,8 @@ self.addEventListener('fetch', async event => {
         return aSeekerPath < bSeekerPath
           ? 1
           : bSeekerPath < aSeekerPath
-          ? -1
-          : 0;
+            ? -1
+            : 0;
       });
     }
     if (sortBy === 'overall_status') {
@@ -611,8 +617,8 @@ self.addEventListener('fetch', async event => {
         a.overall_status.label > b.overall_status.label
           ? 1
           : b.overall_status.label > a.overall_status.label
-          ? -1
-          : 0
+            ? -1
+            : 0,
       );
     }
     if (sortBy === '-overall_status') {
@@ -620,8 +626,8 @@ self.addEventListener('fetch', async event => {
         a.overall_status.label < b.overall_status.label
           ? 1
           : b.overall_status.label < a.overall_status.label
-          ? -1
-          : 0
+            ? -1
+            : 0,
       );
     }
     if (sortBy === 'assigned_to') {
@@ -637,8 +643,8 @@ self.addEventListener('fetch', async event => {
         return aAssignedTo.display > bAssignedTo.display
           ? 1
           : bAssignedTo.display > aAssignedTo.display
-          ? -1
-          : 0;
+            ? -1
+            : 0;
       });
     }
     if (sortBy === '-assigned_to') {
@@ -654,8 +660,8 @@ self.addEventListener('fetch', async event => {
         return aAssignedTo.display < bAssignedTo.display
           ? 1
           : bAssignedTo.display < aAssignedTo.display
-          ? -1
-          : 0;
+            ? -1
+            : 0;
       });
     }
     if (sortBy === 'milestones') {
@@ -665,8 +671,8 @@ self.addEventListener('fetch', async event => {
         return aMilestones.toString() > bMilestones.toString()
           ? 1
           : bMilestones.toString() > aMilestones.toString()
-          ? -1
-          : 0;
+            ? -1
+            : 0;
       });
     }
     if (sortBy === '-milestones') {
@@ -676,14 +682,14 @@ self.addEventListener('fetch', async event => {
         return aMilestones.toString() < bMilestones.toString()
           ? 1
           : bMilestones.toString() < aMilestones.toString()
-          ? -1
-          : 0;
+            ? -1
+            : 0;
       });
     }
     event.respondWith(
       new Response(JSON.stringify(sortedPostsList), {
         headers: { 'Content-Type': 'text/JSON' },
-      })
+      }),
     );
   }
 
@@ -695,7 +701,7 @@ self.addEventListener('fetch', async event => {
       event.respondWith(
         new Response(JSON.stringify(singlePost), {
           headers: { 'Content-Type': 'text/JSON' },
-        })
+        }),
       );
       break;
 
@@ -705,7 +711,7 @@ self.addEventListener('fetch', async event => {
       event.respondWith(
         new Response(JSON.stringify(createdSinglePost), {
           headers: { 'Content-Type': 'text/JSON' },
-        })
+        }),
       );
       break;
 
@@ -715,7 +721,7 @@ self.addEventListener('fetch', async event => {
       event.respondWith(
         new Response(JSON.stringify(UpdatedSinglePost), {
           headers: { 'Content-Type': 'text/JSON' },
-        })
+        }),
       );
       break;
 
@@ -724,7 +730,7 @@ self.addEventListener('fetch', async event => {
       event.respondWith(
         new Response(JSON.stringify(UserList), {
           headers: { 'Content-Type': 'text/JSON' },
-        })
+        }),
       );
       break;
 
@@ -732,7 +738,7 @@ self.addEventListener('fetch', async event => {
       event.respondWith(
         new Response(JSON.stringify(ChurchHealthEmptyGroup), {
           headers: { 'Content-Type': 'text/JSON' },
-        })
+        }),
       );
       break;
 
@@ -740,7 +746,7 @@ self.addEventListener('fetch', async event => {
       event.respondWith(
         new Response(JSON.stringify(ChurchHealthCompleteGroup), {
           headers: { 'Content-Type': 'text/JSON' },
-        })
+        }),
       );
       break;
 
@@ -748,7 +754,7 @@ self.addEventListener('fetch', async event => {
       event.respondWith(
         new Response(JSON.stringify(ChurchHealthIncompleteGroup), {
           headers: { 'Content-Type': 'text/JSON' },
-        })
+        }),
       );
       break;
 
@@ -756,14 +762,12 @@ self.addEventListener('fetch', async event => {
       event.respondWith(
         new Response(JSON.stringify(ChurchHealthMetrics), {
           headers: { 'Content-Type': 'text/JSON' },
-        })
+        }),
       );
       break;
 
     case 'GET /dt-assets/images/groups/missing.svg':
-      url.pathname = '/assets/groups/missing.svg';
+      url.pathname = '/groups/missing.svg';
       break;
   }
-
-
 });

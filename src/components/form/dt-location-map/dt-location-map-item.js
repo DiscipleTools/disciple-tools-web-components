@@ -15,7 +15,6 @@ export default class DtLocationMapItem extends DtBase {
       placeholder: { type: String },
       mapboxToken: { type: String, attribute: 'mapbox-token' },
       googleToken: { type: String, attribute: 'google-token' },
-      validationMessage: { type: String },
       metadata: { type: Object },
       disabled: { type: Boolean },
       open: {
@@ -36,7 +35,6 @@ export default class DtLocationMapItem extends DtBase {
       },
       loading: { type: Boolean },
       saved: { type: Boolean },
-      error: { type: String },
       invalid: { type: Boolean },
       filteredOptions: { type: Array, state: true },
     };
@@ -251,6 +249,21 @@ export default class DtLocationMapItem extends DtBase {
         .icon-overlay.selected {
           inset-inline-end: 6.25rem;
         }
+        @keyframes fadeOut {
+          0% {
+            opacity: 1;
+          }
+          75% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0;
+          }
+        }
+        .icon-overlay.fade-out {
+          opacity: 0;
+          animation: fadeOut 4s;
+        }
       `,
     ];
   }
@@ -387,6 +400,7 @@ export default class DtLocationMapItem extends DtBase {
     if (metadata.place_id && this.googleGeocodeService) {
       // Google Places autocomplete will give a place_id instead of geometry details,
       // so we need to get those details by geocoding the full address from Place lookup
+      this.saved = false;
       this.loading = true;
       const place = await this.googleGeocodeService.getPlaceDetails(
         metadata,
@@ -423,14 +437,6 @@ export default class DtLocationMapItem extends DtBase {
 
     this.open = false; // close options list
     this.activeIndex = -1; // reset keyboard-selected option
-  }
-
-  get _focusTarget() {
-    let target = this._field;
-    if (this.metadata) {
-      target = this.shadowRoot.querySelector('button') || target;
-    }
-    return target;
   }
 
   _inputFocusIn() {
@@ -512,6 +518,7 @@ export default class DtLocationMapItem extends DtBase {
   async _filterOptions() {
     if (this.query) {
       if (this.googleToken && this.googleGeocodeService) {
+        this.saved = false;
         this.loading = true;
 
         try {
@@ -537,6 +544,7 @@ export default class DtLocationMapItem extends DtBase {
           return;
         }
       } else if (this.mapboxToken && this.mapboxService) {
+        this.saved = false;
         this.loading = true;
 
         const results = await this.mapboxService.searchPlaces(
@@ -767,11 +775,7 @@ export default class DtLocationMapItem extends DtBase {
               class="icon-overlay ${hasGeometry ? 'selected' : ''}"
             ></dt-spinner>`
           : null}
-        ${this.saved
-          ? html`<dt-checkmark
-              class="icon-overlay success ${hasGeometry ? 'selected' : ''}"
-            ></dt-checkmark>`
-          : null}
+        ${this.renderIconSaved(hasGeometry)}
       </div>
 
       <dt-map-modal
@@ -780,6 +784,23 @@ export default class DtLocationMapItem extends DtBase {
         @submit=${this._onMapModalSubmit}
       ></dt-map-modal>
     `;
+  }
+
+  renderIconSaved(hasGeometry) {
+    if (this.saved) {
+      if (this.savedTimeout) {
+        clearTimeout(this.savedTimeout);
+      }
+      this.savedTimeout = setTimeout(() => {
+        this.savedTimeout = null;
+        this.saved = false;
+      }, 5000);
+    }
+    return this.saved
+      ? html`<dt-checkmark
+              class="icon-overlay success fade-out ${hasGeometry ? 'selected' : ''}"
+            ></dt-checkmark>`
+      : null;
   }
 }
 window.customElements.define('dt-location-map-item', DtLocationMapItem);
