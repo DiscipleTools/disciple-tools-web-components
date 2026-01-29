@@ -1,5 +1,6 @@
 import { html, css } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import DtFormBase from '../dt-form-base.js';
 
 /**
@@ -63,6 +64,24 @@ export class DtText extends DtFormBase {
         input.invalid {
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
         }
+        .readonly-value {
+          color: var(--dt-form-text-color, #000);
+          font-family: inherit;
+          font-size: 1rem;
+          font-weight: 300;
+          height: 2.5rem;
+          line-height: 1.5;
+          padding: var(--dt-form-padding, 0.5333333333rem);
+          display: flex;
+          align-items: center;
+          box-sizing: border-box;
+        }
+        .edit-icon {
+          cursor: pointer;
+          color: var(--dt-form-text-color, #000);
+          display: flex;
+          align-items: center;
+        }
       `,
     ];
   }
@@ -79,7 +98,20 @@ export class DtText extends DtFormBase {
         type: String,
         reflect: true,
       },
+      /** Displays just the value of the field instead of a field input. */
+      readonly: {
+        type: Boolean,
+        reflect: true,
+      },
     };
+  }
+
+  async _toggleReadonly() {
+    this.readonly = !this.readonly;
+    if (!this.readonly) {
+      await this.updateComplete;
+      this.renderRoot.querySelector('input')?.focus();
+    }
   }
 
   _input(e) {
@@ -147,25 +179,60 @@ export class DtText extends DtFormBase {
       ${this.labelTemplate()}
 
       <div class="input-group">
-        <input
-          id="${this.id}"
-          name="${this.name}"
-          aria-label="${this.label}"
-          type="${this.type || 'text'}"
-          placeholder="${this.placeholder}"
-          ?disabled=${this.disabled}
-          ?required=${this.required}
-          class="${classMap(this.classes)}"
-          .value="${this.value || ''}"
-          @change=${this._change}
-          @input=${this._input}
-          novalidate
-          @keyup="${this.implicitFormSubmit}"
-          part="input"
-        />
-
+        ${this.readonly
+          ? html`<div class="readonly-value">${this.value || ''}</div>`
+          : html`
+              <input
+                id="${this.id}"
+                name="${this.name}"
+                aria-label="${this.label}"
+                type="${this.type || 'text'}"
+                placeholder="${this.placeholder}"
+                ?disabled=${this.disabled}
+                ?required=${this.required}
+                class="${classMap(this.classes)}"
+                .value="${this.value || ''}"
+                @change=${this._change}
+                @input=${this._input}
+                novalidate
+                @keyup="${this.implicitFormSubmit}"
+                part="input"
+              />
+            `}
         ${this.renderIcons()}
       </div>
+    `;
+  }
+
+  labelTemplate() {
+    if (!this.label) {
+      return '';
+    }
+
+    return html`
+      <dt-label
+        ?private=${this.private}
+        privateLabel="${ifDefined(this.privateLabel)}"
+        iconAltText="${ifDefined(this.iconAltText)}"
+        icon="${ifDefined(this.icon)}"
+        exportparts="label: label-container"
+      >
+        ${!this.icon
+          ? html`<slot name="icon-start" slot="icon-start"></slot>`
+          : null}
+        ${this.label}
+        ${this.readonly && !this.disabled
+          ? html`
+              <dt-icon
+                slot="icon-end"
+                icon="mdi:pencil"
+                class="edit-icon"
+                size="1rem"
+                @click=${this._toggleReadonly}
+              ></dt-icon>
+            `
+          : null}
+      </dt-label>
     `;
   }
 }

@@ -25,6 +25,7 @@ export default {
     },
     icon: { control: 'text' },
     private: { control: 'boolean' },
+    readonly: { control: 'boolean' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
     ...argTypes,
@@ -47,6 +48,7 @@ export default {
       icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
       iconAltText = 'Icon Alt Text',
       privateLabel,
+      readonly = false,
       loading = false,
       saved = false,
       error,
@@ -67,6 +69,7 @@ export default {
         icon="${ifDefined(icon)}"
         iconAltText="${ifDefined(iconAltText)}"
         ?private=${args.private}
+        ?readonly=${readonly}
         privateLabel="${ifDefined(privateLabel)}"
         ?loading=${loading}
         ?saved=${saved}
@@ -112,6 +115,21 @@ export const PrivateField = {
     private: true,
     value: 'Lorem Ipsum',
     privateLabel: 'This is a custom tooltip',
+  },
+};
+
+export const Readonly = {
+  args: {
+    readonly: true,
+    value: 'Lorem Ipsum',
+  },
+};
+
+export const ReadonlyDisabled = {
+  args: {
+    readonly: true,
+    disabled: true,
+    value: 'Lorem Ipsum',
   },
 };
 

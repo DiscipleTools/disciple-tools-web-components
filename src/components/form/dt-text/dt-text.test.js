@@ -12,7 +12,7 @@ describe('DT-Text', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-text>`
+      ></dt-text>`,
     );
 
     expect(el.id).to.equal('name');
@@ -28,7 +28,7 @@ describe('DT-Text', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-text>`
+      ></dt-text>`,
     );
     el.shadowRoot.querySelector('input').value = '';
     el.shadowRoot.querySelector('input').focus();
@@ -51,7 +51,7 @@ describe('DT-Text', () => {
 
   it('Check private field', async () => {
     const el = await fixture(
-      html`<dt-text label="Label Name" private></dt-text>`
+      html`<dt-text label="Label Name" private></dt-text>`,
     );
     const label = await fixture(el.shadowRoot.querySelector('dt-label'));
 
@@ -60,11 +60,7 @@ describe('DT-Text', () => {
 
   it('resets value', async () => {
     const el = await fixture(
-      html`<dt-text
-        name="Name"
-        label="Label Name"
-        value="John Doe"
-      ></dt-text>`
+      html`<dt-text name="Name" label="Label Name" value="John Doe"></dt-text>`,
     );
     const input = el.shadowRoot.querySelector('input');
 
@@ -82,9 +78,63 @@ describe('DT-Text', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-text>`
+      ></dt-text>`,
     );
 
     await expect(el).shadowDom.to.be.accessible();
+  });
+
+  describe('readonly mode', () => {
+    it('displays value as text when readonly is true', async () => {
+      const el = await fixture(
+        html`<dt-text value="John Doe" readonly></dt-text>`,
+      );
+      const valueDisplay = el.shadowRoot.querySelector('.readonly-value');
+      expect(valueDisplay).to.exist;
+      expect(valueDisplay.textContent.trim()).to.equal('John Doe');
+      expect(el.shadowRoot.querySelector('input')).to.not.exist;
+    });
+
+    it('shows edit icon when readonly is true and not disabled', async () => {
+      const el = await fixture(
+        html`<dt-text label="Name" value="John Doe" readonly></dt-text>`,
+      );
+      const editIcon = el.shadowRoot.querySelector(
+        'dt-icon[icon="mdi:pencil"]',
+      );
+      expect(editIcon).to.exist;
+    });
+
+    it('does not show edit icon when readonly is true but disabled', async () => {
+      const el = await fixture(
+        html`<dt-text
+          label="Name"
+          value="John Doe"
+          readonly
+          disabled
+        ></dt-text>`,
+      );
+      const editIcon = el.shadowRoot.querySelector(
+        'dt-icon[icon="mdi:pencil"]',
+      );
+      expect(editIcon).to.not.exist;
+    });
+
+    it('switches to edit mode and focuses input when edit icon is clicked', async () => {
+      const el = await fixture(
+        html`<dt-text label="Name" value="John Doe" readonly></dt-text>`,
+      );
+      const editIcon = el.shadowRoot.querySelector(
+        'dt-icon[icon="mdi:pencil"]',
+      );
+      editIcon.click();
+      await el.updateComplete;
+
+      expect(el.readonly).to.be.false;
+      const input = el.shadowRoot.querySelector('input');
+      expect(input).to.exist;
+      expect(el.shadowRoot.querySelector('.readonly-value')).to.not.exist;
+      expect(el.shadowRoot.activeElement).to.equal(input);
+    });
   });
 });
