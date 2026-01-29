@@ -94,6 +94,7 @@ npm run localize:build      # Build localized JS templates from XLIFF
   - Event dispatching (especially `change` events)
   - Accessibility (a11y)
 - Add tests for any new features. Ensure they fail before the feature is implemented and pass when the feature is complete and enabled.
+- Add stories to storybook for any new components or features.
 
 ## Useful Patterns
 - **Boolean Attributes**: Always include `{ type: Boolean }` in static properties if the attribute should be a toggle.
