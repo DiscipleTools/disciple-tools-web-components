@@ -78,6 +78,7 @@ export default class DtFormBase extends DtBase {
           font-family: var(--font-family);
           font-size: 0.875rem;
           font-weight: 300;
+          margin-top: 1rem;
           padding: 3px 0.5rem;
           gap: 0.5rem;
 
