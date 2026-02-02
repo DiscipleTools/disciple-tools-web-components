@@ -85,7 +85,7 @@ describe('dt-upload-file', () => {
 
   it('stages files when autoUpload is false', async () => {
     const el = await fixture(
-      html`<dt-upload-file ?auto-upload=${false}></dt-upload-file>`,
+      html`<dt-upload-file .autoUpload=${false}></dt-upload-file>`,
     );
     expect(el.autoUpload).to.be.false;
 
@@ -174,7 +174,7 @@ describe('dt-upload-file', () => {
 
   it('listens for dt:upload-files event when autoUpload is false', async () => {
     const el = await fixture(
-      html`<dt-upload-file ?auto-upload=${false}></dt-upload-file>`,
+      html`<dt-upload-file .autoUpload=${false}></dt-upload-file>`,
     );
 
     // Stage a file
@@ -191,7 +191,7 @@ describe('dt-upload-file', () => {
 
   it('renders staged files section when autoUpload is false', async () => {
     const el = await fixture(
-      html`<dt-upload-file ?auto-upload=${false}></dt-upload-file>`,
+      html`<dt-upload-file .autoUpload=${false}></dt-upload-file>`,
     );
 
     const file = new File(['test'], 'test.jpg', { type: 'image/jpeg' });
