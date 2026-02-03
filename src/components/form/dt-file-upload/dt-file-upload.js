@@ -80,6 +80,7 @@ export class DtFileUpload extends DtFormBase {
         .upload-icon {
           color: var(--dt-upload-icon-color, #999);
           flex-shrink: 0;
+          transition: font-size 0.2s ease;
         }
 
         .upload-zone.compact .upload-icon {
