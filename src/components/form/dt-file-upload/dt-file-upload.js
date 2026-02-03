@@ -364,6 +364,10 @@ export class DtFileUpload extends DtFormBase {
           opacity: 0.6;
           cursor: not-allowed;
         }
+
+        .error-container {
+          margin-top: 1rem;
+        }
       `,
     ];
   }
