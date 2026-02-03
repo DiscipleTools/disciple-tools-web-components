@@ -11,28 +11,53 @@ export class DtSingleSelect extends DtFormBase {
       ...super.styles,
       css`
         :host {
+          --dt-single-select-text-color: var(--dt-form-text-color, #0a0a0a);
           position: relative;
         }
 
         select {
           appearance: none;
-          background-color: var(--dt-form-background-color, #fefefe);
-          background-image: linear-gradient(
+          background-color: var(
+            --dt-single-select-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          background-image:
+            linear-gradient(
               45deg,
               transparent 50%,
-              var(--dt-single-select-text-color) 50%
+              var(
+                  --dt-single-select-icon-color,
+                  var(--dt-single-select-text-color, #0a0a0a)
+                )
+                50%
             ),
             linear-gradient(
               135deg,
-              var(--dt-single-select-text-color) 50%,
+              var(
+                  --dt-single-select-icon-color,
+                  var(--dt-single-select-text-color, #0a0a0a)
+                )
+                50%,
               transparent 50%
             );
-          background-position: calc(100% - 20px) calc(1em + 2px),
-            calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
-          background-size: 5px 5px, 5px 5px, 1px 1.5em;
+          background-position:
+            calc(100% - 20px) calc(1em + 2px),
+            calc(100% - 15px) calc(1em + 2px),
+            calc(100% - 2.5em) 0.5em;
+          background-size:
+            5px 5px,
+            5px 5px,
+            1px 1.5em;
           background-repeat: no-repeat;
-          border: 1px solid var(--dt-form-border-color, #cacaca);
-          border-radius: 0;
+          border: 1px solid
+            var(
+              --dt-single-select-border-color,
+              var(--dt-form-border-color, #cacaca)
+            );
+          border-radius: var(
+            --dt-single-select-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           color: var(--dt-single-select-text-color, #0a0a0a);
           font-family: var(--font-family, sans-serif);
           font-size: 1rem;
@@ -40,10 +65,13 @@ export class DtSingleSelect extends DtFormBase {
           height: 2.5rem;
           line-height: 1.5;
           margin: 0;
-          padding: 0.53rem;
+          padding: var(--dt-form-padding, 0.5333333333rem);
           padding-inline-end: 1.6rem;
-          transition: border-color 0.25s ease-in-out;
-          transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+          transition: var(
+            --dt-form-transition,
+            box-shadow 0.5s,
+            border-color 0.25s ease-in-out
+          );
           box-sizing: border-box;
           width: 100%;
           text-transform: none;
@@ -57,21 +85,19 @@ export class DtSingleSelect extends DtFormBase {
           cursor: not-allowed;
         }
         [dir='rtl'] select {
-          background-position: 15px calc(1em + 2px), 20px calc(1em + 2px),
+          background-position:
+            15px calc(1em + 2px),
+            20px calc(1em + 2px),
             2.5em 0.5em;
         }
         select.color-select {
-          background-image: linear-gradient(
-              45deg,
-              transparent 50%,
-              currentColor 50%
-            ),
-            linear-gradient(
-              135deg,
-              currentColor 50%,
-              transparent 50%
-            );
-          background-color: var(--dt-form-border-color, #cacaca);
+          background-image:
+            linear-gradient(45deg, transparent 50%, currentColor 50%),
+            linear-gradient(135deg, currentColor 50%, transparent 50%);
+          background-color: var(
+            --dt-single-select-border-color,
+            var(--dt-form-border-color, #cacaca)
+          );
           border: none;
           border-radius: 10px;
           color: var(--dt-single-select-text-color-inverse, #fff);
@@ -84,7 +110,10 @@ export class DtSingleSelect extends DtFormBase {
           inset-inline-end: 2.5rem;
         }
         select.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(
+            --dt-single-select-border-color-alert,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
       `,
     ];
@@ -122,7 +151,7 @@ export class DtSingleSelect extends DtFormBase {
   isColorSelect() {
     return (this.options || []).reduce(
       (isColor, option) => isColor || option.color,
-      false
+      false,
     );
   }
 
@@ -134,17 +163,19 @@ export class DtSingleSelect extends DtFormBase {
   }
 
   _change(e) {
+    const newValue = e.target.value;
     // Create custom event with new/old values to pass to onchange function
     const event = new CustomEvent('change', {
+      bubbles: true,
       detail: {
         field: this.name,
         oldValue: this.value,
-        newValue: e.target.value,
+        newValue,
       },
     });
 
     // update value in this component
-    this.value = e.target.value;
+    this.value = newValue;
     this._setFormValue(this.value);
 
     // dispatch event for use with addEventListener from javascript
@@ -161,7 +192,7 @@ export class DtSingleSelect extends DtFormBase {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        this._field
+        this._field,
       );
     } else {
       this.invalid = false;
@@ -181,13 +212,16 @@ export class DtSingleSelect extends DtFormBase {
     return html`
       ${this.labelTemplate()}
 
-      <div class="input-group ${this.disabled ? 'disabled' : ''}" dir="${this.RTL ? 'rtl' : 'ltr'}">
+      <div
+        class="input-group ${this.disabled ? 'disabled' : ''}"
+        dir="${this.RTL ? 'rtl' : 'ltr'}"
+      >
         <select
           name="${this.name}"
           aria-label="${this.name}"
           @change="${this._change}"
           class="${classMap(this.classes)}"
-          style="background-color: ${this.color};"
+          style="${this.color ? 'background-color: ' + this.color + ';' : ''}"
           ?disabled="${this.disabled}"
           ?required=${this.required}
           part="select"
@@ -200,7 +234,7 @@ export class DtSingleSelect extends DtFormBase {
               <option value="${i.id}" ?selected="${i.id === this.value}">
                 ${i.label}
               </option>
-            `
+            `,
           )}
         </select>
 

@@ -23,7 +23,10 @@ export class DtToggle extends DtFormBase {
           align-items: center;
           width: fit-content;
           cursor: pointer;
-          min-height: var(--dt-form-input-height, 2.5rem);
+          min-height: var(
+            --dt-toggle-input-height,
+            var(--dt-form-input-height, 2.5rem)
+          );
         }
 
         .icon-overlay {
@@ -54,12 +57,12 @@ export class DtToggle extends DtFormBase {
           box-sizing: content-box;
           width: calc(var(--diameter) * 2 + var(--offset) * 2);
           height: calc(var(--diameter) + var(--offset) * 2);
-          border: 0.1em solid rgb(0 0 0 / 0.2);
+          border: 0.1em solid var(--dt-toggle-border-color, rgb(0 0 0 / 0.2));
           position: relative;
           border-radius: 100vw;
           background-color: var(
             --dt-toggle-background-color-off,
-            var(--gray-2)
+            var(--dt-form-background-color-off, #e6e6e6)
           );
           transition: 250ms;
         }
@@ -74,7 +77,7 @@ export class DtToggle extends DtFormBase {
           width: var(--diameter);
           height: var(--diameter);
           border-radius: 50%;
-          background-color: white;
+          background-color: var(--dt-toggle-handle-color, white);
           transform: translate(0, -50%);
           will-change: transform;
           transition: inherit;
@@ -95,7 +98,10 @@ export class DtToggle extends DtFormBase {
 
         .toggle[aria-pressed='true'] .toggle-display,
         .toggle-input:checked + .toggle-display {
-          background-color: var(--primary-color);
+          background-color: var(
+            --dt-toggle-background-color-on,
+            var(--dt-form-primary-color, var(--primary-color))
+          );
         }
 
         .toggle[aria-pressed='true'] .toggle-display::before,
@@ -105,7 +111,7 @@ export class DtToggle extends DtFormBase {
 
         .toggle[disabled] .toggle-display,
         .toggle-input:disabled + .toggle-display {
-          opacity: 0.6;
+          opacity: var(--dt-toggle-disabled-opacity, 0.6);
           filter: grayscale(40%);
           cursor: not-allowed;
         }
@@ -130,13 +136,13 @@ export class DtToggle extends DtFormBase {
         }
 
         .toggle-icon--cross {
-          color: var(--alert-color);
+          color: var(--dt-toggle-icon-color-off, var(--alert-color));
           font-size: 0.55em;
         }
 
         .toggle-icon--checkmark {
           font-size: 0.65em;
-          color: var(--success-color);
+          color: var(--dt-toggle-icon-color-on, var(--success-color));
         }
       `,
     ];
@@ -171,16 +177,18 @@ export class DtToggle extends DtFormBase {
   }
 
   onChange(e) {
+    const newValue = e.target.checked;
     const event = new CustomEvent('change', {
+      bubbles: true,
       detail: {
         field: this.name,
         oldValue: this.checked,
-        newValue: e.target.checked,
+        newValue,
       },
     });
-    this.checked = e.target.checked;
+    this.checked = newValue;
 
-    this.value = e.target.checked;
+    this.value = newValue;
 
     this._setFormValue(this.checked ? '1' : '0');
 

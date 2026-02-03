@@ -1,0 +1,59 @@
+import {
+  Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
+} from '@storybook/blocks';
+import * as ComponentStories from './dt-toggle.stories.js';
+
+
+<Meta name="Docs" of={ComponentStories} />
+
+<Title />
+<Subtitle />
+
+## Overview
+<Description />
+<Primary />
+
+## Parameters
+<Controls />
+
+## Slots
+
+Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slots).
+
+## Events
+
+### `change`
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  oldValue: boolean, // previous value before current change
+  newValue: boolean, // updated value
+}
+```
+
+## CSS Custom Properties
+
+Inherits custom properties from [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties).
+
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-toggle-input-height`  | `var(--dt-form-input-height, 2.5rem)`  |
+| `--dt-toggle-background-color-off`  | `var(--dt-form-background-color-off, #e6e6e6)` |
+| `--dt-toggle-background-color-on`  | `var(--dt-form-primary-color, var(--primary-color))`   |
+| `--dt-toggle-border-color`  | `rgb(0 0 0 / 0.2)`   |
+| `--dt-toggle-handle-color`  | `white`  |
+| `--dt-toggle-disabled-opacity`  | `0.6`   |
+| `--dt-toggle-icon-color-off` | `var(--alert-color)` |
+| `--dt-toggle-icon-color-on` | `var(--success-color)` |
+
+## Parts
+
+| Part Name | Description |
+|-----------|-------------|
+| `root` | The root container of the component |
+| `toggle` | The label element acting as the toggle container |
+
+## Stories
+<Stories title="" />
