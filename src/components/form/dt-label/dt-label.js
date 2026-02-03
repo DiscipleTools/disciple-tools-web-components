@@ -9,10 +9,12 @@ export class DtLabel extends DtBase {
   static get styles() {
     return css`
       :host {
+        --dt-label-font-size: 14px;
+
         font-family: var(--font-family);
         font-size: var(--dt-label-font-size, 14px);
         font-weight: var(--dt-label-font-weight, 700);
-        color: var(--dt-label-color, #000);
+        color: var(--dt-label-color, var(--dt-form-text-color, #000));
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
