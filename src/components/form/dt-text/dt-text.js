@@ -11,11 +11,15 @@ export class DtText extends DtFormBase {
       ...super.styles,
       css`
         input {
-          color: var(--dt-form-text-color, #000);
+          color: var(--dt-text-text-color, var(--dt-form-text-color, #0a0a0a));
           appearance: none;
-          background-color: var(--dt-text-background-color, #fefefe);
-          border: 1px solid var(--dt-text-border-color, #fefefe);
-          border-radius: var(--dt-text-border-radius, 0);
+          background-color: var(
+            --dt-text-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(--dt-text-border-color, var(--dt-form-border-color, #cecece));
+          border-radius: var(--dt-text-border-radius, 3px);
           box-shadow: var(
             --dt-text-box-shadow,
             var(
@@ -54,14 +58,20 @@ export class DtText extends DtFormBase {
           outline: none;
         }
         input::placeholder {
-          color: var(--dt-text-placeholder-color, #999);
+          color: var(
+            --dt-text-placeholder-color,
+            var(--dt-form-placeholder-color, #999)
+          );
           text-transform: var(--dt-text-placeholder-transform, none);
           font-size: var(--dt-text-placeholder-font-size, 1rem);
           font-weight: var(--dt-text-placeholder-font-weight, 400);
           letter-spacing: var(--dt-text-placeholder-letter-spacing, normal);
         }
         input.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(
+            --dt-text-border-color-alert,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
       `,
     ];

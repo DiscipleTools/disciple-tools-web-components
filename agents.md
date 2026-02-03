@@ -123,6 +123,12 @@ export const EnteredValue = {
     - slot
     - onChange
       - This should be set to `action('on-change')`
+  - Set default values for the following properties:
+    - `id = 'name',`
+    - `name = 'field-name',`
+    - `label = 'Field Name',`
+    - `icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',`
+    - `iconAltText = 'Icon Alt Text',`
   - The render function should not include a style tag with the theme CSS
   - For all component events, ensure the `action()` function from `@storybook/addon-actions` is used to log the event details to the Actions panel
     - Specify defaults for all events in the args of the component's story definition: `args: { onChange: action('on-change') }`
@@ -135,6 +141,7 @@ export const EnteredValue = {
   - SvgIcon
     - Show label icon as an SVG
     - The value of the slot should be 'SvgIcon', not actual svg content
+    - Set `icon` to null
   - AutoSave
     - The value of onChange should be onAutoSave from stories-utils.js
   - Disabled
@@ -189,8 +196,6 @@ export const EnteredValue = {
     - List all custom CSS variables defined in the component along with their default values
   - Parts
     - List all part names used in the component and a description of their purpose
-  - Stories
-    - `<Stories title="" />`
 - See `src/components/form/dt-text/docs.mdx` for an example.
 
 ## Testing Strategy

@@ -11,14 +11,27 @@ export class DtTextArea extends DtFormBase {
       ...super.styles,
       css`
         textarea {
-          color: var(--dt-textarea-text-color, #0a0a0a);
+          color: var(
+            --dt-textarea-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           appearance: none;
-          background-color: var(--dt-textarea-background-color, #fefefe);
-          border: 1px solid var(--dt-textarea-border-color, #cecece);
+          background-color: var(
+            --dt-textarea-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(
+              --dt-textarea-border-color,
+              var(--dt-form-border-color, #cecece)
+            );
           border-radius: 3px;
           box-shadow: var(
             --dt-textarea-input-box-shadow,
-            inset 0 1px 2px hsl(0deg 0% 4% / 10%)
+            var(
+              --dt-form-input-box-shadow,
+              inset 0 1px 2px hsl(0deg 0% 4% / 10%)
+            )
           );
           box-sizing: border-box;
           display: block;
@@ -45,13 +58,16 @@ export class DtTextArea extends DtFormBase {
         textarea[readonly] {
           background-color: var(
             --dt-textarea-disabled-background-color,
-            #e6e6e6
+            var(--dt-form-disabled-background-color, #e6e6e6)
           );
           cursor: not-allowed;
         }
 
         textarea.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(
+            --dt-textarea-border-color-alert,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
       `,
     ];
@@ -76,16 +92,19 @@ export class DtTextArea extends DtFormBase {
   }
 
   _change(e) {
+    const { value } = this;
+    const newValue = e.target.value;
+
     const event = new CustomEvent('change', {
       bubbles: true,
       detail: {
         field: this.name,
-        oldValue: this.value,
-        newValue: e.target.value,
+        oldValue: value,
+        newValue,
       },
     });
 
-    this.value = e.target.value;
+    this.value = newValue;
 
     this._setFormValue(this.value);
 
