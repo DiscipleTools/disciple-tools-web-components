@@ -2,6 +2,7 @@ import { html, css } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { when } from 'lit/directives/when.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import DtFormBase from '../dt-form-base.js';
 import '../../icons/dt-icon.js';
 import '../../icons/dt-spinner.js';
@@ -1004,6 +1005,51 @@ export class DtFileUpload extends DtFormBase {
       this.invalid = false;
       this.internals?.setValidity?.({});
     }
+  }
+
+  /**
+   * Override labelTemplate to handle icon rendering directly using dt-icon component.
+   * This prevents dt-label from trying to render MDI icons.
+   */
+  labelTemplate() {
+    if (!this.label) {
+      return '';
+    }
+
+    // Determine if icon is a URL or MDI format
+    let iconContent = null;
+    if (this.icon && this.icon.trim()) {
+      const iconValue = this.icon.trim();
+      const looksLikeUrl =
+        iconValue.startsWith('http://') ||
+        iconValue.startsWith('https://') ||
+        iconValue.startsWith('/') ||
+        iconValue.startsWith('data:');
+
+      if (looksLikeUrl) {
+        iconContent = html`<img src="${iconValue}" alt="${this.iconAltText || ''}" />`;
+      } else if (iconValue.toLowerCase().includes('mdi')) {
+        const iconify = this._mdiToIconify(iconValue);
+        if (iconify) {
+          iconContent = html`<dt-icon icon="${iconify}" size="1em"></dt-icon>`;
+        }
+      }
+    }
+
+    return html`
+      <dt-label
+        ?private=${this.private}
+        privateLabel="${ifDefined(this.privateLabel)}"
+        iconAltText="${ifDefined(this.iconAltText)}"
+        icon=""
+        exportparts="label: label-container"
+      >
+        ${iconContent
+          ? html`<span slot="icon-start">${iconContent}</span>`
+          : html`<slot name="icon-start" slot="icon-start"></slot>`}
+        ${this.label}
+      </dt-label>
+    `;
   }
 
   render() {
