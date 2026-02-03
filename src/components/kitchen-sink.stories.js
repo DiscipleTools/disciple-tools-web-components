@@ -19,6 +19,7 @@ import './form/dt-single-select/dt-single-select.js';
 import './form/dt-tags/dt-tags.js';
 import './form/dt-connection/dt-connection.js';
 import './form/dt-users-connection/dt-users-connection.js';
+import './form/dt-file-upload/dt-file-upload.js';
 
 const options = [
   {
@@ -210,6 +211,13 @@ export default {
         ?disabled=${args.disabled}
         error="${ifDefined(args.error)}"
       ></dt-location-map>
+
+      <dt-file-upload
+        label="File Upload Field"
+        name="fileUploadField"
+        ?disabled=${args.disabled}
+        error="${ifDefined(args.error)}"
+      ></dt-file-upload>
 
        <dt-button
          id="buttonField"

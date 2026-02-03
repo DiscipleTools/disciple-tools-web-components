@@ -9,6 +9,12 @@ import {
 } from '../../../stories-utils.js';
 import './dt-file-upload.js';
 
+// Data URIs for sample images (visible colored squares)
+// Blue gradient image (100x100px)
+const SAMPLE_IMAGE_URL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0Njk2ZWIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyNTU5YjMiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNnKSIvPjwvc3ZnPg==';
+// Smaller thumbnail version (50x50px)
+const SAMPLE_THUMBNAIL_URL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNDY5NmViIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMjU1OWIzIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSJ1cmwoI2cpIi8+PC9zdmc+';
+
 export default {
   title: 'Components/Form/File Upload',
   component: 'dt-file-upload',
@@ -26,6 +32,8 @@ export default {
     maxFileSize: { control: 'number' },
     maxFiles: { control: 'number' },
     deleteEnabled: { control: 'boolean' },
+    downloadEnabled: { control: 'boolean' },
+    renameEnabled: { control: 'boolean' },
     displayLayout: {
       control: 'select',
       options: ['grid', 'list'],
@@ -54,17 +62,19 @@ function Template(args) {
     maxFileSize,
     maxFiles,
     deleteEnabled = true,
+    downloadEnabled = true,
+    renameEnabled = true,
     displayLayout = 'grid',
     fileTypeIcon,
     autoUpload = true,
-    postType = 'contacts',
-    postId = '1',
-    metaKey = 'files',
+    postType = '',
+    postId = '',
+    metaKey = '',
     disabled = false,
     required = false,
     requiredMessage,
-    icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
-    iconAltText = 'Icon Alt Text',
+    icon = 'mdi:cloud-upload',
+    iconAltText = 'Upload icon',
     isPrivate,
     privateLabel,
     loading = false,
@@ -90,10 +100,12 @@ function Template(args) {
       .acceptedFileTypes=${acceptedFileTypes}
       max-file-size=${ifDefined(maxFileSize)}
       max-files=${ifDefined(maxFiles)}
-      ?delete-enabled=${deleteEnabled}
+      .deleteEnabled=${deleteEnabled}
+      .downloadEnabled=${downloadEnabled}
+      .renameEnabled=${renameEnabled}
       display-layout=${displayLayout}
       file-type-icon="${ifDefined(fileTypeIcon)}"
-      ?auto-upload=${autoUpload}
+      .autoUpload=${autoUpload}
       postType=${postType}
       postId=${postId}
       meta-key=${metaKey}
@@ -126,6 +138,8 @@ WithFiles.args = {
       size: 123456,
       uploaded_at: '2026-01-27T10:00:00Z',
       thumbnail_key: 'site_id/prefix_randomstring1_thumbnail.jpg',
+      thumbnail_url: SAMPLE_THUMBNAIL_URL,
+      url: SAMPLE_IMAGE_URL,
     },
     {
       key: 'site_id/prefix_randomstring2.pdf',
@@ -133,6 +147,7 @@ WithFiles.args = {
       type: 'application/pdf',
       size: 456789,
       uploaded_at: '2026-01-27T10:05:00Z',
+      url: '#',
     },
   ],
 };
@@ -147,12 +162,15 @@ GridLayout.args = {
       type: 'image/jpeg',
       size: 123456,
       thumbnail_key: 'site_id/prefix_randomstring1_thumbnail.jpg',
+      thumbnail_url: SAMPLE_THUMBNAIL_URL,
+      url: SAMPLE_IMAGE_URL,
     },
     {
       key: 'site_id/prefix_randomstring2.pdf',
       name: 'document.pdf',
       type: 'application/pdf',
       size: 456789,
+      url: '#',
     },
   ],
 };
@@ -167,12 +185,15 @@ ListLayout.args = {
       type: 'image/jpeg',
       size: 123456,
       thumbnail_key: 'site_id/prefix_randomstring1_thumbnail.jpg',
+      thumbnail_url: SAMPLE_THUMBNAIL_URL,
+      url: SAMPLE_IMAGE_URL,
     },
     {
       key: 'site_id/prefix_randomstring2.pdf',
       name: 'document.pdf',
       type: 'application/pdf',
       size: 456789,
+      url: '#',
     },
   ],
 };
@@ -191,6 +212,8 @@ NoDelete.args = {
       name: 'photo1.jpg',
       type: 'image/jpeg',
       size: 123456,
+      thumbnail_url: SAMPLE_THUMBNAIL_URL,
+      url: SAMPLE_IMAGE_URL,
     },
   ],
 };
@@ -213,12 +236,15 @@ CustomFileTypes.args = {
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
+  deleteEnabled: true, // Explicitly set to test that delete button is hidden when disabled
   value: [
     {
       key: 'site_id/prefix_randomstring1.jpg',
       name: 'photo1.jpg',
       type: 'image/jpeg',
       size: 123456,
+      thumbnail_url: SAMPLE_THUMBNAIL_URL,
+      url: SAMPLE_IMAGE_URL,
     },
   ],
 };
@@ -253,6 +279,8 @@ AutoSave.args = {
       name: 'photo1.jpg',
       type: 'image/jpeg',
       size: 123456,
+      thumbnail_url: SAMPLE_THUMBNAIL_URL,
+      url: SAMPLE_IMAGE_URL,
     },
   ],
 };

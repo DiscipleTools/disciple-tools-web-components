@@ -770,9 +770,72 @@ export class DtFileUpload extends DtFormBase {
     return validFiles;
   }
 
+  /**
+   * Returns true when API (postType/postId/metaKey) is not configured.
+   * In standalone mode, upload/delete/rename update local state and fire change events only.
+   */
+  _isStandaloneMode() {
+    return !this.postType || !this.postId || !this.metaKey;
+  }
+
+  /**
+   * Create mock file objects from File instances for standalone mode (e.g. Storybook).
+   * Images get a data URL for url/thumbnail_url; other files get a placeholder url.
+   */
+  async _filesToMockFileObjects(files) {
+    const results = [];
+    for (const file of files) {
+      const key = `standalone_${Date.now()}_${Math.random().toString(36).slice(2)}_${file.name}`;
+      const base = {
+        key,
+        name: file.name,
+        type: file.type || 'application/octet-stream',
+        size: file.size,
+      };
+      if (this._isImage({ type: file.type })) {
+        try {
+          const dataUrl = await new Promise((resolve, reject) => {
+            const r = new FileReader();
+            r.onload = () => resolve(r.result);
+            r.onerror = reject;
+            r.readAsDataURL(file);
+          });
+          results.push({ ...base, url: dataUrl, thumbnail_url: dataUrl });
+        } catch {
+          results.push({ ...base, url: '#' });
+        }
+      } else {
+        results.push({ ...base, url: '#' });
+      }
+    }
+    return results;
+  }
+
   async _uploadFiles(files) {
-    if (!this.postType || !this.postId || !this.metaKey) {
-      this.error = 'Missing required parameters for upload';
+    if (this._isStandaloneMode()) {
+      this.uploading = true;
+      this.loading = true;
+      this.error = '';
+      try {
+        const newFiles = await this._filesToMockFileObjects(files);
+        const currentValue = Array.isArray(this.value) ? [...this.value] : [];
+        this.value = [...currentValue, ...newFiles];
+        this.stagedFiles = [];
+        this._uploadZoneExpanded = false;
+        this.saved = true;
+        this.dispatchEvent(
+          new CustomEvent('change', {
+            bubbles: true,
+            detail: { field: this.name, oldValue: this.value, newValue: this.value },
+          })
+        );
+        this._refreshMasonry();
+      } catch (err) {
+        this.error = err?.message || 'Upload failed';
+      } finally {
+        this.uploading = false;
+        this.loading = false;
+      }
       return;
     }
 
@@ -837,8 +900,23 @@ export class DtFileUpload extends DtFormBase {
   }
 
   async _deleteFile(fileKey) {
-    if (!this.deleteEnabled || !this.postType || !this.postId || !this.metaKey) return;
+    if (!this.deleteEnabled) return;
     if (!confirm('Are you sure you want to delete this file?')) return;
+
+    if (this._isStandaloneMode()) {
+      const oldValue = Array.isArray(this.value) ? [...this.value] : [];
+      this.value = oldValue.filter((f) => (f.key || f) !== fileKey);
+      this.dispatchEvent(
+        new CustomEvent('change', {
+          bubbles: true,
+          detail: { field: this.name, oldValue, newValue: this.value },
+        })
+      );
+      this.updateComplete.then(() => this._refreshMasonry());
+      return;
+    }
+
+    if (!this.postType || !this.postId || !this.metaKey) return;
 
     this.loading = true;
     this.error = '';
@@ -872,7 +950,27 @@ export class DtFileUpload extends DtFormBase {
   }
 
   async _renameFile(fileKey, newName) {
-    if (!this.renameEnabled || !this.postType || !this.postId || !this.metaKey) return;
+    if (!this.renameEnabled) return;
+
+    if (this._isStandaloneMode()) {
+      const currentFiles = this._parseValue(this.value);
+      this.value = currentFiles.map((f) => {
+        const k = f.key || f;
+        if (k === fileKey) return { ...f, name: newName };
+        return f;
+      });
+      this._editingFileKey = '';
+      this.dispatchEvent(
+        new CustomEvent('change', {
+          bubbles: true,
+          detail: { field: this.name, oldValue: this.value, newValue: this.value },
+        })
+      );
+      this.updateComplete.then(() => this._refreshMasonry());
+      return;
+    }
+
+    if (!this.postType || !this.postId || !this.metaKey) return;
 
     this.loading = true;
     this.error = '';
@@ -1160,7 +1258,7 @@ export class DtFileUpload extends DtFormBase {
                           `
                         )}
                         ${when(
-                          this.deleteEnabled,
+                          this.deleteEnabled && !this.disabled,
                           () => html`
                             <button class="delete" type="button" @click=${(e) => { e.stopPropagation(); this._deleteFile(key); }} title="Delete"><dt-icon icon="mdi:trash-can"></dt-icon></button>
                           `
