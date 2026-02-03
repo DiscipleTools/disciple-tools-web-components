@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, nextFrame } from '@open-wc/testing';
+import { fixture, expect, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-date.js';

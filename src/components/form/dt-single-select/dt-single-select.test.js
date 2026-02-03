@@ -1,12 +1,6 @@
 import { html } from 'lit';
-import {
-  fixture,
-  expect,
-  oneEvent,
-  aTimeout,
-  nextFrame,
-} from '@open-wc/testing';
-import { selectOption, sendKeys } from '@web/test-runner-commands';
+import { fixture, expect, aTimeout, nextFrame } from '@open-wc/testing';
+import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-single-select.js';
 
@@ -101,25 +95,24 @@ describe('dt-single-select', () => {
   });
 
   it('triggers change event', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-single-select
         name="custom-name"
         value="opt2"
         options="${JSON.stringify(options)}"
+        @change="${e => (eventDetail = e.detail)}"
       ></dt-single-select>`,
     );
+
     const select = el.shadowRoot.querySelector('select');
+    select.value = 'opt1';
+    select.dispatchEvent(new Event('change'));
 
-    setTimeout(() => {
-      select.value = 'opt1';
-      select.dispatchEvent(new Event('change'));
-    });
-
-    const { detail } = await oneEvent(el, 'change');
-
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.newValue).to.equal('opt1');
-    expect(detail.oldValue).to.equal('opt2');
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.newValue).to.equal('opt1');
+    expect(eventDetail.oldValue).to.equal('opt2');
   });
 
   it('passes the a11y audit', async () => {
