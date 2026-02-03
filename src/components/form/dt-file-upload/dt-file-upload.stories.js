@@ -7,11 +7,11 @@ import {
   LocaleDecorator,
   onAutoSave,
 } from '../../../stories-utils.js';
-import './dt-upload-file.js';
+import './dt-file-upload.js';
 
 export default {
-  title: 'Components/Form/Upload File',
-  component: 'dt-upload-file',
+  title: 'Components/Form/File Upload',
+  component: 'dt-file-upload',
   argTypes: {
     name: { control: 'text' },
     label: { control: 'text' },
@@ -83,7 +83,7 @@ function Template(args) {
   }
 
   return html`
-    <dt-upload-file
+    <dt-file-upload
       name=${name}
       label=${label}
       .value=${JSON.stringify(value)}
@@ -110,7 +110,7 @@ function Template(args) {
       @change=${onChange}
     >
       ${slot}
-    </dt-upload-file>
+    </dt-file-upload>
   `;
 }
 

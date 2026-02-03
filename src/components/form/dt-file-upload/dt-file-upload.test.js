@@ -1,8 +1,8 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
-import './dt-upload-file.js';
+import './dt-file-upload.js';
 
-describe('dt-upload-file', () => {
+describe('dt-file-upload', () => {
   // Mock wpApiShare for tests
   before(() => {
     if (typeof window !== 'undefined') {
@@ -14,7 +14,7 @@ describe('dt-upload-file', () => {
   });
 
   it('renders with default properties', async () => {
-    const el = await fixture(html`<dt-upload-file></dt-upload-file>`);
+    const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
     expect(el).to.exist;
     expect(el.value).to.deep.equal([]);
     expect(el.autoUpload).to.be.true;
@@ -24,7 +24,7 @@ describe('dt-upload-file', () => {
 
   it('renders with label', async () => {
     const el = await fixture(
-      html`<dt-upload-file label="Upload Files"></dt-upload-file>`,
+      html`<dt-file-upload label="Upload Files"></dt-file-upload>`,
     );
     const label = el.shadowRoot.querySelector('dt-label');
     expect(label).to.exist;
@@ -32,7 +32,7 @@ describe('dt-upload-file', () => {
   });
 
   it('renders upload zone', async () => {
-    const el = await fixture(html`<dt-upload-file></dt-upload-file>`);
+    const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
     const uploadZone = el.shadowRoot.querySelector('.upload-zone');
     expect(uploadZone).to.exist;
   });
@@ -47,7 +47,7 @@ describe('dt-upload-file', () => {
       },
     ];
     const el = await fixture(
-      html`<dt-upload-file .value=${JSON.stringify(value)}></dt-upload-file>`,
+      html`<dt-file-upload .value=${JSON.stringify(value)}></dt-file-upload>`,
     );
     const filesContainer = el.shadowRoot.querySelector('.files-container');
     expect(filesContainer).to.exist;
@@ -55,7 +55,7 @@ describe('dt-upload-file', () => {
 
   it('disables when disabled attribute is set', async () => {
     const el = await fixture(
-      html`<dt-upload-file disabled></dt-upload-file>`,
+      html`<dt-file-upload disabled></dt-file-upload>`,
     );
     expect(el.disabled).to.be.true;
     const uploadZone = el.shadowRoot.querySelector('.upload-zone');
@@ -64,7 +64,7 @@ describe('dt-upload-file', () => {
 
   it('validates required field', async () => {
     const el = await fixture(
-      html`<dt-upload-file required></dt-upload-file>`,
+      html`<dt-file-upload required></dt-file-upload>`,
     );
     expect(el.required).to.be.true;
     // Trigger validation
@@ -74,9 +74,9 @@ describe('dt-upload-file', () => {
 
   it('accepts file types from acceptedFileTypes', async () => {
     const el = await fixture(
-      html`<dt-upload-file
+      html`<dt-file-upload
         .acceptedFileTypes=${['image/*', 'application/pdf']}
-      ></dt-upload-file>`,
+      ></dt-file-upload>`,
     );
     const fileInput = el.shadowRoot.querySelector('input[type="file"]');
     expect(fileInput.getAttribute('accept')).to.include('image/*');
@@ -85,7 +85,7 @@ describe('dt-upload-file', () => {
 
   it('stages files when autoUpload is false', async () => {
     const el = await fixture(
-      html`<dt-upload-file .autoUpload=${false}></dt-upload-file>`,
+      html`<dt-file-upload .autoUpload=${false}></dt-file-upload>`,
     );
     expect(el.autoUpload).to.be.false;
 
@@ -101,9 +101,9 @@ describe('dt-upload-file', () => {
 
   it('validates file types', async () => {
     const el = await fixture(
-      html`<dt-upload-file
+      html`<dt-file-upload
         .acceptedFileTypes=${['image/*']}
-      ></dt-upload-file>`,
+      ></dt-file-upload>`,
     );
 
     const validFile = new File(['test'], 'test.jpg', { type: 'image/jpeg' });
@@ -120,7 +120,7 @@ describe('dt-upload-file', () => {
 
   it('validates file size', async () => {
     const el = await fixture(
-      html`<dt-upload-file max-file-size="1"></dt-upload-file>`,
+      html`<dt-file-upload max-file-size="1"></dt-file-upload>`,
     );
 
     // Create a file larger than 1MB
@@ -134,7 +134,7 @@ describe('dt-upload-file', () => {
   });
 
   it('formats file size correctly', async () => {
-    const el = await fixture(html`<dt-upload-file></dt-upload-file>`);
+    const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
 
     expect(el._formatFileSize(1024)).to.equal('1.0 KB');
     expect(el._formatFileSize(1024 * 1024)).to.equal('1.0 MB');
@@ -142,7 +142,7 @@ describe('dt-upload-file', () => {
   });
 
   it('dispatches change event when files are uploaded', async () => {
-    const el = await fixture(html`<dt-upload-file></dt-upload-file>`);
+    const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
     let changeEventFired = false;
 
     el.addEventListener('change', () => {
@@ -174,7 +174,7 @@ describe('dt-upload-file', () => {
 
   it('listens for dt:upload-files event when autoUpload is false', async () => {
     const el = await fixture(
-      html`<dt-upload-file .autoUpload=${false}></dt-upload-file>`,
+      html`<dt-file-upload .autoUpload=${false}></dt-file-upload>`,
     );
 
     // Stage a file
@@ -191,7 +191,7 @@ describe('dt-upload-file', () => {
 
   it('renders staged files section when autoUpload is false', async () => {
     const el = await fixture(
-      html`<dt-upload-file .autoUpload=${false}></dt-upload-file>`,
+      html`<dt-file-upload .autoUpload=${false}></dt-file-upload>`,
     );
 
     const file = new File(['test'], 'test.jpg', { type: 'image/jpeg' });
@@ -212,10 +212,10 @@ describe('dt-upload-file', () => {
       },
     ];
     const el = await fixture(
-      html`<dt-upload-file
+      html`<dt-file-upload
         display-layout="grid"
         .value=${JSON.stringify(value)}
-      ></dt-upload-file>`,
+      ></dt-file-upload>`,
     );
     const filesGrid = el.shadowRoot.querySelector('.files-grid');
     expect(filesGrid).to.exist;
@@ -231,10 +231,10 @@ describe('dt-upload-file', () => {
       },
     ];
     const el = await fixture(
-      html`<dt-upload-file
+      html`<dt-file-upload
         display-layout="list"
         .value=${JSON.stringify(value)}
-      ></dt-upload-file>`,
+      ></dt-file-upload>`,
     );
     const filesList = el.shadowRoot.querySelector('.files-list');
     expect(filesList).to.exist;

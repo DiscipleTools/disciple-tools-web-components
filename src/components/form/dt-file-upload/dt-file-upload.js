@@ -10,7 +10,7 @@ import '../../icons/dt-spinner.js';
  * Field for uploading multiple files (pictures, documents, PDFs, voice messages, etc.)
  * Supports drag & drop, file preview, and both auto-upload and manual upload modes.
  */
-export class DtUploadFile extends DtFormBase {
+export class DtFileUpload extends DtFormBase {
   static get styles() {
     return [
       ...super.styles,
@@ -126,10 +126,10 @@ export class DtUploadFile extends DtFormBase {
 
         .file-item {
           position: relative;
-          border: 1px solid var(--dt-upload-file-border-color, #ddd);
+          border: 1px solid var(--dt-file-upload-border-color, #ddd);
           border-radius: 4px;
           overflow: hidden;
-          background-color: var(--dt-upload-file-background-color, #fff);
+          background-color: var(--dt-file-upload-background-color, #fff);
         }
 
         .file-item-grid {
@@ -202,8 +202,8 @@ export class DtUploadFile extends DtFormBase {
           display: flex;
           align-items: center;
           justify-content: center;
-          background-color: var(--dt-upload-file-icon-background, #f5f5f5);
-          color: var(--dt-upload-file-icon-color, #999);
+          background-color: var(--dt-file-upload-icon-background, #f5f5f5);
+          color: var(--dt-file-upload-icon-color, #999);
           flex: 1;
           min-height: 0;
           height: calc(100% - 1.5rem);
@@ -221,7 +221,7 @@ export class DtUploadFile extends DtFormBase {
 
         .file-name {
           font-size: 0.75rem;
-          color: var(--dt-upload-file-name-color, #333);
+          color: var(--dt-file-upload-name-color, #333);
           padding: 0.25rem 0.5rem;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -240,13 +240,13 @@ export class DtUploadFile extends DtFormBase {
 
         .file-name-edit {
           font-size: 0.75rem;
-          color: var(--dt-upload-file-name-color, #333);
+          color: var(--dt-file-upload-name-color, #333);
           padding: 0.25rem 0.5rem;
           width: 100%;
           box-sizing: border-box;
           border: 1px solid var(--primary-color, #0073aa);
           border-radius: 2px;
-          background: var(--dt-upload-file-background-color, #fff);
+          background: var(--dt-file-upload-background-color, #fff);
         }
 
         .file-name-edit:focus {
@@ -256,7 +256,7 @@ export class DtUploadFile extends DtFormBase {
 
         .file-size {
           font-size: 0.7rem;
-          color: var(--dt-upload-file-size-color, #999);
+          color: var(--dt-file-upload-size-color, #999);
           padding: 0 0.5rem 0.25rem;
         }
 
@@ -1176,4 +1176,4 @@ export class DtUploadFile extends DtFormBase {
   }
 }
 
-customElements.define('dt-upload-file', DtUploadFile);
+customElements.define('dt-file-upload', DtFileUpload);

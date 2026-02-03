@@ -168,7 +168,7 @@ export class DtLabel extends DtBase {
   }
 
   /**
-   * Renders icon content: font-icon (via dt-icon, same as dt-upload-file) or image URL.
+   * Renders icon content: font-icon (via dt-icon, same as dt-file-upload) or image URL.
    */
   _renderIconContent() {
     if (!this.icon || !this.icon.trim()) return null;

@@ -1,4 +1,4 @@
-# dt-upload-file
+# dt-file-upload
 
 A web component for uploading multiple files (pictures, documents, PDFs, voice messages, etc.) with drag & drop support, file preview, and both auto-upload and manual upload modes.
 
@@ -22,19 +22,19 @@ A web component for uploading multiple files (pictures, documents, PDFs, voice m
 ### Basic Example
 
 ```html
-<dt-upload-file
+<dt-file-upload
   name="files"
   label="Upload Files"
   post-type="contacts"
   post-id="123"
   meta-key="files"
-></dt-upload-file>
+></dt-file-upload>
 ```
 
 ### With Configuration
 
 ```html
-<dt-upload-file
+<dt-file-upload
   name="documents"
   label="Upload Documents"
   accepted-file-types='["application/pdf", ".doc", ".docx"]'
@@ -49,26 +49,26 @@ A web component for uploading multiple files (pictures, documents, PDFs, voice m
   post-type="contacts"
   post-id="123"
   meta-key="documents"
-></dt-upload-file>
+></dt-file-upload>
 ```
 
 ### Manual Upload Mode
 
 ```html
-<dt-upload-file
+<dt-file-upload
   name="files"
   auto-upload="false"
   post-type="contacts"
   post-id="123"
   meta-key="files"
-></dt-upload-file>
+></dt-file-upload>
 
 <script>
-  const uploadComponent = document.querySelector('dt-upload-file');
-  
+  const uploadComponent = document.querySelector('dt-file-upload');
+
   // Trigger upload manually
   uploadComponent.dispatchEvent(new CustomEvent('dt:upload-files'));
-  
+
   // Or use the public method
   uploadComponent.uploadStagedFiles();
 </script>
@@ -122,7 +122,7 @@ element.dispatchEvent(new CustomEvent('dt:upload-files'));
 Public method to trigger upload of staged files (when `autoUpload` is `false`).
 
 ```javascript
-const component = document.querySelector('dt-upload-file');
+const component = document.querySelector('dt-file-upload');
 component.uploadStagedFiles();
 ```
 
@@ -140,8 +140,8 @@ Files are stored as an array of objects with the following structure:
     url: "https://...",                    // Presigned URL for download/preview
     thumbnail_key: "...",                  // Optional, for images
     thumbnail_url: "https://...",          // Optional, for image thumbnails
-    large_thumbnail_key: "...",            // Optional, for images
-    large_thumbnail_url: "https://..."      // Optional, for larger image thumbnails
+    large_thumbnail_key: "...",             // Optional, for images
+    large_thumbnail_url: "https://..."     // Optional, for larger image thumbnails
   }
 ]
 ```
@@ -152,12 +152,12 @@ The component uses CSS custom properties for theming:
 
 - `--dt-upload-border-color`: Border color of upload zone
 - `--dt-upload-background-color`: Background color of upload zone
-- `--dt-upload-file-border-color`: Border color of file items
-- `--dt-upload-file-background-color`: Background color of file items
-- `--dt-upload-file-icon-background`: Background color of file type icon area
-- `--dt-upload-file-icon-color`: Color of file type icon
-- `--dt-upload-file-name-color`: Color of file name text
-- `--dt-upload-file-size-color`: Color of file size text
+- `--dt-file-upload-border-color`: Border color of file items
+- `--dt-file-upload-background-color`: Background color of file items
+- `--dt-file-upload-icon-background`: Background color of file type icon area
+- `--dt-file-upload-icon-color`: Color of file type icon
+- `--dt-file-upload-name-color`: Color of file name text
+- `--dt-file-upload-size-color`: Color of file size text
 - `--primary-color`: Primary color for buttons and accents
 - `--alert-color`: Color for delete buttons and errors
 
