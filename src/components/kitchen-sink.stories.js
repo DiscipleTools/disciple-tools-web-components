@@ -87,6 +87,16 @@ const locationFilters = [
     label: 'All Locations',
   },
 ];
+const groups = [
+  {
+    id: 'one',
+    label: 'Group 1',
+  },
+  {
+    id: 'two',
+    label: 'Group 2',
+  },
+];
 
 export default {
   title: 'Components/All',
@@ -137,6 +147,7 @@ export default {
         label="MultiText Groups Field"
         ?disabled=${args.disabled}
         error="${ifDefined(args.error)}"
+        .groups=${groups}
       ></dt-multi-text-groups>
 
       <dt-date

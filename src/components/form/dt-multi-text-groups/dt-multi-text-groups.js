@@ -23,6 +23,10 @@ export class DtMultiTextGroups extends DtMultiText {
           color: var(--success-color, #cc4b37);
           transform: scale(1.5);
         }
+
+        .groups-list {
+        position: relative;
+        }
           
         .option-list {
           display: block;
@@ -30,7 +34,6 @@ export class DtMultiTextGroups extends DtMultiText {
           inset-inline-start: auto;
           inset-inline-end: 0;
           list-style: none;
-          margin-inline-end: 1rem;
           margin-top: 0;
           padding: 0;
           border: 1px solid var(--dt-form-border-color, #CACACA);
@@ -153,7 +156,7 @@ export class DtMultiTextGroups extends DtMultiText {
     if (this.groups) {
       this.open = !this.open;
       this.activeIndex = -1;
-      const firstButton = this.renderRoot.querySelector('.options-list');
+      const firstButton = this.renderRoot.querySelector('.option-list');
       // focus on the list
       firstButton?.focus();
     } else {
@@ -392,7 +395,7 @@ export class DtMultiTextGroups extends DtMultiText {
             <dt-icon icon="mdi:plus-thick"></dt-icon>
           </button>
           ${this.open ? html`
-          <div class="options-list">
+          <div class="groups-list">
             <ul id="myDropdown" class="option-list">
               ${repeat(this.groups, group => group.id, (group, idx) => this._renderGroup(group, idx))}
             </ul>
