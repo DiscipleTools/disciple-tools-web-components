@@ -27,10 +27,11 @@ export class DtMultiTextGroups extends DtMultiText {
         .option-list {
           display: block;
           position: absolute;
-          left: auto; 
-          right: 0;
+          inset-inline-start: auto;
+          inset-inline-end: 0;
           list-style: none;
-          margin: 0;
+          margin-inline-end: 1rem;
+          margin-top: 0;
           padding: 0;
           border: 1px solid var(--dt-form-border-color, #CACACA);
           background: var(--dt-form-background-color, #FEFEFE);
@@ -63,6 +64,20 @@ export class DtMultiTextGroups extends DtMultiText {
         .option-list li button.active {
           cursor: pointer;
           background: var(--dt-multi-select-option-hover-background, #F5F5F5);
+        }
+        .link-button {
+        background: none;
+        border: none;
+        padding-left: 0.5rem;
+        margin: 0;
+        color: #0000ee; /* Default blue link color (adjust as needed) */
+        text-decoration: underline;
+        cursor: pointer;
+        }
+        .groups-no-value {
+          display: flex;
+          align-items: center;
+          min-height: 2.5rem;
         }
         .icon-overlay {
           inset-inline-end: 0.5rem;
@@ -134,10 +149,12 @@ export class DtMultiTextGroups extends DtMultiText {
   }
 
   handleClick() {
+    this.renderRoot.querySelector('.icon-btn').focus();
     if (this.groups) {
       this.open = !this.open;
       this.activeIndex = -1;
-      const firstButton = this.renderRoot.querySelector('.option-list button');
+      const firstButton = this.renderRoot.querySelector('.options-list');
+      // focus on the list
       firstButton?.focus();
     } else {
       const newValue = {
@@ -149,46 +166,56 @@ export class DtMultiTextGroups extends DtMultiText {
     }
   }
 
+  _handleButtonBlur(e) {
+    if (
+      !e.relatedTarget
+    ) {
+      this.open = false;
+    }
+  }
+
   _inputKeyDown(e) {
     const keycode = e.keyCode || e.which;
 
-    switch (keycode) {
-      case 38: // arrow up
-        e.preventDefault();
-        this.open = true;
-        this._listHighlightPrevious();
-        break;
-      case 40: // arrow down
-        e.preventDefault();
-        this.open = true;
-        this._listHighlightNext();
-        break;
-      case 9: // tab
-        if (this.activeIndex < 0) {
-          // if pressing tab while no option is selected,
-          // close the list so you can go to next field
-          this.open = false;
-        } else {
+    if (this.groups) {
+      switch (keycode) {
+        case 38: // arrow up
           e.preventDefault();
-        }
-        this._keyboardSelectOption();
-        break;
-      case 13: // enter
-        e.preventDefault();
-        if (this.open) {
-          this._keyboardSelectOption();
-        } else {
           this.open = true;
-        }
-        break;
-      case 27: // escape
-        this.open = false;
-        this.activeIndex = -1;
-        break;
-      default:
-        this.open = true;
-        this.query = e.target.value;
-        break;
+          this._listHighlightPrevious();
+          break;
+        case 40: // arrow down
+          e.preventDefault();
+          this.open = true;
+          this._listHighlightNext();
+          break;
+        case 9: // tab
+          if (this.activeIndex < 0) {
+            // if pressing tab while no option is selected,
+            // close the list so you can go to next field
+            this.open = false;
+          } else {
+            e.preventDefault();
+          }
+          this._keyboardSelectOption();
+          break;
+        case 13: // enter
+          e.preventDefault();
+          if (this.open) {
+            this._keyboardSelectOption();
+          } else {
+            this.open = true;
+          }
+          break;
+        case 27: // escape
+          this.open = false;
+          this.activeIndex = -1;
+          break;
+        default:
+          this.open = true;
+          this.query = e.target.value;
+          break;
+      }
     }
   }
 
@@ -290,7 +317,7 @@ export class DtMultiTextGroups extends DtMultiText {
     }
 
     const firstIndex = this.value[0];
-    if (this.groups && (firstIndex && firstIndex.group && !firstIndex.delete)) {
+    if (this.groups && (firstIndex && firstIndex.group)) {
       return this.groups.map(group => {
         const groupItems = (this.value ?? []).filter(
           x => !x.delete && x.group === group.id
@@ -311,7 +338,6 @@ export class DtMultiTextGroups extends DtMultiText {
 
     if (!this.groups) {
       return html`
-      <h3 class="heading">Default</h3>
       ${repeat(
         (this.value ?? []).filter(x => !x.delete),
         x => x.id,
@@ -319,6 +345,12 @@ export class DtMultiTextGroups extends DtMultiText {
       )}
     `;
     }
+
+    return html`
+      <div class="groups-no-value">
+        No items to show.<button class="link-button" @click=${this.handleClick}>Add items</button>
+      </div>
+      `;
     
   }
 
@@ -351,6 +383,7 @@ export class DtMultiTextGroups extends DtMultiText {
           <button
             @click="${this.handleClick}"
             @keydown="${this._inputKeyDown}"
+            @blur="${this._handleButtonBlur}"
             class="icon-btn"
             id="add-item"
             type="button"

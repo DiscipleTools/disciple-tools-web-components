@@ -98,12 +98,20 @@ EmptyNoGroups.args = {};
 
 export const SvgIcon = Template.bind({});
 SvgIcon.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
   icon: null,
   slot: 'SvgIcon',
 };
 
 export const CustomPlaceholder = Template.bind({});
 CustomPlaceholder.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
   placeholder: 'Enter a value',
 };
 
@@ -134,27 +142,41 @@ EnteredValue.args = {
 
 export const AutoSave = Template.bind({});
 AutoSave.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
   onChange: onAutoSave,
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
   disabled: true,
   value: [
     {
       value: 'Lorem Ipsum',
       key: 'comm_channel_1',
+      group: 'one'
     },
   ],
 };
 
 export const privateField = Template.bind({});
 privateField.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
   isPrivate: true,
   value: [
     {
       value: 'Lorem Ipsum',
       key: 'comm_channel_1',
+      group: 'one'
     },
   ],
   privateLabel: 'This is a custom tooltip',
@@ -162,19 +184,63 @@ privateField.args = {
 
 export const Loading = Template.bind({});
 Loading.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
+  value: [
+    {
+      value: '',
+      key: 'comm_channel_1',
+      group: 'one'
+    },
+  ],
   loading: true,
 };
 export const Saved = Template.bind({});
 Saved.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
+  value: [
+    {
+      value: '',
+      key: 'comm_channel_1',
+      group: 'one'
+    },
+  ],
   saved: true,
 };
 export const Error = Template.bind({});
 Error.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
+  value: [
+    {
+      value: '',
+      key: 'comm_channel_1',
+      group: 'one'
+    },
+  ],
   error: 'Custom error message',
 };
 
 export const ErrorSlot = Template.bind({});
 ErrorSlot.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
+  value: [
+    {
+      value: '',
+      key: 'comm_channel_1',
+      group: 'one'
+    },
+  ],
   error: '[Should show link here]',
   slot: 'ErrorSlot',
 };
@@ -182,10 +248,15 @@ ErrorSlot.args = {
 export const BasicForm = Template.bind({});
 BasicForm.decorators = [FormDecorator];
 BasicForm.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
   value: [
     {
-      value: 'Lorem Ipsum',
+      value: '',
       key: 'comm_channel_1',
+      group: 'one'
     },
   ],
 };
@@ -193,11 +264,33 @@ BasicForm.args = {
 export const Required = Template.bind({});
 Required.decorators = [FormDecorator];
 Required.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
+  value: [
+    {
+      value: '',
+      key: 'comm_channel_1',
+      group: 'one'
+    },
+  ],
   required: true,
 };
 
 export const requiredCustomMessage = Template.bind({});
 requiredCustomMessage.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
+  value: [
+    {
+      value: '',
+      key: 'comm_channel_1',
+      group: 'one'
+    },
+  ],
   required: true,
   requiredMessage: 'Custom error message',
 };
@@ -205,6 +298,10 @@ requiredCustomMessage.args = {
 export const LocalizeRTL = Template.bind({});
 LocalizeRTL.decorators = [LocaleDecorator, FormDecorator];
 LocalizeRTL.args = {
+  groups: [
+    { id: 'one', label: 'Group 1' }, 
+    { id: 'two', label: 'Group 2' }
+  ],
   lang: 'ar',
   dir: 'rtl',
   label: 'اسم الإدخال',
@@ -212,6 +309,7 @@ LocalizeRTL.args = {
     {
       value: 'راد أن يشع',
       key: 'comm_channel_1',
+      group: 'one',
     },
   ],
 };
