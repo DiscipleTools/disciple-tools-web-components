@@ -24,6 +24,19 @@ export default class DtFormBase extends DtBase {
   static get styles() {
     return [
       css`
+        :root {
+          --dt-form-border-color: var(--border-color);
+          --dt-form-border-color-alert: var(--alert-color);
+          --dt-form-border-width: 1px;
+          --dt-form-border-radius: 0;
+          --dt-form-background-color: var(--surface-1);
+          --dt-form-disabled-background-color: var(--disabled-color);
+          --dt-form-text-color: var(--text-color);
+          --dt-form-text-color-inverse: var(--text-color-inverse);
+          --dt-form-text-border-color: var(--border-color);
+        }
+      `,
+      css`
         .input-group {
           position: relative;
         }
