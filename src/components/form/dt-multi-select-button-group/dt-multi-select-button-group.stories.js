@@ -54,34 +54,41 @@ export default {
   title: 'Components/Form/Multi Select - Button Group',
   component: 'dt-multi-select-button-group',
   argTypes: {
+    id: { control: 'text' },
     name: { control: 'text' },
     label: { control: 'text' },
-    value: { control: 'text' },
+    value: { control: 'object' },
     disabled: { control: 'boolean' },
+    required: { control: 'boolean' },
+    requiredMessage: { control: 'text' },
     icon: { control: 'text' },
+    iconAltText: { control: 'text' },
     private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
+    error: { control: 'text' },
+    slot: { control: 'text' },
     ...argTypes,
   },
   args: {
     onChange: action('on-change'),
   },
+  parameters: {
+    viewport: { defaultViewport: 'desktop' },
+  },
   render: args => {
     const {
+      id = 'button-group',
       name = 'field-name',
       label = 'Field Name',
       options,
-      value = '',
-      context,
-      outline = false,
-      rounded = false,
+      value = [],
       disabled = false,
       required = false,
       requiredMessage,
       icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
       iconAltText = 'Icon Alt Text',
-      isPrivate,
       privateLabel,
       loading = false,
       saved = false,
@@ -91,23 +98,21 @@ export default {
     } = args;
     return html`
       <dt-multi-select-button-group
-        name=${name}
-        label=${label}
-        context="${context}"
-        ?outline="${outline}"
-        ?rounded="${rounded}"
-        options="${JSON.stringify(options)}"
-        value="${JSON.stringify(value)}"
+        id=${ifDefined(id)}
+        name=${ifDefined(name)}
+        label=${ifDefined(label)}
+        .options=${options}
+        .value=${value}
         ?disabled=${disabled}
         ?required=${required}
-        requiredMessage=${requiredMessage}
-        icon="${icon}"
-        iconAltText="${iconAltText}"
-        ?private=${isPrivate}
-        privateLabel="${privateLabel}"
-        ?loading="${loading}"
-        ?saved="${saved}"
-        error="${ifDefined(error)}"
+        requiredMessage=${ifDefined(requiredMessage)}
+        icon=${ifDefined(icon)}
+        iconAltText=${ifDefined(iconAltText)}
+        ?private=${args.private}
+        privateLabel=${ifDefined(privateLabel)}
+        ?loading=${loading}
+        ?saved=${saved}
+        error=${ifDefined(error)}
         @change=${onChange}
       >
         ${slot}
@@ -131,14 +136,6 @@ export const CustomOptions = {
   },
 };
 
-export const Outlined = {
-  args: {
-    options: basicOptions,
-    value: ['opt2', 'opt3'],
-    outline: true,
-  },
-};
-
 export const SelectedValue = {
   args: {
     value: ['opt2', 'opt3'],
@@ -158,6 +155,15 @@ export const Disabled = {
     value: ['opt2'],
     options: basicOptions,
     disabled: true,
+  },
+};
+
+export const PrivateField = {
+  args: {
+    private: true,
+    value: ['opt2'],
+    options: basicOptions,
+    privateLabel: 'This is a custom tooltip',
   },
 };
 
@@ -184,6 +190,14 @@ export const Error = {
   },
 };
 
+export const ErrorSlot = {
+  args: {
+    options: basicOptions,
+    slot: 'ErrorSlot',
+    error: '[Should show link here]',
+  },
+};
+
 export const BasicForm = {
   decorators: [FormDecorator],
   args: {
@@ -197,7 +211,6 @@ export const Required = {
   args: {
     required: true,
     options: basicOptions,
-    context: 'alert',
   },
 };
 

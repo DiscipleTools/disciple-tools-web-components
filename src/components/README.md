@@ -15,13 +15,13 @@ This document outlines the inheritance hierarchy of the web components found in 
       - DtToggle
       - DtSingleSelect
       - DtMultiSelectButtonGroup
-      - DtLocationMap
       - DtMultiSelect (via HasOptionsList mixin)
         - DtTags
           - DtLocation
           - DtUsersConnection
           - DtConnection
         - DtChurchHealthCircle
+      - DtLocationMap
     - DtCopyText
     - DtLabel
     - DtButton
