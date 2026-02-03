@@ -1,0 +1,220 @@
+import {
+  Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
+} from '@storybook/blocks';
+import * as ComponentStories from './dt-file-upload.stories.js';
+
+
+<Meta name="Docs" of={ComponentStories} />
+
+<Title />
+<Subtitle />
+
+## Overview
+<Description />
+<Primary />
+
+A web component for uploading multiple files (pictures, documents, PDFs, voice messages, etc.) with drag & drop support, file preview, and both auto-upload and manual upload modes.
+
+### Features
+
+- **Multiple file uploads**: Upload multiple files at once
+- **Drag & drop**: Intuitive drag and drop interface
+- **File preview**: Grid and list layout options with image thumbnails
+- **File validation**: Client-side validation for file types and sizes
+- **Auto-upload**: Automatically upload files when selected/dropped (default)
+- **Manual upload**: Option to stage files and upload manually via JavaScript event
+- **File deletion**: Delete individual files (configurable)
+- **File download**: Download individual files (configurable)
+- **File rename**: Inline rename of uploaded files (configurable)
+- **Progress indicators**: Visual feedback during uploads
+- **Error handling**: Clear error messages for validation failures
+- **Compact upload zone**: Default collapsed state (cloud icon only); expands on hover, click, or drag-over; collapses after upload, staging, or when idle
+
+### Usage Examples
+
+#### Basic Example
+
+```html
+<dt-file-upload
+  name="files"
+  label="Upload Files"
+  post-type="contacts"
+  post-id="123"
+  meta-key="files"
+></dt-file-upload>
+```
+
+#### With Configuration
+
+```html
+<dt-file-upload
+  name="documents"
+  label="Upload Documents"
+  accepted-file-types='["application/pdf", ".doc", ".docx"]'
+  max-file-size="10"
+  max-files="5"
+  display-layout="list"
+  delete-enabled="true"
+  download-enabled="true"
+  rename-enabled="true"
+  auto-upload="true"
+  file-type-icon="mdi:file-document"
+  post-type="contacts"
+  post-id="123"
+  meta-key="documents"
+></dt-file-upload>
+```
+
+#### Manual Upload Mode
+
+```html
+<dt-file-upload
+  name="files"
+  auto-upload="false"
+  post-type="contacts"
+  post-id="123"
+  meta-key="files"
+></dt-file-upload>
+
+<script>
+  const uploadComponent = document.querySelector('dt-file-upload');
+
+  // Trigger upload manually
+  uploadComponent.dispatchEvent(new CustomEvent('dt:upload-files'));
+
+  // Or use the public method
+  uploadComponent.uploadStagedFiles();
+</script>
+```
+
+### File Object Format
+
+Files are stored as an array of objects with the following structure:
+
+```javascript
+[
+  {
+    key: "site_id/prefix_randomstring.ext",
+    name: "original_filename.pdf",
+    type: "application/pdf",
+    size: 12345,
+    url: "https://...",                    // Presigned URL for download/preview
+    thumbnail_key: "...",                  // Optional, for images
+    thumbnail_url: "https://...",          // Optional, for image thumbnails
+    large_thumbnail_key: "...",             // Optional, for images
+    large_thumbnail_url: "https://..."     // Optional, for larger image thumbnails
+  }
+]
+```
+
+### Browser Support
+
+Requires modern browsers with support for:
+- Custom Elements
+- Shadow DOM
+- Fetch API
+- FormData API
+- File API
+
+### Dependencies
+
+- `dt-form-base`: Base form component functionality
+- `dt-icon`: Icon component
+- `dt-spinner`: Loading spinner component
+
+## Parameters
+<Controls />
+
+## Slots
+
+Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slots).
+
+The component uses the `icon-start` slot to display custom icons before the label.
+
+## Events
+
+### `change`
+
+Fired when files are uploaded or deleted.
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  oldValue: Array,  // previous value before current change
+  newValue: Array,  // updated value (array of file objects)
+}
+```
+
+**Example:**
+```javascript
+element.addEventListener('change', (e) => {
+  console.log('Field:', e.detail.field);
+  console.log('Old value:', e.detail.oldValue);
+  console.log('New value:', e.detail.newValue);
+});
+```
+
+### `dt:upload-files`
+
+Custom event to trigger manual upload when `autoUpload` is `false`.
+
+**Event Detail:**
+```json
+{
+  // No detail properties - event is used as a trigger
+}
+```
+
+**Example:**
+```javascript
+element.dispatchEvent(new CustomEvent('dt:upload-files'));
+```
+
+## Methods
+
+### `uploadStagedFiles()`
+
+Public method to trigger upload of staged files (when `autoUpload` is `false`).
+
+**Returns:** `void`
+
+**Example:**
+```javascript
+const component = document.querySelector('dt-file-upload');
+component.uploadStagedFiles();
+```
+
+## CSS Properties / Theming
+
+Inherits custom properties from [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties).
+
+| Custom Properties   | Default Value   |
+|---------------------|-----------------|
+| `--dt-upload-border-color` | `#ccc` |
+| `--dt-upload-background-color` | `#fafafa` |
+| `--dt-upload-border-color-hover` | `#999` |
+| `--dt-upload-background-color-hover` | `#f0f0f0` |
+| `--dt-upload-background-color-drag` | `#e8f4f8` |
+| `--dt-upload-icon-color` | `#999` |
+| `--dt-upload-text-color` | `#666` |
+| `--dt-upload-hint-color` | `#999` |
+| `--dt-file-upload-border-color` | `#ddd` |
+| `--dt-file-upload-background-color` | `#fff` |
+| `--dt-file-upload-icon-background` | `#f5f5f5` |
+| `--dt-file-upload-icon-color` | `#999` |
+| `--dt-file-upload-name-color` | `#333` |
+| `--dt-file-upload-size-color` | `#999` |
+
+The component also uses these standard theme variables:
+- `--primary-color`: Primary color for buttons and accents
+- `--alert-color`: Color for delete buttons and errors
+
+## Parts
+
+| Part Name | Description |
+|-----------|-------------|
+| `label-container` | The label element exported from dt-label (via exportparts) |
+
+## Stories
+<Stories title="" />
