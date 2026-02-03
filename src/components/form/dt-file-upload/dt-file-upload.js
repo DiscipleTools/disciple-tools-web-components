@@ -775,188 +775,141 @@ export class DtFileUpload extends DtFormBase {
       this.error = 'Missing required parameters for upload';
       return;
     }
-    if (!window.wpApiShare?.nonce) {
-      this.error = 'Authentication nonce not available';
-      return;
-    }
 
     this.uploading = true;
     this.loading = true;
     this.error = '';
 
-    try {
-      const formData = new FormData();
-      files.forEach((f) => formData.append('storage_upload_files[]', f));
-      formData.append('meta_key', this.metaKey);
-      formData.append('key_prefix', this.keyPrefix || '');
-      formData.append('upload_type', 'post');
-      formData.append('is_multi_file', 'true');
-      formData.append('storage_s3_url_duration', '+7 days');
+    // Dispatch dt:upload event - componentService will handle the API call
+    const event = new CustomEvent('dt:upload', {
+      bubbles: true,
+      detail: {
+        files: files,
+        metaKey: this.metaKey,
+        keyPrefix: this.keyPrefix || '',
+        onSuccess: ({ result, fieldValue }) => {
+          // Handle success - merge files with existing value
+          const currentValue = Array.isArray(this.value) ? [...this.value] : [];
+          const newFiles = (result.uploaded_files || [])
+            .filter((uf) => uf.uploaded && uf.file)
+            .map((uf) => uf.file);
 
-      const apiRoot = window.wpApiShare?.root || '/wp-json';
-      const url = `${apiRoot}dt-posts/v2/${this.postType}/${this.postId}/storage_upload`;
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'X-WP-Nonce': window.wpApiShare.nonce },
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (!response.ok || !result.uploaded) {
-        throw new Error(result.uploaded_msg || 'Upload failed');
-      }
-
-      const getUrl = `${apiRoot}dt-posts/v2/${this.postType}/${this.postId}`;
-      const getResponse = await fetch(getUrl, {
-        headers: { 'X-WP-Nonce': window.wpApiShare.nonce },
-      });
-
-      if (getResponse.ok) {
-        const post = await getResponse.json();
-        const fieldValue = post[this.metaKey];
-        const currentValue = Array.isArray(this.value) ? [...this.value] : [];
-        const newFiles = (result.uploaded_files || [])
-          .filter((uf) => uf.uploaded && uf.file)
-          .map((uf) => uf.file);
-
-        if (newFiles.length > 0) {
-          // Merge: preserve existing file objects (they have correct thumbnails) and append new ones.
-          // Avoid replacing with GET fieldValue which may return stale or differently formatted data.
-          const existingKeys = new Set(currentValue.map((f) => String(f.key || f)));
-          const merged = [...currentValue];
-          for (const nf of newFiles) {
-            const k = String(nf.key || nf);
-            if (!existingKeys.has(k)) {
-              merged.push(nf);
-              existingKeys.add(k);
+          if (newFiles.length > 0) {
+            // Merge: preserve existing file objects (they have correct thumbnails) and append new ones.
+            // Avoid replacing with GET fieldValue which may return stale or differently formatted data.
+            const existingKeys = new Set(currentValue.map((f) => String(f.key || f)));
+            const merged = [...currentValue];
+            for (const nf of newFiles) {
+              const k = String(nf.key || nf);
+              if (!existingKeys.has(k)) {
+                merged.push(nf);
+                existingKeys.add(k);
+              }
             }
+            this.value = merged;
+          } else if (Array.isArray(fieldValue) && fieldValue.length > 0) {
+            this.value = fieldValue;
           }
-          this.value = merged;
-        } else if (Array.isArray(fieldValue) && fieldValue.length > 0) {
-          this.value = fieldValue;
-        }
-      } else {
-        const currentValue = Array.isArray(this.value) ? [...this.value] : [];
-        if (result.uploaded_files) {
-          result.uploaded_files.forEach((uf) => {
-            if (uf.uploaded && uf.file) currentValue.push(uf.file);
-          });
-        }
-        this.value = currentValue;
-      }
 
-      this.stagedFiles = [];
-      this.dispatchEvent(
-        new CustomEvent('change', {
-          bubbles: true,
-          detail: { field: this.name, oldValue: this.value, newValue: this.value },
-        })
-      );
-      this._refreshMasonry();
-      this._uploadZoneExpanded = false;
-      this.saved = true;
-    } catch (err) {
-      console.error('Upload error:', err);
-      this.error = err.message || 'Upload failed';
-    } finally {
-      this.uploading = false;
-      this.loading = false;
-    }
+          this.stagedFiles = [];
+          this.dispatchEvent(
+            new CustomEvent('change', {
+              bubbles: true,
+              detail: { field: this.name, oldValue: this.value, newValue: this.value },
+            })
+          );
+          this._refreshMasonry();
+          this._uploadZoneExpanded = false;
+          this.saved = true;
+          this.uploading = false;
+          this.loading = false;
+        },
+        onError: (error) => {
+          console.error('Upload error:', error);
+          this.error = error.message || 'Upload failed';
+          this.uploading = false;
+          this.loading = false;
+        },
+      },
+    });
+
+    this.dispatchEvent(event);
   }
 
   async _deleteFile(fileKey) {
     if (!this.deleteEnabled || !this.postType || !this.postId || !this.metaKey) return;
-    if (!window.wpApiShare?.nonce) {
-      this.error = 'Authentication nonce not available';
-      return;
-    }
     if (!confirm('Are you sure you want to delete this file?')) return;
 
     this.loading = true;
     this.error = '';
 
-    try {
-      const apiRoot = window.wpApiShare?.root || '/wp-json';
-      const url = `${apiRoot}dt-posts/v2/${this.postType}/${this.postId}/storage_delete_single`;
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': window.wpApiShare.nonce,
+    // Dispatch dt:delete-file event - componentService will handle the API call
+    const event = new CustomEvent('dt:delete-file', {
+      bubbles: true,
+      detail: {
+        fileKey: fileKey,
+        metaKey: this.metaKey,
+        onSuccess: () => {
+          this.value = (this.value || []).filter((f) => (f.key || f) !== fileKey);
+          this.dispatchEvent(
+            new CustomEvent('change', {
+              bubbles: true,
+              detail: { field: this.name, oldValue: this.value, newValue: this.value },
+            })
+          );
+          this.updateComplete.then(() => this._refreshMasonry());
+          this.loading = false;
         },
-        body: JSON.stringify({ meta_key: this.metaKey, file_key: fileKey }),
-      });
+        onError: (error) => {
+          console.error('Delete error:', error);
+          this.error = error.message || 'Delete failed';
+          this.loading = false;
+        },
+      },
+    });
 
-      const result = await response.json();
-      if (!response.ok || !result.deleted) {
-        throw new Error(result.message || 'Delete failed');
-      }
-
-      this.value = (this.value || []).filter((f) => (f.key || f) !== fileKey);
-      this.dispatchEvent(
-        new CustomEvent('change', {
-          bubbles: true,
-          detail: { field: this.name, oldValue: this.value, newValue: this.value },
-        })
-      );
-      this.updateComplete.then(() => this._refreshMasonry());
-    } catch (err) {
-      console.error('Delete error:', err);
-      this.error = err.message || 'Delete failed';
-    } finally {
-      this.loading = false;
-    }
+    this.dispatchEvent(event);
   }
 
   async _renameFile(fileKey, newName) {
     if (!this.renameEnabled || !this.postType || !this.postId || !this.metaKey) return;
-    if (!window.wpApiShare?.nonce) {
-      this.error = 'Authentication nonce not available';
-      return;
-    }
 
     this.loading = true;
     this.error = '';
 
-    try {
-      const apiRoot = window.wpApiShare?.root || '/wp-json';
-      const url = `${apiRoot}dt-posts/v2/${this.postType}/${this.postId}/storage_rename_single`;
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': window.wpApiShare.nonce,
+    // Dispatch dt:rename-file event - componentService will handle the API call
+    const event = new CustomEvent('dt:rename-file', {
+      bubbles: true,
+      detail: {
+        fileKey: fileKey,
+        newName: newName,
+        metaKey: this.metaKey,
+        onSuccess: () => {
+          const currentFiles = this._parseValue(this.value);
+          this.value = currentFiles.map((f) => {
+            const k = f.key || f;
+            if (k === fileKey) return { ...f, name: newName };
+            return f;
+          });
+          this._editingFileKey = '';
+          this.dispatchEvent(
+            new CustomEvent('change', {
+              bubbles: true,
+              detail: { field: this.name, oldValue: this.value, newValue: this.value },
+            })
+          );
+          this.updateComplete.then(() => this._refreshMasonry());
+          this.loading = false;
         },
-        body: JSON.stringify({ meta_key: this.metaKey, file_key: fileKey, new_name: newName }),
-      });
+        onError: (error) => {
+          console.error('Rename error:', error);
+          this.error = error?.message || 'Rename failed';
+          this.loading = false;
+        },
+      },
+    });
 
-      const result = await response.json();
-      if (!response.ok || !result.renamed) {
-        throw new Error(result.error || result.message || 'Rename failed');
-      }
-
-      const currentFiles = this._parseValue(this.value);
-      this.value = currentFiles.map((f) => {
-        const k = f.key || f;
-        if (k === fileKey) return { ...f, name: newName };
-        return f;
-      });
-      this._editingFileKey = '';
-      this.dispatchEvent(
-        new CustomEvent('change', {
-          bubbles: true,
-          detail: { field: this.name, oldValue: this.value, newValue: this.value },
-        })
-      );
-      this.updateComplete.then(() => this._refreshMasonry());
-    } catch (err) {
-      console.error('Rename error:', err);
-      this.error = err?.message || 'Rename failed';
-    } finally {
-      this.loading = false;
-    }
+    this.dispatchEvent(event);
   }
 
   _startRename(key, name) {

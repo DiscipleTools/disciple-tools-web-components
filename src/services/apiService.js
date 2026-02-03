@@ -504,4 +504,83 @@ export default class ApiService {
       'dt-posts/v2/posts/search/'
     );
   }
+
+  // region File Storage
+  /**
+   * Upload files to storage
+   * @param {string} postType
+   * @param {number} postId
+   * @param {File[]} files - Array of File objects
+   * @param {string} metaKey
+   * @param {string} keyPrefix
+   * @returns {Promise<any>}
+   */
+  async uploadFiles(postType, postId, files, metaKey, keyPrefix = '') {
+    const formData = new FormData();
+    files.forEach((f) => formData.append('storage_upload_files[]', f));
+    formData.append('meta_key', metaKey);
+    formData.append('key_prefix', keyPrefix);
+    formData.append('upload_type', 'post');
+    formData.append('is_multi_file', 'true');
+    formData.append('storage_s3_url_duration', '+7 days');
+
+    const url = `${this.apiRoot}dt-posts/v2/${postType}/${postId}/storage_upload`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-WP-Nonce': this.nonce,
+      },
+      body: formData,
+    });
+
+    const content = await response.json();
+    if (!response.ok) {
+      const error = new Error(
+        content?.uploaded_msg || content?.message || 'Upload failed'
+      );
+      error.args = {
+        status: response.status,
+        statusText: response.statusText,
+        body: content,
+      };
+      throw error;
+    }
+
+    return content;
+  }
+
+  /**
+   * Delete a single file from storage
+   * @param {string} postType
+   * @param {number} postId
+   * @param {string} metaKey
+   * @param {string} fileKey
+   * @returns {Promise<any>}
+   */
+  async deleteFile(postType, postId, metaKey, fileKey) {
+    return this.makeRequestOnPosts('POST', `${postType}/${postId}/storage_delete_single`, {
+      meta_key: metaKey,
+      file_key: fileKey,
+    });
+  }
+
+  /**
+   * Rename a single file in storage
+   * @param {string} postType
+   * @param {number} postId
+   * @param {string} metaKey
+   * @param {string} fileKey
+   * @param {string} newName
+   * @returns {Promise<any>}
+   */
+  async renameFile(postType, postId, metaKey, fileKey, newName) {
+    return this.makeRequestOnPosts('POST', `${postType}/${postId}/storage_rename_single`, {
+      meta_key: metaKey,
+      file_key: fileKey,
+      new_name: newName,
+    });
+  }
+  // endregion
 }
