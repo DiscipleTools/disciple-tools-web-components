@@ -43,10 +43,11 @@
     "postbuild": "rm -rf ./samples/html/js && cp -R ./dist ./samples/html/js",
     "localize:extract": "lit-localize extract",
     "localize:build": "lit-localize build",
-    "skills": "env-cmd -f .env.local --fallback -- ./skills.sh",
+    "skills": "dotenvx run --convention=nextjs --quiet -- ./skills.sh",
     "postinstall": "npm run skills"
   },
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.52.0",
     "@lit/localize": "^0.12.1",
     "iconify-icon": "^1.0.2",
     "lit": "^3.1.4"
@@ -72,7 +73,6 @@
     "@web/test-runner": "^0.18.2",
     "@web/test-runner-commands": "^0.9.0",
     "element-internals-polyfill": "^1.3.11",
-    "env-cmd": "^11.0.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Run skills with the agents from the environment variable or defaults
-# Needs to run in this bash script so environment variables from env-cmd can be picked up (they don't get properly injected into npm script)
-#echo $AGENTS
+# Needs to run in this bash script so environment variables from dotenvx can be picked up (they don't get properly injected into npm script)
+#echo $SKILLS_AGENTS
 
 # -y Yes to all prompts
 # -a specify agents - space-delimited
