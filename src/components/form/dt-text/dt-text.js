@@ -19,7 +19,10 @@ export class DtText extends DtFormBase {
           );
           border: 1px solid
             var(--dt-text-border-color, var(--dt-form-border-color, #cecece));
-          border-radius: var(--dt-text-border-radius, 3px);
+          border-radius: var(
+            --dt-text-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-text-box-shadow,
             var(

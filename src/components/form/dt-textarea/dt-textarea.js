@@ -25,7 +25,10 @@ export class DtTextArea extends DtFormBase {
               --dt-textarea-border-color,
               var(--dt-form-border-color, #cecece)
             );
-          border-radius: 3px;
+          border-radius: var(
+            --dt-textarea-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-textarea-input-box-shadow,
             var(

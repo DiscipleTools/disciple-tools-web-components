@@ -33,28 +33,27 @@ Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slo
 }
 ```
 
-## CSS Properties / Theming
+## CSS Custom Properties
 
 Inherits custom properties from [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties).
 
 | Custom Properties   | Default Value   |
 |---------------------|-----------------|
-| `--dt-form-text-color`  | `#000`  |
-| `--dt-form-background-color`  | `#cecece` |
-| `--dt-form-border-color`  | `#cacaca`   |
-| `--dt-date-border-radius`  | `0`   |
+| `--dt-date-text-color`  | `var(--dt-form-text-color, #000)`  |
+| `--dt-date-background-color`  | `var(--dt-form-background-color, #fefefe)` |
+| `--dt-date-border-color`  | `var(--dt-form-border-color, #cacaca)`   |
+| `--dt-date-border-radius`  | `var(--dt-form-border-radius, 0)`   |
 | `--dt-date-box-shadow`  | `var(--dt-form-input-box-shadow, inset 0 1px 2px hsl(0deg 0% 4% / 10%))`   |
-| `--dt-form-padding`   | `0.5333333333rem`   |
-| `--dt-form-transition` | `box-shadow .5s,border-color .25s ease-in-out`   |
 | `--dt-date-disabled-background-color`   | `var(--dt-form-disabled-background-color, #e6e6e6)`   |
 | `--dt-date-placeholder-color` | `#999`  |
 | `--dt-date-placeholder-transform` |  `none`   |
 | `--dt-date-placeholder-font-size`   | `1rem`  |
 | `--dt-date-placeholder-font-weight`  |  `400`  |
 | `--dt-date-placeholder-letter-spacing`  | `normal`  |
-| `--dt-date-border-color-alert`  | `var(--alert-color)`   |
-| `--dt-date-background-color`  | `var(--dt-form-background-color, buttonface)`   |
+| `--dt-date-border-color-alert`  | `var(--dt-form-border-color-alert, var(--alert-color))`   |
 | `--dt-date-button-hover-color`  | `#ffffff`   |
+| `--dt-form-padding`   | `0.5333333333rem`   |
+| `--dt-form-transition` | `box-shadow .5s,border-color .25s ease-in-out`   |
 
 ## Parts
 
