@@ -166,6 +166,8 @@ export class DtToggle extends DtFormBase {
   }
 
   firstUpdated() {
+    super.firstUpdated();
+
     if (this.checked === undefined) {
       this.checked = false;
     }

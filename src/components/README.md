@@ -4,7 +4,22 @@ This document outlines the inheritance hierarchy of the web components found in 
 
 ```
 - LitElement (from 'lit' library)
+  - DtCheckmark
+  - DtExclamationCircle
+  - DtSpinner
+  - DtStar
   - DtBase
+    - DtCopyText
+    - DtLabel
+    - DtButton
+    - DtAlert
+    - DtTile
+    - DtModal
+    - DtList
+    - DtMapModal
+    - DtLocationMapItem
+    - DtIcon
+    - DtChurchHealthIcon
     - DtFormBase
       - DtText
         - DtMultiText
@@ -22,19 +37,4 @@ This document outlines the inheritance hierarchy of the web components found in 
           - DtConnection
         - DtChurchHealthCircle
       - DtLocationMap
-    - DtCopyText
-    - DtLabel
-    - DtButton
-    - DtAlert
-    - DtTile
-    - DtModal
-    - DtList
-    - DtMapModal
-    - DtLocationMapItem
-    - DtIcon
-    - DtChurchHealthIcon
-  - DtCheckmark
-  - DtExclamationCircle
-  - DtSpinner
-  - DtStar
 ```

@@ -33,21 +33,29 @@ Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slo
 }
 ```
 
-## CSS Properties / Theming
+## CSS Custom Properties
 
 Inherits custom properties from [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties).
 
 | Custom Properties   | Default Value   |
 |---------------------|-----------------|
-| `--dt-multi-select-text-color`              | `#0a0a0a`     |
-| `--dt-multi-select-background-color`        | `#fefefe`     |
-| `--dt-multi-select-text-color`              | `#0a0a0a`     |
-| `--dt-multi-select-tag-border-color`        | `#c2e0ff`     |
-| `--dt-multi-select-option-hover-background` | `#f5f5f5`     |
+| `--dt-multi-select-button-group-margin-bottom` | `5px` |
+| `--dt-multi-select-button-group-button-font-size` | `0.75rem` |
+| `--dt-multi-select-button-group-button-font-weight` | `0` |
+| `--dt-multi-select-button-group-button-line-height` | `1em` |
+| `--dt-multi-select-button-group-button-padding-y` | `0.85em` |
+| `--dt-multi-select-button-group-button-padding-x` | `1em` |
+| `--dt-multi-select-button-group-gap-y` | `5px` |
+| `--dt-multi-select-button-group-gap-x` | `10px` |
+| `--dt-multi-select-button-group-error-margin-top` | `5px` |
 
-| `--dt-form-border-color`| `#cacaca` |
-| `--dt-form-background-color` | `#fff` |
-| `--dt-form-text-color` | `#000` |
+## Parts
+
+| Part Name | Description |
+|-----------|-------------|
+| `input-group` | The container for the button group and icons |
+| `button-group` | The container for the buttons |
+| `button` | Individual buttons within the group |
 
 ## Stories
 <Stories title="" />
