@@ -17,16 +17,22 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
       css`
         :host {
           position: relative;
-          font-family: Helvetica, Arial, sans-serif;
+          font-family: var(--font-family, Helvetica, Arial, sans-serif);
         }
 
         .input-group {
           cursor: text; /* Indicates the area is clickable */
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
         }
         .input-group.disabled input,
         .input-group.disabled .field-container {
-          background-color: var(--disabled-color);
+          background-color: var(
+            --dt-multi-select-disabled-background-color,
+            var(--dt-form-disabled-background-color, var(--disabled-color))
+          );
         }
         .input-group.disabled a,
         .input-group.disabled button {
@@ -38,10 +44,23 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         }
 
         .field-container {
-          background-color: var(--dt-multi-select-background-color, #fefefe);
-          border: 1px solid var(--dt-form-border-color, #cacaca);
-          border-radius: 0;
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+          background-color: var(
+            --dt-multi-select-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(
+              --dt-multi-select-border-color,
+              var(--dt-form-border-color, #cacaca)
+            );
+          border-radius: var(
+            --dt-multi-select-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           font-size: 1rem;
           font-weight: 300;
           min-height: 2.5rem;
@@ -58,6 +77,11 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           row-gap: 0.2rem;
           flex-wrap: wrap;
           min-width: 0;
+          transition: var(
+            --dt-form-transition,
+            box-shadow 0.5s,
+            border-color 0.25s ease-in-out
+          );
         }
 
         .field-container input,
@@ -67,10 +91,14 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
 
         .selected-option {
           cursor: default;
-          border: 1px solid var(--dt-multi-select-tag-border-color, #c2e0ff);
+          border: 1px solid
+            var(
+              --dt-multi-select-tag-border-color,
+              var(--dt-color-primary-light, #c2e0ff)
+            );
           background-color: var(
             --dt-multi-select-tag-background-color,
-            #c2e0ff
+            var(--dt-color-primary-light, #c2e0ff)
           );
 
           display: flex;
@@ -104,8 +132,14 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           outline: 0;
           border: 0;
           border-inline-start: 1px solid
-            var(--dt-multi-select-tag-border-color, #c2e0ff);
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+            var(
+              --dt-multi-select-tag-border-color,
+              var(--dt-color-primary-light, #c2e0ff)
+            );
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           margin-inline-start: 4px;
         }
         .selected-option button:hover {
@@ -113,13 +147,18 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         }
 
         .field-container input {
-          background-color: var(--dt-form-background-color, #fff);
-          color: var(--dt-form-text-color, #000);
+          background-color: transparent;
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           flex-grow: 1;
           min-width: 50px;
           flex-basis: 50px;
           border: 0;
           margin-block-start: 0.375rem;
+          font-family: inherit;
+          font-size: inherit;
         }
         .field-container input:focus,
         .field-container input:focus-visible,
@@ -128,7 +167,10 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           outline: 0;
         }
         .field-container input::placeholder {
-          color: var(--dt-text-placeholder-color, #999);
+          color: var(
+            --dt-multi-select-placeholder-color,
+            var(--dt-form-placeholder-color, #999)
+          );
           opacity: 1;
         }
 
@@ -137,8 +179,15 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           list-style: none;
           margin: 0;
           padding: 0;
-          border: 1px solid var(--dt-form-border-color, #cacaca);
-          background: var(--dt-form-background-color, #fefefe);
+          border: 1px solid
+            var(
+              --dt-multi-select-border-color,
+              var(--dt-form-border-color, #cacaca)
+            );
+          background: var(
+            --dt-multi-select-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
           z-index: 10;
           position: absolute;
           width: 100%;
@@ -149,13 +198,20 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           overflow-y: scroll;
         }
         .option-list li {
-          border-block-start: 1px solid var(--dt-form-border-color, #cacaca);
+          border-block-start: 1px solid
+            var(
+              --dt-multi-select-border-color,
+              var(--dt-form-border-color, #cacaca)
+            );
           outline: 0;
         }
         .option-list li div,
         .option-list li button {
           padding: 0.5rem 0.75rem;
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           font-weight: 100;
           font-size: 1rem;
           text-decoration: none;
@@ -170,11 +226,17 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         .option-list li button:hover,
         .option-list li button.active {
           cursor: pointer;
-          background: var(--dt-multi-select-option-hover-background, #f5f5f5);
+          background: var(
+            --dt-multi-select-option-hover-background,
+            var(--dt-form-option-hover-background, #f5f5f5)
+          );
         }
 
         .field-container.invalid {
-          border: 1px solid var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(
+            --dt-multi-select-border-color-alert,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
       `,
     ];
@@ -194,12 +256,13 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   }
 
   _select(value) {
+    const oldValue = this.value;
     // Create custom event with new/old values to pass to onchange function
     const event = new CustomEvent('change', {
       bubbles: true,
       detail: {
         field: this.name,
-        oldValue: this.value,
+        oldValue,
       },
     });
 
@@ -246,15 +309,16 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   _remove(e) {
     e.stopPropagation();
     if (e.target && e.target.dataset && e.target.dataset.value) {
+      const oldValue = this.value;
       const event = new CustomEvent('change', {
         bubbles: true,
         detail: {
           field: this.name,
-          oldValue: this.value,
+          oldValue,
         },
       });
       this.value = (this.value || []).map(i =>
-        i === e.target.dataset.value ? `-${i}` : i
+        i === e.target.dataset.value ? `-${i}` : i,
       );
       event.detail.newValue = this.value;
 
@@ -304,7 +368,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         (!this.query ||
           opt.label
             .toLocaleLowerCase()
-            .includes(this.query.toLocaleLowerCase()))
+            .includes(this.query.toLocaleLowerCase())),
     );
     return this.filteredOptions;
   }
@@ -342,21 +406,27 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
       this.value &&
       this.value
         .filter(val => val.charAt(0) !== '-')
-      .map(
+        .map(
           val => html`
-            <div class="selected-option"
+            <div
+              class="selected-option"
               @click="${this._handleItemClick}"
-              @keydown="${this._handleItemClick}">
-              <span>${this.options.find(option => option.id === val).label}</span>
+              @keydown="${this._handleItemClick}"
+              part="tag"
+            >
+              <span
+                >${this.options.find(option => option.id === val).label}</span
+              >
               <button
                 @click="${this._remove}"
                 ?disabled="${this.disabled}"
                 data-value="${val}"
+                part="remove-button"
               >
                 x
               </button>
             </div>
-          `
+          `,
         )
     );
   }
@@ -364,14 +434,17 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   _validateRequired() {
     const { value } = this;
 
-    if (this.required && (!value || value.every((item) => !item || item.charAt(0) === '-'))) {
+    if (
+      this.required &&
+      (!value || value.every(item => !item || item.charAt(0) === '-'))
+    ) {
       this.invalid = true;
       this.internals.setValidity(
         {
           valueMissing: true,
         },
         this.requiredMessage || 'This field is required',
-        this._field
+        this._field,
       );
     } else {
       this.invalid = false;
@@ -395,18 +468,23 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
     return html`
       ${this.labelTemplate()}
 
-      <div class="input-group ${this.disabled ? 'disabled' : ''}"
-          @click="${this._handleDivClick}"
-          @keydown="${this._handleDivClick}">
+      <div
+        class="input-group ${this.disabled ? 'disabled' : ''}"
+        @click="${this._handleDivClick}"
+        @keydown="${this._handleDivClick}"
+        part="input-group"
+      >
         <div
           class="${classMap(this.classes)}"
           @click="${this._focusInput}"
           @keydown="${this._focusInput}"
+          part="field-container"
         >
           ${this._renderSelectedOptions()}
           <input
             type="text"
-            placeholder="${this.placeholder}"
+            placeholder="${this.placeholder || ''}"
+            aria-label="${this.label || ''}"
             autocomplete="off"
             @focusin="${this._inputFocusIn}"
             @blur="${this._inputFocusOut}"
@@ -414,9 +492,14 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
             @keyup="${this._inputKeyUp}"
             ?disabled="${this.disabled}"
             ?required=${this.required}
+            part="input"
           />
         </div>
-        <ul class="option-list" style=${styleMap(optionListStyles)}>
+        <ul
+          class="option-list"
+          style=${styleMap(optionListStyles)}
+          part="option-list"
+        >
           ${this._renderOptions()}
         </ul>
 
