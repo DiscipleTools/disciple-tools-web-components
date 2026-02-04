@@ -109,6 +109,18 @@ npm start
 
 To run a local development server that serves the basic demo located in `demo/index.html`
 
+## AI Coding Agents
+
+This project uses `skills` to manage AI coding agents. You can specify which agents to use by setting the `SKILLS_AGENTS` environment variable.
+
+The default agents are: `claude-code cursor github-copilot gemini-cli`.
+
+To customize the agents, create a `.env.local` or `.env` file (which is ignored by Git) and add your agents:
+
+```bash
+SKILLS_AGENTS=claude-code cursor
+```
+
 ## Localization
 Localization happens in 3 steps:
 1. Use localized strings in code 
