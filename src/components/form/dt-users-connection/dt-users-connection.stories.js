@@ -49,6 +49,7 @@ function onLoadEvent(event) {
           )
           .map(post => ({
             id: post.id,
+            label: post.title,
           })),
       );
     });
@@ -61,61 +62,92 @@ export default {
     id: { control: 'text' },
     name: { control: 'text' },
     label: { control: 'text' },
-    value: { control: 'text' },
-    disabled: { control: 'boolean' },
-    icon: { control: 'text' },
-    private: { control: 'boolean' },
+    value: { control: 'object' },
+    placeholder: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
+    allowAdd: { control: 'boolean' },
+    private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
+    error: { control: 'text' },
+    slot: { control: 'text' },
+    options: { control: 'object' },
+    requiredMessage: { control: 'text' },
+    single: { control: 'boolean' },
+    onChange: { action: 'on-change' },
     ...argTypes,
   },
   args: {
+    id: 'name',
+    name: 'field-name',
+    label: 'Field Name',
     placeholder: 'Select Connection',
+    icon: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText: 'Icon Alt Text',
+    private: false,
+    privateLabel: 'Private',
+    loading: false,
+    saved: false,
+    error: '',
+    slot: '',
+    options: basicOptions,
+    requiredMessage: 'This field is required',
+    allowAdd: false,
+    single: false,
     onLoad: action('on-load'),
     onChange: action('on-change'),
+    onAdd: action('on-add'),
   },
   render: args => {
     const {
+      id = 'name',
       name = 'field-name',
       label = 'Field Name',
       options,
       placeholder = 'Select Connection',
       value,
-      disabled = false,
-      icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+      open,
+      disabled,
+      required,
+      requiredMessage,
+      icon,
       iconAltText = 'Icon Alt Text',
-      isPrivate,
+      private: isPrivate,
       privateLabel,
-      loading = false,
-      saved = false,
+      loading,
+      saved,
       error,
-      single = false,
+      single,
       onChange,
       onLoad,
-      open,
+      onAdd,
       allowAdd,
       slot,
     } = args;
     return html`
       <dt-users-connection
-        name="${name}"
-        label=${label}
-        placeholder="${placeholder}"
-        options="${JSON.stringify(options)}"
-        value="${JSON.stringify(value)}"
+        id="${ifDefined(id)}"
+        name="${ifDefined(name)}"
+        label="${ifDefined(label)}"
+        placeholder="${ifDefined(placeholder)}"
+        .options="${options}"
+        .value="${value}"
+        .open="${open}"
         ?disabled=${disabled}
-        icon="${icon}"
-        iconAltText="${iconAltText}"
+        ?required=${required}
+        requiredMessage="${ifDefined(requiredMessage)}"
+        icon="${ifDefined(icon)}"
+        iconAltText="${ifDefined(iconAltText)}"
         ?private=${isPrivate}
-        privateLabel="${privateLabel}"
+        privateLabel="${ifDefined(privateLabel)}"
         ?allowAdd="${allowAdd}"
         ?loading="${loading}"
         ?saved="${saved}"
         ?single="${single}"
         error="${ifDefined(error)}"
-        .open="${open}"
         @change=${onChange}
         @dt:get-data=${onLoad}
+        @dt:add-new=${onAdd}
       >
         ${slot}
       </dt-users-connection>
@@ -123,13 +155,8 @@ export default {
   },
 };
 
-function Template(args) {}
-
 export const Empty = {
-  args: {
-    options: basicOptions,
-    onload: '',
-  },
+  args: {},
 };
 
 export const SvgIcon = {
@@ -154,17 +181,7 @@ export const CustomPlaceholder = {
 
 export const SelectedValue = {
   args: {
-    value: [
-      {
-        name: 'Bp',
-        id: 2,
-        avatar:
-          'https:\/\/2.gravatar.com\/avatar\/2373ee570d59db06102d14feb50a4291?s=16&d=mm&r=g',
-        contact_id: 10,
-        status: '#4caf50',
-        update_needed: 0,
-      },
-    ],
+    value: [basicOptions[0]],
     options: basicOptions,
   },
 };
@@ -179,6 +196,7 @@ export const OptionsOpen = {
 
 export const LoadOptionsFromAPI = {
   args: {
+    options: null,
     onLoad: onLoadEvent,
   },
 };
@@ -204,6 +222,13 @@ export const Disabled = {
     disabled: true,
   },
 };
+export const PrivateField = {
+  args: {
+    private: true,
+    privateLabel: 'This is a private field',
+    value: [basicOptions[1]],
+  },
+};
 
 export const Loading = {
   args: {
@@ -215,17 +240,7 @@ export const Loading = {
 
 export const Saved = {
   args: {
-    value: [
-      {
-        name: 'Bp',
-        id: 2,
-        avatar:
-          'https:\/\/2.gravatar.com\/avatar\/2373ee570d59db06102d14feb50a4291?s=16&d=mm&r=g',
-        contact_id: 10,
-        status: '#4caf50',
-        update_needed: 0,
-      },
-    ],
+    value: [basicOptions[1]],
     options: basicOptions,
     saved: true,
   },
@@ -247,6 +262,13 @@ export const Error = {
   },
 };
 
+export const ErrorSlot = {
+  args: {
+    slot: 'ErrorSlot',
+    error: '[Should show link here]',
+  },
+};
+
 export const basicForm = {
   decorators: [FormDecorator],
   args: {
@@ -264,6 +286,7 @@ export const Required = {
 };
 
 export const RequiredCustomMessage = {
+  decorators: [FormDecorator],
   args: {
     required: true,
     requiredMessage: 'Custom error message',
@@ -288,17 +311,19 @@ export const LocalizeRTL = {
     ],
     options: [
       {
-        name: 'Bp',
+        label: 'Bp',
         id: 2,
-        avatar: 'تنكر هؤلاء الرجال المفتونون',
+        avatar:
+          'https:\/\/2.gravatar.com\/avatar\/2373ee570d59db06102d14feb50a4291?s=16&d=mm&r=g',
         contact_id: 10,
         status: '#4caf50',
         update_needed: 0,
       },
       {
-        name: 'root',
+        label: 'root',
         id: 1,
-        avatar: 'تنكر هؤلاء الرجال المفتونون',
+        avatar:
+          'https:\/\/2.gravatar.com\/avatar\/2373ee570d59db06102d14feb50a4291?s=16&d=mm&r=g',
         contact_id: 10,
         status: '#4caf50',
         update_needed: 0,
