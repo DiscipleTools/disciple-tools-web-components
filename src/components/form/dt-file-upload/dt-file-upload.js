@@ -635,8 +635,72 @@ export class DtFileUpload extends DtFormBase {
     return s;
   }
 
+  /**
+   * Returns mapping of MIME types and file extensions to MDI icons.
+   * Used for automatic icon detection when fileTypeIcon is not specified.
+   */
+  _getFileTypeIconMapping() {
+    return {
+      // MIME types
+      'application/pdf': 'mdi:file-pdf-box',
+      'text/plain': 'mdi:text-box-edit-outline',
+      'application/rtf': 'mdi:text-box-edit-outline',
+      'text/rtf': 'mdi:text-box-edit-outline',
+      'text/csv': 'mdi:text-box-edit-outline',
+      'text/html': 'mdi:language-html5',
+      'application/msword': 'mdi:microsoft-word',
+      'application/json': 'mdi:code-json',
+      'application/xml': 'mdi:file-xml-box',
+      // Extensions (for fallback when MIME type not available)
+      '.pdf': 'mdi:file-pdf-box',
+      '.txt': 'mdi:text-box-edit-outline',
+      '.rtf': 'mdi:text-box-edit-outline',
+      '.csv': 'mdi:text-box-edit-outline',
+      '.html': 'mdi:language-html5',
+      '.htm': 'mdi:language-html5',
+      '.docx': 'mdi:microsoft-word',
+      '.doc': 'mdi:microsoft-word',
+      '.json': 'mdi:code-json',
+      '.xml': 'mdi:file-xml-box',
+    };
+  }
+
+  /**
+   * Determines the appropriate icon for a file based on fileTypeIcon property or file type.
+   * @param {Object} file - File object with type and name properties
+   * @returns {string|null} - MDI icon string or null if no match found
+   */
+  _getFileTypeIcon(file) {
+    // 1. If fileTypeIcon is explicitly set, use it
+    if (this.fileTypeIcon && this.fileTypeIcon.trim()) {
+      return this.fileTypeIcon.trim();
+    }
+
+    // 2. Try to match on MIME type
+    const type = (file.type || '').toLowerCase();
+    const mapping = this._getFileTypeIconMapping();
+
+    if (type && mapping[type]) {
+      return mapping[type];
+    }
+
+    // 3. Try to match on file extension
+    if (file.name) {
+      const parts = file.name.split('.');
+      if (parts.length > 1) {
+        const ext = '.' + parts.pop().toLowerCase();
+        if (mapping[ext]) {
+          return mapping[ext];
+        }
+      }
+    }
+
+    // 4. Return null to use default fallback (mdi:file-outline)
+    return null;
+  }
+
   _renderFileTypeIcon(file) {
-    const iconAttr = this.fileTypeIcon || '';
+    const iconAttr = this._getFileTypeIcon(file);
     if (!iconAttr) return null;
     const isUrl = /^(https?:|\/|data:)/.test(iconAttr);
     if (isUrl) {
@@ -1196,12 +1260,12 @@ export class DtFileUpload extends DtFormBase {
                                   target="_blank"
                                   rel="noopener"
                                 >
-                                  ${this._renderFileTypeIcon(file) || (isImage ? html`<dt-icon icon="mdi:image"></dt-icon>` : html`<dt-icon icon="mdi:file"></dt-icon>`)}
+                                  ${this._renderFileTypeIcon(file) || (isImage ? html`<dt-icon icon="mdi:image"></dt-icon>` : html`<dt-icon icon="mdi:file-outline"></dt-icon>`)}
                                 </a>
                               `
                             : html`
                                 <div class="file-icon-area">
-                                  ${this._renderFileTypeIcon(file) || (isImage ? html`<dt-icon icon="mdi:image"></dt-icon>` : html`<dt-icon icon="mdi:file"></dt-icon>`)}
+                                  ${this._renderFileTypeIcon(file) || (isImage ? html`<dt-icon icon="mdi:image"></dt-icon>` : html`<dt-icon icon="mdi:file-outline"></dt-icon>`)}
                                 </div>
                               `
                           }

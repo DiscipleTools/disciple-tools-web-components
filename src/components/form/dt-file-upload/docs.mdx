@@ -29,6 +29,7 @@ A web component for uploading multiple files (pictures, documents, PDFs, voice m
 - **Progress indicators**: Visual feedback during uploads
 - **Error handling**: Clear error messages for validation failures
 - **Compact upload zone**: Default collapsed state (cloud icon only); expands on hover, click, or drag-over; collapses after upload, staging, or when idle
+- **Automatic file type icons**: Automatically detects and displays appropriate icons for common file types (PDF, Word, text, HTML, JSON, XML) based on MIME type or file extension
 
 ### Usage Examples
 
@@ -64,6 +65,31 @@ A web component for uploading multiple files (pictures, documents, PDFs, voice m
   meta-key="documents"
 ></dt-file-upload>
 ```
+
+#### Automatic File Type Icons
+
+When `file-type-icon` is not specified, the component automatically detects appropriate icons based on file MIME types:
+
+```html
+<dt-file-upload
+  name="documents"
+  label="Upload Documents"
+  post-type="contacts"
+  post-id="123"
+  meta-key="documents"
+></dt-file-upload>
+```
+
+**Supported file types and their automatic icons:**
+- PDF files (`application/pdf`) → `mdi:file-pdf-box`
+- Text files (`text/plain`, `.txt`, `.csv`, `.rtf`) → `mdi:text-box-edit-outline`
+- HTML files (`text/html`, `.html`, `.htm`) → `mdi:language-html5`
+- Word documents (`application/msword`, `.doc`, `.docx`) → `mdi:microsoft-word`
+- JSON files (`application/json`, `.json`) → `mdi:code-json`
+- XML files (`application/xml`, `.xml`) → `mdi:file-xml-box`
+- Unknown file types → `mdi:file-outline` (default)
+
+The component matches icons by MIME type first, then falls back to file extension if MIME type is unavailable.
 
 #### Manual Upload Mode
 

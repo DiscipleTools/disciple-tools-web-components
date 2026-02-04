@@ -233,6 +233,62 @@ CustomFileTypes.args = {
   acceptedFileTypes: ['.pdf', '.doc', '.docx'],
 };
 
+export const AutoFileTypeIcons = Template.bind({});
+AutoFileTypeIcons.args = {
+  // No file-type-icon specified - demonstrates automatic icon detection
+  value: [
+    {
+      key: 'site_id/prefix_randomstring1.pdf',
+      name: 'document.pdf',
+      type: 'application/pdf',
+      size: 123456,
+      url: '#',
+    },
+    {
+      key: 'site_id/prefix_randomstring2.docx',
+      name: 'report.docx',
+      type: 'application/msword',
+      size: 234567,
+      url: '#',
+    },
+    {
+      key: 'site_id/prefix_randomstring3.txt',
+      name: 'notes.txt',
+      type: 'text/plain',
+      size: 3456,
+      url: '#',
+    },
+    {
+      key: 'site_id/prefix_randomstring4.json',
+      name: 'data.json',
+      type: 'application/json',
+      size: 5678,
+      url: '#',
+    },
+    {
+      key: 'site_id/prefix_randomstring5.html',
+      name: 'page.html',
+      type: 'text/html',
+      size: 8901,
+      url: '#',
+    },
+    {
+      key: 'site_id/prefix_randomstring6.xml',
+      name: 'config.xml',
+      type: 'application/xml',
+      size: 12345,
+      url: '#',
+    },
+    {
+      key: 'site_id/prefix_randomstring7.unknown',
+      name: 'mystery.unknown',
+      type: 'application/octet-stream',
+      size: 9999,
+      url: '#',
+    },
+  ],
+};
+
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,

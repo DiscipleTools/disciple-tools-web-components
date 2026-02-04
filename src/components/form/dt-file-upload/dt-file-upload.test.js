@@ -239,4 +239,104 @@ describe('dt-file-upload', () => {
     const filesList = el.shadowRoot.querySelector('.files-list');
     expect(filesList).to.exist;
   });
+
+  describe('File Type Icon Detection', () => {
+    it('returns explicit fileTypeIcon when set', async () => {
+      const el = await fixture(html`<dt-file-upload file-type-icon="mdi:custom-icon"></dt-file-upload>`);
+      const file = { type: 'application/pdf', name: 'test.pdf' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:custom-icon');
+    });
+
+    it('detects PDF icon from MIME type', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: 'application/pdf', name: 'document.pdf' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:file-pdf-box');
+    });
+
+    it('detects Word icon from MIME type', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: 'application/msword', name: 'document.doc' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:microsoft-word');
+    });
+
+    it('detects text icon from MIME type', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: 'text/plain', name: 'notes.txt' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:text-box-edit-outline');
+    });
+
+    it('detects JSON icon from MIME type', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: 'application/json', name: 'data.json' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:code-json');
+    });
+
+    it('detects HTML icon from MIME type', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: 'text/html', name: 'page.html' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:language-html5');
+    });
+
+    it('detects XML icon from MIME type', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: 'application/xml', name: 'config.xml' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:file-xml-box');
+    });
+
+    it('falls back to file extension when MIME type is missing', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: '', name: 'document.pdf' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:file-pdf-box');
+    });
+
+    it('falls back to file extension when MIME type is unknown', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: 'application/unknown', name: 'file.docx' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:microsoft-word');
+    });
+
+    it('returns null for unknown file types (triggers default fallback)', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: 'application/unknown', name: 'mystery.unknown' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.be.null;
+    });
+
+    it('handles CSV files correctly', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: 'text/csv', name: 'data.csv' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:text-box-edit-outline');
+    });
+
+    it('handles RTF files correctly', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: 'application/rtf', name: 'document.rtf' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:text-box-edit-outline');
+    });
+
+    it('handles files without name or type', async () => {
+      const el = await fixture(html`<dt-file-upload></dt-file-upload>`);
+      const file = { type: '', name: '' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.be.null;
+    });
+
+    it('prioritizes explicit fileTypeIcon over automatic detection', async () => {
+      const el = await fixture(html`<dt-file-upload file-type-icon="mdi:override"></dt-file-upload>`);
+      const file = { type: 'application/pdf', name: 'document.pdf' };
+      const icon = el._getFileTypeIcon(file);
+      expect(icon).to.equal('mdi:override');
+    });
+  });
 });
