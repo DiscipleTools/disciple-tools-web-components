@@ -42,6 +42,7 @@ export default class DtLocationMapItem extends DtBase {
 
   static get styles() {
     return [
+      ...super.styles,
       css`
         :host {
           --dt-location-map-border-color: var(--dt-form-border-color, #fefefe);
