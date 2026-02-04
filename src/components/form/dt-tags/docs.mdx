@@ -35,6 +35,18 @@ Inherits slots from
 }
 ```
 
+### `dt:add-new`
+
+Called when a new item is added to the list (e.g., via the add button or keyboard).
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  value: string     // the new value that was added
+}
+```
+
 ### `dt:get-data`
 
 Called when the component is requesting a new list of options based on a
@@ -57,6 +69,23 @@ It should return a result that is a list of options via the `onSuccess` function
 Inherits custom properties from
 - [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties)
 - [DTMultiSelect](?path=/docs/components-form-multi-select--docs#css-properties--theming)
+
+## CSS Properties / Theming
+
+Inherits custom properties from
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties)
+- [DTMultiSelect](?path=/docs/components-form-multi-select--docs#css-properties--theming)
+
+| Custom Property                            | Description                                   | Default Value                                        |
+| :----------------------------------------- | :-------------------------------------------- | :--------------------------------------------------- |
+| `--dt-tags-selected-link-color`            | Color of the links in selected tags           | `var(--dt-color-primary, #3f729b)`                   |
+| `--dt-tags-selected-text-color`            | Color of the text in selected tags without links | `var(--dt-multi-select-text-color, #0a0a0a)`          |
+| `--dt-tags-invalid-border-color`           | Border color when the field is invalid        | `var(--dt-form-border-color-alert, var(--alert-color))` |
+| `--dt-tags-add-button-background-color`    | Background color of the add button            | `var(--dt-form-background-color, #fefefe)`           |
+| `--dt-tags-add-button-border-color`        | Border color of the add button                | `var(--dt-form-border-color, #fefefe)`               |
+| `--dt-tags-add-button-disabled-color`      | Text color of the add button when disabled    | `var(--dt-form-placeholder-color, #999)`             |
+| `--dt-tags-add-button-hover-background-color` | Background color of the add button on hover | `var(--dt-color-success, #cc4b37)`                   |
+| `--dt-tags-add-button-hover-color`         | Text color of the add button on hover         | `var(--dt-form-text-color-light, #ffffff)`           |
 
 ## Stories
 <Stories title="" />

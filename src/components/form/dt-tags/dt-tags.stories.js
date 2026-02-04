@@ -68,16 +68,34 @@ export default {
   title: 'Components/Form/Tags',
   component: 'dt-tags',
   argTypes: {
+    id: { control: 'text' },
     name: { control: 'text' },
+    label: { control: 'text' },
     value: { control: 'text' },
     placeholder: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
     allowAdd: { control: 'boolean' },
+    private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
+    error: { control: 'text' },
+    slot: { control: 'text' },
+    onChange: { action: 'on-change' },
     ...argTypes,
   },
   args: {
+    id: 'name',
+    name: 'field-name',
+    label: 'Field Name',
     placeholder: 'Select Tags',
+    icon: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText: 'Icon Alt Text',
+    private: false,
+    privateLabel: 'Private',
+    loading: false,
+    saved: false,
+    error: '',
+    slot: '',
     onLoad: action('on-load'),
     onChange: action('on-change'),
     onNew: action('on-new'),
@@ -87,47 +105,47 @@ export default {
   },
   render: args => {
     const {
+      id = 'name',
       name = 'field-name',
       label = 'Field Name',
       options,
       placeholder,
       value,
-      disabled = false,
-      required = false,
+      disabled,
+      required,
       requiredMessage,
-      icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+      icon,
       iconAltText = 'Icon Alt Text',
-      isPrivate,
+      private: isPrivate,
       privateLabel,
-      loading = false,
-      saved = false,
-      open,
-      slot,
+      loading,
+      saved,
       allowAdd,
       error,
+      slot,
       onChange,
       onLoad,
       onNew,
     } = args;
     return html`
       <dt-tags
+        id="${id}"
         name="${name}"
-        label=${label}
+        label="${label}"
         placeholder="${placeholder}"
-        options="${JSON.stringify(options)}"
-        value="${JSON.stringify(value)}"
-        ?disabled=${disabled}
-        ?required=${required}
-        requiredMessage=${requiredMessage}
+        .options="${options}"
+        .value="${value}"
+        ?disabled="${disabled}"
+        ?required="${required}"
+        requiredMessage="${requiredMessage}"
         icon="${icon}"
         iconAltText="${iconAltText}"
-        ?private=${isPrivate}
+        ?private="${isPrivate}"
         privateLabel="${privateLabel}"
         ?allowAdd="${allowAdd}"
         ?loading="${loading}"
         ?saved="${saved}"
-        error="${ifDefined(error)}"
-        .open="${open}"
+        error="${error}"
         @change=${onChange}
         @dt:get-data=${onLoad}
         @dt:add-new=${onNew}
@@ -228,6 +246,14 @@ export const Disabled = {
     disabled: true,
   },
 };
+
+export const PrivateField = {
+  args: {
+    private: true,
+    privateLabel: 'This is a private field',
+  },
+};
+
 export const Loading = {
   args: {
     value: ['qui est esse'],
@@ -248,6 +274,13 @@ export const Error = {
     allowAdd: true,
     options: basicOptions,
     error: 'Custom error message',
+  },
+};
+
+export const ErrorSlot = {
+  args: {
+    slot: 'ErrorSlot',
+    error: '[Should show link here]',
   },
 };
 

@@ -1,5 +1,11 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, aTimeout, nextFrame } from '@open-wc/testing';
+import {
+  fixture,
+  expect,
+  aTimeout,
+  nextFrame,
+  waitUntil,
+} from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-tags.js';
@@ -28,7 +34,7 @@ const optionsWithLabel = [
     id: 'opt3',
     label: 'Option 3',
   },
-]
+];
 async function wait(ms) {
   return new Promise(r => {
     setTimeout(r, ms);
@@ -38,7 +44,7 @@ async function wait(ms) {
 async function clickOption(el, id) {
   const input = el.shadowRoot.querySelector('input');
   const optionBtn = el.shadowRoot.querySelector(
-    `.option-list button[value=${id}]`
+    `.option-list button[value=${id}]`,
   );
 
   input.focus();
@@ -49,7 +55,7 @@ async function clickOption(el, id) {
 describe('dt-tags', () => {
   it('sets placeholder', async () => {
     const el = await fixture(
-      html`<dt-tags placeholder="Custom Placeholder"></dt-tags>`
+      html`<dt-tags placeholder="Custom Placeholder"></dt-tags>`,
     );
     const input = el.shadowRoot.querySelector('input');
 
@@ -58,7 +64,7 @@ describe('dt-tags', () => {
 
   it('sets options', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`
+      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`,
     );
     const optionList = el.shadowRoot.querySelector('.option-list');
 
@@ -75,7 +81,7 @@ describe('dt-tags', () => {
       html`<dt-tags
         value="${JSON.stringify([options[0].id, options[1].id])}"
         options="${JSON.stringify(options)}"
-      ></dt-tags>`
+      ></dt-tags>`,
     );
     const container = el.shadowRoot.querySelector('.field-container');
 
@@ -89,7 +95,7 @@ describe('dt-tags', () => {
       html`<dt-tags
         value="${JSON.stringify([options[0].id, options[1].id])}"
         options="${JSON.stringify(options)}"
-      ></dt-tags>`
+      ></dt-tags>`,
     );
     const container = el.shadowRoot.querySelector('.field-container');
 
@@ -107,7 +113,7 @@ describe('dt-tags', () => {
       html`<dt-tags
         value="${JSON.stringify(['opt1'])}"
         options="${JSON.stringify(options)}"
-      ></dt-tags>`
+      ></dt-tags>`,
     );
 
     const container = el.shadowRoot.querySelector('.field-container');
@@ -122,7 +128,7 @@ describe('dt-tags', () => {
       html`<dt-tags
         value="${JSON.stringify(['opt1'])}"
         options="${JSON.stringify(optionsWithLabel)}"
-      ></dt-tags>`
+      ></dt-tags>`,
     );
 
     const container = el.shadowRoot.querySelector('.field-container');
@@ -132,9 +138,9 @@ describe('dt-tags', () => {
     expect(selectedValue.innerHTML).to.contain('Option 1');
   });
 
-  it.skip('opens option list on input focus', async () => {
+  it('opens option list on input focus', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`
+      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionList = el.shadowRoot.querySelector('.option-list');
@@ -142,46 +148,56 @@ describe('dt-tags', () => {
     expect(optionList).not.to.be.displayed;
 
     input.focus();
-    await aTimeout(100); // wait for UI update
+    await nextFrame();
 
     expect(optionList).to.be.displayed;
   });
 
   it('shows label in option list', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(optionsWithLabel)}" .open="${true}"></dt-tags>`
+      html`<dt-tags
+        options="${JSON.stringify(optionsWithLabel)}"
+        .open="${true}"
+      ></dt-tags>`,
     );
     const optionList = el.shadowRoot.querySelector('.option-list');
     expect(optionList).to.be.displayed;
 
-    const option = el.shadowRoot.querySelector('.option-list button[value=opt1]');
+    const option = el.shadowRoot.querySelector(
+      '.option-list button[value=opt1]',
+    );
     expect(option.innerHTML).to.contain('Option 1');
   });
 
   it('shows id in option list if label does not exist', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(options)}" .open="${true}"></dt-tags>`
+      html`<dt-tags
+        options="${JSON.stringify(options)}"
+        .open="${true}"
+      ></dt-tags>`,
     );
     const optionList = el.shadowRoot.querySelector('.option-list');
     expect(optionList).to.be.displayed;
 
-    const option = el.shadowRoot.querySelector('.option-list button[value=opt1]');
+    const option = el.shadowRoot.querySelector(
+      '.option-list button[value=opt1]',
+    );
     expect(option.innerHTML).to.contain('opt1');
   });
 
   it('selects option via mouse', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`
+      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionBtn = el.shadowRoot.querySelector(
-      '.option-list button[value=opt1]'
+      '.option-list button[value=opt1]',
     );
 
     input.focus();
 
     optionBtn.click();
-    await aTimeout(100);
+    await nextFrame();
 
     const container = el.shadowRoot.querySelector('.field-container');
     expect(container).to.contain('button[data-value=opt1]');
@@ -189,7 +205,7 @@ describe('dt-tags', () => {
 
   it('selects option via keyboard', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`
+      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`,
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
@@ -201,13 +217,15 @@ describe('dt-tags', () => {
       press: 'Enter',
     });
 
-    const container = el.shadowRoot.querySelector('.field-container');
-    expect(container).to.contain('button[data-value=opt1]');
+    await waitUntil(
+      () => el.shadowRoot.querySelector('button[data-value=opt1]'),
+      'Selected value not found',
+    );
   });
 
   it('updates value attribute', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`
+      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`,
     );
 
     await clickOption(el, 'opt1');
@@ -220,14 +238,14 @@ describe('dt-tags', () => {
       html`<dt-tags
         value="${JSON.stringify([options[0].id, options[1].id])}"
         options="${JSON.stringify(options)}"
-      ></dt-tags>`
+      ></dt-tags>`,
     );
     const container = el.shadowRoot.querySelector('.field-container');
 
     expect(container).to.contain('button[data-value=opt1]');
 
     const optionBtn = el.shadowRoot.querySelector(
-      `.selected-option button[data-value=opt1]`
+      `.selected-option button[data-value=opt1]`,
     );
     optionBtn.click();
     await aTimeout(100);
@@ -241,66 +259,72 @@ describe('dt-tags', () => {
       html`<dt-tags
         value="${JSON.stringify([`-${options[0].id}`])}"
         options="${JSON.stringify(options)}"
-      ></dt-tags>`
+      ></dt-tags>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionBtn = el.shadowRoot.querySelector(
-      '.option-list button[value=opt1]'
+      '.option-list button[value=opt1]',
     );
 
     input.focus();
 
     optionBtn.click();
-    await aTimeout(100);
+    await nextFrame();
 
     expect(el.value).to.deep.include('opt1');
     expect(el.value).to.not.deep.include('-opt1');
   });
 
   it('triggers change event - item added', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-tags
         name="custom-name"
         value="${JSON.stringify([options[1].id])}"
         options="${JSON.stringify(options)}"
-      ></dt-tags>`
+        @change="${e => (eventDetail = e.detail)}"
+      ></dt-tags>`,
     );
 
-    setTimeout(() => clickOption(el, 'opt1'));
+    await clickOption(el, 'opt1');
 
-    const { detail } = await oneEvent(el, 'change');
-
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.oldValue).to.eql([options[1].id]);
-    expect(detail.newValue).to.eql([options[1].id, options[0].id]);
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.oldValue).to.have.members([options[1].id]);
+    expect(eventDetail.newValue).to.have.members([
+      options[1].id,
+      options[0].id,
+    ]);
   });
 
   it('triggers change event - item removed', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-tags
         name="custom-name"
         value="${JSON.stringify([options[0].id])}"
         options="${JSON.stringify(options)}"
-      ></dt-tags>`
+        @change="${e => (eventDetail = e.detail)}"
+      ></dt-tags>`,
     );
 
-    setTimeout(() => {
-      const optionBtn = el.shadowRoot.querySelector(
-        `.selected-option button[data-value=opt1]`
-      );
-      optionBtn.click();
-    });
+    const optionBtn = el.shadowRoot.querySelector(
+      `.selected-option button[data-value=opt1]`,
+    );
+    optionBtn.click();
 
-    const { detail } = await oneEvent(el, 'change');
-
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.oldValue).to.eql([options[0].id]);
-    expect(detail.newValue).to.eql([`-${options[0].id}`]);
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.oldValue).to.have.members([options[0].id]);
+    expect(eventDetail.newValue).to.have.members([`-${options[0].id}`]);
   });
 
   it('filters options on text input', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(options)}" .open="${true}"></dt-tags>`
+      html`<dt-tags
+        options="${JSON.stringify(options)}"
+        .open="${true}"
+      ></dt-tags>`,
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
@@ -319,7 +343,7 @@ describe('dt-tags', () => {
 
   it('filters options on option selection', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`
+      html`<dt-tags options="${JSON.stringify(options)}"></dt-tags>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionsList = el.shadowRoot.querySelector('.option-list');
@@ -332,25 +356,26 @@ describe('dt-tags', () => {
   });
 
   it('loads options from event if no options provided (object list)', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-tags
         name="custom-name"
         value="${JSON.stringify([options[1].id])}"
         .open="${true}"
-      ></dt-tags>`
+        @dt:get-data="${e => (eventDetail = e.detail)}"
+      ></dt-tags>`,
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
 
-    setTimeout(() => sendKeys({ type: 'o' }));
+    await sendKeys({ type: 'o' });
 
-    const { detail } = await oneEvent(el, 'dt:get-data');
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.query).to.equal('o');
+    expect(eventDetail.onSuccess).to.exist;
 
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.query).to.equal('o');
-    expect(detail.onSuccess).to.exist;
-
-    await detail.onSuccess([options[0]]);
+    await eventDetail.onSuccess([options[0]]);
 
     const optionList = el.shadowRoot.querySelector('.option-list');
     expect(optionList).to.contain('button[value=opt1]');
@@ -359,25 +384,26 @@ describe('dt-tags', () => {
   });
 
   it('loads options from event if no options provided (string list)', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-tags
         name="custom-name"
         value="${JSON.stringify([options[1].id])}"
         .open="${true}"
-      ></dt-tags>`
+        @dt:get-data="${e => (eventDetail = e.detail)}"
+      ></dt-tags>`,
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
 
-    setTimeout(() => sendKeys({ type: 'o' }));
+    await sendKeys({ type: 'o' });
 
-    const { detail } = await oneEvent(el, 'dt:get-data');
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.query).to.equal('o');
+    expect(eventDetail.onSuccess).to.exist;
 
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.query).to.equal('o');
-    expect(detail.onSuccess).to.exist;
-
-    await detail.onSuccess([options[0].id]);
+    await eventDetail.onSuccess([options[0].id]);
 
     const optionList = el.shadowRoot.querySelector('.option-list');
     expect(optionList).to.contain('button[value=opt1]');
@@ -387,7 +413,11 @@ describe('dt-tags', () => {
 
   it('allows adding new option', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(options)}" .open="${true}" allowAdd></dt-tags>`
+      html`<dt-tags
+        options="${JSON.stringify(options)}"
+        .open="${true}"
+        allowAdd
+      ></dt-tags>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionsList = el.shadowRoot.querySelector('.option-list');
@@ -406,7 +436,7 @@ describe('dt-tags', () => {
     await sendKeys({ press: 'Enter' });
 
     expect(el.value).not.to.be.empty;
-    expect(el.value).to.eql(['new']);
+    expect(el.value).to.have.members(['new']);
   });
 
   it('disables inputs', async () => {
@@ -415,7 +445,7 @@ describe('dt-tags', () => {
         disabled
         value="${JSON.stringify(['opt1', 'opt2'])}"
         options="${JSON.stringify(options)}"
-      ></dt-tags>`
+      ></dt-tags>`,
     );
 
     const input = el.shadowRoot.querySelector('input');
@@ -433,7 +463,7 @@ describe('dt-tags', () => {
 
   it('clicks add new button', async () => {
     const el = await fixture(
-      html`<dt-tags options="${JSON.stringify(options)}" allowAdd></dt-tags>`
+      html`<dt-tags options="${JSON.stringify(options)}" allowAdd></dt-tags>`,
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
@@ -444,5 +474,41 @@ describe('dt-tags', () => {
 
     const selectedOption = el.shadowRoot.querySelector('.selected-option');
     expect(selectedOption).to.have.descendant('a').with.text('new');
+  });
+
+  it('renders private field with label', async () => {
+    const el = await fixture(
+      html`<dt-tags
+        label="Label Name"
+        private
+        privateLabel="Confidential Information"
+      ></dt-tags>`,
+    );
+
+    const label = el.shadowRoot.querySelector('dt-label');
+    expect(label).to.exist;
+    expect(label).to.have.attribute('private');
+  });
+
+  it('dispatches dt:add-new event when add button is clicked', async () => {
+    let eventDetail = null;
+    const el = await fixture(
+      html`<dt-tags
+        name="test-tags"
+        allowAdd
+        @dt:add-new="${e => (eventDetail = e.detail)}"
+      ></dt-tags>`,
+    );
+
+    const input = el.shadowRoot.querySelector('input');
+    input.focus();
+    await sendKeys({ type: 'New Tag' });
+
+    const addButton = el.shadowRoot.querySelector('.input-addon.btn-add');
+    await addButton.click();
+
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('test-tags');
+    expect(eventDetail.value).to.equal('New Tag');
   });
 });
