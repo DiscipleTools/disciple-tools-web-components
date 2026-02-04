@@ -36,6 +36,18 @@ Inherits slots from
 }
 ```
 
+### `dt:add-new`
+
+Called when a new item is added to the list (e.g., via the add button or keyboard).
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  value: string     // the new value that was added
+}
+```
+
 ### `dt:get-data`
 
 Called when the component is requesting a new list of options based on a
@@ -62,7 +74,14 @@ Inherits custom properties from
 
 | Custom Properties   | Default Value   |
 |---------------------|-----------------|
-| `--dt-connection-icon-fill`   | `--primary-color`   |
+| `--dt-connection-icon-fill`   | `var(--primary-color)`   |
+
+## Parts
+
+Inherits parts from:
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#parts)
+- [DTMultiSelect](?path=/docs/components-form-multi-select--docs#parts)
+- [DtTags](?path=/docs/components-form-tags--docs#parts)
 
 ## Stories
 <Stories title="" />
