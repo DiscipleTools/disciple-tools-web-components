@@ -154,6 +154,7 @@ export default class ComponentService {
           el.addEventListener('dt:upload', this.handleUploadEvent.bind(this));
           el.addEventListener('dt:delete-file', this.handleDeleteFileEvent.bind(this));
           el.addEventListener('dt:rename-file', this.handleRenameFileEvent.bind(this));
+          el.addEventListener('dt:download-file', this.handleDownloadFileEvent.bind(this));
           el.dataset.eventDtUpload = true;
         }
       });
@@ -473,6 +474,48 @@ export default class ComponentService {
       }
     } finally {
       component.removeAttribute('loading');
+    }
+  }
+
+  /**
+   * Event listener for file download events.
+   * Handles downloading files via API proxy and triggers browser download
+   * @param {Event} event
+   * @returns {Promise<void>}
+   */
+  async handleDownloadFileEvent(event) {
+    const details = event.detail;
+    if (!details) return;
+
+    const { fileKey, fileName, metaKey, onSuccess, onError } = details;
+    const component = event.target;
+
+    try {
+      const blob = await this._api.downloadFile(
+        this.postType,
+        this.postId,
+        metaKey,
+        fileKey
+      );
+
+      // Create download link and trigger download
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName || 'download';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (error) {
+      component.setAttribute('error', error.message || 'Download failed');
+      if (onError) {
+        onError(error);
+      }
     }
   }
 

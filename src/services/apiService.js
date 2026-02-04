@@ -582,5 +582,38 @@ export default class ApiService {
       new_name: newName,
     });
   }
+
+  /**
+   * Download a file from storage via proxy endpoint
+   * @param {string} postType
+   * @param {number} postId
+   * @param {string} metaKey
+   * @param {string} fileKey
+   * @returns {Promise<Blob>} File blob for download
+   */
+  async downloadFile(postType, postId, metaKey, fileKey) {
+    const url = `${this.apiRoot}dt-posts/v2/${postType}/${postId}/storage_download`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': this.nonce,
+      },
+      body: JSON.stringify({
+        meta_key: metaKey,
+        file_key: fileKey,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Download failed' }));
+      throw new Error(error.message || 'Download failed');
+    }
+
+    // Return blob for download handling
+    return await response.blob();
+  }
   // endregion
 }

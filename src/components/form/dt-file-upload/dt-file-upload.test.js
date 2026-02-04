@@ -339,4 +339,210 @@ describe('dt-file-upload', () => {
       expect(icon).to.equal('mdi:override');
     });
   });
+
+  describe('Download Functionality', () => {
+    it('renders download button when downloadEnabled is true and file has URL', async () => {
+      const value = [
+        {
+          key: 'file1.jpg',
+          name: 'photo.jpg',
+          url: 'https://example.com/photo.jpg',
+        },
+      ];
+      const el = await fixture(
+        html`<dt-file-upload .value=${JSON.stringify(value)} download-enabled></dt-file-upload>`,
+      );
+      await el.updateComplete;
+      const downloadButton = el.shadowRoot.querySelector('.download');
+      expect(downloadButton).to.exist;
+    });
+
+    it('does not render download button when downloadEnabled is false', async () => {
+      const value = [
+        {
+          key: 'file1.jpg',
+          name: 'photo.jpg',
+          url: 'https://example.com/photo.jpg',
+        },
+      ];
+      const el = await fixture(
+        html`<dt-file-upload .value=${JSON.stringify(value)} .downloadEnabled=${false}></dt-file-upload>`,
+      );
+      await el.updateComplete;
+      const downloadButton = el.shadowRoot.querySelector('.download');
+      expect(downloadButton).to.not.exist;
+    });
+
+    it('does not render download button when file has no URL', async () => {
+      const value = [
+        {
+          key: 'file1.jpg',
+          name: 'photo.jpg',
+        },
+      ];
+      const el = await fixture(
+        html`<dt-file-upload .value=${JSON.stringify(value)} download-enabled></dt-file-upload>`,
+      );
+      await el.updateComplete;
+      const downloadButton = el.shadowRoot.querySelector('.download');
+      expect(downloadButton).to.not.exist;
+    });
+
+    it('dispatches dt:download-file event in API mode', async () => {
+      const value = [
+        {
+          key: 'file1.jpg',
+          name: 'photo.jpg',
+          url: 'https://example.com/photo.jpg',
+        },
+      ];
+      const el = await fixture(
+        html`<dt-file-upload
+          .value=${JSON.stringify(value)}
+          download-enabled
+          post-type="contacts"
+          post-id="123"
+          meta-key="files"
+        ></dt-file-upload>`,
+      );
+      await el.updateComplete;
+
+      let dispatchedEvent = null;
+      el.addEventListener('dt:download-file', (e) => {
+        dispatchedEvent = e;
+      });
+
+      const file = value[0];
+      el._downloadFile(file);
+
+      expect(dispatchedEvent).to.exist;
+      expect(dispatchedEvent.detail.fileKey).to.equal('file1.jpg');
+      expect(dispatchedEvent.detail.fileName).to.equal('photo.jpg');
+      expect(dispatchedEvent.detail.metaKey).to.equal('files');
+      expect(dispatchedEvent.detail.onSuccess).to.be.a('function');
+      expect(dispatchedEvent.detail.onError).to.be.a('function');
+    });
+
+    it('creates anchor and triggers download in standalone mode', async () => {
+      const value = [
+        {
+          key: 'file1.jpg',
+          name: 'photo.jpg',
+          url: 'https://example.com/photo.jpg',
+        },
+      ];
+      const el = await fixture(
+        html`<dt-file-upload .value=${JSON.stringify(value)} download-enabled></dt-file-upload>`,
+      );
+      await el.updateComplete;
+
+      // Mock document.createElement and appendChild
+      const createdAnchors = [];
+      const originalCreateElement = document.createElement.bind(document);
+      document.createElement = (tagName) => {
+        if (tagName === 'a') {
+          const anchor = originalCreateElement('a');
+          anchor.click = () => {
+            createdAnchors.push(anchor);
+          };
+          return anchor;
+        }
+        return originalCreateElement(tagName);
+      };
+
+      const file = value[0];
+      el._downloadFile(file);
+
+      expect(createdAnchors.length).to.equal(1);
+      expect(createdAnchors[0].href).to.equal('https://example.com/photo.jpg');
+      expect(createdAnchors[0].download).to.equal('photo.jpg');
+      expect(createdAnchors[0].target).to.equal('_blank');
+
+      // Restore original
+      document.createElement = originalCreateElement;
+    });
+
+    it('uses standalone mode when required parameters are missing', async () => {
+      const value = [
+        {
+          key: 'file1.jpg',
+          name: 'photo.jpg',
+          url: 'https://example.com/photo.jpg',
+        },
+      ];
+      const el = await fixture(
+        html`<dt-file-upload .value=${JSON.stringify(value)} download-enabled></dt-file-upload>`,
+      );
+      await el.updateComplete;
+
+      // Mock document.createElement and appendChild
+      const createdAnchors = [];
+      const originalCreateElement = document.createElement.bind(document);
+      document.createElement = (tagName) => {
+        if (tagName === 'a') {
+          const anchor = originalCreateElement('a');
+          anchor.click = () => {
+            createdAnchors.push(anchor);
+          };
+          return anchor;
+        }
+        return originalCreateElement(tagName);
+      };
+
+      const file = value[0];
+      el._downloadFile(file);
+      await el.updateComplete;
+
+      // In standalone mode, should create anchor and trigger download
+      expect(createdAnchors.length).to.equal(1);
+      expect(createdAnchors[0].href).to.equal('https://example.com/photo.jpg');
+      expect(el.error || '').to.be.empty;
+
+      // Restore original
+      document.createElement = originalCreateElement;
+    });
+
+    it('does nothing when downloadEnabled is false', async () => {
+      const value = [
+        {
+          key: 'file1.jpg',
+          name: 'photo.jpg',
+          url: 'https://example.com/photo.jpg',
+        },
+      ];
+      const el = await fixture(
+        html`<dt-file-upload .value=${JSON.stringify(value)} .downloadEnabled=${false}></dt-file-upload>`,
+      );
+      await el.updateComplete;
+
+      let eventDispatched = false;
+      el.addEventListener('dt:download-file', () => {
+        eventDispatched = true;
+      });
+
+      const file = value[0];
+      el._downloadFile(file);
+      await el.updateComplete;
+
+      expect(eventDispatched).to.be.false;
+      expect(el.error || '').to.be.empty;
+    });
+
+    it('handles file without URL in standalone mode gracefully', async () => {
+      const value = [
+        {
+          key: 'file1.jpg',
+          name: 'photo.jpg',
+        },
+      ];
+      const el = await fixture(
+        html`<dt-file-upload .value=${JSON.stringify(value)} download-enabled></dt-file-upload>`,
+      );
+      await el.updateComplete;
+
+      const file = value[0];
+      // Should not throw
+      expect(() => el._downloadFile(file)).to.not.throw();
+    });
+  });
 });

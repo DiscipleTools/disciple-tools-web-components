@@ -368,6 +368,16 @@ export class DtFileUpload extends DtFormBase {
 
         .error-container {
           margin-top: 1rem;
+          max-width: 100%;
+          overflow: hidden;
+        }
+
+        .error-container .error-text {
+          flex: 1;
+          min-width: 0;
+          overflow-wrap: break-word;
+          word-wrap: break-word;
+          word-break: break-word;
         }
       `,
     ];
@@ -1099,16 +1109,44 @@ export class DtFileUpload extends DtFormBase {
 
   _downloadFile(file) {
     if (!this.downloadEnabled) return;
-    const url = file.url;
-    if (!url) return;
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = file.name || 'download';
-    a.target = '_blank';
-    a.rel = 'noopener';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+
+    if (this._isStandaloneMode()) {
+      // Standalone mode: use direct URL if available
+      const url = file.url;
+      if (!url) return;
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = file.name || 'download';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      return;
+    }
+
+    // API mode: dispatch event for componentService to handle
+    const fileKey = file.key || file;
+    const fileName = file.name || (typeof fileKey === 'string' ? fileKey.split('/').pop() : 'download') || 'download';
+
+    // Dispatch dt:download-file event - componentService will handle the API call
+    const event = new CustomEvent('dt:download-file', {
+      bubbles: true,
+      detail: {
+        fileKey: fileKey,
+        fileName: fileName,
+        metaKey: this.metaKey,
+        onSuccess: () => {
+          // Download triggered successfully
+        },
+        onError: (error) => {
+          console.error('Download error:', error);
+          this.error = error.message || 'Download failed';
+        },
+      },
+    });
+
+    this.dispatchEvent(event);
   }
 
   _validateRequired() {
