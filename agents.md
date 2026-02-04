@@ -208,6 +208,14 @@ export const EnteredValue = {
   - Accessibility (a11y)
 - Add tests for any new features. Ensure they fail before the feature is implemented and pass when the feature is complete and enabled.
 - Add stories to storybook for any new components or features.
+- When testing dispatched events, do not use `oneEvent()` since it can often cause a timeout
+  - Instead, declare `let eventDetail = null;` before the fixture is defined.
+  - In the fixture, listen for the event and set `eventDetail = e.detail;` (e.g. `@change="${e => (eventDetail = e.detail)}"`)
+  - After performing the intended action, test that eventDetail has the expected value.
+    - `expect(eventDetail).to.not.be.null;`
+    - e.g. `expect(eventDetail.newValue).to.have.members(['opt1','opt2']);`
+- Avoid usage of wait timers such as `aTimeout(100)`
+  - Instead, use `await nextFrame()` or `await waitUntil()` to wait for next animation frame or until a condition is met.
 
 ## Useful Patterns
 - **Boolean Attributes**: Always include `{ type: Boolean }` in static properties if the attribute should be a toggle.
