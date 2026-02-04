@@ -4,6 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { when } from 'lit/directives/when.js';
 import { DtText } from '../dt-text/dt-text.js';
 import '../../icons/dt-icon.js';
+import '../../layout/dt-phone-modal/dt-phone-modal.js';
 
 /**
  * Field to edit multiple text values with ability to add/remove values.
@@ -145,6 +146,22 @@ export class DtMultiText extends DtText {
         .field-container:has(.btn-remove) ~ .icon-overlay {
           inset-inline-end: 5.5rem;
         }
+
+        .input-addon.btn-phone-open {
+          color: var(--primary-color, #0073aa);
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          white-space: nowrap;
+          aspect-ratio: auto;
+          &:disabled {
+            color: var(--dt-text-placeholder-color, #999);
+          }
+          &:hover:not([disabled]) {
+            background-color: var(--primary-color, #0073aa);
+            color: var(--dt-multi-text-button-hover-color, #ffffff);
+          }
+        }
       `,
     ];
   }
@@ -253,7 +270,26 @@ export class DtMultiText extends DtText {
     }
   }
 
+  _openPhoneModal(e) {
+    // Use 'this' to comply with class method expectations
+    const { phoneNumber } = e.currentTarget.dataset;
+    if (phoneNumber) {
+      // Get or create the phone modal
+      let modal = document.querySelector('dt-phone-modal');
+      if (!modal) {
+        modal = document.createElement('dt-phone-modal');
+        document.body.appendChild(modal);
+      }
+      // Optionally, store a reference to the modal on this instance if needed
+      this._phoneModal = modal;
+      modal.open(phoneNumber);
+    }
+  }
+
   _inputFieldTemplate(item, itemCount) {
+    const isPhone = this.type === 'phone' || this.type === 'phone-intl';
+    const hasPhoneValue = isPhone && item.value && item.value.trim() !== '';
+
     return html`
       <div class="field-container">
         <input
@@ -270,6 +306,21 @@ export class DtMultiText extends DtText {
           novalidate
         />
 
+        ${when(
+          hasPhoneValue,
+          () => html`
+            <button
+              class="input-addon btn-phone-open"
+              @click=${this._openPhoneModal}
+              data-phone-number="${item.value}"
+              ?disabled=${this.disabled}
+              title="Send a message"
+              aria-label="Send a message to ${item.value}"
+            >
+              <dt-icon icon="mdi:phone-outgoing"></dt-icon> Open
+            </button>
+          `,
+        )}
         ${when(
           itemCount > 1 || item.key || item.value,
           () => html`

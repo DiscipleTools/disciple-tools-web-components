@@ -22,7 +22,7 @@ export default {
     placeholder: { control: 'text' },
     type: {
       control: 'select',
-      options: ['text', 'password', 'email', 'number', 'tel', 'url'],
+      options: ['text', 'password', 'email', 'number', 'tel', 'url', 'phone'],
       defaultValue: 'text',
     },
     disabled: { control: 'boolean' },
@@ -175,6 +175,24 @@ Required.args = {
 export const password = Template.bind({});
 password.args = {
   type: 'password',
+};
+
+export const phone = Template.bind({});
+phone.args = {
+  type: 'phone',
+  label: 'Phone Numbers',
+  value: [
+    {
+      verified: false,
+      value: '+1-555-123-4567',
+      key: 'phone_1',
+    },
+    {
+      verified: false,
+      value: '19995551234',
+      key: 'phone_2',
+    },
+  ],
 };
 
 export const requiredCustomMessage = Template.bind({});
