@@ -171,7 +171,7 @@ export class DtMultiTextGroups extends DtMultiText {
 
   _handleButtonBlur(e) {
     if (
-      !e.relatedTarget
+      !e.relatedTarget?.id.includes(`group-`)
     ) {
       this.open = false;
     }
@@ -293,6 +293,7 @@ export class DtMultiTextGroups extends DtMultiText {
       <li tabindex="-1">
         <button
           value="${group.id}"
+          id="group-${group.id}"
           type="button"
           data-label="${group.label}"
           @click="${() => this._addItem(group)}"
