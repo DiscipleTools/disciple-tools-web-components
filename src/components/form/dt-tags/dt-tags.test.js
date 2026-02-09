@@ -1,11 +1,5 @@
 import { html } from 'lit';
-import {
-  fixture,
-  expect,
-  aTimeout,
-  nextFrame,
-  waitUntil,
-} from '@open-wc/testing';
+import { fixture, expect, nextFrame, waitUntil } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-tags.js';
@@ -35,11 +29,6 @@ const optionsWithLabel = [
     label: 'Option 3',
   },
 ];
-async function wait(ms) {
-  return new Promise(r => {
-    setTimeout(r, ms);
-  });
-}
 
 async function clickOption(el, id) {
   const input = el.shadowRoot.querySelector('input');
@@ -248,7 +237,7 @@ describe('dt-tags', () => {
       `.selected-option button[data-value=opt1]`,
     );
     optionBtn.click();
-    await aTimeout(100);
+    await nextFrame();
 
     expect(el.value).to.deep.include('opt2');
     expect(el.value).to.deep.include('-opt1');
@@ -468,7 +457,6 @@ describe('dt-tags', () => {
     const input = el.shadowRoot.querySelector('input');
     input.focus();
     await sendKeys({ type: 'new' });
-    await wait(100);
     await sendKeys({ press: 'ArrowDown' });
     await sendKeys({ press: 'Enter' });
 

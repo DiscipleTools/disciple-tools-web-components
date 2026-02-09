@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, aTimeout, nextFrame } from '@open-wc/testing';
+import { fixture, expect, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-single-select.js';
@@ -85,10 +85,8 @@ describe('dt-single-select', () => {
     const select = el.shadowRoot.querySelector('select');
 
     select.focus();
-    sendKeys({ type: 'Option 1' });
+    await sendKeys({ type: 'Option 1' });
     select.dispatchEvent(new Event('change'));
-
-    await aTimeout(100);
 
     expect(select.value).to.equal('opt1');
     expect(el.value).to.equal('opt1');

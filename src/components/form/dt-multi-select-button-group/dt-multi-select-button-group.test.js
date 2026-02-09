@@ -27,12 +27,6 @@ const options = [
   },
 ];
 
-async function wait(ms) {
-  return new Promise(r => {
-    setTimeout(r, ms);
-  });
-}
-
 describe('dt-multi-select-button-group', () => {
   it('passes the a11y audit', async () => {
     const el = await fixture(
@@ -117,7 +111,7 @@ describe('dt-multi-select-button-group', () => {
     const button1 = el.shadowRoot.querySelector('dt-button[value=button1]');
     button1.focus();
     button1.click();
-    await wait(100);
+    await nextFrame();
     expect(button1).to.have.attribute('context', 'success');
     expect(el.value).to.eql(['button1']);
   });
@@ -130,12 +124,12 @@ describe('dt-multi-select-button-group', () => {
     );
     const input = el.shadowRoot.querySelector('dt-button[value=button1]');
     input.focus();
-    await wait(50); // wait for UI update
+    await nextFrame();
 
     await sendKeys({ press: 'Tab' }); // Move focus to the next button
     await sendKeys({ press: 'Space' }); // Select the focused button
 
-    await wait(100);
+    await nextFrame();
 
     expect(
       el.shadowRoot.querySelector('dt-button[value=button1]'),
@@ -155,12 +149,12 @@ describe('dt-multi-select-button-group', () => {
     );
     const input = el.shadowRoot.querySelector('dt-button[value=button1]');
     input.focus();
-    await wait(50); // wait for UI update
+    await nextFrame();
 
     await sendKeys({ press: 'Tab' }); // Move focus to the next button
     await sendKeys({ press: 'Enter' }); // Select the focused button
 
-    await wait(100);
+    await nextFrame();
 
     expect(
       el.shadowRoot.querySelector('dt-button[value=button1]'),
@@ -181,7 +175,7 @@ describe('dt-multi-select-button-group', () => {
     const button1 = el.shadowRoot.querySelector('dt-button[value=button1]');
     button1.focus();
     button1.click();
-    await wait(100);
+    await nextFrame();
     expect(el).to.have.attr('value', JSON.stringify(['button1']));
   });
 
@@ -195,7 +189,7 @@ describe('dt-multi-select-button-group', () => {
     const button1 = el.shadowRoot.querySelector('dt-button[value=button1]');
     button1.focus();
     button1.click();
-    await wait(100);
+    await nextFrame();
 
     expect(el.value).to.contain('button2');
     expect(el.value).to.contain('-button1');
@@ -211,7 +205,7 @@ describe('dt-multi-select-button-group', () => {
     const button1 = el.shadowRoot.querySelector('dt-button[value=button1]');
     button1.focus();
     button1.click();
-    await wait(100);
+    await nextFrame();
 
     expect(el.value).to.contain('button1');
     expect(el.value).to.not.contain('-button1');
