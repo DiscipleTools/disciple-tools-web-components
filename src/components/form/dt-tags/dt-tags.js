@@ -12,6 +12,8 @@ export class DtTags extends DtMultiSelect {
   static get properties() {
     return {
       ...super.properties,
+      /** Sent with dt:get-data property to indicate which post type to fetch options for. */
+      postType: { type: String, reflect: false },
       /** Indicates if new items can be added to the list that aren't in the options */
       allowAdd: { type: Boolean },
     };
