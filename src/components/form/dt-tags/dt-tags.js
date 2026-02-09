@@ -25,15 +25,27 @@ export class DtTags extends DtMultiSelect {
         .selected-option a:active,
         .selected-option a:visited {
           text-decoration: none;
-          color: var(--dt-tags-selected-link-color, var(--dt-color-primary, #3f729b));
+          color: var(
+            --dt-tags-selected-link-color,
+            var(--primary-color, #3f729b)
+          );
         }
         .selected-option a[href='#'],
         .selected-option a[href=''] {
-          color: var(--dt-tags-selected-text-color, var(--dt-multi-select-text-color, #0a0a0a));
+          color: var(
+            --dt-tags-selected-text-color,
+            var(
+              --dt-multi-select-text-color,
+              var(--dt-form-text-color, #0a0a0a)
+            )
+          );
           pointer-events: none;
         }
         .invalid {
-          border-color: var(--dt-tags-invalid-border-color, var(--dt-form-border-color-alert, var(--alert-color)));
+          border-color: var(
+            --dt-tags-invalid-border-color,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
 
         .input-group {
@@ -50,15 +62,31 @@ export class DtTags extends DtMultiSelect {
         }
 
         .input-addon.btn-add {
-          background-color: var(--dt-tags-add-button-background-color, var(--dt-form-background-color, #fefefe));
-          border: 1px solid var(--dt-tags-add-button-border-color, var(--dt-form-border-color, #fefefe));
+          background-color: var(
+            --dt-tags-add-button-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(
+              --dt-tags-add-button-border-color,
+              var(--dt-form-border-color, #fefefe)
+            );
           width: 37.5px;
           &:disabled {
-            color: var(--dt-tags-add-button-disabled-color, var(--dt-form-placeholder-color, #999));
+            color: var(
+              --dt-tags-add-button-disabled-color,
+              var(--dt-form-placeholder-color, #999)
+            );
           }
           &:hover:not([disabled]) {
-            background-color: var(--dt-tags-add-button-hover-background-color, var(--dt-color-success, #cc4b37));
-            color: var(--dt-tags-add-button-hover-color, var(--dt-form-text-color-light, #ffffff));
+            background-color: var(
+              --dt-tags-add-button-hover-background-color,
+              var(--success-color, #4caf50)
+            );
+            color: var(
+              --dt-tags-add-button-hover-color,
+              var(--dt-form-text-color-light, #ffffff)
+            );
           }
         }
         .input-group.allowAdd .icon-overlay {

@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, nextFrame } from '@open-wc/testing';
+import { fixture, expect, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-multi-select-button-group.js';
@@ -229,48 +229,46 @@ describe('dt-multi-select-button-group', () => {
     expect(label.hasAttribute('private')).to.be.true;
   });
 
-  it('emits change event with correct details', async () => {
+  it('emits change event with correct details - item added', async () => {
     let eventDetail = null;
     const el = await fixture(
       html`<dt-multi-select-button-group
         name="test-field"
-        .value=${['opt1']}
-        .options=${[
-          { id: 'opt1', label: 'Option 1' },
-          { id: 'opt2', label: 'Option 2' },
-        ]}
+        .value=${['button1']}
+        .options=${options}
         @change=${e => {
           eventDetail = e.detail;
         }}
       ></dt-multi-select-button-group>`,
     );
 
-    const button2 = el.shadowRoot.querySelector('dt-button[value=opt2]');
+    const button2 = el.shadowRoot.querySelector('dt-button[value=button2]');
     button2.click();
 
     expect(eventDetail).to.not.be.null;
     expect(eventDetail.field).to.equal('test-field');
-    expect(eventDetail.oldValue).to.eql(['opt1']);
-    expect(eventDetail.newValue).to.eql(['opt1', 'opt2']);
+    expect(eventDetail.oldValue).to.eql(['button1']);
+    expect(eventDetail.newValue).to.eql(['button1', 'button2']);
   });
 
-  it('triggers change event - item removed', async () => {
+  it('emits change event with correct details - item removed', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-multi-select-button-group
-        name="custom-name"
-        .value=${['button1']}
+        name="test-field"
+        .value=${['button1', 'button2']}
         .options=${options}
+        @change=${e => {
+          eventDetail = e.detail;
+        }}
       ></dt-multi-select-button-group>`,
     );
-    setTimeout(() => {
-      const button1 = el.shadowRoot.querySelector('dt-button[value=button1]');
-      button1.focus();
-      button1.click();
-    });
-    const { detail } = await oneEvent(el, 'change');
+    const button1 = el.shadowRoot.querySelector('dt-button[value=button1]');
+    button1.click();
 
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.oldValue).to.eql(['button1']);
-    expect(detail.newValue).to.eql(['-button1']);
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('test-field');
+    expect(eventDetail.oldValue).to.eql(['button1', 'button2']);
+    expect(eventDetail.newValue).to.have.members(['-button1', 'button2']);
   });
 });

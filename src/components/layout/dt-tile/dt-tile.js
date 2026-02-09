@@ -13,13 +13,13 @@ export class DtTile extends DtBase {
       }
 
       section {
-        background-color: var(--dt-tile-background-color, #fefefe);
-        border-top: var(--dt-tile-border-top, 1px solid #cecece);
-        border-bottom: var(--dt-tile-border-bottom, 1px solid #cecece);
-        border-right: var(--dt-tile-border-right, 1px solid #cecece);
-        border-left: var(--dt-tile-border-left, 1px solid #cecece);
+        background-color: var(--dt-tile-background-color, var(--surface-1, #fefefe));
+        border-top: var(--dt-tile-border-top, 1px solid var(--dt-tile-border-color, var(--border-color));
+        border-bottom: var(--dt-tile-border-bottom, 1px solid var(--dt-tile-border-color, var(--border-color)));
+        border-right: var(--dt-tile-border-right, 1px solid var(--dt-tile-border-color, var(--border-color)));
+        border-left: var(--dt-tile-border-left, 1px solid var(--dt-tile-border-color, var(--border-color)));
         border-radius: var(--dt-tile-border-radius, 10px);
-        box-shadow: var(--dt-tile-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
+        box-shadow: var(--dt-tile-box-shadow, var(--shadow-0));
         padding: 1rem;
         margin: var(--dt-tile-margin, 0);
       }
@@ -34,7 +34,7 @@ export class DtTile extends DtBase {
       }
 
       .section-header {
-        color: var(--dt-tile-header-color, #3f729b);
+        color: var(--dt-tile-header-color, var(--primary-color));
         font-size: 1.5rem;
         display: flex;
         text-transform: var(--dt-tile-header-text-transform, capitalize);

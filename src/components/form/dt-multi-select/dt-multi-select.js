@@ -94,11 +94,11 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           border: 1px solid
             var(
               --dt-multi-select-tag-border-color,
-              var(--dt-color-primary-light, #c2e0ff)
+              var(--primary-color-light-1, #c2e0ff)
             );
           background-color: var(
             --dt-multi-select-tag-background-color,
-            var(--dt-color-primary-light, #c2e0ff)
+            var(--primary-color-light-0, #ecf5fc)
           );
 
           display: flex;
@@ -134,7 +134,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           border-inline-start: 1px solid
             var(
               --dt-multi-select-tag-border-color,
-              var(--dt-color-primary-light, #c2e0ff)
+              var(--primary-color-light-1, #c2e0ff)
             );
           color: var(
             --dt-multi-select-text-color,
@@ -228,7 +228,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
           cursor: pointer;
           background: var(
             --dt-multi-select-option-hover-background,
-            var(--dt-form-option-hover-background, #f5f5f5)
+            var(--dt-form-option-hover-background, var(--surface-2))
           );
         }
 

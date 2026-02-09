@@ -76,7 +76,7 @@ npm run localize:build      # Build localized JS templates from XLIFF
 - Keep markup clean and readable
 
 ### CSS Preferences
-- Use CSS variables from base classes (`--dt-color-primary`) instead of hard-coded values.
+- Use CSS variables from base classes (`--primary-color`) and base CSS file instead of hard-coded values.
 - For each component, inherit CSS variables from its base class (`DtFormBase`) and create additional CSS variables for component-specific styles 
   - Example: in `dt-text`, a border color should have a component-specific variable that falls back to the default: `var(--dt-text-border-color, var(--dt-form-border-color));`
 - When editing an existing component, update the CSS variables according to the above 2 guidelines.

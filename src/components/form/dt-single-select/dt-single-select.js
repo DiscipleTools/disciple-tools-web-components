@@ -27,7 +27,10 @@ export class DtSingleSelect extends DtFormBase {
               transparent 50%,
               var(
                   --dt-single-select-icon-color,
-                  var(--dt-single-select-text-color, #0a0a0a)
+                  var(
+                    --dt-single-select-text-color,
+                    var(--dt-form-text-color, #0a0a0a)
+                  )
                 )
                 50%
             ),
@@ -35,7 +38,10 @@ export class DtSingleSelect extends DtFormBase {
               135deg,
               var(
                   --dt-single-select-icon-color,
-                  var(--dt-single-select-text-color, #0a0a0a)
+                  var(
+                    --dt-single-select-text-color,
+                    var(--dt-form-text-color, #0a0a0a)
+                  )
                 )
                 50%,
               transparent 50%
@@ -58,7 +64,10 @@ export class DtSingleSelect extends DtFormBase {
             --dt-single-select-border-radius,
             var(--dt-form-border-radius, 0)
           );
-          color: var(--dt-single-select-text-color, #0a0a0a);
+          color: var(
+            --dt-single-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           font-family: var(--font-family, sans-serif);
           font-size: 1rem;
           font-weight: 300;
@@ -100,7 +109,10 @@ export class DtSingleSelect extends DtFormBase {
           );
           border: none;
           border-radius: 10px;
-          color: var(--dt-single-select-text-color-inverse, #fff);
+          color: var(
+            --dt-single-select-text-color-inverse,
+            var(--dt-form-text-color-inverse, #fff)
+          );
           font-weight: 700;
           text-shadow: rgb(0 0 0 / 45%) 0 0 6px;
         }
