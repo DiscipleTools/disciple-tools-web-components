@@ -33,28 +33,24 @@ Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slo
 }
 ```
 
-## CSS Properties / Theming
+## CSS Custom Properties
 
 Inherits custom properties from [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties).
 
 | Custom Properties   | Default Value   |
 |---------------------|-----------------|
-| `--dt-form-text-color`  | `#000`  |
-| `--dt-form-background-color`  | `#fff` |
-| `--dt-form-border-color`  | `#ccc`   |
-| `--dt-form-input-box-shadow`  | `inset 0 1px 2px hsl(0deg 0% 4% / 10%)`   |
+| `--dt-number-text-color`  | `var(--dt-form-text-color, #0a0a0a)`  |
+| `--dt-number-background-color`  | `var(--dt-form-background-color, #fefefe)` |
+| `--dt-number-border-color`  | `var(--dt-form-border-color, #cecece)`   |
+| `--dt-number-border-radius`  | `var(--dt-form-border-radius, 0)`   |
+| `--dt-number-box-shadow`  | `var(--dt-form-input-box-shadow, inset 0 1px 2px hsl(0deg 0% 4% / 10%))`   |
+| `--dt-number-disabled-background-color`   | `var(--dt-form-disabled-background-color, #e6e6e6)`   |
+| `--dt-number-border-color-alert`  | `var(--dt-form-border-color-alert, var(--alert-color))`   |
 | `--dt-form-padding`   | `0.5333333333rem`   |
 | `--dt-form-transition` | `box-shadow .5s,border-color .25s ease-in-out`   |
-| `--dt-form-disabled-background-color`   | `#e6e6e6`   |
-| `--dt-form-invalid-border-color` | `#dc3545`  |
-| `--dt-number-box-shadow` | Fallback to `--dt-form-input-box-shadow` |
-| `--dt-number-disabled-background-color` | Fallback to `--dt-form-disabled-background-color` |
 
 ## Parts
 
 | Part Name | Description |
 |-----------|-------------|
 | `input` | The input element within the shadow DOM |
-
-## Stories
-<Stories title="" />

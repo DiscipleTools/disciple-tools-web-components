@@ -31,13 +31,17 @@ export class DtUsersConnection extends DtTags {
           font-style: normal;
         }
 
+        li button .avatar {
+          margin-inline-end: 1ch;
+        }
+
         li button svg {
           width: 20px;
           height: auto;
           margin-bottom: -4px;
         }
         li button svg use {
-          fill: var(--dt-connection-icon-fill, var(--primary-color));
+          fill: var(--dt-users-connection-icon-fill, var(--primary-color));
         }
       `,
     ];
@@ -62,10 +66,10 @@ export class DtUsersConnection extends DtTags {
     });
 
     // update value in this component
-    if (this.value && this.value.length && !this.single) {
+    if (this.value && this.value.length) {
       // If value is array of objects, check for same value with `delete` property
       let foundPrevious = false;
-      const newVal = this.value.map(i => {
+      let newVal = this.value.map(i => {
         const val = {
           ...i,
         };
@@ -73,12 +77,15 @@ export class DtUsersConnection extends DtTags {
           delete val.delete;
           foundPrevious = true;
         } else if (this.single && !i.delete) {
-          val.delete = true
+          val.delete = true;
         }
         return val;
       });
       if (!foundPrevious) {
         newVal.push(value);
+      }
+      if (this.single) {
+        newVal = newVal.filter(i => !i.delete);
       }
       this.value = newVal;
     } else {
@@ -152,15 +159,15 @@ export class DtUsersConnection extends DtTags {
       });
 
       this.value = (this.value || []).map(i => {
-      const val = {
-        ...i,
-      };
-      // when adding a new connection via AddNew, the ID was set as the label (string)
-      // for pre-existing selections, the ID is a number (int), so it would fail
-      if (i.id.toString() === e.target.dataset.value) {
-        val.delete = true;
-      }
-      return val;
+        const val = {
+          ...i,
+        };
+        // when adding a new connection via AddNew, the ID was set as the label (string)
+        // for pre-existing selections, the ID is a number (int), so it would fail
+        if (i.id.toString() === e.target.dataset.value) {
+          val.delete = true;
+        }
+        return val;
       });
       event.detail.newValue = this.value;
 
@@ -191,7 +198,7 @@ export class DtUsersConnection extends DtTags {
           (!this.query ||
             opt.label
               .toLocaleLowerCase()
-              .includes(this.query.toLocaleLowerCase()))
+              .includes(this.query.toLocaleLowerCase())),
       );
     } else if (this.open || this.canUpdate) {
       // Only run this filtering if the list is open.
@@ -211,7 +218,7 @@ export class DtUsersConnection extends DtTags {
             self.loading = false;
             // filter out selected values from list
             self.filteredOptions = result.filter(
-              opt => !selectedValues.includes(opt.id)
+              opt => !selectedValues.includes(opt.id),
             );
           },
           onError: error => {
@@ -234,9 +241,7 @@ export class DtUsersConnection extends DtTags {
           <div class="selected-option">
             <a
               href="${opt.link}"
-              style="border-inline-start-color: ${opt.status
-                ? opt.status
-                : ''}"
+              style="border-inline-start-color: ${opt.status ? opt.status : ''}"
               ?disabled="${this.disabled}"
               title="${opt.label}"
               >${opt.label}</a
@@ -249,11 +254,16 @@ export class DtUsersConnection extends DtTags {
               x
             </button>
           </div>
-        `
+        `,
       );
   }
 
   _renderOption(opt, idx) {
+    const avatar = opt.avatar
+      ? html`<span class="avatar"
+          ><img src="${opt.avatar}" alt="${opt.label}"
+        /></span>`
+      : html`<span class="avatar"></span>`;
     return html`
       <li tabindex="-1" style="border-inline-start-color:${opt.status}">
         <button
@@ -270,7 +280,7 @@ export class DtUsersConnection extends DtTags {
             ? 'active'
             : ''}"
         >
-          <span class="avatar"><img src="${opt.avatar}" alt="${opt.label}"/></span> &nbsp;
+          ${avatar}
           <span class="connection-id">${opt.label}</span>
         </button>
       </li>

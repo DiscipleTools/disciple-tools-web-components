@@ -11,11 +11,18 @@ export class DtDate extends DtFormBase {
       ...super.styles,
       css`
         input {
-          color: var(--dt-form-text-color, #000);
+          color: var(--dt-date-text-color, var(--dt-form-text-color, #000));
           appearance: none;
-          background-color: var(--dt-form-background-color, #cecece);
-          border: 1px solid var(--dt-form-border-color, #cacaca);
-          border-radius: var(--dt-date-border-radius, 0);
+          background-color: var(
+            --dt-date-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(--dt-date-border-color, var(--dt-form-border-color, #cacaca));
+          border-radius: var(
+            --dt-date-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-date-box-shadow,
             var(
@@ -82,15 +89,17 @@ export class DtDate extends DtFormBase {
           align-items: center;
           aspect-ratio: 1/1;
           padding: 10px;
-          border: solid 1px gray;
           border-collapse: collapse;
           background-color: var(
             --dt-date-background-color,
-            var(--dt-form-background-color, buttonface)
+            var(--dt-form-background-color, #fefefe)
           );
           border: 1px solid
-            var(--dt-date-border-color, var(--dt-form-border-color, #fefefe));
-          border-radius: var(--dt-date-border-radius, 0);
+            var(--dt-date-border-color, var(--dt-form-border-color, #cacaca));
+          border-radius: var(
+            --dt-date-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-date-box-shadow,
             var(
@@ -153,13 +162,14 @@ export class DtDate extends DtFormBase {
   }
 
   updateTimestamp(value) {
-    const timestampMilliseconds = new Date(value).getTime();
+    const timestampMilliseconds = value ? new Date(value).getTime() : 0;
     const timestampSecond = timestampMilliseconds / 1000;
     const event = new CustomEvent('change', {
+      bubbles: true,
       detail: {
         field: this.name,
-        oldValue: this.timestamp,
-        newValue: timestampSecond,
+        oldValue: this.value,
+        newValue: value,
       },
     });
 

@@ -48,11 +48,24 @@ export default {
   title: 'Components/Form/Multi Select',
   component: 'dt-multi-select',
   argTypes: {
+    id: { control: 'text' },
     name: { control: 'text' },
-    value: { control: 'text' },
+    label: { control: 'text' },
+    value: { control: 'object' },
+    options: { control: 'object' },
     placeholder: { control: 'text' },
+    disabled: { control: 'boolean' },
+    required: { control: 'boolean' },
+    requiredMessage: { control: 'text' },
+    icon: { control: 'text' },
+    iconAltText: { control: 'text' },
+    private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
+    error: { control: 'text' },
+    open: { control: 'boolean' },
+    slot: { control: 'text' },
     ...argTypes,
   },
   args: {
@@ -63,17 +76,17 @@ export default {
   },
   render: args => {
     const {
+      id = 'name',
       name = 'field-name',
       label = 'Field Name',
       options,
-      placeholder,
-      value,
+      placeholder = 'Select Options',
+      value = [],
       disabled = false,
       required = false,
       requiredMessage,
       icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
       iconAltText = 'Icon Alt Text',
-      isPrivate,
       privateLabel,
       loading = false,
       saved = false,
@@ -84,22 +97,23 @@ export default {
     } = args;
     return html`
       <dt-multi-select
-        name="${name}"
-        label=${label}
-        placeholder="${placeholder}"
-        options="${JSON.stringify(options)}"
-        value="${JSON.stringify(value)}"
+        id=${ifDefined(id)}
+        name=${ifDefined(name)}
+        label=${ifDefined(label)}
+        placeholder=${ifDefined(placeholder)}
+        .options=${options}
+        .value=${value}
         ?disabled=${disabled}
         ?required=${required}
-        requiredMessage=${requiredMessage}
-        icon="${icon}"
-        iconAltText="${iconAltText}"
-        ?private=${isPrivate}
-        privateLabel="${privateLabel}"
-        ?loading="${loading}"
-        ?saved="${saved}"
-        error="${ifDefined(error)}"
-        .open="${open}"
+        requiredMessage=${ifDefined(requiredMessage)}
+        icon=${ifDefined(icon)}
+        iconAltText=${ifDefined(iconAltText)}
+        ?private=${args.private}
+        privateLabel=${ifDefined(privateLabel)}
+        ?loading=${loading}
+        ?saved=${saved}
+        error=${ifDefined(error)}
+        .open=${open}
         @change=${onChange}
       >
         ${slot}
@@ -181,6 +195,15 @@ export const Disabled = {
   },
 };
 
+export const PrivateField = {
+  args: {
+    private: true,
+    value: ['opt2'],
+    options: basicOptions,
+    privateLabel: 'This is a custom tooltip',
+  },
+};
+
 export const Loading = {
   args: {
     value: ['opt2'],
@@ -200,6 +223,14 @@ export const Error = {
   args: {
     options: basicOptions,
     error: 'Custom error message',
+  },
+};
+
+export const ErrorSlot = {
+  args: {
+    options: basicOptions,
+    slot: 'ErrorSlot',
+    error: '[Should show link here]',
   },
 };
 

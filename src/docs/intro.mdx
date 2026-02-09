@@ -59,13 +59,13 @@ See [HTML Sample Documentation](https://github.com/DiscipleTools/disciple-tools-
 
 #### CDN
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.7.0/styles/light.css" type="text/css" media="all">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.7.0/styles/style.css" type="text/css" media="all">
 <script src="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.7.0/dist/index.js"></script>
 ```
 
 #### Local Include
 ```html
-<link rel="stylesheet" href="/path/to/@disciple.tools/web-components/src/styles/light.css" type="text/css" media="all">
+<link rel="stylesheet" href="/path/to/@disciple.tools/web-components/src/styles/style.css" type="text/css" media="all">
 <script src="/path/to/@disciple.tools/web-components/dist/index.js"></script>
 ```
 
@@ -83,7 +83,7 @@ you'll need to include the script files.
 ```php
 
 $dtwc_version = '0.7.0';
-wp_enqueue_style( 'dt-web-components-css', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/styles/light.css", [], $dtwc_version );
+wp_enqueue_style( 'dt-web-components-css', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/styles/style.css", [], $dtwc_version );
 wp_enqueue_script( 'dt-web-components-js', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/dist/index.js", $dtwc_version );
 
 ```
@@ -98,7 +98,7 @@ wp_enqueue_script( 'dt-web-components-js',
   filemtime( plugin_dir_path( __FILE__ ) . $path )
 );
 
-$css_path = '../path/to/components/src/styles/light.css';
+$css_path = '../path/to/components/src/styles/style.css';
 wp_enqueue_style( 'dt-web-components-css',
   plugin_dir_url( __FILE__ ) . $css_path,
   null,
