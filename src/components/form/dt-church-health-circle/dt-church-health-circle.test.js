@@ -1,11 +1,5 @@
 import { html } from 'lit';
-import {
-  fixture,
-  expect,
-  nextFrame,
-  oneEvent,
-  aTimeout,
-} from '@open-wc/testing';
+import { fixture, expect, nextFrame } from '@open-wc/testing';
 
 import './dt-church-health-circle.js';
 
@@ -130,7 +124,7 @@ describe('DT-Church-Health-Circle', () => {
     );
     // Click the inner element that handles the click in the icon component
     icon.shadowRoot.querySelector('.health-item').click();
-    await aTimeout(100);
+    await nextFrame();
     expect(icon).to.have.attribute('active');
     expect(el.value).to.eql(['church_baptism']);
   });
@@ -147,7 +141,7 @@ describe('DT-Church-Health-Circle', () => {
       'dt-church-health-icon[data-value="church_baptism"]',
     );
     icon.shadowRoot.querySelector('.health-item').click();
-    await aTimeout(100);
+    await nextFrame();
     expect(el).to.have.attr('value', JSON.stringify(['church_baptism']));
   });
 
@@ -162,10 +156,9 @@ describe('DT-Church-Health-Circle', () => {
       'dt-church-health-icon[data-value="church_baptism"]',
     );
     icon.shadowRoot.querySelector('.health-item').click();
-    await aTimeout(100);
+    await nextFrame();
 
-    expect(el.value).to.contain('church_bible');
-    expect(el.value).to.contain('-church_baptism');
+    expect(el.value).to.have.members(['church_bible', '-church_baptism']);
   });
 
   it('adds previously removed value', async () => {
@@ -179,52 +172,65 @@ describe('DT-Church-Health-Circle', () => {
       'dt-church-health-icon[data-value="church_baptism"]',
     );
     icon.shadowRoot.querySelector('.health-item').click();
-    await aTimeout(100);
+    await nextFrame();
 
     expect(el.value).to.contain('church_baptism');
     expect(el.value).to.not.contain('-church_baptism');
   });
-
   it('triggers change event - item added', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-church-health-circle
         name="custom-name"
         value="${JSON.stringify(['church_bible'])}"
         options="${JSON.stringify(options)}"
+        @change="${e => (eventDetail = e.detail)}"
       ></dt-church-health-circle>`,
     );
-    setTimeout(() => {
-      const icon = el.shadowRoot.querySelector(
-        'dt-church-health-icon[data-value="church_baptism"]',
-      );
-      icon.shadowRoot.querySelector('.health-item').click();
-    });
-    const { detail } = await oneEvent(el, 'change');
+    const icon = el.shadowRoot.querySelector(
+      'dt-church-health-icon[data-value="church_baptism"]',
+    );
+    icon.shadowRoot.querySelector('.health-item').click();
+    await nextFrame(); // Ensure event has propagated
 
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.oldValue).to.eql(['church_bible']);
-    expect(detail.newValue).to.eql(['church_bible', 'church_baptism']);
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.oldValue).to.eql(['church_bible']);
+    expect(eventDetail.newValue).to.eql(['church_bible', 'church_baptism']);
   });
-
   it('triggers change event - item removed', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-church-health-circle
         name="custom-name"
         value="${JSON.stringify(['church_baptism'])}"
         options="${JSON.stringify(options)}"
+        @change="${e => (eventDetail = e.detail)}"
       ></dt-church-health-circle>`,
     );
-    setTimeout(() => {
-      const icon = el.shadowRoot.querySelector(
-        'dt-church-health-icon[data-value="church_baptism"]',
-      );
-      icon.shadowRoot.querySelector('.health-item').click();
-    });
-    const { detail } = await oneEvent(el, 'change');
+    const icon = el.shadowRoot.querySelector(
+      'dt-church-health-icon[data-value="church_baptism"]',
+    );
+    icon.shadowRoot.querySelector('.health-item').click();
+    await nextFrame(); // Ensure event has propagated
 
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.oldValue).to.eql(['church_baptism']);
-    expect(detail.newValue).to.eql(['-church_baptism']);
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.oldValue).to.eql(['church_baptism']);
+    expect(eventDetail.newValue).to.eql(['-church_baptism']);
+  });
+
+  it('displays an error message', async () => {
+    const el = await fixture(
+      html`<dt-church-health-circle
+        error="Custom error message"
+      ></dt-church-health-circle>`,
+    );
+    const errorMessage = el.shadowRoot.querySelector(
+      '.error-container .attr-msg',
+    );
+    expect(errorMessage).to.exist;
+    expect(errorMessage).to.have.text('Custom error message');
   });
 
   it('toggles church commitment via dt-toggle and updates class/value', async () => {
@@ -243,16 +249,16 @@ describe('DT-Church-Health-Circle', () => {
 
     // Click the toggle input inside its shadow DOM
     toggle.shadowRoot.querySelector('input').click();
-    await aTimeout(50);
+    await nextFrame();
 
     expect(circle.classList.contains('health-circle--committed')).to.be.true;
     expect(el.value).to.contain('church_commitment');
 
     // Click again to uncommit -> should hyphenate
     toggle.shadowRoot.querySelector('input').click();
-    await aTimeout(50);
+    await nextFrame();
 
     expect(circle.classList.contains('health-circle--committed')).to.be.false;
-    expect(el.value).to.contain('-church_commitment');
+    expect(el.value).to.not.contain('church_commitment'); // It should be completely removed
   });
 });

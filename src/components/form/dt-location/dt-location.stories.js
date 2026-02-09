@@ -73,66 +73,87 @@ export default {
   title: 'Components/Form/Location',
   component: 'dt-location',
   argTypes: {
+    id: { control: 'text' },
     name: { control: 'text' },
+    label: { control: 'text' },
     value: { control: 'text' },
     placeholder: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
     allowAdd: { control: 'boolean' },
+    private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
+    error: { control: 'text' },
+    slot: { control: 'text' },
+    options: { control: 'object' },
+    filters: { control: 'object' },
+    requiredMessage: { control: 'text' },
+    onChange: { action: 'on-change' },
     ...argTypes,
   },
   args: {
-    theme: 'default',
+    id: 'name',
+    name: 'field-name',
+    label: 'Field Name',
     placeholder: 'Search Locations',
+    icon: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText: 'Icon Alt Text',
+    private: false,
+    privateLabel: 'Private',
+    loading: false,
+    saved: false,
+    error: '',
+    slot: '',
+    options: basicOptions,
+    filters: defaultFilters,
+    requiredMessage: 'This field is required',
     onChange: action('on-change'),
     onLoad: action('on-load'),
   },
   render: args => {
     const {
+      id = 'name',
       name = 'field-name',
       label = 'Field Name',
       options,
-      filters = defaultFilters,
+      filters,
       placeholder,
       value,
-      disabled = false,
-      required = false,
+      disabled,
+      required,
       requiredMessage,
-      icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+      icon,
       iconAltText = 'Icon Alt Text',
-      isPrivate,
+      private: isPrivate,
       privateLabel,
-      loading = false,
-      saved = false,
-      onchange,
-      open,
-      slot,
+      loading,
+      saved,
+      allowAdd,
       error,
+      slot,
       onChange,
       onLoad,
-      allowAdd,
     } = args;
     return html`
       <dt-location
-        name="${name}"
-        label=${label}
-        placeholder="${placeholder}"
-        options="${JSON.stringify(options)}"
-        filters="${JSON.stringify(filters)}"
-        value="${JSON.stringify(value)}"
-        onchange="${onchange}"
+        id="${ifDefined(id)}"
+        name="${ifDefined(name)}"
+        label="${ifDefined(label)}"
+        placeholder="${ifDefined(placeholder)}"
+        .options="${options}"
+        .filters="${filters}"
+        .value="${value}"
         ?disabled=${disabled}
         ?required=${required}
-        requiredMessage=${ifDefined(requiredMessage)}
-        icon="${icon}"
-        iconAltText="${iconAltText}"
-        ?private=${isPrivate}
-        privateLabel="${privateLabel}"
+        requiredMessage="${ifDefined(requiredMessage)}"
+        icon="${ifDefined(icon)}"
+        iconAltText="${ifDefined(iconAltText)}"
+        ?private="${isPrivate}"
+        privateLabel="${ifDefined(privateLabel)}"
         ?allowAdd="${allowAdd}"
         ?loading="${loading}"
         ?saved="${saved}"
         error="${ifDefined(error)}"
-        .open="${open}"
         @change=${onChange}
         @dt:get-data=${onLoad}
       >
@@ -142,13 +163,14 @@ export default {
   },
 };
 
-export const Empty = {};
+export const Empty = {
+  args: {},
+};
 
 export const SvgIcon = {
   args: {
     icon: null,
-    // prettier-ignore
-    slot: html`<svg slot="icon-start" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><linearGradient id="lg"><stop offset="0%" stop-color="#000000"/><stop offset="100%" stop-color="#c3c3c3"/></linearGradient><rect x="2" y="2" width="96" height="96" style="fill:url(#lg);stroke:#ffffff;stroke-width:2"/><text x="50%" y="50%" font-size="18" text-anchor="middle" alignment-baseline="middle" font-family="monospace, sans-serif" fill="#ffffff">icon</text></svg>`,
+    slot: 'SvgIcon',
   },
 };
 
@@ -172,6 +194,7 @@ export const SelectedValue = {
 
 export const LoadOptionsFromAPI = {
   args: {
+    options: null,
     onLoad: onLoadEvent,
   },
 };
@@ -186,7 +209,7 @@ export const AddNewOption = {
 export const AutoSave = {
   args: {
     options: basicOptions,
-    onchange: 'onAutoSave(event)',
+    onChange: onAutoSave,
   },
 };
 
@@ -224,6 +247,13 @@ export const Error = {
     value: [basicOptions[1]],
     options: basicOptions,
     error: 'Custom error message',
+  },
+};
+
+export const ErrorSlot = {
+  args: {
+    slot: 'ErrorSlot',
+    error: '[Should show link here]',
   },
 };
 

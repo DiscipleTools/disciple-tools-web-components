@@ -132,6 +132,13 @@ export const Error = {
   },
 };
 
+export const ErrorSlot = {
+  args: {
+    slot: 'ErrorSlot',
+    error: '[Should show link here]',
+  },
+};
+
 export const BasicForm = {
   decorators: [FormDecorator],
   args: {

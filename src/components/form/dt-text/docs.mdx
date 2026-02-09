@@ -33,30 +33,29 @@ Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slo
 }
 ```
 
-## CSS Properties / Theming
+## CSS Custom Properties
 
 Inherits custom properties from [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties).
 
 | Custom Properties   | Default Value   |
 |---------------------|-----------------|
-| `--dt-form-text-color`  | `#000`  |
-| `--dt-text-background-color`  | `#fefefe` |
-| `--dt-text-border-color`  | `#fefefe`   |
-| `--dt-text-border-radius`   | `0`   |
-| `--dt-text-input-box-shadow`  | `--dt-form-input-box-shadow`   |
-| `--dt-form-padding`   | `0.5333333333rem`   |
-| `--dt-form-transition` | `box-shadow .5s,border-color .25s ease-in-out`   |
-| `--dt-text-disabled-background-color`   | `--dt-form-disabled-background-color`   |
-| `--dt-text-placeholder-color` | `#999`  |
+| `--dt-text-text-color`  | `var(--dt-form-text-color, #0a0a0a)`  |
+| `--dt-text-background-color`  | `var(--dt-form-background-color, #fefefe)` |
+| `--dt-text-border-color`  | `var(--dt-form-border-color, #cecece)`   |
+| `--dt-text-border-radius`  | `var(--dt-form-border-radius, 0)`  |
+| `--dt-text-box-shadow`  | `var(--dt-form-input-box-shadow, inset 0 1px 2px hsl(0deg 0% 4% / 10%))`   |
+| `--dt-text-disabled-background-color`   | `var(--dt-form-disabled-background-color, #e6e6e6)`   |
+| `--dt-text-placeholder-color` | `var(--dt-form-placeholder-color, #999)`  |
 | `--dt-text-placeholder-transform` |  `none`   |
 | `--dt-text-placeholder-font-size`   | `1rem`  |
 |  `--dt-text-placeholder-font-weight`  |  `400`  |
 | `--dt-text-placeholder-letter-spacing`  | `normal`  |
-| `--dt-text-border-color-alert`  | `--alert-color`   |
+| `--dt-text-border-color-alert`  | `var(--dt-form-border-color-alert, var(--alert-color))`   |
+| `--dt-form-padding`   | `0.5333333333rem`   |
+| `--dt-form-transition` | `box-shadow .5s,border-color .25s ease-in-out`   |
 
 ## Parts
 
 | Part Name | Description |
 |-----------|-------------|
 | `input` | The input element within the shadow DOM |
-
