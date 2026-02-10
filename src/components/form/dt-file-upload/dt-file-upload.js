@@ -887,20 +887,21 @@ export class DtFileUpload extends DtFormBase {
 
   async _uploadFiles(files) {
     if (this._isStandaloneMode()) {
+      const previousFiles = this._parseValue(this.value);
       this.uploading = true;
       this.loading = true;
       this.error = '';
       try {
         const newFiles = await this._filesToMockFileObjects(files);
-        const currentValue = Array.isArray(this.value) ? [...this.value] : [];
-        this.value = [...currentValue, ...newFiles];
+        const nextFiles = [...previousFiles, ...newFiles];
+        this.value = nextFiles;
         this.stagedFiles = [];
         this._uploadZoneExpanded = false;
         this.saved = true;
         this.dispatchEvent(
           new CustomEvent('change', {
             bubbles: true,
-            detail: { field: this.name, oldValue: this.value, newValue: this.value },
+            detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
           })
         );
         this._refreshMasonry();
@@ -921,12 +922,14 @@ export class DtFileUpload extends DtFormBase {
     const event = new CustomEvent('dt:upload', {
       bubbles: true,
       detail: {
-        files: files,
+        files,
         metaKey: this.metaKey,
         keyPrefix: this.keyPrefix || '',
         onSuccess: ({ result, fieldValue }) => {
           // Handle success - merge files with existing value
-          const currentValue = Array.isArray(this.value) ? [...this.value] : [];
+          const previousFiles = this._parseValue(this.value);
+          let nextFiles = previousFiles;
+
           const newFiles = (result.uploaded_files || [])
             .filter((uf) => uf.uploaded && uf.file)
             .map((uf) => uf.file);
@@ -934,8 +937,8 @@ export class DtFileUpload extends DtFormBase {
           if (newFiles.length > 0) {
             // Merge: preserve existing file objects (they have correct thumbnails) and append new ones.
             // Avoid replacing with GET fieldValue which may return stale or differently formatted data.
-            const existingKeys = new Set(currentValue.map((f) => String(f.key || f)));
-            const merged = [...currentValue];
+            const existingKeys = new Set(previousFiles.map((f) => String(f.key || f)));
+            const merged = [...previousFiles];
             for (const nf of newFiles) {
               const k = String(nf.key || nf);
               if (!existingKeys.has(k)) {
@@ -943,16 +946,18 @@ export class DtFileUpload extends DtFormBase {
                 existingKeys.add(k);
               }
             }
-            this.value = merged;
+            nextFiles = merged;
+            this.value = nextFiles;
           } else if (Array.isArray(fieldValue) && fieldValue.length > 0) {
-            this.value = fieldValue;
+            nextFiles = fieldValue;
+            this.value = nextFiles;
           }
 
           this.stagedFiles = [];
           this.dispatchEvent(
             new CustomEvent('change', {
               bubbles: true,
-              detail: { field: this.name, oldValue: this.value, newValue: this.value },
+              detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
             })
           );
           this._refreshMasonry();
@@ -978,12 +983,13 @@ export class DtFileUpload extends DtFormBase {
     if (!confirm('Are you sure you want to delete this file?')) return;
 
     if (this._isStandaloneMode()) {
-      const oldValue = Array.isArray(this.value) ? [...this.value] : [];
-      this.value = oldValue.filter((f) => (f.key || f) !== fileKey);
+      const previousFiles = this._parseValue(this.value);
+      const nextFiles = previousFiles.filter((f) => (f.key || f) !== fileKey);
+      this.value = nextFiles;
       this.dispatchEvent(
         new CustomEvent('change', {
           bubbles: true,
-          detail: { field: this.name, oldValue, newValue: this.value },
+          detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
         })
       );
       this.updateComplete.then(() => this._refreshMasonry());
@@ -999,14 +1005,16 @@ export class DtFileUpload extends DtFormBase {
     const event = new CustomEvent('dt:delete-file', {
       bubbles: true,
       detail: {
-        fileKey: fileKey,
+        fileKey,
         metaKey: this.metaKey,
         onSuccess: () => {
-          this.value = (this.value || []).filter((f) => (f.key || f) !== fileKey);
+          const previousFiles = this._parseValue(this.value);
+          const nextFiles = previousFiles.filter((f) => (f.key || f) !== fileKey);
+          this.value = nextFiles;
           this.dispatchEvent(
             new CustomEvent('change', {
               bubbles: true,
-              detail: { field: this.name, oldValue: this.value, newValue: this.value },
+              detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
             })
           );
           this.updateComplete.then(() => this._refreshMasonry());
@@ -1027,17 +1035,18 @@ export class DtFileUpload extends DtFormBase {
     if (!this.renameEnabled) return;
 
     if (this._isStandaloneMode()) {
-      const currentFiles = this._parseValue(this.value);
-      this.value = currentFiles.map((f) => {
+      const previousFiles = this._parseValue(this.value);
+      const nextFiles = previousFiles.map((f) => {
         const k = f.key || f;
         if (k === fileKey) return { ...f, name: newName };
         return f;
       });
+      this.value = nextFiles;
       this._editingFileKey = '';
       this.dispatchEvent(
         new CustomEvent('change', {
           bubbles: true,
-          detail: { field: this.name, oldValue: this.value, newValue: this.value },
+          detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
         })
       );
       this.updateComplete.then(() => this._refreshMasonry());
@@ -1053,21 +1062,22 @@ export class DtFileUpload extends DtFormBase {
     const event = new CustomEvent('dt:rename-file', {
       bubbles: true,
       detail: {
-        fileKey: fileKey,
-        newName: newName,
+        fileKey,
+        newName,
         metaKey: this.metaKey,
         onSuccess: () => {
-          const currentFiles = this._parseValue(this.value);
-          this.value = currentFiles.map((f) => {
+          const previousFiles = this._parseValue(this.value);
+          const nextFiles = previousFiles.map((f) => {
             const k = f.key || f;
             if (k === fileKey) return { ...f, name: newName };
             return f;
           });
+          this.value = nextFiles;
           this._editingFileKey = '';
           this.dispatchEvent(
             new CustomEvent('change', {
               bubbles: true,
-              detail: { field: this.name, oldValue: this.value, newValue: this.value },
+              detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
             })
           );
           this.updateComplete.then(() => this._refreshMasonry());
@@ -1279,11 +1289,11 @@ export class DtFileUpload extends DtFormBase {
                         () => html`
                           <a
                             class="file-preview-link"
-                            href=${file.url || '#'}
+                            href=${previewUrl || file.url || '#'}
                             target="_blank"
                             rel="noopener"
                             @click=${(e) => {
-                              if (!file.url) e.preventDefault();
+                              if (!previewUrl && !file.url) e.preventDefault();
                             }}
                           >
                             <img src="${previewUrl}" alt="${name}" loading="lazy" />

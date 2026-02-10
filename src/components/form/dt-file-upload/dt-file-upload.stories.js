@@ -2,6 +2,7 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
+import sampleImage from '../../../../assets/dt-caret.png';
 import {
   FormDecorator,
   LocaleDecorator,
@@ -9,11 +10,18 @@ import {
 } from '../../../stories-utils.js';
 import './dt-file-upload.js';
 
-// Data URIs for sample images (visible colored squares)
-// Blue gradient image (100x100px)
-const SAMPLE_IMAGE_URL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0Njk2ZWIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyNTU5YjMiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNnKSIvPjwvc3ZnPg==';
-// Smaller thumbnail version (50x50px)
-const SAMPLE_THUMBNAIL_URL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNDY5NmViIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMjU1OWIzIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSJ1cmwoI2cpIi8+PC9zdmc+';
+// Sample image used for Storybook previews (local asset).
+const SAMPLE_IMAGE_URL = sampleImage;
+const SAMPLE_THUMBNAIL_URL = sampleImage;
+
+// Static asset URLs served via Storybook's staticDirs ('../assets').
+const SAMPLE_PDF_URL = '/file-upload/document.pdf';
+const SAMPLE_DOCX_URL = '/file-upload/report.docx';
+const SAMPLE_TXT_URL = '/file-upload/notes.txt';
+const SAMPLE_JSON_URL = '/file-upload/data.json';
+const SAMPLE_HTML_URL = '/file-upload/page.html';
+const SAMPLE_XML_URL = '/file-upload/config.xml';
+const SAMPLE_UNKNOWN_URL = '/file-upload/mystery.unknown';
 
 export default {
   title: 'Components/Form/File Upload',
@@ -50,6 +58,10 @@ export default {
   },
   args: {
     onChange: action('on-change'),
+    onUpload: action('dt:upload'),
+    onDeleteFile: action('dt:delete-file'),
+    onRenameFile: action('dt:rename-file'),
+    onDownloadFile: action('dt:download-file'),
   },
 };
 
@@ -81,6 +93,10 @@ function Template(args) {
     saved = false,
     error,
     onChange,
+    onUpload,
+    onDeleteFile,
+    onRenameFile,
+    onDownloadFile,
     slot,
   } = args;
 
@@ -120,6 +136,10 @@ function Template(args) {
       ?saved=${saved}
       error="${ifDefined(error)}"
       @change=${onChange}
+      @dt:upload=${(event) => onUpload?.(event.detail)}
+      @dt:delete-file=${(event) => onDeleteFile?.(event.detail)}
+      @dt:rename-file=${(event) => onRenameFile?.(event.detail)}
+      @dt:download-file=${(event) => onDownloadFile?.(event.detail)}
     >
       ${slot}
     </dt-file-upload>
@@ -147,7 +167,7 @@ WithFiles.args = {
       type: 'application/pdf',
       size: 456789,
       uploaded_at: '2026-01-27T10:05:00Z',
-      url: '#',
+      url: SAMPLE_PDF_URL,
     },
   ],
 };
@@ -170,7 +190,7 @@ GridLayout.args = {
       name: 'document.pdf',
       type: 'application/pdf',
       size: 456789,
-      url: '#',
+      url: SAMPLE_PDF_URL,
     },
   ],
 };
@@ -193,7 +213,7 @@ ListLayout.args = {
       name: 'document.pdf',
       type: 'application/pdf',
       size: 456789,
-      url: '#',
+      url: SAMPLE_PDF_URL,
     },
   ],
 };
@@ -242,49 +262,49 @@ AutoFileTypeIcons.args = {
       name: 'document.pdf',
       type: 'application/pdf',
       size: 123456,
-      url: '#',
+      url: SAMPLE_PDF_URL,
     },
     {
       key: 'site_id/prefix_randomstring2.docx',
       name: 'report.docx',
       type: 'application/msword',
       size: 234567,
-      url: '#',
+      url: SAMPLE_DOCX_URL,
     },
     {
       key: 'site_id/prefix_randomstring3.txt',
       name: 'notes.txt',
       type: 'text/plain',
       size: 3456,
-      url: '#',
+      url: SAMPLE_TXT_URL,
     },
     {
       key: 'site_id/prefix_randomstring4.json',
       name: 'data.json',
       type: 'application/json',
       size: 5678,
-      url: '#',
+      url: SAMPLE_JSON_URL,
     },
     {
       key: 'site_id/prefix_randomstring5.html',
       name: 'page.html',
       type: 'text/html',
       size: 8901,
-      url: '#',
+      url: SAMPLE_HTML_URL,
     },
     {
       key: 'site_id/prefix_randomstring6.xml',
       name: 'config.xml',
       type: 'application/xml',
       size: 12345,
-      url: '#',
+      url: SAMPLE_XML_URL,
     },
     {
       key: 'site_id/prefix_randomstring7.unknown',
       name: 'mystery.unknown',
       type: 'application/octet-stream',
       size: 9999,
-      url: '#',
+      url: SAMPLE_UNKNOWN_URL,
     },
   ],
 };
