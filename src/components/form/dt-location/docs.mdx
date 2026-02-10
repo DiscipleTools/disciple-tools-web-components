@@ -1,7 +1,7 @@
 import {
   Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
 } from '@storybook/blocks';
-import * as ComponentStories from './dt-connection.stories.js';
+import * as ComponentStories from './dt-location.stories.js';
 
 
 <Meta name="Docs" of={ComponentStories} />
@@ -16,12 +16,15 @@ import * as ComponentStories from './dt-connection.stories.js';
 ## Parameters
 <Controls />
 
+### `filters`
+Array of objects, each with an `id` and `label`, used to populate the filter dropdown.
+
 ## Slots
 
 Inherits slots from
 - [DtFormBase](?path=/docs/architecture-base-classes--docs#slots)
 - [DTMultiSelect](?path=/docs/components-form-multi-select--docs#slots)
-- [DTTags](?path=/docs/components-form-tags--docs#slots)
+- [DtTags](?path=/docs/components-form-tags--docs#slots)
 
 ## Events
 
@@ -31,8 +34,8 @@ Inherits slots from
 ```json
 {
   field: string,    // name attribute of field
-  oldValue: string, // previous value before current change
-  newValue: string, // updated value
+  oldValue: object, // previous value before current change (object with id, label, possibly delete:true)
+  newValue: object  // updated value (object with id, label, possibly delete:true)
 }
 ```
 
@@ -44,7 +47,7 @@ Called when a new item is added to the list (e.g., via the add button or keyboar
 ```json
 {
   field: string,    // name attribute of field
-  value: string     // the new value that was added
+  value: object     // the new value that was added (object with id, label, isNew:true)
 }
 ```
 
@@ -58,8 +61,8 @@ It should return a result that is a list of options via the `onSuccess` function
 ```json
 {
   field: string,        // name attribute of field
-  postType: string,     // post type of field
   query: string,        // query typed by user to
+  filter: string,       // current value of the filter dropdown
   onSuccess: function   // success function to call with resulting options (e.g. `onSuccess(newOptions);`
   onError: function     // error function to call in case of error
 }
@@ -70,15 +73,14 @@ It should return a result that is a list of options via the `onSuccess` function
 Inherits custom properties from
 - [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties)
 - [DTMultiSelect](?path=/docs/components-form-multi-select--docs#css-properties--theming)
-- [DTTags](?path=/docs/components-form-tags--docs#css-properties--theming)
+- [DtTags](?path=/docs/components-form-tags--docs#css-properties--theming)
 
-| Custom Properties   | Default Value   |
-|---------------------|-----------------|
-| `--dt-connection-icon-fill`   | `var(--primary-color)`   |
+| Custom Property      | Description                                     | Default Value |
+| :------------------- | :---------------------------------------------- | :------------ |
+| `--select-width`     | Width of the filter select element, for layout. | `auto`        |
 
 ## Parts
 
-Inherits parts from:
-- [DtFormBase](?path=/docs/architecture-base-classes--docs#parts)
-- [DTMultiSelect](?path=/docs/components-form-multi-select--docs#parts)
-- [DtTags](?path=/docs/components-form-tags--docs#parts)
+| Part Name     | Description                     |
+| :------------ | :------------------------------ |
+| `filter-select` | The filter select element.      |

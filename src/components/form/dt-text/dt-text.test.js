@@ -12,7 +12,7 @@ describe('DT-Text', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-text>`
+      ></dt-text>`,
     );
 
     expect(el.id).to.equal('name');
@@ -28,7 +28,7 @@ describe('DT-Text', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-text>`
+      ></dt-text>`,
     );
     el.shadowRoot.querySelector('input').value = '';
     el.shadowRoot.querySelector('input').focus();
@@ -51,20 +51,38 @@ describe('DT-Text', () => {
 
   it('Check private field', async () => {
     const el = await fixture(
-      html`<dt-text label="Label Name" private></dt-text>`
+      html`<dt-text label="Label Name" private></dt-text>`,
     );
-    const label = await fixture(el.shadowRoot.querySelector('dt-label'));
+    const label = el.shadowRoot.querySelector('dt-label');
 
     expect(label.hasAttribute('private')).to.be.true;
   });
 
-  it('resets value', async () => {
+  it('emits change event with correct details', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-text
-        name="Name"
-        label="Label Name"
-        value="John Doe"
-      ></dt-text>`
+        name="test-field"
+        value="initial"
+        @change=${e => {
+          eventDetail = e.detail;
+        }}
+      ></dt-text>`,
+    );
+
+    const input = el.shadowRoot.querySelector('input');
+    input.value = 'new value';
+    input.dispatchEvent(new Event('change'));
+
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('test-field');
+    expect(eventDetail.oldValue).to.equal('initial');
+    expect(eventDetail.newValue).to.equal('new value');
+  });
+
+  it('resets value', async () => {
+    const el = await fixture(
+      html`<dt-text name="Name" label="Label Name" value="John Doe"></dt-text>`,
     );
     const input = el.shadowRoot.querySelector('input');
 
@@ -82,7 +100,7 @@ describe('DT-Text', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-text>`
+      ></dt-text>`,
     );
 
     await expect(el).shadowDom.to.be.accessible();

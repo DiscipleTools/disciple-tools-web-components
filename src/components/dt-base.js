@@ -1,4 +1,4 @@
-import { LitElement } from 'lit';
+import { css, LitElement } from 'lit';
 import { updateWhenLocaleChanges } from '@lit/localize';
 import { setLocale } from '../i18n/localization.js';
 import ApiService from '../services/apiService.js';
@@ -10,6 +10,14 @@ import 'element-internals-polyfill'; // eslint-disable-line import/no-extraneous
  * @extends LitElement
  */
 export default class DtBase extends LitElement {
+  static get styles() {
+    return [
+      css`
+        :host {
+        }
+      `,
+    ];
+  }
   static get properties() {
     return {
       /**
@@ -24,21 +32,6 @@ export default class DtBase extends LitElement {
        * defaulting to the root `<html>` element if no others are found.
        */
       locale: { type: String },
-      /**
-       * _Feature migrated to ApiService_
-       * @deprecated
-       */
-      apiRoot: { type: String, reflect: false },
-      /**
-       * _Feature migrated to ApiService_
-       * @deprecated
-       */
-      postType: { type: String, reflect: false },
-      /**
-       * _Feature migrated to ApiService_
-       * @deprecated
-       */
-      postID: { type: String, reflect: false },
     };
   }
 
@@ -60,13 +53,6 @@ export default class DtBase extends LitElement {
     updateWhenLocaleChanges(this);
     this.addEventListener('click', this._proxyClick.bind(this));
     this.addEventListener('focus', this._proxyFocus.bind(this));
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-
-    this.apiRoot = this.apiRoot ? `${this.apiRoot}/`.replace('//', '/') : '/'; // ensure it ends with /
-    this.api = new ApiService(this.nonce, this.apiRoot);
   }
 
   willUpdate(props) {

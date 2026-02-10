@@ -108,7 +108,6 @@ export class DtChurchHealthCircle extends DtMultiSelect {
   static get properties() {
     const props = {
       ...super.properties,
-      settings: { type: Object, reflect: false },
       missingIcon: { type: String },
     };
     delete props.placeholder;
@@ -195,7 +194,7 @@ export class DtChurchHealthCircle extends DtMultiSelect {
 
         <dt-toggle
           name="church_commitment"
-          label="${this.options.church_commitment.label}"
+          label="${this.options?.church_commitment?.label}"
           @change="${this.handleToggleChange}"
           ?disabled=${this.disabled}
           ?checked=${this.isCommited}
