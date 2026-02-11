@@ -136,10 +136,10 @@ function Template(args) {
       ?saved=${saved}
       error="${ifDefined(error)}"
       @change=${onChange}
-      @dt:upload=${(event) => onUpload?.(event.detail)}
-      @dt:delete-file=${(event) => onDeleteFile?.(event.detail)}
-      @dt:rename-file=${(event) => onRenameFile?.(event.detail)}
-      @dt:download-file=${(event) => onDownloadFile?.(event.detail)}
+      @dt:upload=${onUpload}
+      @dt:delete-file=${onDeleteFile}
+      @dt:rename-file=${onRenameFile}
+      @dt:download-file=${onDownloadFile}
     >
       ${slot}
     </dt-file-upload>

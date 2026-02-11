@@ -854,7 +854,7 @@ export class DtFileUpload extends DtFormBase {
 
   /**
    * Create mock file objects from File instances for standalone mode (e.g. Storybook).
-   * Images get a data URL for url/thumbnail_url; other files get a placeholder url.
+   * Images get a blob URL for url/thumbnail_url; other files get a placeholder url.
    */
   async _filesToMockFileObjects(files) {
     const results = [];
@@ -868,13 +868,9 @@ export class DtFileUpload extends DtFormBase {
       };
       if (this._isImage({ type: file.type })) {
         try {
-          const dataUrl = await new Promise((resolve, reject) => {
-            const r = new FileReader();
-            r.onload = () => resolve(r.result);
-            r.onerror = reject;
-            r.readAsDataURL(file);
-          });
-          results.push({ ...base, url: dataUrl, thumbnail_url: dataUrl });
+          // Use blob URL instead of data URI for better browser compatibility
+          const blobUrl = URL.createObjectURL(file);
+          results.push({ ...base, url: blobUrl, thumbnail_url: blobUrl });
         } catch {
           results.push({ ...base, url: '#' });
         }
@@ -902,6 +898,17 @@ export class DtFileUpload extends DtFormBase {
           new CustomEvent('change', {
             bubbles: true,
             detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
+          })
+        );
+        // Dispatch dt:upload event for Storybook actions panel
+        this.dispatchEvent(
+          new CustomEvent('dt:upload', {
+            bubbles: true,
+            detail: {
+              files: newFiles,
+              metaKey: this.metaKey || '',
+              keyPrefix: this.keyPrefix || '',
+            },
           })
         );
         this._refreshMasonry();
@@ -984,12 +991,30 @@ export class DtFileUpload extends DtFormBase {
 
     if (this._isStandaloneMode()) {
       const previousFiles = this._parseValue(this.value);
+      const fileToDelete = previousFiles.find((f) => (f.key || f) === fileKey);
+      // Clean up blob URL if it exists (for standalone mode)
+      if (fileToDelete && fileToDelete.url && fileToDelete.url.startsWith('blob:')) {
+        URL.revokeObjectURL(fileToDelete.url);
+      }
+      if (fileToDelete && fileToDelete.thumbnail_url && fileToDelete.thumbnail_url.startsWith('blob:') && fileToDelete.thumbnail_url !== fileToDelete.url) {
+        URL.revokeObjectURL(fileToDelete.thumbnail_url);
+      }
       const nextFiles = previousFiles.filter((f) => (f.key || f) !== fileKey);
       this.value = nextFiles;
       this.dispatchEvent(
         new CustomEvent('change', {
           bubbles: true,
           detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
+        })
+      );
+      // Dispatch dt:delete-file event for Storybook actions panel
+      this.dispatchEvent(
+        new CustomEvent('dt:delete-file', {
+          bubbles: true,
+          detail: {
+            fileKey,
+            metaKey: this.metaKey || '',
+          },
         })
       );
       this.updateComplete.then(() => this._refreshMasonry());
@@ -1047,6 +1072,17 @@ export class DtFileUpload extends DtFormBase {
         new CustomEvent('change', {
           bubbles: true,
           detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
+        })
+      );
+      // Dispatch dt:rename-file event for Storybook actions panel
+      this.dispatchEvent(
+        new CustomEvent('dt:rename-file', {
+          bubbles: true,
+          detail: {
+            fileKey,
+            newName,
+            metaKey: this.metaKey || '',
+          },
         })
       );
       this.updateComplete.then(() => this._refreshMasonry());
@@ -1124,14 +1160,27 @@ export class DtFileUpload extends DtFormBase {
       // Standalone mode: use direct URL if available
       const url = file.url;
       if (!url) return;
+      const fileKey = file.key || file;
+      const fileName = file.name || (typeof fileKey === 'string' ? fileKey.split('/').pop() : 'download') || 'download';
       const a = document.createElement('a');
       a.href = url;
-      a.download = file.name || 'download';
+      a.download = fileName;
       a.target = '_blank';
       a.rel = 'noopener';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+      // Dispatch dt:download-file event for Storybook actions panel
+      this.dispatchEvent(
+        new CustomEvent('dt:download-file', {
+          bubbles: true,
+          detail: {
+            fileKey: fileKey,
+            fileName: fileName,
+            metaKey: this.metaKey || '',
+          },
+        })
+      );
       return;
     }
 
