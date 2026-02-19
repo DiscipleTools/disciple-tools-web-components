@@ -42,6 +42,7 @@ export default class DtLocationMapItem extends DtBase {
 
   static get styles() {
     return [
+      ...super.styles,
       css`
         :host {
           --dt-location-map-border-color: var(--dt-form-border-color, #fefefe);
@@ -51,7 +52,10 @@ export default class DtLocationMapItem extends DtBase {
         }
 
         .input-group {
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
         }
         .input-group.disabled input,
         .input-group.disabled .field-container {
@@ -90,7 +94,10 @@ export default class DtLocationMapItem extends DtBase {
         .option-list li div,
         .option-list li button {
           padding: 0.5rem 0.75rem;
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           font-weight: 100;
           font-size: 1rem;
           text-decoration: none;
@@ -105,7 +112,10 @@ export default class DtLocationMapItem extends DtBase {
         .option-list li button:hover,
         .option-list li button.active {
           cursor: pointer;
-          background: var(--dt-multi-select-option-hover-background, #f5f5f5);
+          background: var(
+            --dt-multi-select-option-hover-background,
+            var(--surface-2)
+          );
         }
       `,
       css`
@@ -161,7 +171,7 @@ export default class DtLocationMapItem extends DtBase {
           letter-spacing: var(--dt-text-placeholder-letter-spacing, normal);
         }
         input.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(--dt-form-border-color-alert, var(--alert-color));
         }
 
         .field-container {
@@ -215,7 +225,7 @@ export default class DtLocationMapItem extends DtBase {
         }
         .field-container.invalid {
           border: 1px solid
-            var(--dt-text-border-color-alert, var(--alert-color));
+            var(--dt-form-border-color-alert, var(--alert-color));
         }
 
         .input-addon:disabled {
@@ -798,8 +808,8 @@ export default class DtLocationMapItem extends DtBase {
     }
     return this.saved
       ? html`<dt-checkmark
-              class="icon-overlay success fade-out ${hasGeometry ? 'selected' : ''}"
-            ></dt-checkmark>`
+          class="icon-overlay success fade-out ${hasGeometry ? 'selected' : ''}"
+        ></dt-checkmark>`
       : null;
   }
 }

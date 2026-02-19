@@ -33,21 +33,30 @@ Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slo
 }
 ```
 
-## CSS Properties / Theming
+## CSS Custom Properties
 
 Inherits custom properties from [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties).
 
 | Custom Properties   | Default Value   |
 |---------------------|-----------------|
-| `--dt-multi-select-text-color` | `#0a0a0a`  |
-| `--dt-multi-select-background-color` | `#fefefe`  |
-| `--dt-multi-select-text-color` | `#0a0a0a`  |
-| `--dt-multi-select-tag-border-color`  | `#c2e0ff`   |
-| `--dt-multi-select-option-hover-background`  | `#f5f5f5`  |
+| `--dt-multi-select-text-color` | `var(--dt-form-text-color, #0a0a0a)`  |
+| `--dt-multi-select-background-color` | `var(--dt-form-background-color, #fefefe)`  |
+| `--dt-multi-select-border-color` | `var(--dt-form-border-color, #cacaca)` |
+| `--dt-multi-select-border-radius` | `var(--dt-form-border-radius, 0)` |
+| `--dt-multi-select-disabled-background-color` | `var(--dt-form-disabled-background-color, var(--disabled-color))` |
+| `--dt-multi-select-tag-border-color`  | `var(--primary-color-light-1, #c2e0ff)`   |
+| `--dt-multi-select-tag-background-color` | `var(--primary-color-light-0, #ecf5fc)` |
+| `--dt-multi-select-option-hover-background`  | `var(--dt-form-option-hover-background, var(--surface-2))`  |
+| `--dt-multi-select-placeholder-color` | `var(--dt-form-placeholder-color, #999)` |
+| `--dt-multi-select-border-color-alert` | `var(--dt-form-border-color-alert, var(--alert-color))` |
 
-| `--dt-form-border-color`| `#cacaca`   |
-| `--dt-form-background-color`  | `#fff`  |
-| `--dt-form-text-color` | `#000`  |
+## Parts
 
-## Stories
-<Stories title="" />
+| Part Name | Description |
+|-----------|-------------|
+| `input-group` | The container for the field-container and icons |
+| `field-container` | The container for selected tags and input |
+| `tag` | Individual selected option tag |
+| `remove-button` | The button within a tag to remove it |
+| `input` | The text input element for searching |
+| `option-list` | The dropdown list of options |

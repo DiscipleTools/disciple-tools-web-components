@@ -12,7 +12,7 @@ describe('DT-Number', () => {
         name="Name"
         label="Label Name"
         value="10"
-      ></dt-number>`
+      ></dt-number>`,
     );
 
     expect(el.id).to.equal('name');
@@ -28,7 +28,7 @@ describe('DT-Number', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-number>`
+      ></dt-number>`,
     );
     el.shadowRoot.querySelector('input').value = '';
     el.shadowRoot.querySelector('input').focus();
@@ -151,11 +151,33 @@ describe('DT-Number', () => {
     expect(el.shadowRoot.querySelector('input').disabled).to.be.true;
   });
 
+  it('emits change event with correct details', async () => {
+    let eventDetail = null;
+    const el = await fixture(
+      html`<dt-number
+        name="test-field"
+        value="10"
+        @change=${e => {
+          eventDetail = e.detail;
+        }}
+      ></dt-number>`,
+    );
+
+    const input = el.shadowRoot.querySelector('input');
+    input.value = '20';
+    input.dispatchEvent(new Event('change'));
+
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('test-field');
+    expect(eventDetail.oldValue).to.equal('10');
+    expect(eventDetail.newValue).to.equal('20');
+  });
+
   it('sets private field', async () => {
     const el = await fixture(
-      html`<dt-number label="Label Name" private></dt-number>`
+      html`<dt-number label="Label Name" private></dt-number>`,
     );
-    const label = await fixture(el.shadowRoot.querySelector('dt-label'));
+    const label = el.shadowRoot.querySelector('dt-label');
 
     expect(label.hasAttribute('private')).to.be.true;
   });
@@ -167,7 +189,7 @@ describe('DT-Number', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-number>`
+      ></dt-number>`,
     );
 
     await expect(el).shadowDom.to.be.accessible();

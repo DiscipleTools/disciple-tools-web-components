@@ -48,7 +48,7 @@ export class DtConnection extends DtTags {
           fill: var(--dt-connection-icon-fill, var(--primary-color));
         }
         .invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(--dt-form-border-color-alert, var(--alert-color));
         }
       `,
     ];

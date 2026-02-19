@@ -42,20 +42,18 @@ export default class ComponentService {
       'dt-toggle',
       'dt-multi-text',
       'dt-multi-select-button-group',
-      'dt-list',
       'dt-button',
-      'dt-church-health-circle'
+      'dt-church-health-circle',
     ];
 
     this.dynamicLoadComponents = [
       'dt-connection',
       'dt-tags',
       'dt-modal',
-      'dt-list',
       'dt-button',
       'dt-location',
-      'dt-users-connection'
-    ]
+      'dt-users-connection',
+    ];
   }
 
   /**
@@ -76,7 +74,7 @@ export default class ComponentService {
    */
   async attachLoadEvents(selector) {
     const elements = document.querySelectorAll(
-      selector || this.dynamicLoadComponents.join(',')
+      selector || this.dynamicLoadComponents.join(','),
     );
 
     // // check if there is dt-modal and duplicate-detected class with it on DOM.
@@ -94,7 +92,10 @@ export default class ComponentService {
       elements.forEach(el => {
         // prevent multiple event attachments if this is called multiple times
         if (!el.dataset.eventDtGetData) {
-          el.addEventListener('dt:get-data', this.handleGetDataEvent.bind(this));
+          el.addEventListener(
+            'dt:get-data',
+            this.handleGetDataEvent.bind(this),
+          );
           el.dataset.eventDtGetData = true;
         }
       });
@@ -105,14 +106,14 @@ export default class ComponentService {
     const dtModal = document.querySelector('dt-modal.duplicate-detected');
     if (dtModal) {
       const button = dtModal.shadowRoot.querySelector(
-        '.duplicates-detected-button'
+        '.duplicates-detected-button',
       );
       if (button) {
         button.style.display = 'none';
       }
       const duplicates = await this._api.checkDuplicateUsers(
         this.postType,
-        this.postId
+        this.postId,
       );
       // showing the button to show duplicates
       if (filteredElements && duplicates.ids.length > 0) {
@@ -129,11 +130,11 @@ export default class ComponentService {
    */
   enableAutoSave(selector) {
     const allElements = document.querySelectorAll(
-      selector || this.autoSaveComponents.join(',')
+      selector || this.autoSaveComponents.join(','),
     );
     if (allElements) {
-      allElements.forEach(el =>{
-        el.addEventListener('change', this.handleChangeEvent.bind(this))
+      allElements.forEach(el => {
+        el.addEventListener('change', this.handleChangeEvent.bind(this));
       });
     }
   }
@@ -152,54 +153,53 @@ export default class ComponentService {
         const component = event.target.tagName.toLowerCase();
         let values = [];
         switch (component) {
-          case 'dt-button': {
-            const contactApiData = await this._api.getContactInfo(
-              this.postType,
-              this.postId
-            );
-            values = contactApiData;
-          };
+          case 'dt-button':
+            {
+              const contactApiData = await this._api.getContactInfo(
+                this.postType,
+                this.postId,
+              );
+              values = contactApiData;
+            }
             break;
-          case 'dt-list': {
-            const listResponse = await this._api.fetchPostsList(this.postType, query)
-            values = listResponse.posts
-          }
-          break;
           case 'dt-connection': {
             const postType = details.postType || this.postType;
             const connectionResponse = await this._api.listPostsCompact(
               postType,
-              query
+              query,
             );
             // for filtering the user itself from the response.
             const filteredConnectionResponse = {
               ...connectionResponse,
               posts: connectionResponse.posts.filter(
-                post => post.ID !== parseInt(this.postId, 10)
+                post => post.ID !== parseInt(this.postId, 10),
               ),
             };
 
             if (filteredConnectionResponse?.posts) {
-              values = ComponentService.convertApiValue('dt-connection', filteredConnectionResponse?.posts);
+              values = ComponentService.convertApiValue(
+                'dt-connection',
+                filteredConnectionResponse?.posts,
+              );
             }
             break;
           }
           case 'dt-users-connection': {
             const postType = details.postType || this.postType;
-            const usersResponse = await this._api.searchUsers(
-              postType,
-              query
-            );
+            const usersResponse = await this._api.searchUsers(postType, query);
             // for filtering the user itself from the response.
             const filteredUsersResponse = {
               ...usersResponse,
               posts: usersResponse.filter(
-                post => post.ID !== parseInt(this.postId, 10)
+                post => post.ID !== parseInt(this.postId, 10),
               ),
             };
 
             if (filteredUsersResponse?.posts) {
-              values = ComponentService.convertApiValue('dt-users-connection', filteredUsersResponse?.posts);
+              values = ComponentService.convertApiValue(
+                'dt-users-connection',
+                filteredUsersResponse?.posts,
+              );
             }
             break;
           }
@@ -208,7 +208,7 @@ export default class ComponentService {
               this.postType,
               field,
               details.filter,
-              query
+              query,
             );
             values = values.location_grid.map(value => ({
               id: value.ID,
@@ -221,7 +221,7 @@ export default class ComponentService {
             values = await this._api.getMultiSelectValues(
               this.postType,
               field,
-              query
+              query,
             );
             values = values.map(value => ({
               id: value,
@@ -251,7 +251,7 @@ export default class ComponentService {
       const apiValue = ComponentService.convertValue(
         component,
         newValue,
-        oldValue
+        oldValue,
       );
 
       event.target.removeAttribute('saved');
@@ -262,43 +262,55 @@ export default class ComponentService {
         // Since this can't be done in an async function like the below,
         // we'll handle it separately from the rest of the components
         const debounceKey = `${this.postType}-${this.postId}-${field}`;
-        this.debounce(debounceKey, async () => {
-          try {
-            const apiResponse = await this._api.updatePost(
-              this.postType,
-              this.postId,
-              {
-                [field]: apiValue,
-              });
+        this.debounce(
+          debounceKey,
+          async () => {
+            try {
+              const apiResponse = await this._api.updatePost(
+                this.postType,
+                this.postId,
+                {
+                  [field]: apiValue,
+                },
+              );
 
-            document.dispatchEvent(new CustomEvent('dt:post:update', {
-              detail: {
-                'response': apiResponse,
-                'field': field,
-                'value': apiValue,
-                'component': component,
-              },
-            }));
+              document.dispatchEvent(
+                new CustomEvent('dt:post:update', {
+                  detail: {
+                    response: apiResponse,
+                    field: field,
+                    value: apiValue,
+                    component: component,
+                  },
+                }),
+              );
 
-            event.target.removeAttribute('loading');
-            event.target.setAttribute('error', '');
-            event.target.setAttribute('saved', true);
-          } catch (error) {
-            console.error(error);
-            event.target.removeAttribute('loading');
-            event.target.setAttribute('invalid', true); // this isn't hooked up yet
-            event.target.setAttribute('error', error.message || error.toString());
-          }
-        }, 1000);
+              event.target.removeAttribute('loading');
+              event.target.setAttribute('error', '');
+              event.target.setAttribute('saved', true);
+            } catch (error) {
+              console.error(error);
+              event.target.removeAttribute('loading');
+              event.target.setAttribute('invalid', true); // this isn't hooked up yet
+              event.target.setAttribute(
+                'error',
+                error.message || error.toString(),
+              );
+            }
+          },
+          1000,
+        );
       } else {
         // Update post via API
         try {
           const body = {
             [field]: apiValue,
-          }
+          };
           if (component === 'dt-location-map') {
             const val = apiValue.values.filter(loc => !loc.lng || !loc.lat);
-            body[field].values = apiValue.values.filter(loc => loc.lng && loc.lat);
+            body[field].values = apiValue.values.filter(
+              loc => loc.lng && loc.lat,
+            );
             body.contact_address = val;
 
             if (body.contact_address.length === 0) {
@@ -309,16 +321,22 @@ export default class ComponentService {
             }
           }
 
-          const apiResponse = await this._api.updatePost(this.postType, this.postId, body);
+          const apiResponse = await this._api.updatePost(
+            this.postType,
+            this.postId,
+            body,
+          );
 
-          document.dispatchEvent(new CustomEvent('dt:post:update', {
-            detail: {
-              'response': apiResponse,
-              'field': field,
-              'value': apiValue,
-              'component': component,
-            },
-          }));
+          document.dispatchEvent(
+            new CustomEvent('dt:post:update', {
+              detail: {
+                response: apiResponse,
+                field: field,
+                value: apiValue,
+                component: component,
+              },
+            }),
+          );
 
           if (component === 'dt-location-map') {
             const componentTarget = event.target;
@@ -370,11 +388,13 @@ export default class ComponentService {
         break;
       case 'dt-users-connection':
         if (value && !Array.isArray(value) && (value.id || value.ID)) {
-          returnValue = [{
-            id: value.id || value.ID,
-            label: value.display,
-            avatar: value.avatar || '',
-          }];
+          returnValue = [
+            {
+              id: value.id || value.ID,
+              label: value.display,
+              avatar: value.avatar || '',
+            },
+          ];
         } else if (Array.isArray(value)) {
           returnValue = value.map(user => ({
             id: user.id || user.ID,
@@ -433,77 +453,87 @@ export default class ComponentService {
                 ret.delete = item.delete;
               }
               return ret;
-
             }),
             force_values: false,
           };
           break;
         case 'dt-users-connection': {
-           // Initialize an empty array to hold the differences found.
-            const userDataDifferences=[];
-            // For single-select, just return the user ID
-            const activeUsers = returnValue.filter(item => !item.delete);
-            if (activeUsers.length <= 1) {
-              returnValue = activeUsers.length === 1 ? parseInt(activeUsers[0].id, 10) : '';
-              break;
-            }
-            // Create a Map from oldValue for quick lookups by ID.
-            const oldUsersMap = new Map((oldValue || []).map(user => [user.id,user]));
-
-            for (const newUserObj of returnValue) {
-            // Retrieve the corresponding old object from the map using the ID.
-              const oldUserObj = oldUsersMap.get(newUserObj.id);
-              const diff = { id: newUserObj.id, changes: {} };
-
-            // Check if the old object exists (i.e., the current new object may be new).
-              if (!oldUserObj) {
-                  // New object added
-                  diff.changes = { ...newUserObj }; // Store all properties of the new object as changes.
-                  userDataDifferences.push(diff);
-                  break;
-              } else {
-
-                // Existing object found; we need to compare their properties.
-                  let hasDiff = false;
-                  const allKeys = new Set([...Object.keys(oldUserObj), ...Object.keys(newUserObj)]);
-
-                  // Iterate through all keys to compare values.
-                  for (const key of allKeys) {
-                      if (newUserObj[key] !== oldUserObj[key]) {
-                          diff.changes[key] = Object.prototype.hasOwnProperty.call(newUserObj, key) ? newUserObj[key] : undefined;
-                          // Set the hasDiff flag to true as a difference was found.
-                          hasDiff = true;
-                      }
-                  }
-                  if (hasDiff){ userDataDifferences.push(diff);
-                  break;
-                }
-              }
-            }
-
-            returnValue = userDataDifferences[0].id;
+          // Initialize an empty array to hold the differences found.
+          const userDataDifferences = [];
+          // For single-select, just return the user ID
+          const activeUsers = returnValue.filter(item => !item.delete);
+          if (activeUsers.length <= 1) {
+            returnValue =
+              activeUsers.length === 1 ? parseInt(activeUsers[0].id, 10) : '';
             break;
           }
+          // Create a Map from oldValue for quick lookups by ID.
+          const oldUsersMap = new Map(
+            (oldValue || []).map(user => [user.id, user]),
+          );
+
+          for (const newUserObj of returnValue) {
+            // Retrieve the corresponding old object from the map using the ID.
+            const oldUserObj = oldUsersMap.get(newUserObj.id);
+            const diff = { id: newUserObj.id, changes: {} };
+
+            // Check if the old object exists (i.e., the current new object may be new).
+            if (!oldUserObj) {
+              // New object added
+              diff.changes = { ...newUserObj }; // Store all properties of the new object as changes.
+              userDataDifferences.push(diff);
+              break;
+            } else {
+              // Existing object found; we need to compare their properties.
+              let hasDiff = false;
+              const allKeys = new Set([
+                ...Object.keys(oldUserObj),
+                ...Object.keys(newUserObj),
+              ]);
+
+              // Iterate through all keys to compare values.
+              for (const key of allKeys) {
+                if (newUserObj[key] !== oldUserObj[key]) {
+                  diff.changes[key] = Object.prototype.hasOwnProperty.call(
+                    newUserObj,
+                    key,
+                  )
+                    ? newUserObj[key]
+                    : undefined;
+                  // Set the hasDiff flag to true as a difference was found.
+                  hasDiff = true;
+                }
+              }
+              if (hasDiff) {
+                userDataDifferences.push(diff);
+                break;
+              }
+            }
+          }
+
+          returnValue = userDataDifferences[0].id;
+          break;
+        }
         case 'dt-connection':
           if (typeof value === 'string') {
-                returnValue = [
-                  {
-                    id: value,
-                  },
-                ];
-              }
-              returnValue = {
-                values: returnValue.map(item => {
-                  const ret = {
-                    value: item.id,
-                  };
-                  if (item.delete) {
-                    ret.delete = item.delete;
-                  }
-                  return ret;
-                }),
-                force_values: false,
+            returnValue = [
+              {
+                id: value,
+              },
+            ];
+          }
+          returnValue = {
+            values: returnValue.map(item => {
+              const ret = {
+                value: item.id,
               };
+              if (item.delete) {
+                ret.delete = item.delete;
+              }
+              return ret;
+            }),
+            force_values: false,
+          };
           break;
         case 'dt-location':
           const idsToRemove = new Set((oldValue || []).map(item => item.id));
@@ -514,7 +544,9 @@ export default class ComponentService {
               },
             ];
           } else {
-            returnValue = value.filter(item => !(idsToRemove.has(item.id) && !item.delete));
+            returnValue = value.filter(
+              item => !(idsToRemove.has(item.id) && !item.delete),
+            );
           }
           returnValue = {
             values: returnValue.map(item => {
@@ -530,16 +562,22 @@ export default class ComponentService {
           };
           break;
         case 'dt-location-map':
-          returnValue = value.filter(item => !((oldValue || []).includes(item) && !item.delete));
+          returnValue = value.filter(
+            item => !((oldValue || []).includes(item) && !item.delete),
+          );
           if (oldValue) {
             for (const item of oldValue) {
-              const itemExists = value.some(newItem =>
+              const itemExists = value.some(
+                newItem =>
                   (item.id && newItem.id && item.id === newItem.id) ||
-                  (item.key && newItem.key && item.key === newItem.key && (!newItem.lat || !newItem.lng))
+                  (item.key &&
+                    newItem.key &&
+                    item.key === newItem.key &&
+                    (!newItem.lat || !newItem.lng)),
               );
               if (!itemExists) {
-                  item.delete = true;
-                  returnValue.push(item);
+                item.delete = true;
+                returnValue.push(item);
               }
             }
           }
@@ -564,9 +602,11 @@ export default class ComponentService {
               return ret;
             });
           } else if (typeof value === 'string') {
-            returnValue = [{
-              value,
-            }];
+            returnValue = [
+              {
+                value,
+              },
+            ];
           }
           break;
         default:

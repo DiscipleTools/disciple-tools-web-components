@@ -1,0 +1,84 @@
+import {
+  Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
+} from '@storybook/blocks';
+import * as ComponentStories from './dt-users-connection.stories.js';
+
+
+<Meta name="Docs" of={ComponentStories} />
+
+<Title />
+<Subtitle />
+
+## Overview
+<Description />
+<Primary />
+
+## Parameters
+<Controls />
+
+## Slots
+
+Inherits slots from
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#slots)
+- [DTMultiSelect](?path=/docs/components-form-multi-select--docs#slots)
+- [DtTags](?path=/docs/components-form-tags--docs#slots)
+
+## Events
+
+### `change`
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  oldValue: object, // previous value before current change (object with id, label, possibly delete:true)
+  newValue: object  // updated value (object with id, label, possibly delete:true)
+}
+```
+
+### `dt:add-new`
+
+Called when a new item is added to the list (e.g., via the add button or keyboard).
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  value: string     // the new value that was added
+}
+```
+
+### `dt:get-data`
+
+Called when the component is requesting a new list of options based on a
+user search. This is usually used to retrieve a list from an API.
+It should return a result that is a list of options via the `onSuccess` function.
+
+**Event Detail:**
+```json
+{
+  field: string,        // name attribute of field
+  postType: string,     // post type of field
+  query: string,        // query typed by user to
+  onSuccess: function   // success function to call with resulting options (e.g. `onSuccess(newOptions);`
+  onError: function     // error function to call in case of error
+}
+```
+
+## CSS Properties / Theming
+
+Inherits custom properties from
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties)
+- [DTMultiSelect](?path=/docs/components-form-multi-select--docs#css-properties--theming)
+- [DtTags](?path=/docs/components-form-tags--docs#css-properties--theming)
+
+| Custom Property                 | Description                      | Default Value                     |
+| :------------------------------ | :------------------------------- | :-------------------------------- |
+| `--dt-users-connection-icon-fill` | Fill color for the user icon SVG | `var(--primary-color)`         |
+
+## Parts
+
+Inherits parts from:
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#parts)
+- [DTMultiSelect](?path=/docs/components-form-multi-select--docs#parts)
+- [DtTags](?path=/docs/components-form-tags--docs#parts)

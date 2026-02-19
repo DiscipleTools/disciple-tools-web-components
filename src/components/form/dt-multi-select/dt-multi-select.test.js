@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, nextFrame } from '@open-wc/testing';
+import { fixture, expect, nextFrame, waitUntil } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-multi-select.js';
@@ -18,29 +18,29 @@ const options = [
     label: 'Option Three',
   },
 ];
-async function wait(ms) {
-  return new Promise(r => {
-    setTimeout(r, ms);
-  });
-}
 
 async function clickOption(el, id) {
   const input = el.shadowRoot.querySelector('input');
   const optionBtn = el.shadowRoot.querySelector(
-    `.option-list button[value=${id}]`
+    `.option-list button[value=${id}]`,
   );
 
   input.focus();
-  await wait(100); // wait for UI update
+  await nextFrame(); // wait for UI update
+
+  expect(optionBtn).to.exist;
+  expect(optionBtn).to.be.visible;
 
   optionBtn.click();
-  await wait(100);
+  await nextFrame();
 }
 
 describe('dt-multi-select', () => {
   it('sets placeholder', async () => {
     const el = await fixture(
-      html`<dt-multi-select placeholder="Custom Placeholder"></dt-multi-select>`
+      html`<dt-multi-select
+        placeholder="Custom Placeholder"
+      ></dt-multi-select>`,
     );
     const input = el.shadowRoot.querySelector('input');
 
@@ -51,7 +51,7 @@ describe('dt-multi-select', () => {
     const el = await fixture(
       html`<dt-multi-select
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
     const optionList = el.shadowRoot.querySelector('.option-list');
 
@@ -68,7 +68,7 @@ describe('dt-multi-select', () => {
       html`<dt-multi-select
         value="${JSON.stringify(['opt1', 'opt2'])}"
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
     const container = el.shadowRoot.querySelector('.field-container');
 
@@ -82,7 +82,7 @@ describe('dt-multi-select', () => {
       html`<dt-multi-select
         value="${JSON.stringify(['opt1', 'opt2'])}"
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
     const container = el.shadowRoot.querySelector('.field-container');
 
@@ -99,7 +99,7 @@ describe('dt-multi-select', () => {
     const el = await fixture(
       html`<dt-multi-select
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionList = el.shadowRoot.querySelector('.option-list');
@@ -107,7 +107,7 @@ describe('dt-multi-select', () => {
     expect(optionList).not.to.be.displayed;
 
     input.focus();
-    await wait(500); // wait for UI update
+    await nextFrame();
 
     expect(optionList).to.be.displayed;
   });
@@ -116,18 +116,18 @@ describe('dt-multi-select', () => {
     const el = await fixture(
       html`<dt-multi-select
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionBtn = el.shadowRoot.querySelector(
-      '.option-list button[value=opt1]'
+      '.option-list button[value=opt1]',
     );
 
     input.focus();
-    await wait(100); // wait for UI update
+    await nextFrame();
 
     optionBtn.click();
-    await wait(100);
+    await nextFrame();
 
     const container = el.shadowRoot.querySelector('.field-container');
     expect(container).to.contain('button[data-value=opt1]');
@@ -137,7 +137,7 @@ describe('dt-multi-select', () => {
     const el = await fixture(
       html`<dt-multi-select
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
@@ -148,22 +148,23 @@ describe('dt-multi-select', () => {
     sendKeys({
       press: 'Enter',
     });
-    await wait(100);
 
-    const container = el.shadowRoot.querySelector('.field-container');
-    expect(container).to.contain('button[data-value=opt1]');
+    await waitUntil(
+      () => el.shadowRoot.querySelector('button[data-value=opt1]'),
+      'Selected value not found',
+    );
   });
 
   it('updates value attribute', async () => {
     const el = await fixture(
       html`<dt-multi-select
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
 
     await clickOption(el, 'opt1');
 
-    await wait(100);
+    await nextFrame();
 
     expect(el).to.have.attr('value', JSON.stringify(['opt1']));
   });
@@ -173,17 +174,17 @@ describe('dt-multi-select', () => {
       html`<dt-multi-select
         value="${JSON.stringify(['opt1', 'opt2'])}"
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
     const container = el.shadowRoot.querySelector('.field-container');
 
     expect(container).to.contain('button[data-value=opt1]');
 
     const optionBtn = el.shadowRoot.querySelector(
-      `.selected-option button[data-value=opt1]`
+      `.selected-option button[data-value=opt1]`,
     );
     optionBtn.click();
-    await wait(100);
+    await nextFrame();
 
     expect(el.value).to.contain('opt2');
     expect(el.value).to.contain('-opt1');
@@ -194,61 +195,65 @@ describe('dt-multi-select', () => {
       html`<dt-multi-select
         value="${JSON.stringify(['-opt1'])}"
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionBtn = el.shadowRoot.querySelector(
-      '.option-list button[value=opt1]'
+      '.option-list button[value=opt1]',
     );
 
     input.focus();
 
     optionBtn.click();
-    await wait(100);
+    await nextFrame();
 
     expect(el.value).to.contain('opt1');
     expect(el.value).to.not.contain('-opt1');
   });
 
   it('triggers change event - item added', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-multi-select
         name="custom-name"
         value="${JSON.stringify(['opt2'])}"
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+        @change=${e => {
+          eventDetail = e.detail;
+        }}
+      ></dt-multi-select>`,
     );
 
-    setTimeout(() => clickOption(el, 'opt1'));
+    await clickOption(el, 'opt1');
 
-    const { detail } = await oneEvent(el, 'change');
-
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.oldValue).to.eql(['opt2']);
-    expect(detail.newValue).to.eql(['opt2', 'opt1']);
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.oldValue).to.have.members(['opt2']);
+    expect(eventDetail.newValue).to.have.members(['opt1', 'opt2']);
   });
 
   it('triggers change event - item removed', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-multi-select
         name="custom-name"
         value="${JSON.stringify(['opt1'])}"
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+        @change=${e => {
+          eventDetail = e.detail;
+        }}
+      ></dt-multi-select>`,
     );
 
-    setTimeout(() => {
-      const optionBtn = el.shadowRoot.querySelector(
-        `.selected-option button[data-value=opt1]`
-      );
-      optionBtn.click();
-    });
+    const optionBtn = el.shadowRoot.querySelector(
+      `.selected-option button[data-value=opt1]`,
+    );
+    optionBtn.click();
 
-    const { detail } = await oneEvent(el, 'change');
-
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.oldValue).to.eql(['opt1']);
-    expect(detail.newValue).to.eql(['-opt1']);
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.oldValue).to.have.members(['opt1']);
+    expect(eventDetail.newValue).to.have.members(['-opt1']);
   });
 
   it('filters options on text input', async () => {
@@ -256,16 +261,15 @@ describe('dt-multi-select', () => {
       html`<dt-multi-select
         options="${JSON.stringify(options)}"
         .open="${true}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionsList = el.shadowRoot.querySelector('.option-list');
     input.focus();
 
-    sendKeys({
+    await sendKeys({
       type: 'Sec',
     });
-    await wait(150); // wait for UI update
 
     expect(optionsList).to.be.displayed;
     expect(optionsList).to.contain('button[value=opt2]');
@@ -277,14 +281,14 @@ describe('dt-multi-select', () => {
     const el = await fixture(
       html`<dt-multi-select
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionsList = el.shadowRoot.querySelector('.option-list');
     input.focus();
     await clickOption(el, 'opt1');
 
-    await wait(150); // wait for UI update
+    await nextFrame();
 
     expect(optionsList).not.to.contain('button[value=opt1]');
     expect(optionsList).to.contain('button[value=opt2]');
@@ -296,23 +300,23 @@ describe('dt-multi-select', () => {
       html`<dt-multi-select
         value="${JSON.stringify(['opt1', 'opt2'])}"
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
     const container = el.shadowRoot.querySelector('.field-container');
 
     expect(container).to.contain('button[data-value=opt1]');
 
     const optionBtn = el.shadowRoot.querySelector(
-      `.selected-option button[data-value=opt1]`
+      `.selected-option button[data-value=opt1]`,
     );
     optionBtn.click();
-    await wait(100);
+    await nextFrame();
 
     const input = el.shadowRoot.querySelector('input');
     const optionsList = el.shadowRoot.querySelector('.option-list');
     input.focus();
 
-    await wait(100); // wait for UI update
+    await nextFrame();
 
     expect(optionsList).to.contain('button[value=opt3]');
     expect(optionsList).to.contain('button[value=opt1]');
@@ -325,7 +329,7 @@ describe('dt-multi-select', () => {
         disabled
         value="${JSON.stringify(['opt1', 'opt2'])}"
         options="${JSON.stringify(options)}"
-      ></dt-multi-select>`
+      ></dt-multi-select>`,
     );
 
     const input = el.shadowRoot.querySelector('input');
@@ -338,5 +342,28 @@ describe('dt-multi-select', () => {
     expect(selectedOption)
       .to.have.descendant('button')
       .with.attribute('disabled');
+  });
+
+  it('Check private field', async () => {
+    const el = await fixture(
+      html`<dt-multi-select label="Label Name" private></dt-multi-select>`,
+    );
+    const label = el.shadowRoot.querySelector('dt-label');
+
+    expect(label.hasAttribute('private')).to.be.true;
+  });
+
+  it('passes the a11y audit', async () => {
+    const el = await fixture(
+      html`<dt-multi-select
+        id="name"
+        name="Name"
+        label="Label Name"
+        .options=${options}
+        .value=${['opt1']}
+      ></dt-multi-select>`,
+    );
+
+    await expect(el).shadowDom.to.be.accessible();
   });
 });

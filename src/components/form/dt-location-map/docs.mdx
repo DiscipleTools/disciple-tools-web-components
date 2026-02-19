@@ -1,0 +1,71 @@
+import {
+  Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
+} from '@storybook/blocks';
+import * as ComponentStories from './dt-location-map.stories.js';
+
+
+<Meta name="Docs" of={ComponentStories} />
+
+<Title />
+<Subtitle />
+
+## Overview
+<Description />
+<Primary />
+
+## Parameters
+<Controls />
+
+## Slots
+
+Inherits slots from
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#slots)
+
+### `icon-start`
+Slot for an icon at the start of the label.
+
+### `icon-end`
+Slot for an icon at the end of the label, specifically for the add button.
+
+## Events
+
+### `change`
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  oldValue: object[], // previous array of location objects
+  newValue: object[]  // updated array of location objects
+}
+```
+
+### `delete`
+(Internal, dispatched by `dt-location-map-item`) Dispatched when a location item requests to be deleted.
+
+**Event Detail:**
+```json
+{
+  metadata: object // The metadata of the item to be deleted
+}
+```
+
+### `select`
+(Internal, dispatched by `dt-location-map-item`) Dispatched when a location is selected or updated in the map modal.
+
+**Event Detail:**
+```json
+{
+  metadata: object // The metadata of the selected/updated location
+}
+```
+
+## CSS Custom Properties / Theming
+
+Inherits custom properties from
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties)
+
+## Parts
+
+Inherits parts from:
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#parts)

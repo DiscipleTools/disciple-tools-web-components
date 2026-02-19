@@ -36,3 +36,7 @@ storybook-static
 
 # Custom Elements Manifest
 custom-elements.json
+
+# Agents
+## Ignore skills directory in any agent directory, favoring local "skills" directory
+.*/skills

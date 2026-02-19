@@ -1,7 +1,9 @@
-import { withCssFileTheme } from './themeDecorator.js';
 import { setCustomElementsManifest } from '@storybook/web-components';
+import { withThemeByClassName } from '@storybook/addon-themes';
 import customElements from '../custom-elements.json';
 setCustomElementsManifest(customElements);
+
+import '../src/styles/style.css';
 
 const registerServiceWorker = async () => {
   if ('serviceWorker' in navigator) {
@@ -10,7 +12,7 @@ const registerServiceWorker = async () => {
         'mock-service-worker.js',
         {
           scope: '/',
-        }
+        },
       );
       if (registration.installing) {
         console.log('Service worker installing');
@@ -47,14 +49,12 @@ export default {
 };
 
 export const decorators = [
-  withCssFileTheme({
-    // These keys are the labels that will be displayed in the toolbar theme switcher
-    // The values must match the CSS filenames in ./src/styles (without the .css suffix)
+  withThemeByClassName({
     themes: {
-      light: 'light',
-      dark: 'dark',
-      dim: 'dim',
+      light: 'dt-theme-light',
+      dark: 'dt-theme-dark',
+      dim: 'dt-theme-dim',
     },
-    defaultTheme: 'light', // The key of your default theme
+    defaultTheme: 'light',
   }),
 ];
