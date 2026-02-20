@@ -515,7 +515,7 @@ export default class ApiService {
    * @param {string} keyPrefix
    * @returns {Promise<any>}
    */
-  async uploadFiles(postType, postId, files, metaKey, keyPrefix = '') {
+  async uploadFiles(postType, postId, files, metaKey, keyPrefix = '', onProgress = null) {
     const formData = new FormData();
     files.forEach((f) => formData.append('storage_upload_files[]', f));
     formData.append('meta_key', metaKey);
@@ -525,30 +525,45 @@ export default class ApiService {
     formData.append('storage_s3_url_duration', '+7 days');
 
     const url = `${this.apiRoot}dt-posts/v2/${postType}/${postId}/storage_upload`;
+    return await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', url, true);
+      xhr.withCredentials = true;
+      xhr.setRequestHeader('X-WP-Nonce', this.nonce);
 
-    const response = await fetch(url, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'X-WP-Nonce': this.nonce,
-      },
-      body: formData,
-    });
-
-    const content = await response.json();
-    if (!response.ok) {
-      const error = new Error(
-        content?.uploaded_msg || content?.message || 'Upload failed'
-      );
-      error.args = {
-        status: response.status,
-        statusText: response.statusText,
-        body: content,
+      xhr.upload.onprogress = (event) => {
+        if (onProgress && event.lengthComputable) {
+          const percent = Math.round((event.loaded / event.total) * 100);
+          onProgress(percent);
+        }
       };
-      throw error;
-    }
 
-    return content;
+      xhr.onload = () => {
+        let content = {};
+        try {
+          content = JSON.parse(xhr.responseText || '{}');
+        } catch {
+          content = { message: xhr.responseText || 'Upload failed' };
+        }
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(content);
+        } else {
+          const error = new Error(
+            content?.uploaded_msg || content?.message || 'Upload failed'
+          );
+          error.args = {
+            status: xhr.status,
+            statusText: xhr.statusText,
+            body: content,
+          };
+          reject(error);
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Upload failed'));
+      xhr.send(formData);
+    });
   }
 
   /**

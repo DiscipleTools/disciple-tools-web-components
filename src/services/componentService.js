@@ -389,10 +389,11 @@ export default class ComponentService {
     const details = event.detail;
     if (!details) return;
 
-    const { files, metaKey, keyPrefix, onSuccess, onError } = details;
+    const { files, metaKey, keyPrefix, onSuccess, onError, onProgress } = details;
     const component = event.target;
 
     component.setAttribute('loading', true);
+    component.uploadProgress = 0;
     component.removeAttribute('saved');
     component.removeAttribute('error');
 
@@ -402,7 +403,13 @@ export default class ComponentService {
         this.postId,
         files,
         metaKey,
-        keyPrefix || ''
+        keyPrefix || '',
+        (percent) => {
+          component.uploadProgress = percent;
+          if (onProgress) {
+            onProgress(percent);
+          }
+        }
       );
 
       // Get updated post to merge file data
@@ -420,6 +427,7 @@ export default class ComponentService {
       }
     } finally {
       component.removeAttribute('loading');
+      component.uploadProgress = 0;
     }
   }
 

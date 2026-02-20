@@ -181,10 +181,15 @@ export class DtFileUpload extends DtFormBase {
           position: relative;
         }
 
+        .upload-status {
+          margin-top: 0.5rem;
+        }
+
         .status-indicators {
           display: flex;
+          align-items: center;
+          gap: 0.5rem;
           justify-content: flex-end;
-          margin-top: 0.5rem;
         }
 
         .status-indicators .icon-overlay {
@@ -193,6 +198,14 @@ export class DtFileUpload extends DtFormBase {
           top: auto;
           height: auto;
           padding-block: 0;
+        }
+
+        .upload-progress-text {
+          display: block;
+          font-size: 0.75rem;
+          color: var(--dt-upload-hint-color, #999);
+          text-align: end;
+          margin-bottom: 0.25rem;
         }
 
         .file-item-list .file-icon-area dt-icon {
@@ -461,6 +474,7 @@ export class DtFileUpload extends DtFormBase {
       metaKey: { type: String, attribute: 'meta-key' },
       keyPrefix: { type: String, attribute: 'key-prefix' },
       uploading: { type: Boolean, state: true },
+      uploadProgress: { type: Number, state: true },
       stagedFiles: { type: Array, state: true },
       _uploadZoneExpanded: { type: Boolean, state: true },
       _dragOver: { type: Boolean, state: true },
@@ -486,6 +500,7 @@ export class DtFileUpload extends DtFormBase {
     this.metaKey = '';
     this.keyPrefix = '';
     this.uploading = false;
+    this.uploadProgress = 0;
     this.stagedFiles = [];
     this._uploadZoneExpanded = false;
     this._dragOver = false;
@@ -494,6 +509,8 @@ export class DtFileUpload extends DtFormBase {
     this._dragLeaveTimeout = null;
     this._resizeObserver = null;
     this._keydownAttached = false;
+    this._suppressRenameBlurCommit = false;
+    this._standaloneFilesByKey = new Map();
   }
 
   connectedCallback() {
@@ -895,14 +912,44 @@ export class DtFileUpload extends DtFormBase {
     return results;
   }
 
+  /**
+   * Return File blobs pending server upload in deferred/standalone mode.
+   * Includes both currently staged files and files previously "uploaded" locally.
+   */
+  getPendingFilesForUpload() {
+    const pending = [...(this.stagedFiles || [])];
+    const seen = new Set(
+      pending.map((f) => `${f?.name || ''}::${f?.size || 0}::${f?.lastModified || 0}`)
+    );
+    const files = this._parseValue(this.value);
+    for (const item of files) {
+      const key = String(item?.key || item || '');
+      if (!key) continue;
+      const originalFile = this._standaloneFilesByKey.get(key);
+      if (!originalFile) continue;
+      const sig = `${originalFile?.name || ''}::${originalFile?.size || 0}::${originalFile?.lastModified || 0}`;
+      if (!seen.has(sig)) {
+        pending.push(originalFile);
+        seen.add(sig);
+      }
+    }
+    return pending;
+  }
+
   async _uploadFiles(files) {
     if (this._isStandaloneMode()) {
       const previousFiles = this._parseValue(this.value);
       this.uploading = true;
+      this.uploadProgress = 0;
       this.loading = true;
       this.error = '';
       try {
         const newFiles = await this._filesToMockFileObjects(files);
+        newFiles.forEach((mockFile, index) => {
+          if (mockFile?.key && files[index]) {
+            this._standaloneFilesByKey.set(String(mockFile.key), files[index]);
+          }
+        });
         const nextFiles = [...previousFiles, ...newFiles];
         this.value = nextFiles;
         this.stagedFiles = [];
@@ -914,28 +961,20 @@ export class DtFileUpload extends DtFormBase {
             detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
           })
         );
-        // Dispatch dt:upload event for Storybook actions panel
-        this.dispatchEvent(
-          new CustomEvent('dt:upload', {
-            bubbles: true,
-            detail: {
-              files: newFiles,
-              metaKey: this.metaKey || '',
-              keyPrefix: this.keyPrefix || '',
-            },
-          })
-        );
+        // Standalone mode must stay local-only and never trigger API upload listeners.
         this._refreshMasonry();
       } catch (err) {
         this.error = err?.message || 'Upload failed';
       } finally {
         this.uploading = false;
+        this.uploadProgress = 0;
         this.loading = false;
       }
       return;
     }
 
     this.uploading = true;
+    this.uploadProgress = 0;
     this.loading = true;
     this.error = '';
 
@@ -946,6 +985,9 @@ export class DtFileUpload extends DtFormBase {
         files,
         metaKey: this.metaKey,
         keyPrefix: this.keyPrefix || '',
+        onProgress: (percent) => {
+          this.uploadProgress = Number.isFinite(percent) ? percent : 0;
+        },
         onSuccess: ({ result, fieldValue }) => {
           // Handle success - merge files with existing value
           const previousFiles = this._parseValue(this.value);
@@ -985,12 +1027,14 @@ export class DtFileUpload extends DtFormBase {
           this._uploadZoneExpanded = false;
           this.saved = true;
           this.uploading = false;
+          this.uploadProgress = 0;
           this.loading = false;
         },
         onError: (error) => {
           console.error('Upload error:', error);
           this.error = error.message || 'Upload failed';
           this.uploading = false;
+          this.uploadProgress = 0;
           this.loading = false;
         },
       },
@@ -1013,6 +1057,7 @@ export class DtFileUpload extends DtFormBase {
       if (fileToDelete && fileToDelete.thumbnail_url && fileToDelete.thumbnail_url.startsWith('blob:') && fileToDelete.thumbnail_url !== fileToDelete.url) {
         URL.revokeObjectURL(fileToDelete.thumbnail_url);
       }
+      this._standaloneFilesByKey.delete(String(fileKey));
       const nextFiles = previousFiles.filter((f) => (f.key || f) !== fileKey);
       this.value = nextFiles;
       this.dispatchEvent(
@@ -1151,6 +1196,13 @@ export class DtFileUpload extends DtFormBase {
   }
 
   _commitRename(key, newName) {
+    if (this._suppressRenameBlurCommit) {
+      this._suppressRenameBlurCommit = false;
+      return;
+    }
+    if (!this._editingFileKey || this._editingFileKey !== key) {
+      return;
+    }
     const trimmed = (newName ?? this._editingFileName ?? '').trim();
     this._editingFileKey = '';
     this._editingFileName = '';
@@ -1163,8 +1215,21 @@ export class DtFileUpload extends DtFormBase {
   }
 
   _cancelRename() {
+    // Prevent blur from committing right after ESC cancel.
+    this._suppressRenameBlurCommit = true;
     this._editingFileKey = '';
     this._editingFileName = '';
+    setTimeout(() => {
+      this._suppressRenameBlurCommit = false;
+    }, 0);
+  }
+
+  _handleRenameBlur(key, value) {
+    if (this._suppressRenameBlurCommit) {
+      this._suppressRenameBlurCommit = false;
+      return;
+    }
+    this._commitRename(key, value);
   }
 
   _downloadFile(file) {
@@ -1334,9 +1399,15 @@ export class DtFileUpload extends DtFormBase {
         ${when(
           this.loading || this.saved,
           () => html`
-            <div class="status-indicators">
-              ${this.renderIconLoading()}
-              ${this.renderIconSaved()}
+            <div class="upload-status">
+              ${when(
+                this.loading && this.uploadProgress > 0,
+                () => html`<span class="upload-progress-text">${Math.round(this.uploadProgress)}%</span>`
+              )}
+              <div class="status-indicators">
+                ${this.renderIconLoading()}
+                ${this.renderIconSaved()}
+              </div>
             </div>
           `
         )}
@@ -1410,7 +1481,7 @@ export class DtFileUpload extends DtFormBase {
                                 this._cancelRename();
                               }
                             }}
-                            @blur=${(e) => this._commitRename(key, e.target.value)}
+                            @blur=${(e) => this._handleRenameBlur(key, e.target.value)}
                             @click=${(e) => e.stopPropagation()}
                           />
                         `,
