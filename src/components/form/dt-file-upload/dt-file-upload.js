@@ -181,6 +181,20 @@ export class DtFileUpload extends DtFormBase {
           position: relative;
         }
 
+        .status-indicators {
+          display: flex;
+          justify-content: flex-end;
+          margin-top: 0.5rem;
+        }
+
+        .status-indicators .icon-overlay {
+          position: static;
+          inset-inline-end: auto;
+          top: auto;
+          height: auto;
+          padding-block: 0;
+        }
+
         .file-item-list .file-icon-area dt-icon {
           font-size: 1.25rem;
         }
@@ -1317,6 +1331,16 @@ export class DtFileUpload extends DtFormBase {
           </div>
         `)}
 
+        ${when(
+          this.loading || this.saved,
+          () => html`
+            <div class="status-indicators">
+              ${this.renderIconLoading()}
+              ${this.renderIconSaved()}
+            </div>
+          `
+        )}
+
         ${when(files.length > 0, () => html`
           <div class="files-container">
             <div class=${isGrid ? 'files-grid' : 'files-list'}>
@@ -1433,7 +1457,8 @@ export class DtFileUpload extends DtFormBase {
           </div>
         `)}
 
-        ${this.renderIcons()}
+        ${this.renderIconInvalid()}
+        ${this.renderError()}
       </div>
     `;
   }

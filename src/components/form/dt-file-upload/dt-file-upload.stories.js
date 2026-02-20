@@ -218,9 +218,15 @@ ListLayout.args = {
   ],
 };
 
-export const ManualUpload = Template.bind({});
-ManualUpload.args = {
-  autoUpload: false,
+export const ManualUpload = {
+  render: (args) => Template(args),
+  args: {
+    label: 'Manual Upload',
+    autoUpload: false,
+    acceptedFileTypes: ['image/*', 'application/pdf'],
+    maxFiles: 3,
+    value: [],
+  },
 };
 
 export const NoDelete = Template.bind({});
@@ -344,6 +350,12 @@ export const Required = Template.bind({});
 Required.decorators = [FormDecorator];
 Required.args = {
   required: true,
+};
+
+export const BasicForm = Template.bind({});
+BasicForm.decorators = [FormDecorator];
+BasicForm.args = {
+  value: [],
 };
 
 export const AutoSave = Template.bind({});
