@@ -3,7 +3,7 @@ import { withThemeByClassName } from '@storybook/addon-themes';
 import customElements from '../custom-elements.json';
 setCustomElementsManifest(customElements);
 
-import '../src/styles/style.css';
+import '../src/styles/components.css';
 
 const registerServiceWorker = async () => {
   if ('serviceWorker' in navigator) {

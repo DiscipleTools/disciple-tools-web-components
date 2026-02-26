@@ -65,6 +65,7 @@ export default class ComponentService {
     }
 
     this.attachLoadEvents();
+    this.attachFileUploadEvents();
   }
 
   /**
@@ -135,6 +136,28 @@ export default class ComponentService {
     if (allElements) {
       allElements.forEach(el => {
         el.addEventListener('change', this.handleChangeEvent.bind(this));
+      });
+    }
+  }
+
+  /**
+   * Attach file upload event listeners to components that handle file operations
+   * @param {string} [selector] (Optional) Override default selector
+   */
+  attachFileUploadEvents(selector) {
+    const elements = document.querySelectorAll(
+      selector || 'dt-file-upload'
+    );
+    if (elements) {
+      elements.forEach(el => {
+        // prevent multiple event attachments if this is called multiple times
+        if (!el.dataset.eventDtUpload) {
+          el.addEventListener('dt:upload', this.handleUploadEvent.bind(this));
+          el.addEventListener('dt:delete-file', this.handleDeleteFileEvent.bind(this));
+          el.addEventListener('dt:rename-file', this.handleRenameFileEvent.bind(this));
+          el.addEventListener('dt:download-file', this.handleDownloadFileEvent.bind(this));
+          el.dataset.eventDtUpload = true;
+        }
       });
     }
   }
@@ -352,6 +375,164 @@ export default class ComponentService {
           event.target.setAttribute('invalid', true); // this isn't hooked up yet
           event.target.setAttribute('error', error.message || error.toString());
         }
+      }
+    }
+  }
+
+  /**
+   * Event listener for file upload events.
+   * Handles uploading files via API and updates component state
+   * @param {Event} event
+   * @returns {Promise<void>}
+   */
+  async handleUploadEvent(event) {
+    const details = event.detail;
+    if (!details) return;
+
+    const { files, metaKey, keyPrefix, onSuccess, onError } = details;
+    const component = event.target;
+
+    component.setAttribute('loading', true);
+    component.removeAttribute('saved');
+    component.removeAttribute('error');
+
+    try {
+      const result = await this._api.uploadFiles(
+        this.postType,
+        this.postId,
+        files,
+        metaKey,
+        keyPrefix || ''
+      );
+
+      // Get updated post to merge file data
+      const post = await this._api.getPost(this.postType, this.postId);
+      const fieldValue = post[metaKey] || [];
+
+      // Call success callback with result and field value
+      if (onSuccess) {
+        onSuccess({ result, fieldValue });
+      }
+    } catch (error) {
+      component.setAttribute('error', error.message || 'Upload failed');
+      if (onError) {
+        onError(error);
+      }
+    } finally {
+      component.removeAttribute('loading');
+    }
+  }
+
+  /**
+   * Event listener for file delete events.
+   * Handles deleting files via API and updates component state
+   * @param {Event} event
+   * @returns {Promise<void>}
+   */
+  async handleDeleteFileEvent(event) {
+    const details = event.detail;
+    if (!details) return;
+
+    const { fileKey, metaKey, onSuccess, onError } = details;
+    const component = event.target;
+
+    component.setAttribute('loading', true);
+    component.removeAttribute('saved');
+    component.removeAttribute('error');
+
+    try {
+      await this._api.deleteFile(this.postType, this.postId, metaKey, fileKey);
+
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (error) {
+      component.setAttribute('error', error.message || 'Delete failed');
+      if (onError) {
+        onError(error);
+      }
+    } finally {
+      component.removeAttribute('loading');
+    }
+  }
+
+  /**
+   * Event listener for file rename events.
+   * Handles renaming files via API and updates component state
+   * @param {Event} event
+   * @returns {Promise<void>}
+   */
+  async handleRenameFileEvent(event) {
+    const details = event.detail;
+    if (!details) return;
+
+    const { fileKey, newName, metaKey, onSuccess, onError } = details;
+    const component = event.target;
+
+    component.setAttribute('loading', true);
+    component.removeAttribute('saved');
+    component.removeAttribute('error');
+
+    try {
+      const result = await this._api.renameFile(
+        this.postType,
+        this.postId,
+        metaKey,
+        fileKey,
+        newName
+      );
+
+      if (onSuccess) {
+        onSuccess(result);
+      }
+    } catch (error) {
+      component.setAttribute('error', error.message || 'Rename failed');
+      if (onError) {
+        onError(error);
+      }
+    } finally {
+      component.removeAttribute('loading');
+    }
+  }
+
+  /**
+   * Event listener for file download events.
+   * Handles downloading files via API proxy and triggers browser download
+   * @param {Event} event
+   * @returns {Promise<void>}
+   */
+  async handleDownloadFileEvent(event) {
+    const details = event.detail;
+    if (!details) return;
+
+    const { fileKey, fileName, metaKey, onSuccess, onError } = details;
+    const component = event.target;
+
+    try {
+      const blob = await this._api.downloadFile(
+        this.postType,
+        this.postId,
+        metaKey,
+        fileKey
+      );
+
+      // Create download link and trigger download
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName || 'download';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (error) {
+      component.setAttribute('error', error.message || 'Download failed');
+      if (onError) {
+        onError(error);
       }
     }
   }

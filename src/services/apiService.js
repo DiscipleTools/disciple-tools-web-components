@@ -504,4 +504,124 @@ export default class ApiService {
       'dt-posts/v2/posts/search/'
     );
   }
+
+  // region File Storage
+  /**
+   * Upload files to storage
+   * @param {string} postType
+   * @param {number} postId
+   * @param {File[]} files - Array of File objects
+   * @param {string} metaKey
+   * @param {string} keyPrefix
+   * @returns {Promise<any>}
+   */
+  async uploadFiles(postType, postId, files, metaKey, keyPrefix = '') {
+    const formData = new FormData();
+    files.forEach((f) => formData.append('storage_upload_files[]', f));
+    formData.append('meta_key', metaKey);
+    formData.append('key_prefix', keyPrefix);
+    formData.append('upload_type', 'post');
+    formData.append('is_multi_file', 'true');
+    formData.append('storage_s3_url_duration', '+7 days');
+
+    const url = `${this.apiRoot}dt-posts/v2/${postType}/${postId}/storage_upload`;
+    return await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', url, true);
+      xhr.withCredentials = true;
+      xhr.setRequestHeader('X-WP-Nonce', this.nonce);
+
+      xhr.onload = () => {
+        let content = {};
+        try {
+          content = JSON.parse(xhr.responseText || '{}');
+        } catch {
+          content = { message: xhr.responseText || 'Upload failed' };
+        }
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(content);
+        } else {
+          const error = new Error(
+            content?.uploaded_msg || content?.message || 'Upload failed'
+          );
+          error.args = {
+            status: xhr.status,
+            statusText: xhr.statusText,
+            body: content,
+          };
+          reject(error);
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Upload failed'));
+      xhr.send(formData);
+    });
+  }
+
+  /**
+   * Delete a single file from storage
+   * @param {string} postType
+   * @param {number} postId
+   * @param {string} metaKey
+   * @param {string} fileKey
+   * @returns {Promise<any>}
+   */
+  async deleteFile(postType, postId, metaKey, fileKey) {
+    return this.makeRequestOnPosts('POST', `${postType}/${postId}/storage_delete_single`, {
+      meta_key: metaKey,
+      file_key: fileKey,
+    });
+  }
+
+  /**
+   * Rename a single file in storage
+   * @param {string} postType
+   * @param {number} postId
+   * @param {string} metaKey
+   * @param {string} fileKey
+   * @param {string} newName
+   * @returns {Promise<any>}
+   */
+  async renameFile(postType, postId, metaKey, fileKey, newName) {
+    return this.makeRequestOnPosts('POST', `${postType}/${postId}/storage_rename_single`, {
+      meta_key: metaKey,
+      file_key: fileKey,
+      new_name: newName,
+    });
+  }
+
+  /**
+   * Download a file from storage via proxy endpoint
+   * @param {string} postType
+   * @param {number} postId
+   * @param {string} metaKey
+   * @param {string} fileKey
+   * @returns {Promise<Blob>} File blob for download
+   */
+  async downloadFile(postType, postId, metaKey, fileKey) {
+    const url = `${this.apiRoot}dt-posts/v2/${postType}/${postId}/storage_download`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': this.nonce,
+      },
+      body: JSON.stringify({
+        meta_key: metaKey,
+        file_key: fileKey,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Download failed' }));
+      throw new Error(error.message || 'Download failed');
+    }
+
+    // Return blob for download handling
+    return await response.blob();
+  }
+  // endregion
 }
