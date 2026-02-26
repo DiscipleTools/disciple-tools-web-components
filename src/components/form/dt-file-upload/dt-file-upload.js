@@ -181,15 +181,10 @@ export class DtFileUpload extends DtFormBase {
           position: relative;
         }
 
-        .upload-status {
-          margin-top: 0.5rem;
-        }
-
         .status-indicators {
           display: flex;
-          align-items: center;
-          gap: 0.5rem;
           justify-content: flex-end;
+          margin-top: 0.5rem;
         }
 
         .status-indicators .icon-overlay {
@@ -198,14 +193,6 @@ export class DtFileUpload extends DtFormBase {
           top: auto;
           height: auto;
           padding-block: 0;
-        }
-
-        .upload-progress-text {
-          display: block;
-          font-size: 0.75rem;
-          color: var(--dt-upload-hint-color, #999);
-          text-align: end;
-          margin-bottom: 0.25rem;
         }
 
         .file-item-list .file-icon-area dt-icon {
@@ -474,7 +461,6 @@ export class DtFileUpload extends DtFormBase {
       metaKey: { type: String, attribute: 'meta-key' },
       keyPrefix: { type: String, attribute: 'key-prefix' },
       uploading: { type: Boolean, state: true },
-      uploadProgress: { type: Number, state: true },
       stagedFiles: { type: Array, state: true },
       _uploadZoneExpanded: { type: Boolean, state: true },
       _dragOver: { type: Boolean, state: true },
@@ -500,7 +486,6 @@ export class DtFileUpload extends DtFormBase {
     this.metaKey = '';
     this.keyPrefix = '';
     this.uploading = false;
-    this.uploadProgress = 0;
     this.stagedFiles = [];
     this._uploadZoneExpanded = false;
     this._dragOver = false;
@@ -940,7 +925,6 @@ export class DtFileUpload extends DtFormBase {
     if (this._isStandaloneMode()) {
       const previousFiles = this._parseValue(this.value);
       this.uploading = true;
-      this.uploadProgress = 0;
       this.loading = true;
       this.error = '';
       try {
@@ -967,14 +951,12 @@ export class DtFileUpload extends DtFormBase {
         this.error = err?.message || 'Upload failed';
       } finally {
         this.uploading = false;
-        this.uploadProgress = 0;
         this.loading = false;
       }
       return;
     }
 
     this.uploading = true;
-    this.uploadProgress = 0;
     this.loading = true;
     this.error = '';
 
@@ -985,9 +967,6 @@ export class DtFileUpload extends DtFormBase {
         files,
         metaKey: this.metaKey,
         keyPrefix: this.keyPrefix || '',
-        onProgress: (percent) => {
-          this.uploadProgress = Number.isFinite(percent) ? percent : 0;
-        },
         onSuccess: ({ result, fieldValue }) => {
           // Handle success - merge files with existing value
           const previousFiles = this._parseValue(this.value);
@@ -1027,14 +1006,12 @@ export class DtFileUpload extends DtFormBase {
           this._uploadZoneExpanded = false;
           this.saved = true;
           this.uploading = false;
-          this.uploadProgress = 0;
           this.loading = false;
         },
         onError: (error) => {
           console.error('Upload error:', error);
           this.error = error.message || 'Upload failed';
           this.uploading = false;
-          this.uploadProgress = 0;
           this.loading = false;
         },
       },
@@ -1399,15 +1376,9 @@ export class DtFileUpload extends DtFormBase {
         ${when(
           this.loading || this.saved,
           () => html`
-            <div class="upload-status">
-              ${when(
-                this.loading && this.uploadProgress > 0,
-                () => html`<span class="upload-progress-text">${Math.round(this.uploadProgress)}%</span>`
-              )}
-              <div class="status-indicators">
-                ${this.renderIconLoading()}
-                ${this.renderIconSaved()}
-              </div>
+            <div class="status-indicators">
+              ${this.renderIconLoading()}
+              ${this.renderIconSaved()}
             </div>
           `
         )}

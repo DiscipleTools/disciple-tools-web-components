@@ -515,7 +515,7 @@ export default class ApiService {
    * @param {string} keyPrefix
    * @returns {Promise<any>}
    */
-  async uploadFiles(postType, postId, files, metaKey, keyPrefix = '', onProgress = null) {
+  async uploadFiles(postType, postId, files, metaKey, keyPrefix = '') {
     const formData = new FormData();
     files.forEach((f) => formData.append('storage_upload_files[]', f));
     formData.append('meta_key', metaKey);
@@ -530,13 +530,6 @@ export default class ApiService {
       xhr.open('POST', url, true);
       xhr.withCredentials = true;
       xhr.setRequestHeader('X-WP-Nonce', this.nonce);
-
-      xhr.upload.onprogress = (event) => {
-        if (onProgress && event.lengthComputable) {
-          const percent = Math.round((event.loaded / event.total) * 100);
-          onProgress(percent);
-        }
-      };
 
       xhr.onload = () => {
         let content = {};
