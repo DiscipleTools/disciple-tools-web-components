@@ -403,6 +403,19 @@ export class DtFileUpload extends DtFormBase {
       value: {
         type: Array,
         reflect: true,
+        converter: {
+          fromAttribute: (val) => {
+            if (val == null || val === '') return [];
+            try {
+              const parsed = JSON.parse(val);
+              return Array.isArray(parsed) ? parsed : [];
+            } catch {
+              return [];
+            }
+          },
+          toAttribute: (val) =>
+            Array.isArray(val) && val.length > 0 ? JSON.stringify(val) : '',
+        },
       },
       acceptedFileTypes: {
         type: Array,
@@ -542,12 +555,18 @@ export class DtFileUpload extends DtFormBase {
   }
 
   firstUpdated(changedProperties) {
+    if (!Array.isArray(this.value)) {
+      this.value = this._parseValue(this.value);
+    }
     super.firstUpdated(changedProperties);
     this._setupResizeObserver();
   }
 
   updated(changedProperties) {
     super.updated(changedProperties);
+    if (changedProperties.has('value')) {
+      this._setFormValue(this.value);
+    }
     if (changedProperties.has('value') || changedProperties.has('stagedFiles') || changedProperties.has('error')) {
       this.updateComplete.then(() => this._refreshMasonry());
     }

@@ -112,7 +112,7 @@ function Template(args) {
     <dt-file-upload
       name=${name}
       label=${label}
-      .value=${JSON.stringify(value)}
+      .value=${value}
       .acceptedFileTypes=${acceptedFileTypes}
       max-file-size=${ifDefined(maxFileSize)}
       max-files=${ifDefined(maxFiles)}
