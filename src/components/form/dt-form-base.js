@@ -23,6 +23,7 @@ export default class DtFormBase extends DtBase {
 
   static get styles() {
     return [
+      ...super.styles,
       css`
         .input-group {
           position: relative;

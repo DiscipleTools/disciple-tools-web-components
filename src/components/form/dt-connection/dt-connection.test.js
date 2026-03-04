@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, aTimeout, nextFrame } from '@open-wc/testing';
+import { fixture, expect, nextFrame, waitUntil } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-connection.js';
@@ -19,16 +19,11 @@ const options = [
     label: 'Option Three',
   },
 ];
-async function wait(ms) {
-  return new Promise(r => {
-    setTimeout(r, ms);
-  });
-}
 
 async function clickOption(el, id) {
   const input = el.shadowRoot.querySelector('input');
   const optionBtn = el.shadowRoot.querySelector(
-    `.option-list button[value="${id}"]`
+    `.option-list button[value="${id}"]`,
   );
 
   input.focus();
@@ -39,7 +34,7 @@ async function clickOption(el, id) {
 describe('dt-connection', () => {
   it('sets placeholder', async () => {
     const el = await fixture(
-      html`<dt-connection placeholder="Custom Placeholder"></dt-connection>`
+      html`<dt-connection placeholder="Custom Placeholder"></dt-connection>`,
     );
     const input = el.shadowRoot.querySelector('input');
 
@@ -48,7 +43,9 @@ describe('dt-connection', () => {
 
   it('sets options', async () => {
     const el = await fixture(
-      html`<dt-connection options="${JSON.stringify(options)}"></dt-connection>`
+      html`<dt-connection
+        options="${JSON.stringify(options)}"
+      ></dt-connection>`,
     );
     const optionList = el.shadowRoot.querySelector('.option-list');
 
@@ -72,7 +69,7 @@ describe('dt-connection', () => {
       html`<dt-connection
         value="${JSON.stringify([options[0], options[1]])}"
         options="${JSON.stringify(options)}"
-      ></dt-connection>`
+      ></dt-connection>`,
     );
     const container = el.shadowRoot.querySelector('.field-container');
 
@@ -86,7 +83,7 @@ describe('dt-connection', () => {
       html`<dt-connection
         value="${JSON.stringify([options[0], options[1]])}"
         options="${JSON.stringify(options)}"
-      ></dt-connection>`
+      ></dt-connection>`,
     );
     const container = el.shadowRoot.querySelector('.field-container');
 
@@ -99,9 +96,11 @@ describe('dt-connection', () => {
     expect(container).not.to.contain('button[data-value="3"]');
   });
 
-  it.skip('opens option list on input focus', async () => {
+  it('opens option list on input focus', async () => {
     const el = await fixture(
-      html`<dt-connection options="${JSON.stringify(options)}"></dt-connection>`
+      html`<dt-connection
+        options="${JSON.stringify(options)}"
+      ></dt-connection>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionList = el.shadowRoot.querySelector('.option-list');
@@ -109,24 +108,26 @@ describe('dt-connection', () => {
     expect(optionList).not.to.be.displayed;
 
     input.focus();
-    await aTimeout(500); // wait for UI update
+    await nextFrame(); // wait for UI update
 
     expect(optionList).to.be.displayed;
   });
 
   it('selects option via mouse', async () => {
     const el = await fixture(
-      html`<dt-connection options="${JSON.stringify(options)}"></dt-connection>`
+      html`<dt-connection
+        options="${JSON.stringify(options)}"
+      ></dt-connection>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionBtn = el.shadowRoot.querySelector(
-      '.option-list button[value="1"]'
+      '.option-list button[value="1"]',
     );
 
     input.focus();
 
     optionBtn.click();
-    await wait(100);
+    await nextFrame();
 
     const container = el.shadowRoot.querySelector('.field-container');
     expect(container).to.contain('button[data-value="1"]');
@@ -134,7 +135,9 @@ describe('dt-connection', () => {
 
   it('selects option via keyboard', async () => {
     const el = await fixture(
-      html`<dt-connection options="${JSON.stringify(options)}"></dt-connection>`
+      html`<dt-connection
+        options="${JSON.stringify(options)}"
+      ></dt-connection>`,
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
@@ -152,7 +155,9 @@ describe('dt-connection', () => {
 
   it('updates value attribute', async () => {
     const el = await fixture(
-      html`<dt-connection options="${JSON.stringify(options)}"></dt-connection>`
+      html`<dt-connection
+        options="${JSON.stringify(options)}"
+      ></dt-connection>`,
     );
 
     await clickOption(el, '1');
@@ -165,14 +170,14 @@ describe('dt-connection', () => {
       html`<dt-connection
         value="${JSON.stringify([options[0], options[2]])}"
         options="${JSON.stringify(options)}"
-      ></dt-connection>`
+      ></dt-connection>`,
     );
 
     const optionBtn = el.shadowRoot.querySelector(
-      `.selected-option button[data-value="1"]`
+      `.selected-option button[data-value="1"]`,
     );
     optionBtn.click();
-    await wait(100);
+    await nextFrame();
 
     expect(el.value).to.deep.include({ id: 3, label: options[2].label });
     expect(el.value).to.deep.include({
@@ -189,17 +194,17 @@ describe('dt-connection', () => {
           { id: options[0].id, label: 'old', delete: true },
         ])}"
         options="${JSON.stringify(options)}"
-      ></dt-connection>`
+      ></dt-connection>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionBtn = el.shadowRoot.querySelector(
-      '.option-list button[value="1"]'
+      '.option-list button[value="1"]',
     );
 
     input.focus();
 
     optionBtn.click();
-    await wait(100);
+    await nextFrame();
 
     expect(el.value).to.deep.include({ id: 1, label: 'old' });
     expect(el.value).to.not.deep.include({
@@ -210,44 +215,46 @@ describe('dt-connection', () => {
   });
 
   it('triggers change event - item added', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-connection
         name="custom-name"
         value="${JSON.stringify([options[1]])}"
         options="${JSON.stringify(options)}"
-      ></dt-connection>`
+        @change="${e => (eventDetail = e.detail)}"
+      ></dt-connection>`,
     );
 
-    setTimeout(() => clickOption(el, '1'), 100);
+    await clickOption(el, '1');
+    await nextFrame(); // Ensure event has propagated
 
-    const { detail } = await oneEvent(el, 'change');
-
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.oldValue).to.eql([options[1]]);
-    expect(detail.newValue).to.eql([options[1], options[0]]);
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.oldValue).to.eql([options[1]]);
+    expect(eventDetail.newValue).to.eql([options[1], options[0]]);
   });
 
   it('triggers change event - item removed', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-connection
         name="custom-name"
         value="${JSON.stringify([options[0]])}"
         options="${JSON.stringify(options)}"
-      ></dt-connection>`
+        @change="${e => (eventDetail = e.detail)}"
+      ></dt-connection>`,
     );
 
-    setTimeout(() => {
-      const optionBtn = el.shadowRoot.querySelector(
-        `.selected-option button[data-value="1"]`
-      );
-      optionBtn.click();
-    }, 100);
+    const optionBtn = el.shadowRoot.querySelector(
+      `.selected-option button[data-value="1"]`,
+    );
+    optionBtn.click();
+    await nextFrame(); // Ensure event has propagated
 
-    const { detail } = await oneEvent(el, 'change');
-
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.oldValue).to.eql([options[0]]);
-    expect(detail.newValue).to.eql([
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.oldValue).to.eql([options[0]]);
+    expect(eventDetail.newValue).to.eql([
       {
         ...options[0],
         delete: true,
@@ -257,7 +264,9 @@ describe('dt-connection', () => {
 
   it('filters options on text input', async () => {
     const el = await fixture(
-      html`<dt-connection options="${JSON.stringify(options)}"></dt-connection>`
+      html`<dt-connection
+        options="${JSON.stringify(options)}"
+      ></dt-connection>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionsList = el.shadowRoot.querySelector('.option-list');
@@ -275,7 +284,9 @@ describe('dt-connection', () => {
 
   it('filters options on option selection', async () => {
     const el = await fixture(
-      html`<dt-connection options="${JSON.stringify(options)}"></dt-connection>`
+      html`<dt-connection
+        options="${JSON.stringify(options)}"
+      ></dt-connection>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionsList = el.shadowRoot.querySelector('.option-list');
@@ -288,35 +299,39 @@ describe('dt-connection', () => {
   });
 
   it('loads options from event if no options provided', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-connection
         name="custom-name"
         value="${JSON.stringify([options[1]])}"
         .open="${true}"
-      ></dt-connection>`
+        @dt:get-data="${e => (eventDetail = e.detail)}"
+      ></dt-connection>`,
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
 
-    setTimeout(() => sendKeys({ type: 'o' }), 100);
+    await sendKeys({ type: 'o' });
+    await nextFrame(); // Ensure event has propagated
 
-    const { detail } = await oneEvent(el, 'dt:get-data');
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.query).to.equal('o');
+    expect(eventDetail.onSuccess).to.exist;
 
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.query).to.equal('o');
-    expect(detail.onSuccess).to.exist;
-
-    await detail.onSuccess([options[0]]);
+    await eventDetail.onSuccess([options[0]]);
 
     const optionList = el.shadowRoot.querySelector('.option-list');
     expect(optionList).to.contain('button[value="1"]');
     expect(optionList).not.to.contain('button[value="2"]');
     expect(optionList).not.to.contain('button[value="3"]');
   });
-
   it('allows adding new option', async () => {
     const el = await fixture(
-      html`<dt-connection options="${JSON.stringify(options)}" allowAdd></dt-connection>`
+      html`<dt-connection
+        options="${JSON.stringify(options)}"
+        allowAdd
+      ></dt-connection>`,
     );
     el.shadowRoot.querySelector('input').focus();
 
@@ -343,7 +358,7 @@ describe('dt-connection', () => {
         disabled
         value="${JSON.stringify([options[1]])}"
         options="${JSON.stringify(options)}"
-      ></dt-connection>`
+      ></dt-connection>`,
     );
 
     const input = el.shadowRoot.querySelector('input');
@@ -359,17 +374,70 @@ describe('dt-connection', () => {
     expect(selectedOption).to.have.descendant('a').with.attribute('disabled');
   });
 
+  it('renders private field with label', async () => {
+    const el = await fixture(
+      html`<dt-connection
+        label="Field Name"
+        private
+        privateLabel="Confidential Information"
+      ></dt-connection>`,
+    );
+
+    const label = el.shadowRoot.querySelector('dt-label');
+    expect(label).to.exist;
+    expect(label).to.have.attribute('private');
+  });
+
+  it('displays an error message', async () => {
+    const el = await fixture(
+      html`<dt-connection error="Custom error message"></dt-connection>`,
+    );
+    const errorMessage = el.shadowRoot.querySelector(
+      '.error-container .attr-msg',
+    );
+    expect(errorMessage).to.exist;
+    expect(errorMessage).to.have.text('Custom error message');
+  });
+
+  it('dispatches dt:add-new event when add button is clicked', async () => {
+    let eventDetail = null;
+    const el = await fixture(
+      html`<dt-connection
+        name="test-connection"
+        allowAdd
+        @dt:add-new="${e => (eventDetail = e.detail)}"
+      ></dt-connection>`,
+    );
+    const input = el.shadowRoot.querySelector('input');
+    input.focus();
+    await sendKeys({ type: 'New Connection' });
+    await nextFrame();
+    const addButton = el.shadowRoot.querySelector('.input-addon.btn-add');
+    addButton.click();
+    await nextFrame();
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('test-connection');
+    expect(eventDetail.value).to.equal('New Connection');
+  });
+
   it('clicks add new button', async () => {
     const el = await fixture(
-      html`<dt-connection options="${JSON.stringify(options)}" allowAdd></dt-connection>`
+      html`<dt-connection
+        options="${JSON.stringify(options)}"
+        allowAdd
+      ></dt-connection>`,
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
     await sendKeys({ type: 'new' });
-    await wait(100);
+    await nextFrame();
     await sendKeys({ press: 'ArrowDown' });
     await sendKeys({ press: 'Enter' });
 
+    await waitUntil(
+      () => el.shadowRoot.querySelector('.selected-option'),
+      'Selected option not found',
+    );
     const selectedOption = el.shadowRoot.querySelector('.selected-option');
     expect(selectedOption).to.have.descendant('a').with.text('new');
   });

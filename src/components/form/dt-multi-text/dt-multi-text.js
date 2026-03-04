@@ -20,9 +20,19 @@ export class DtMultiText extends DtText {
         input {
           color: var(--dt-form-text-color, #000);
           appearance: none;
-          background-color: var(--dt-multi-text-background-color, #fefefe);
-          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
-          border-radius: var(--dt-multi-text-border-radius, 0);
+          background-color: var(
+            --dt-multi-text-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(
+              --dt-multi-text-border-color,
+              var(--dt-form-border-color, #fefefe)
+            );
+          border-radius: var(
+            --dt-multi-text-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-multi-text-box-shadow,
             var(
@@ -50,13 +60,20 @@ export class DtMultiText extends DtText {
         textarea:disabled,
         textarea[readonly] {
           background-color: var(
-            --dt-text-disabled-background-color,
+            --dt-multi-text-disabled-background-color,
             var(--dt-form-disabled-background-color, #e6e6e6)
+          );
+          color: var(
+            --dt-multi-text-disabled-color,
+            var(--dt-form-placeholder-color, #999)
           );
           cursor: not-allowed;
         }
         input.disabled {
-          color: var(--dt-text-placeholder-color, #999);
+          color: var(
+            --dt-multi-text-disabled-color,
+            var(--dt-form-placeholder-color, #999)
+          );
         }
         input:focus-within,
         input:focus-visible {
@@ -70,7 +87,7 @@ export class DtMultiText extends DtText {
           letter-spacing: var(--dt-text-placeholder-letter-spacing, normal);
         }
         input.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(--dt-form-border-color-alert, var(--alert-color));
         }
       `,
       css`
@@ -95,8 +112,15 @@ export class DtMultiText extends DtText {
           padding: 10px;
           border: solid 1px gray;
           border-collapse: collapse;
-          background-color: var(--dt-multi-text-background-color, buttonface);
-          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
+          background-color: var(
+            --dt-multi-text-background-color,
+            var(--dt-form-background-color, buttonface)
+          );
+          border: 1px solid
+            var(
+              --dt-multi-text-border-color,
+              var(--dt-form-border-color, #fefefe)
+            );
           border-radius: var(--dt-multi-text-border-radius, 0);
           box-shadow: var(
             --dt-multi-text-box-shadow,
@@ -118,28 +142,46 @@ export class DtMultiText extends DtText {
         }
 
         .input-addon.btn-remove {
-          color: var(--alert-color, #cc4b37);
+          color: var(
+            --dt-multi-text-remove-button-color,
+            var(--alert-color, #cc4b37)
+          );
           &:disabled {
-            color: var(--dt-text-placeholder-color, #999);
+            color: var(
+              --dt-multi-text-disabled-color,
+              var(--dt-form-placeholder-color, #999)
+            );
           }
           &:hover:not([disabled]) {
-            background-color: var(--alert-color, #cc4b37);
-            color: var(--dt-multi-text-button-hover-color, #ffffff);
+            background-color: var(
+              --dt-multi-text-remove-button-hover-background-color,
+              var(--alert-color, #cc4b37)
+            );
+            color: var(--dt-multi-text-remove-button-hover-color, #ffffff);
           }
         }
         .input-addon.btn-add {
-          color: var(--success-color, #cc4b37);
+          color: var(
+            --dt-multi-text-add-button-color,
+            var(--success-color, #cc4b37)
+          );
           &:disabled {
-            color: var(--dt-text-placeholder-color, #999);
+            color: var(
+              --dt-multi-text-disabled-color,
+              var(--dt-form-placeholder-color, #999)
+            );
           }
           &:hover:not([disabled]) {
-            background-color: var(--success-color, #cc4b37);
-            color: var(--dt-multi-text-button-hover-color, #ffffff);
+            background-color: var(
+              --dt-multi-text-add-button-hover-background-color,
+              var(--success-color, #cc4b37)
+            );
+            color: var(--dt-multi-text-add-button-hover-color, #ffffff);
           }
         }
 
         .icon-overlay {
-          inset-inline-end: 4rem;
+          inset-inline-end: 3.5rem;
           height: 100%;
         }
         .field-container:has(.btn-remove) ~ .icon-overlay {
@@ -307,7 +349,7 @@ export class DtMultiText extends DtText {
     }
     let pad = 0.5;
     if (isDeleting === false) {
-      pad += (3 * emptyItems);
+      pad += 3 * emptyItems;
     }
     const styleStr = `padding-block-end: ${pad.toString()}rem`;
     return html`

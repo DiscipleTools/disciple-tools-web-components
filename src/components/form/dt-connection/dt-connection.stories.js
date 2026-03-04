@@ -86,16 +86,38 @@ export default {
   title: 'Components/Form/Connection',
   component: 'dt-connection',
   argTypes: {
+    id: { control: 'text' },
     name: { control: 'text' },
-    value: { control: 'text' },
+    label: { control: 'text' },
+    value: { control: 'object' },
     placeholder: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
     allowAdd: { control: 'boolean' },
+    private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
+    error: { control: 'text' },
+    slot: { control: 'text' },
+    options: { control: 'object' },
+    requiredMessage: { control: 'text' },
+    onChange: { action: 'on-change' },
     ...argTypes,
   },
   args: {
+    id: 'name',
+    name: 'field-name',
+    label: 'Field Name',
     placeholder: 'Select Connection',
+    icon: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText: 'Icon Alt Text',
+    private: false,
+    privateLabel: 'Private',
+    loading: false,
+    saved: false,
+    error: '',
+    slot: '',
+    options: basicOptions,
+    requiredMessage: 'This field is required',
     onLoad: action('on-load'),
     onChange: action('on-change'),
     onNew: action('on-new'),
@@ -105,20 +127,21 @@ export default {
   },
   render: args => {
     const {
+      id = 'name',
       name = 'field-name',
       label = 'Field Name',
       options,
       placeholder,
       value,
-      disabled = false,
-      required = false,
+      disabled,
+      required,
       requiredMessage,
-      icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+      icon,
       iconAltText = 'Icon Alt Text',
-      isPrivate,
+      private: isPrivate,
       privateLabel,
-      loading = false,
-      saved = false,
+      loading,
+      saved,
       open,
       error,
       slot,
@@ -129,18 +152,19 @@ export default {
     } = args;
     return html`
       <dt-connection
-        name="${name}"
-        label=${label}
-        placeholder="${placeholder}"
-        options="${JSON.stringify(options)}"
-        value="${JSON.stringify(value)}"
+        id="${ifDefined(id)}"
+        name="${ifDefined(name)}"
+        label="${ifDefined(label)}"
+        placeholder="${ifDefined(placeholder)}"
+        .options="${options}"
+        .value="${value}"
         ?disabled=${disabled}
         ?required=${required}
-        requiredMessage=${requiredMessage}
-        icon="${icon}"
-        iconAltText="${iconAltText}"
-        ?private=${isPrivate}
-        privateLabel="${privateLabel}"
+        requiredMessage="${ifDefined(requiredMessage)}"
+        icon="${ifDefined(icon)}"
+        iconAltText="${ifDefined(iconAltText)}"
+        ?private="${isPrivate}"
+        privateLabel="${ifDefined(privateLabel)}"
         ?allowAdd="${allowAdd}"
         ?loading="${loading}"
         ?saved="${saved}"
@@ -157,9 +181,7 @@ export default {
 };
 
 export const Empty = {
-  args: {
-    onload: '',
-  },
+  args: {},
 };
 
 export const SvgIcon = {
@@ -221,6 +243,7 @@ export const OptionsOpen = {
 
 export const LoadOptionsFromAPI = {
   args: {
+    options: null,
     onLoad: onLoadEvent,
   },
 };
@@ -244,6 +267,13 @@ export const Disabled = {
     value: [basicOptions[1]],
     options: basicOptions,
     disabled: true,
+  },
+};
+export const PrivateField = {
+  args: {
+    private: true,
+    privateLabel: 'This is a private field',
+    value: [basicOptions[1]],
   },
 };
 export const Loading = {
@@ -273,6 +303,13 @@ export const Error = {
   },
 };
 
+export const ErrorSlot = {
+  args: {
+    slot: 'ErrorSlot',
+    error: '[Should show link here]',
+  },
+};
+
 export const basicForm = {
   decorators: [FormDecorator],
   args: {
@@ -290,6 +327,7 @@ export const Required = {
 };
 
 export const RequiredCustomMessage = {
+  decorators: [FormDecorator],
   args: {
     required: true,
     requiredMessage: 'Custom error message',

@@ -130,26 +130,48 @@ const options = {
 export default {
   title: 'Components/Form/Church Health Circle',
   component: 'dt-church-health-circle',
+  argTypes: {
+    name: { control: 'text' },
+    options: { control: 'object' },
+    value: { control: 'object' },
+    width: { control: 'number' },
+    missingIcon: { control: 'text' },
+    disabled: { control: 'boolean' },
+    loading: { control: 'boolean' },
+    saved: { control: 'boolean' },
+    error: { control: 'text' },
+    slot: { control: 'text' },
+    onChange: { action: 'on-change' },
+    ...argTypes,
+  },
   args: {
     name: 'church-health',
     options,
     width: 300,
+    value: [],
+    missingIcon: '/groups/missing.svg',
+    disabled: false,
+    loading: false,
+    saved: false,
+    error: '',
     onChange: action('on-change'),
   },
   render: args => {
     return html`
-      <div style="width: ${args.width}px;">
+      <div style="width: ${ifDefined(args.width)}px;">
         <dt-church-health-circle
-          name="${args.name}"
-          value="${JSON.stringify(args.value)}"
-          options="${JSON.stringify(args.options)}"
-          missingIcon="/groups/missing.svg"
+          name="${ifDefined(args.name)}"
+          .value="${args.value}"
+          .options="${args.options}"
+          missingIcon="${ifDefined(args.missingIcon)}"
           ?disabled=${args.disabled}
           ?loading="${args.loading}"
           ?saved="${args.saved}"
           error="${ifDefined(args.error)}"
           @change=${args.onChange}
-        ></dt-church-health-circle>
+        >
+          ${args.slot}
+        </dt-church-health-circle>
       </div>
     `;
   },
@@ -200,6 +222,14 @@ export const Disabled = {
   },
 };
 
+export const PrivateField = {
+  args: {
+    private: true,
+    privateLabel: 'This is a private field',
+    value: ['church_bible'],
+  },
+};
+
 export const Loading = {
   args: {
     value: ['church_bible'],
@@ -219,10 +249,32 @@ export const Error = {
   },
 };
 
+export const ErrorSlot = {
+  args: {
+    slot: 'ErrorSlot',
+    error: '[Should show link here]',
+  },
+};
+
 export const BasicForm = {
   decorators: [FormDecorator],
   args: {
     value: ['church_bible'],
+  },
+};
+
+export const Required = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+  },
+};
+
+export const RequiredCustomMessage = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+    requiredMessage: 'Custom required message',
   },
 };
 /*

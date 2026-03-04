@@ -16,9 +16,9 @@ export class DtSpinner extends LitElement {
         content: '';
         animation: spin 1s linear infinite;
         border: var(--dt-spinner-thickness, 0.25rem) solid
-          var(--dt-spinner-color-1, #919191);
+          var(--dt-spinner-color-1, var(--gray-1));
         border-radius: 50%;
-        border-top-color: var(--dt-spinner-color-2, #000);
+        border-top-color: var(--dt-spinner-color-2, var(--black));
         display: inline-block;
         height: var(--dt-spinner-size, 1rem);
         width: var(--dt-spinner-size, 1rem);

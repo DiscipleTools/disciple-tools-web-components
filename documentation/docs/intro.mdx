@@ -69,7 +69,7 @@ specific documentation for your framework.
   </TabItem>
   <TabItem value="cdn" label="CDN" default>
     ```html
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.6.3/src/styles/light.css?ver=0.6.3" type="text/css" media="all">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.6.3/src/styles/style.css?ver=0.6.3" type="text/css" media="all">
     <script type="module" src="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.6.3/dist/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@0.6.3/dist/services.min.js"></script>
     ```
@@ -98,7 +98,7 @@ you'll need to include the script files.
       filemtime( plugin_dir_path( __FILE__ ) . $path )
     );
 
-    $css_path = '../path/to/components/src/styles/light.css';
+    $css_path = '../path/to/components/src/styles/style.css';
     wp_enqueue_style( 'dt-web-components-css',
       plugin_dir_url( __FILE__ ) . $css_path,
       null,
@@ -130,7 +130,7 @@ you'll need to include the script files.
     ```php
 
     $dtwc_version = '0.6.3';
-    wp_enqueue_style( 'dt-web-components-css', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/src/styles/light.css", [], $dtwc_version );
+    wp_enqueue_style( 'dt-web-components-css', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/src/styles/style.css", [], $dtwc_version );
     wp_enqueue_script( 'dt-web-components-js', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/dist/index.min.js", $dtwc_version );
     wp_enqueue_script( 'dt-web-components-services-js', "https://cdn.jsdelivr.net/npm/@disciple.tools/web-components@$dtwc_version/dist/services.min.js", $dtwc_version );
 
@@ -141,7 +141,7 @@ you'll need to include the script files.
       filemtime( plugin_dir_path( __FILE__ ) . $path )
     );
 
-    $css_path = '../path/to/components/src/styles/light.css';
+    $css_path = '../path/to/components/src/styles/style.css';
     wp_enqueue_style( 'dtwc-light-css',
       plugin_dir_url( __FILE__ ) . $css_path,
       null,

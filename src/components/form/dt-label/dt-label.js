@@ -9,10 +9,12 @@ export class DtLabel extends DtBase {
   static get styles() {
     return css`
       :host {
+        --dt-label-font-size: 14px;
+
         font-family: var(--font-family);
         font-size: var(--dt-label-font-size, 14px);
         font-weight: var(--dt-label-font-weight, 700);
-        color: var(--dt-label-color, #000);
+        color: var(--dt-label-color, var(--dt-form-text-color, #000));
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -58,8 +60,8 @@ export class DtLabel extends DtBase {
       .tooltip {
         display: none;
         position: absolute;
-        color: var(--dt-label-tooltip-color, #666);
-        background: var(--dt-label-tooltip-background, #eee);
+        color: var(--dt-label-tooltip-color, var(--gray-0));
+        background: var(--dt-label-tooltip-background, var(--surface-2));
         top: calc(100% + 0.5rem);
         inset-inline-start: -1rem;
         font-weight: normal;
@@ -73,7 +75,8 @@ export class DtLabel extends DtBase {
         top: -0.5rem;
         height: 0;
         width: 0;
-        border-bottom: 0.5rem solid var(--dt-label-tooltip-background, #eee);
+        border-bottom: 0.5rem solid
+          var(--dt-label-tooltip-background, var(--surface-2));
         border-inline-start: 0.5rem solid transparent;
         border-inline-end: 0.5rem solid transparent;
       }

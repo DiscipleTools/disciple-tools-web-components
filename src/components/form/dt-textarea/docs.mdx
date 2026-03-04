@@ -33,25 +33,24 @@ Inherits slots from [DtFormBase](?path=/docs/architecture-base-classes--docs#slo
 }
 ```
 
-## CSS Properties / Theming
+## CSS Custom Properties
 
 Inherits custom properties from [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties).
 
 | Custom Properties   | Default Value   |
 |---------------------|-----------------|
-| `--dt-textarea-text-color`  | `#0a0a0a`  |
-| `--dt-textarea-background-color`  | `#fefefe` |
-| `--dt-textarea-border-color`  | `#cecece`   |
-| `--dt-textarea-input-box-shadow`  | `inset 0 1px 2px hsl(0deg 0% 4% / 10%)`   |
+| `--dt-textarea-text-color`  | `var(--dt-form-text-color, #0a0a0a)`  |
+| `--dt-textarea-background-color`  | `var(--dt-form-background-color, #fefefe)` |
+| `--dt-textarea-border-color`  | `var(--dt-form-border-color, #cecece)`   |
+| `--dt-textarea-border-radius`  | `var(--dt-form-border-radius, 0)`  |
+| `--dt-textarea-input-box-shadow`  | `var(--dt-form-input-box-shadow, inset 0 1px 2px hsl(0deg 0% 4% / 10%))`   |
+| `--dt-textarea-disabled-background-color`   | `var(--dt-form-disabled-background-color, #e6e6e6)`   |
+| `--dt-textarea-border-color-alert` | `var(--dt-form-border-color-alert, var(--alert-color))` |
 | `--dt-form-padding`   | `0.5333333333rem`   |
 | `--dt-form-transition` | `box-shadow .5s,border-color .25s ease-in-out`   |
-| `--dt-textarea-disabled-background-color`   | `#e6e6e6`   |
 
 ## Parts
 
 | Part Name | Description |
 |-----------|-------------|
 | `textarea` | The textarea element within the shadow DOM |
-
-## Stories
-<Stories title="" />

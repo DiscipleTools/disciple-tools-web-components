@@ -2,51 +2,59 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { themes, argTypes } from '../../../stories-theme.js';
-import { FormDecorator, LocaleDecorator, onAutoSave } from '../../../stories-utils.js';
+import {
+  FormDecorator,
+  LocaleDecorator,
+  onAutoSave,
+} from '../../../stories-utils.js';
 import './dt-date.js';
 
 export default {
   title: 'Components/Form/Date',
   component: 'dt-date',
   argTypes: {
-    theme: {
-      control: 'select',
-      options: Object.keys(themes),
-      defaultValue: 'default',
-    },
     id: { control: 'text' },
     name: { control: 'text' },
     label: { control: 'text' },
-    value: { control: 'number' },
-    date: { control: 'text' },
+    value: { control: 'text' },
+    timestamp: { control: 'number' },
     disabled: { control: 'boolean' },
+    required: { control: 'boolean' },
+    requiredMessage: { control: 'text' },
     icon: { control: 'text' },
+    iconAltText: { control: 'text' },
     private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
+    error: { control: 'text' },
+    slot: { control: 'text' },
     ...argTypes,
   },
   args: {
     onChange: action('on-change'),
   },
-  render: (args) => {
+  parameters: {
+    viewport: { defaultViewport: 'desktop' },
+  },
+  render: args => {
     const {
       id = 'name',
       name = 'field-name',
       label = 'Date Field',
       value = '',
-      timestamp = 0,
-      disabled,
+      timestamp,
+      disabled = false,
       required = false,
       requiredMessage,
       icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
       iconAltText = 'Icon Alt Text',
       privateLabel,
-      loading,
-      saved,
+      loading = false,
+      saved = false,
       error,
       slot,
-      onChange
+      onChange,
     } = args;
     return html`
       <dt-date
@@ -70,7 +78,7 @@ export default {
         ${slot}
       </dt-date>
     `;
-  }
+  },
 };
 
 export const Empty = {};
@@ -79,38 +87,38 @@ export const SvgIcon = {
   args: {
     icon: null,
     slot: 'SvgIcon',
-  }
+  },
 };
 
 export const EnteredPHPTimestamp = {
   args: {
-    timestamp: 1468281600
-  }
+    timestamp: 1468281600,
+  },
 };
 
 export const EnteredDateString = {
   args: {
-    value: '2020-01-01'
-  }
+    value: '2020-01-01',
+  },
 };
 
 export const EnteredJSTimestamp = {
   args: {
-    timestamp: 1658361600000
-  }
+    timestamp: 1658361600000,
+  },
 };
 
 export const AutoSave = {
   args: {
-    onChange: onAutoSave
-  }
+    onChange: onAutoSave,
+  },
 };
 
 export const Disabled = {
   args: {
     value: '2020-01-01',
-    disabled: true
-  }
+    disabled: true,
+  },
 };
 
 export const PrivateField = {
@@ -118,47 +126,47 @@ export const PrivateField = {
     private: true,
     value: '2020-01-01',
     privateLabel: 'This is a custom tooltip',
-  }
+  },
 };
 
 export const Loading = {
   args: {
-    loading: true
-  }
+    loading: true,
+  },
 };
 
 export const Saved = {
   args: {
-    saved: true
-  }
+    saved: true,
+  },
 };
 
 export const Error = {
   args: {
-    error: 'Custom error message'
-  }
+    error: 'Custom error message',
+  },
 };
 
 export const BasicForm = {
   decorators: [FormDecorator],
   args: {
-    value: '2020-01-01'
-  }
+    value: '2020-01-01',
+  },
 };
 
 export const Required = {
   decorators: [FormDecorator],
   args: {
-    required: true
-  }
+    required: true,
+  },
 };
 
 export const RequiredCustomMessage = {
   decorators: [FormDecorator],
   args: {
     required: true,
-    requiredMessage: 'Custom error message'
-  }
+    requiredMessage: 'Custom error message',
+  },
 };
 
 export const LocalizeRTL = {
@@ -166,6 +174,7 @@ export const LocalizeRTL = {
   args: {
     lang: 'ar',
     dir: 'rtl',
-    label: 'اسم الإدخال'
-  }
+    label: 'اسم الإدخال',
+    value: '2020-01-01',
+  },
 };

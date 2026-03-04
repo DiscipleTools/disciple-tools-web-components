@@ -17,7 +17,7 @@ theming the whole library with just a few properties, or customizing a specific 
 other properties.
 
 To see all of the CSS custom properties that are used in the components, you can look at the main
-[light.css](https://github.com/DiscipleTools/disciple-tools-web-components/blob/master/src/styles/light.css)
+[style.css](https://github.com/DiscipleTools/disciple-tools-web-components/blob/master/src/styles/style.css)
 for their current definitions and see how they inherit from each other.
 
 Style properties can be set at 3 different levels:

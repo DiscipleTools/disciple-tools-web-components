@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, aTimeout } from '@open-wc/testing';
+import { fixture, expect, waitUntil, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-location.js';
@@ -28,16 +28,11 @@ const filters = [
     label: 'All Locations',
   },
 ];
-async function wait(ms) {
-  return new Promise(r => {
-    setTimeout(r, ms);
-  });
-}
 
 async function clickOption(el, id) {
   const input = el.shadowRoot.querySelector('input');
   const optionBtn = el.shadowRoot.querySelector(
-    `.option-list button[value=${id}]`
+    `.option-list button[value=${id}]`,
   );
 
   input.focus();
@@ -48,7 +43,7 @@ async function clickOption(el, id) {
 describe('dt-location', () => {
   it('sets placeholder', async () => {
     const el = await fixture(
-      html`<dt-location placeholder="Custom Placeholder"></dt-location>`
+      html`<dt-location placeholder="Custom Placeholder"></dt-location>`,
     );
     const input = el.shadowRoot.querySelector('input');
 
@@ -57,7 +52,7 @@ describe('dt-location', () => {
 
   it('sets options', async () => {
     const el = await fixture(
-      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`
+      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`,
     );
     const optionList = el.shadowRoot.querySelector('.option-list');
 
@@ -74,7 +69,7 @@ describe('dt-location', () => {
       html`<dt-location
         options="${JSON.stringify(options)}"
         filters="${JSON.stringify(filters)}"
-      ></dt-location>`
+      ></dt-location>`,
     );
     const select = el.shadowRoot.querySelector('select');
 
@@ -92,7 +87,7 @@ describe('dt-location', () => {
       html`<dt-location
         value="${JSON.stringify([options[0], options[1]])}"
         options="${JSON.stringify(options)}"
-      ></dt-location>`
+      ></dt-location>`,
     );
     const container = el.shadowRoot.querySelector('.field-container');
 
@@ -101,9 +96,9 @@ describe('dt-location', () => {
     expect(container).not.to.contain('button[data-value=opt3]');
   });
 
-  it.skip('opens option list on input focus', async () => {
+  it('opens option list on input focus', async () => {
     const el = await fixture(
-      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`
+      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionList = el.shadowRoot.querySelector('.option-list');
@@ -111,32 +106,33 @@ describe('dt-location', () => {
     expect(optionList).not.to.be.displayed;
 
     input.focus();
-    await aTimeout(100); // wait for UI update
+    await nextFrame();
 
     expect(optionList).to.be.displayed;
   });
 
   it('selects option via mouse', async () => {
     const el = await fixture(
-      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`
+      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionBtn = el.shadowRoot.querySelector(
-      '.option-list button[value=opt1]'
+      '.option-list button[value=opt1]',
     );
 
     input.focus();
 
     optionBtn.click();
-    await wait(100);
 
-    const container = el.shadowRoot.querySelector('.field-container');
-    expect(container).to.contain('button[data-value=opt1]');
+    await waitUntil(
+      () => el.shadowRoot.querySelector('button[data-value=opt1]'),
+      'Option is not selected',
+    );
   });
 
   it('selects option via keyboard', async () => {
     const el = await fixture(
-      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`
+      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`,
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
@@ -154,7 +150,7 @@ describe('dt-location', () => {
 
   it('updates value attribute', async () => {
     const el = await fixture(
-      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`
+      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`,
     );
 
     await clickOption(el, 'opt1');
@@ -167,14 +163,14 @@ describe('dt-location', () => {
       html`<dt-location
         value="${JSON.stringify([options[0], options[1]])}"
         options="${JSON.stringify(options)}"
-      ></dt-location>`
+      ></dt-location>`,
     );
 
     const optionBtn = el.shadowRoot.querySelector(
-      `.selected-option button[data-value=opt1]`
+      `.selected-option button[data-value=opt1]`,
     );
     optionBtn.click();
-    await wait(100);
+    await nextFrame();
 
     expect(el.value).to.deep.include({ id: 'opt2', label: options[1].label });
     expect(el.value).to.deep.include({
@@ -191,17 +187,17 @@ describe('dt-location', () => {
           { id: options[0].id, label: 'old', delete: true },
         ])}"
         options="${JSON.stringify(options)}"
-      ></dt-location>`
+      ></dt-location>`,
     );
     const input = el.shadowRoot.querySelector('input');
 
     input.focus();
 
     const optionBtn = el.shadowRoot.querySelector(
-      '.option-list button[value=opt1]'
+      '.option-list button[value=opt1]',
     );
     optionBtn.click();
-    await wait(100);
+    await nextFrame();
 
     expect(el.value).to.deep.include({ id: 'opt1', label: 'old' });
     expect(el.value).to.not.deep.include({
@@ -212,44 +208,44 @@ describe('dt-location', () => {
   });
 
   it('triggers change event - item added', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-location
         name="custom-name"
         value="${JSON.stringify([options[1]])}"
         options="${JSON.stringify(options)}"
-      ></dt-location>`
+        @change="${e => (eventDetail = e.detail)}"
+      ></dt-location>`,
     );
 
-    setTimeout(() => clickOption(el, 'opt1'));
+    await clickOption(el, 'opt1');
 
-    const { detail } = await oneEvent(el, 'change');
-
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.oldValue).to.eql([options[1]]);
-    expect(detail.newValue).to.eql([options[1], options[0]]);
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.oldValue).to.eql([options[1]]);
+    expect(eventDetail.newValue).to.eql([options[1], options[0]]);
   });
 
   it('triggers change event - item removed', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-location
         name="custom-name"
         value="${JSON.stringify([options[0]])}"
         options="${JSON.stringify(options)}"
-      ></dt-location>`
+        @change="${e => (eventDetail = e.detail)}"
+      ></dt-location>`,
     );
 
-    setTimeout(() => {
-      const optionBtn = el.shadowRoot.querySelector(
-        `.selected-option button[data-value=opt1]`
-      );
-      optionBtn.click();
-    });
+    const optionBtn = el.shadowRoot.querySelector(
+      `.selected-option button[data-value=opt1]`,
+    );
+    optionBtn.click();
 
-    const { detail } = await oneEvent(el, 'change');
-
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.oldValue).to.eql([options[0]]);
-    expect(detail.newValue).to.eql([
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.oldValue).to.eql([options[0]]);
+    expect(eventDetail.newValue).to.eql([
       {
         ...options[0],
         delete: true,
@@ -259,7 +255,7 @@ describe('dt-location', () => {
 
   it('filters options on text input', async () => {
     const el = await fixture(
-      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`
+      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionsList = el.shadowRoot.querySelector('.option-list');
@@ -277,7 +273,7 @@ describe('dt-location', () => {
 
   it('filters options on option selection', async () => {
     const el = await fixture(
-      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`
+      html`<dt-location options="${JSON.stringify(options)}"></dt-location>`,
     );
     const input = el.shadowRoot.querySelector('input');
     const optionsList = el.shadowRoot.querySelector('.option-list');
@@ -290,27 +286,28 @@ describe('dt-location', () => {
   });
 
   it('loads options from event if no options provided', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-location
         name="custom-name"
         value="${JSON.stringify([options[1]])}"
         filters="${JSON.stringify(filters)}"
         .open="${true}"
-      ></dt-location>`
+        @dt:get-data="${e => (eventDetail = e.detail)}"
+      ></dt-location>`,
     );
     const input = el.shadowRoot.querySelector('input');
     input.focus();
 
-    setTimeout(() => sendKeys({ type: 'o' }));
+    await sendKeys({ type: 'o' });
 
-    const { detail } = await oneEvent(el, 'dt:get-data');
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.query).to.equal('o');
+    expect(eventDetail.filter).to.equal('focus');
+    expect(eventDetail.onSuccess).to.exist;
 
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.query).to.equal('o');
-    expect(detail.filter).to.equal('focus');
-    expect(detail.onSuccess).to.exist;
-
-    await detail.onSuccess([options[0]]);
+    await eventDetail.onSuccess([options[0]]);
 
     const optionList = el.shadowRoot.querySelector('.option-list');
     expect(optionList).to.contain('button[value=opt1]');
@@ -320,7 +317,10 @@ describe('dt-location', () => {
 
   it('allows adding new option', async () => {
     const el = await fixture(
-      html`<dt-location options="${JSON.stringify(options)}" allowAdd></dt-location>`
+      html`<dt-location
+        options="${JSON.stringify(options)}"
+        allowAdd
+      ></dt-location>`,
     );
     el.shadowRoot.querySelector('input').focus();
 
@@ -347,7 +347,7 @@ describe('dt-location', () => {
         disabled
         value="${JSON.stringify([options[1]])}"
         options="${JSON.stringify(options)}"
-      ></dt-location>`
+      ></dt-location>`,
     );
 
     const input = el.shadowRoot.querySelector('input');
@@ -361,5 +361,30 @@ describe('dt-location', () => {
       .to.have.descendant('button')
       .with.attribute('disabled');
     expect(selectedOption).to.have.descendant('a').with.attribute('disabled');
+  });
+
+  it('renders private field with label', async () => {
+    const el = await fixture(
+      html`<dt-location
+        label="Location"
+        private
+        privateLabel="Confidential Information"
+      ></dt-location>`,
+    );
+
+    const label = el.shadowRoot.querySelector('dt-label');
+    expect(label).to.exist;
+    expect(label).to.have.attribute('private');
+  });
+
+  it('displays an error message', async () => {
+    const el = await fixture(
+      html`<dt-location error="Custom error message"></dt-location>`,
+    );
+    const errorMessage = el.shadowRoot.querySelector(
+      '.error-container .attr-msg',
+    );
+    expect(errorMessage).to.exist;
+    expect(errorMessage).to.have.text('Custom error message');
   });
 });

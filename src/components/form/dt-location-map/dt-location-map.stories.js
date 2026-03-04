@@ -58,67 +58,53 @@ export default {
   title: 'Components/Form/Location Meta',
   component: 'dt-location-map',
   argTypes: {
-    theme: { control: 'select', options: Object.keys(themes) },
-    name: {
-      control: 'text',
-      type: { name: 'string', required: true },
-      description:
-        'Passed to `change` function to identify which input triggered the event',
-    },
-    value: {
-      control: 'text',
-      type: { name: 'array' },
-      table: {
-        type: {
-          summary: '{id:string, label:string}[]',
-          detail: `[{id:'1',label:'Item 1'},{id:'345',label:'Item 345'}]`,
-        },
-      },
-      description:
-        'Array of values indicating the selected values. Should be an array of option objects converted to a string with `JSON.stringify`. <br/>**Note:** This attribute will be updated on the HTML element when value changes.',
-    },
-    placeholder: {
-      control: 'text',
-      description: 'String rendered as placeholder text',
-    },
-    loading: {
-      control: 'boolean',
-      description:
-        '(true|false) If attribute is present, the loading spinner will be displayed within the field',
-      table: {
-        type: {
-          summary: 'loading',
-          detail: '<dt-location loading />',
-        },
-      },
-    },
-    saved: {
-      control: 'boolean',
-      description:
-        '(true|false) If attribute is present, the saved checkmark will be displayed within the field',
-      table: {
-        type: {
-          summary: 'saved',
-          detail: '<dt-location saved />',
-        },
-      },
-    },
-    limit: {
-      control: 'number',
-      description: 'Maximum number of locations that can be selected',
-      table: {
-        type: {
-          summary: 'limit',
-          detail: '<dt-location-map limit="1" />',
-        },
-      },
-    },
+    id: { control: 'text' },
+    name: { control: 'text' },
+    label: { control: 'text' },
+    mapboxToken: { control: 'text' },
+    googleToken: { control: 'text' },
+    placeholder: { control: 'text' },
+    value: { control: 'object' },
+    disabled: { control: 'boolean' },
+    required: { control: 'boolean' },
+    requiredMessage: { control: 'text' },
+    icon: { control: 'text' },
+    iconAltText: { control: 'text' },
+    private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
+    loading: { control: 'boolean' },
+    saved: { control: 'boolean' },
+    open: { control: 'boolean' },
+    i18n: { control: 'object' },
+    limit: { control: 'number' },
+    error: { control: 'text' },
+    slot: { control: 'text' },
+    onChange: { action: 'on-change' },
     ...argTypes,
   },
   args: {
     theme: 'default',
     id: 'field-id',
+    name: 'field-name',
+    label: 'Field Name',
+    mapboxToken: MAPBOX_TOKEN,
+    googleToken: GOOGLE_GEOCODE_TOKEN,
     placeholder: 'Search Locations',
+    value: [],
+    disabled: false,
+    required: false,
+    requiredMessage: 'This field is required',
+    icon: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText: 'Icon Alt Text',
+    private: false,
+    privateLabel: 'Private',
+    loading: false,
+    saved: false,
+    open: false,
+    i18n: null,
+    limit: 0,
+    error: '',
+    slot: '',
     onChange: action('on-change'),
   },
   render: args => {
@@ -146,40 +132,41 @@ export default {
     } = args;
     return html`
       <dt-location-map
-        id=${ifDefined(args.id)}
-        name=${ifDefined(name)}
-        label=${ifDefined(label)}
-        mapbox-token=${ifDefined(mapboxToken)}
-        google-token=${ifDefined(googleToken)}
-        placeholder=${ifDefined(placeholder)}
-        value=${ifDefined(value ? JSON.stringify(value) : undefined)}
-        ?disabled=${disabled}
-        ?required=${required}
-        requiredMessage=${ifDefined(requiredMessage)}
-        icon=${ifDefined(icon)}
-        iconAltText=${ifDefined(iconAltText)}
+        id="${ifDefined(args.id)}"
+        name="${ifDefined(args.name)}"
+        label="${ifDefined(args.label)}"
+        mapbox-token="${ifDefined(mapboxToken)}"
+        google-token="${ifDefined(googleToken)}"
+        placeholder="${ifDefined(args.placeholder)}"
+        .value="${args.value}"
+        ?disabled=${args.disabled}
+        ?required=${args.required}
+        requiredMessage="${ifDefined(args.requiredMessage)}"
+        icon="${ifDefined(args.icon)}"
+        iconAltText="${ifDefined(args.iconAltText)}"
         ?private=${args.private}
-        privateLabel=${ifDefined(privateLabel)}
-        ?loading=${loading}
-        ?saved=${saved}
-        .open=${open}
-        i18n=${ifDefined(i18n ? JSON.stringify(i18n) : undefined)}
-        limit=${ifDefined(limit)}
-        error=${ifDefined(error)}
-        @change=${onChange}
+        privateLabel="${ifDefined(args.privateLabel)}"
+        ?loading=${args.loading}
+        ?saved=${args.saved}
+        .open=${args.open}
+        .i18n="${args.i18n}"
+        limit="${ifDefined(args.limit)}"
+        error="${ifDefined(args.error)}"
+        @change=${args.onChange}
       >
-        ${slot}
+        ${args.slot}
       </dt-location-map>
     `;
   },
 };
 
-export const Empty = {};
+export const Empty = {
+  args: {},
+};
 
 export const SvgIcon = {
   args: {
     icon: null,
-    // prettier-ignore
     slot: 'SvgIcon',
   },
 };
@@ -255,6 +242,13 @@ export const Error = {
   args: {
     value: [basicOptions[0], basicOptions[1]],
     error: 'Custom error message',
+  },
+};
+
+export const ErrorSlot = {
+  args: {
+    slot: 'ErrorSlot',
+    error: '[Should show link here]',
   },
 };
 

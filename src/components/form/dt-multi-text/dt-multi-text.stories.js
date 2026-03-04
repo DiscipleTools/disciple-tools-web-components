@@ -13,186 +13,230 @@ export default {
   title: 'Components/Form/Text - Multi',
   component: 'dt-multi-text',
   argTypes: {
+    id: { control: 'text' },
     name: { control: 'text' },
     label: { control: 'text' },
-    value: {
-      control: 'text',
-      type: { name: 'array' },
-    },
+    value: { control: 'object' },
     placeholder: { control: 'text' },
     type: {
       control: 'select',
       options: ['text', 'password', 'email', 'number', 'tel', 'url'],
-      defaultValue: 'text',
     },
     disabled: { control: 'boolean' },
+    required: { control: 'boolean' },
+    requiredMessage: { control: 'text' },
+    icon: { control: 'text' },
+    iconAltText: { control: 'text' },
+    private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
+    error: { control: 'text' },
+    slot: { control: 'text' },
+    onChange: { action: 'on-change' },
     ...argTypes,
   },
   args: {
+    id: 'name',
+    name: 'field-name',
+    label: 'Field Name',
+    value: [],
+    placeholder: '',
+    type: 'text',
+    disabled: false,
+    required: false,
+    requiredMessage: 'This field is required',
+    icon: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+    iconAltText: 'Icon Alt Text',
+    private: false,
+    privateLabel: 'Private',
+    loading: false,
+    saved: false,
+    error: '',
+    slot: '',
     onChange: action('on-change'),
+  },
+  render: args => {
+    const {
+      id,
+      name,
+      label,
+      value,
+      placeholder,
+      type,
+      disabled,
+      required,
+      requiredMessage,
+      icon,
+      iconAltText,
+      private: isPrivate,
+      privateLabel,
+      loading,
+      saved,
+      error,
+      onChange,
+      slot,
+    } = args;
+    return html`
+      <dt-multi-text
+        id="${ifDefined(id)}"
+        name="${ifDefined(name)}"
+        label="${ifDefined(label)}"
+        .value="${value}"
+        placeholder="${ifDefined(placeholder)}"
+        type="${ifDefined(type)}"
+        ?disabled=${disabled}
+        ?required=${required}
+        requiredMessage="${ifDefined(requiredMessage)}"
+        icon="${ifDefined(icon)}"
+        iconAltText="${ifDefined(iconAltText)}"
+        ?private=${isPrivate}
+        privateLabel="${ifDefined(privateLabel)}"
+        ?loading=${loading}
+        ?saved=${saved}
+        error="${ifDefined(error)}"
+        @change=${onChange}
+      >
+        ${slot}
+      </dt-multi-text>
+    `;
   },
 };
 
-function Template(args) {
-  const {
-    name = 'field-name',
-    label = 'Field Name',
-    value = '',
-    placeholder,
-    disabled = false,
-    required = false,
-    requiredMessage,
-    icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
-    iconAltText = 'Icon Alt Text',
-    isPrivate,
-    privateLabel,
-    loading = false,
-    saved = false,
-    error,
-    onChange,
-    slot,
-    type,
-  } = args;
-  return html`
-    <dt-multi-text
-      name=${name}
-      label=${label}
-      .value=${value}
-      placeholder=${placeholder}
-      type=${type}
-      ?disabled=${disabled}
-      ?required=${required}
-      requiredMessage=${requiredMessage}
-      icon="${icon}"
-      iconAltText="${iconAltText}"
-      ?private=${isPrivate}
-      privateLabel="${privateLabel}"
-      ?loading=${loading}
-      ?saved=${saved}
-      error="${ifDefined(error)}"
-      @change=${onChange}
-    >
-      ${slot}
-    </dt-multi-text>
-  `;
-}
-
-export const Empty = Template.bind({});
-
-export const SvgIcon = Template.bind({});
-SvgIcon.args = {
-  icon: null,
-  slot: 'SvgIcon',
+export const Empty = {
+  args: {
+    value: [],
+  },
 };
 
-export const CustomPlaceholder = Template.bind({});
-CustomPlaceholder.args = {
-  placeholder: 'Enter a value',
+export const SvgIcon = {
+  args: {
+    icon: null,
+    slot: 'SvgIcon',
+  },
 };
 
-export const EnteredValue = Template.bind({});
-EnteredValue.args = {
-  value: [
-    {
-      verified: false,
-      value: 'test1',
-      key: 'comm_channel_1',
-    },
-    {
-      verified: false,
-      value: 'test2',
-      key: 'comm_channel_2',
-    },
-  ],
+export const CustomPlaceholder = {
+  args: {
+    placeholder: 'Enter a value',
+  },
 };
 
-export const AutoSave = Template.bind({});
-AutoSave.args = {
-  onChange: onAutoSave,
+export const EnteredValue = {
+  args: {
+    value: [
+      {
+        verified: false,
+        value: 'test1',
+        key: 'comm_channel_1',
+      },
+      {
+        verified: false,
+        value: 'test2',
+        key: 'comm_channel_2',
+      },
+    ],
+  },
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  disabled: true,
-  value: [
-    {
-      value: 'Lorem Ipsum',
-      key: 'comm_channel_1',
-    },
-  ],
+export const AutoSave = {
+  args: {
+    onChange: onAutoSave,
+  },
 };
 
-export const privateField = Template.bind({});
-privateField.args = {
-  isPrivate: true,
-  value: [
-    {
-      value: 'Lorem Ipsum',
-      key: 'comm_channel_1',
-    },
-  ],
-  privateLabel: 'This is a custom tooltip',
+export const Disabled = {
+  args: {
+    disabled: true,
+    value: [
+      {
+        value: 'Lorem Ipsum',
+        key: 'comm_channel_1',
+      },
+    ],
+  },
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-  loading: true,
-};
-export const Saved = Template.bind({});
-Saved.args = {
-  saved: true,
-};
-export const Error = Template.bind({});
-Error.args = {
-  error: 'Custom error message',
-};
-
-export const ErrorSlot = Template.bind({});
-ErrorSlot.args = {
-  error: '[Should show link here]',
-  slot: 'ErrorSlot',
+export const PrivateField = {
+  args: {
+    private: true,
+    value: [
+      {
+        value: 'Lorem Ipsum',
+        key: 'comm_channel_1',
+      },
+    ],
+    privateLabel: 'This is a custom tooltip',
+  },
 };
 
-export const BasicForm = Template.bind({});
-BasicForm.decorators = [FormDecorator];
-BasicForm.args = {
-  value: [
-    {
-      value: 'Lorem Ipsum',
-      key: 'comm_channel_1',
-    },
-  ],
+export const Loading = {
+  args: {
+    loading: true,
+  },
+};
+export const Saved = {
+  args: {
+    saved: true,
+  },
+};
+export const Error = {
+  args: {
+    error: 'Custom error message',
+  },
 };
 
-export const Required = Template.bind({});
-Required.decorators = [FormDecorator];
-Required.args = {
-  required: true,
+export const ErrorSlot = {
+  args: {
+    error: '[Should show link here]',
+    slot: 'ErrorSlot',
+  },
 };
 
-export const password = Template.bind({});
-password.args = {
-  type: 'password',
+export const BasicForm = {
+  decorators: [FormDecorator],
+  args: {
+    value: [
+      {
+        value: 'Lorem Ipsum',
+        key: 'comm_channel_1',
+      },
+    ],
+  },
 };
 
-export const requiredCustomMessage = Template.bind({});
-requiredCustomMessage.args = {
-  required: true,
-  requiredMessage: 'Custom error message',
+export const Required = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+  },
 };
 
-export const LocalizeRTL = Template.bind({});
-LocalizeRTL.decorators = [LocaleDecorator, FormDecorator];
-LocalizeRTL.args = {
-  lang: 'ar',
-  dir: 'rtl',
-  label: 'اسم الإدخال',
-  value: [
-    {
-      value: 'راد أن يشع',
-      key: 'comm_channel_1',
-    },
-  ],
+export const Password = {
+  args: {
+    type: 'password',
+  },
+};
+
+export const RequiredCustomMessage = {
+  decorators: [FormDecorator],
+  args: {
+    required: true,
+    requiredMessage: 'Custom error message',
+  },
+};
+
+export const LocalizeRTL = {
+  decorators: [LocaleDecorator, FormDecorator],
+  args: {
+    lang: 'ar',
+    dir: 'rtl',
+    label: 'اسم الإدخال',
+    value: [
+      {
+        value: 'راد أن يشع',
+        key: 'comm_channel_1',
+      },
+    ],
+  },
 };

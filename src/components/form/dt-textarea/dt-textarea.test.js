@@ -12,7 +12,7 @@ describe('dt-textarea', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-textarea>`
+      ></dt-textarea>`,
     );
 
     expect(el.id).to.equal('name');
@@ -28,7 +28,7 @@ describe('dt-textarea', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-textarea>`
+      ></dt-textarea>`,
     );
     el.shadowRoot.querySelector('textarea').value = '';
     el.shadowRoot.querySelector('textarea').focus();
@@ -49,11 +49,33 @@ describe('dt-textarea', () => {
 
   it('Check private field', async () => {
     const el = await fixture(
-      html`<dt-textarea label="Label Name" private></dt-textarea>`
+      html`<dt-textarea label="Label Name" private></dt-textarea>`,
     );
-    const label = await fixture(el.shadowRoot.querySelector('dt-label'));
+    const label = el.shadowRoot.querySelector('dt-label');
 
     expect(label.hasAttribute('private')).to.be.true;
+  });
+
+  it('emits change event with correct details', async () => {
+    let eventDetail = null;
+    const el = await fixture(
+      html`<dt-textarea
+        name="test-field"
+        value="initial"
+        @change=${e => {
+          eventDetail = e.detail;
+        }}
+      ></dt-textarea>`,
+    );
+
+    const textarea = el.shadowRoot.querySelector('textarea');
+    textarea.value = 'new value';
+    textarea.dispatchEvent(new Event('change'));
+
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('test-field');
+    expect(eventDetail.oldValue).to.equal('initial');
+    expect(eventDetail.newValue).to.equal('new value');
   });
 
   it('resets value', async () => {
@@ -63,7 +85,7 @@ describe('dt-textarea', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-textarea>`
+      ></dt-textarea>`,
     );
     const input = el.shadowRoot.querySelector('textarea');
 
@@ -81,7 +103,7 @@ describe('dt-textarea', () => {
         name="Name"
         label="Label Name"
         value="John Doe"
-      ></dt-textarea>`
+      ></dt-textarea>`,
     );
 
     await expect(el).shadowDom.to.be.accessible();

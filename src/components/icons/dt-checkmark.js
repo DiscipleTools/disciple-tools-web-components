@@ -13,8 +13,8 @@ export class DtCheckmark extends LitElement {
         height: 1rem;
         width: 0.5rem;
         color: inherit;
-        border-bottom: var(--dt-checkmark-width) solid currentcolor;
-        border-right: var(--dt-checkmark-width) solid currentcolor;
+        border-bottom: var(--dt-checkmark-width, 3px) solid currentcolor;
+        border-right: var(--dt-checkmark-width, 3px) solid currentcolor;
       }
     `;
   }

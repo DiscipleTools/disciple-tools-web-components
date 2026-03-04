@@ -2,7 +2,11 @@ import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { themes, themeCss, argTypes } from '../../../stories-theme.js';
-import { LocaleDecorator, FormDecorator, onAutoSave } from '../../../stories-utils.js';
+import {
+  LocaleDecorator,
+  FormDecorator,
+  onAutoSave,
+} from '../../../stories-utils.js';
 import './dt-single-select.js';
 
 const basicOptions = [
@@ -69,13 +73,16 @@ export default {
   args: {
     onChange: action('on-change'),
   },
-  render: (args) => {
+  parameters: {
+    viewport: { defaultViewport: 'desktop' },
+  },
+  render: args => {
     const {
       id = 'single-select',
       name = 'field-name',
       label = 'Field Name',
       options,
-      placeholder,
+      placeholder = 'Select Option',
       value,
       disabled = false,
       required = false,
@@ -95,7 +102,7 @@ export default {
         name=${ifDefined(name)}
         label=${ifDefined(label)}
         placeholder=${ifDefined(placeholder)}
-        options=${ifDefined(options ? JSON.stringify(options) : undefined)}
+        .options=${options}
         value=${ifDefined(value)}
         ?disabled=${disabled}
         ?required=${required}
@@ -112,7 +119,7 @@ export default {
         ${slot}
       </dt-single-select>
     `;
-  }
+  },
 };
 
 export const Empty = {};
@@ -121,46 +128,46 @@ export const SvgIcon = {
   args: {
     icon: null,
     slot: 'SvgIcon',
-  }
+  },
 };
 
 export const CustomOptions = {
   args: {
     options: basicOptions,
-  }
+  },
 };
 
 export const CustomPlaceholder = {
   args: {
     placeholder: '--Select--',
-  }
+  },
 };
 
 export const SelectedValue = {
   args: {
     value: 'opt2',
     options: basicOptions,
-  }
+  },
 };
 
 export const ColorChange = {
   args: {
     value: 'opt1',
     options: colorOptions,
-  }
+  },
 };
 
 export const ColorChangeNotSelected = {
   args: {
     options: colorOptions,
-  }
+  },
 };
 
 export const AutoSave = {
   args: {
     options: basicOptions,
     onChange: onAutoSave,
-  }
+  },
 };
 
 export const Disabled = {
@@ -168,7 +175,7 @@ export const Disabled = {
     value: 'opt2',
     options: basicOptions,
     disabled: true,
-  }
+  },
 };
 
 export const PrivateField = {
@@ -177,7 +184,7 @@ export const PrivateField = {
     value: 'opt2',
     options: basicOptions,
     privateLabel: 'This is a custom tooltip',
-  }
+  },
 };
 
 export const Loading = {
@@ -185,7 +192,7 @@ export const Loading = {
     value: 'opt2',
     options: basicOptions,
     loading: true,
-  }
+  },
 };
 
 export const Saved = {
@@ -193,13 +200,20 @@ export const Saved = {
     value: 'opt2',
     options: basicOptions,
     saved: true,
-  }
+  },
 };
 
 export const Error = {
   args: {
     error: 'Custom error message',
-  }
+  },
+};
+
+export const ErrorSlot = {
+  args: {
+    slot: 'ErrorSlot',
+    error: '[Should show link here]',
+  },
 };
 
 export const BasicForm = {
@@ -207,7 +221,7 @@ export const BasicForm = {
   args: {
     value: 'opt2',
     options: basicOptions,
-  }
+  },
 };
 
 export const Required = {
@@ -215,7 +229,7 @@ export const Required = {
   args: {
     required: true,
     options: basicOptions,
-  }
+  },
 };
 
 export const RequiredCustomMessage = {
@@ -224,7 +238,7 @@ export const RequiredCustomMessage = {
     required: true,
     requiredMessage: 'Custom error message',
     options: basicOptions,
-  }
+  },
 };
 
 export const LocalizeRTL = {
@@ -250,5 +264,5 @@ export const LocalizeRTL = {
         label: 'فلا أحد يرفض',
       },
     ],
-  }
+  },
 };

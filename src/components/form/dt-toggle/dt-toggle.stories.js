@@ -4,7 +4,8 @@ import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
 import {
   FormDecorator,
-  LocaleDecorator
+  LocaleDecorator,
+  onAutoSave,
 } from '../../../stories-utils.js';
 import './dt-toggle.js';
 
@@ -18,13 +19,23 @@ export default {
     checked: { control: 'boolean' },
     icons: { control: 'boolean' },
     disabled: { control: 'boolean' },
-    onChange: { control: 'text' },
+    required: { control: 'boolean' },
+    requiredMessage: { control: 'text' },
+    icon: { control: 'text' },
+    iconAltText: { control: 'text' },
+    private: { control: 'boolean' },
+    privateLabel: { control: 'text' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
+    error: { control: 'text' },
+    slot: { control: 'text' },
     ...argTypes,
   },
   args: {
     onChange: action('on-change'),
+  },
+  parameters: {
+    viewport: { defaultViewport: 'desktop' },
   },
   render: args => {
     const {
@@ -34,6 +45,11 @@ export default {
       disabled = false,
       checked = false,
       icons = false,
+      required = false,
+      requiredMessage,
+      icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
+      iconAltText = 'Icon Alt Text',
+      privateLabel,
       loading = false,
       saved = false,
       error,
@@ -48,6 +64,12 @@ export default {
         ?checked=${checked}
         ?icons=${icons}
         ?disabled=${disabled}
+        ?required=${required}
+        requiredMessage=${ifDefined(requiredMessage)}
+        icon="${ifDefined(icon)}"
+        iconAltText="${ifDefined(iconAltText)}"
+        ?private=${args.private}
+        privateLabel="${ifDefined(privateLabel)}"
         ?loading=${loading}
         ?saved=${saved}
         error="${ifDefined(error)}"
@@ -59,11 +81,18 @@ export default {
   },
 };
 
-export const Default = {};
+export const Empty = {};
 
 export const ToggledOn = {
   args: {
     checked: true,
+  },
+};
+
+export const SvgIcon = {
+  args: {
+    icon: null,
+    slot: 'SvgIcon',
   },
 };
 
@@ -73,7 +102,13 @@ export const ShowIcons = {
   },
 };
 
-export const DisabledOff = {
+export const AutoSave = {
+  args: {
+    onChange: onAutoSave,
+  },
+};
+
+export const Disabled = {
   args: {
     checked: false,
     disabled: true,
@@ -87,19 +122,36 @@ export const DisabledOn = {
   },
 };
 
+export const PrivateField = {
+  args: {
+    private: true,
+    checked: true,
+    privateLabel: 'This is a custom tooltip',
+  },
+};
+
 export const Loading = {
   args: {
     loading: true,
   },
 };
+
 export const Saved = {
   args: {
     saved: true,
   },
 };
+
 export const Error = {
   args: {
     error: 'Custom error message',
+  },
+};
+
+export const ErrorSlot = {
+  args: {
+    slot: 'ErrorSlot',
+    error: '[Should show link here]',
   },
 };
 
@@ -113,7 +165,6 @@ export const LocalizeRTL = {
     lang: 'ar',
     dir: 'rtl',
     label: 'اسم الإدخال',
-    value: 'راد أن يشع',
   },
 };
 
@@ -123,7 +174,6 @@ export const LocalizeRTLOn = {
     lang: 'ar',
     dir: 'rtl',
     label: 'اسم الإدخال',
-    value: 'راد أن يشع',
     checked: true,
   },
 };

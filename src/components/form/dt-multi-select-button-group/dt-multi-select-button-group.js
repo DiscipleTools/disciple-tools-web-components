@@ -13,12 +13,27 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
       ...super.styles,
       css`
         :host {
-          margin-bottom: 5px;
-          --dt-button-font-size: 0.75rem;
-          --dt-button-font-weight: 0;
-          --dt-button-line-height: 1em;
-          --dt-button-padding-y: 0.85em;
-          --dt-button-padding-x: 1em;
+          margin-bottom: var(--dt-multi-select-button-group-margin-bottom, 5px);
+          --dt-button-font-size: var(
+            --dt-multi-select-button-group-button-font-size,
+            0.75rem
+          );
+          --dt-button-font-weight: var(
+            --dt-multi-select-button-group-button-font-weight,
+            0
+          );
+          --dt-button-line-height: var(
+            --dt-multi-select-button-group-button-line-height,
+            1em
+          );
+          --dt-button-padding-y: var(
+            --dt-multi-select-button-group-button-padding-y,
+            0.85em
+          );
+          --dt-button-padding-x: var(
+            --dt-multi-select-button-group-button-padding-x,
+            1em
+          );
         }
         span .icon {
           vertical-align: middle;
@@ -34,7 +49,8 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
           display: inline-flex;
           flex-direction: row;
           flex-wrap: wrap;
-          gap: 5px 10px;
+          gap: var(--dt-multi-select-button-group-gap-y, 5px)
+            var(--dt-multi-select-button-group-gap-x, 10px);
         }
         dt-button {
           margin: 0px;
@@ -49,7 +65,10 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
         }
 
         .error-container {
-          margin-block-start: 5px;
+          margin-block-start: var(
+            --dt-multi-select-button-group-error-margin-top,
+            5px
+          );
         }
         .invalid ~ .error-container {
           border-top-width: 1px;
@@ -58,7 +77,6 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     ];
   }
 
-  // border: 1px solid var(--dt-text-border-color-alert, var(--alert-color));
   constructor() {
     super();
     this.options = [];
@@ -85,12 +103,13 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
   }
 
   _select(value) {
+    const oldValue = this.value;
     // Create custom event with new/old values to pass to onchange function
     const event = new CustomEvent('change', {
       bubbles: true,
       detail: {
         field: this.name,
-        oldValue: this.value,
+        oldValue,
       },
     });
 
@@ -109,9 +128,10 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
     }
     event.detail.newValue = this.value;
 
+    this._setFormValue(this.value);
+
     // dispatch event for use with addEventListener from javascript
     this.dispatchEvent(event);
-    this._setFormValue(this.value);
   }
 
   _clickOption(e) {
@@ -152,6 +172,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
         ?outline="${outline}"
         role="button"
         value="${opt.id}"
+        part="button"
       >
         ${opt.icon
           ? html`<span class="icon"
@@ -195,8 +216,11 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
   render() {
     return html`
       ${this.labelTemplate()}
-      <div class="input-group ${this.disabled ? 'disabled' : ''}">
-        <div class="${classMap(this.classes)}">
+      <div
+        class="input-group ${this.disabled ? 'disabled' : ''}"
+        part="input-group"
+      >
+        <div class="${classMap(this.classes)}" part="button-group">
           ${repeat(
             this.options ?? [],
             opt => opt.id,

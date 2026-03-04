@@ -11,7 +11,6 @@ export class DtLocationMap extends DtFormBase {
       placeholder: { type: String },
       value: {
         type: Array,
-        reflect: true,
       },
       locations: {
         type: Array,
@@ -25,7 +24,6 @@ export class DtLocationMap extends DtFormBase {
         type: Number,
         attribute: 'limit',
       },
-      onchange: { type: String },
       mapboxToken: {
         type: String,
         attribute: 'mapbox-token',
@@ -160,8 +158,8 @@ export class DtLocationMap extends DtFormBase {
       id: Date.now(),
     };
     if (newLocation.lat) {
-      const lat = Math.round(newLocation.lat*(10**7))/10**7;
-      const lng = Math.round(newLocation.lng*(10**7))/10**7;
+      const lat = Math.round(newLocation.lat * 10 ** 7) / 10 ** 7;
+      const lng = Math.round(newLocation.lng * 10 ** 7) / 10 ** 7;
       this.activeItem = `${lat}/${lng}`;
     } else {
       this.activeItem = newLocation.label; // activeId
@@ -227,9 +225,14 @@ export class DtLocationMap extends DtFormBase {
     }
   }
 
+  reset() {
+    this.value = [];
+    this._setFormValue([]);
+  }
+
   _validateRequired() {
     const { value } = this;
-    if (this.required && (!value || value.every(item => !item.value))) {
+    if (this.required && (!value || value.every(item => !item.label))) {
       this.invalid = true;
       this.internals.setValidity(
         {
@@ -278,11 +281,13 @@ export class DtLocationMap extends DtFormBase {
   }
 
   renderItem(opt, idx) {
-    const lat = Math.round(opt.lat*(10**7))/10**7;
-    const lng = Math.round(opt.lng*(10**7))/10**7;
+    const lat = Math.round(opt.lat * 10 ** 7) / 10 ** 7;
+    const lng = Math.round(opt.lng * 10 ** 7) / 10 ** 7;
     const latLng = `${lat}/${lng}`;
-    const showStatus = (this.activeItem && (this.activeItem === opt.label || this.activeItem === latLng))
-                    || idx === 0 && !this.activeItem;
+    const showStatus =
+      (this.activeItem &&
+        (this.activeItem === opt.label || this.activeItem === latLng)) ||
+      (idx === 0 && !this.activeItem);
     return html`
       <dt-location-map-item
         placeholder="${this.placeholder}"
@@ -319,4 +324,3 @@ export class DtLocationMap extends DtFormBase {
 }
 
 window.customElements.define('dt-location-map', DtLocationMap);
-

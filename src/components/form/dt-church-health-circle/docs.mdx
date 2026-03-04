@@ -1,0 +1,61 @@
+import {
+  Title, Subtitle, Description, Primary, Controls, Stories, Meta, Story, Canvas, Markdown
+} from '@storybook/blocks';
+import * as ComponentStories from './dt-church-health-circle.stories.js';
+
+
+<Meta name="Docs" of={ComponentStories} />
+
+<Title />
+<Subtitle />
+
+## Overview
+<Description />
+<Primary />
+
+## Parameters
+<Controls />
+
+## Slots
+
+Inherits slots from
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#slots)
+- [DTMultiSelect](?path=/docs/components-form-multi-select--docs#slots)
+
+## Events
+
+### `change`
+
+**Event Detail:**
+```json
+{
+  field: string,    // name attribute of field
+  oldValue: array, // previous value before current change (array of strings)
+  newValue: array  // updated value (array of strings)
+}
+```
+
+## CSS Custom Properties / Theming
+
+Inherits custom properties from
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#css-properties)
+- [DTMultiSelect](?path=/docs/components-form-multi-select--docs#css-properties--theming)
+
+| Custom Property      | Description                                     | Default Value |
+| :------------------- | :---------------------------------------------- | :------------ |
+| `--icon-count`       | Number of icons in the circle                   | `9`           |
+| `--circle-size`      | Overall size of the church health circle        | `250px`       |
+| `--icon-size`        | Size of each individual icon                    | `min(calc(var(--circle-size) / 5), 125px)` |
+| `--circle-padding`   | Inner padding for the circle layout             | `max(0.5rem, calc(var(--circle-size) / 250px * 0.5rem))` |
+| `--radius`           | Radius from center to icon center               | `calc(0.5 * var(--circle-size) - 0.5 * var(--icon-size) - var(--circle-padding))` |
+
+## Parts
+
+Inherits parts from:
+- [DtFormBase](?path=/docs/architecture-base-classes--docs#parts)
+- [DTMultiSelect](?path=/docs/components-form-multi-select--docs#parts)
+- `dt-toggle` (see its documentation for available parts)
+
+## Notes
+
+The `options` property expects an object where keys are metric identifiers and values are objects containing `label`, `description`, and `icon` properties. A special `church_commitment` key is handled by a `dt-toggle` component outside the circle of icons.

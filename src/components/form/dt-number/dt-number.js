@@ -9,11 +9,21 @@ export class DtNumberField extends DtFormBase {
       ...super.styles,
       css`
         input {
-          color: var(--dt-form-text-color, #000);
+          color: var(
+            --dt-number-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           appearance: none;
-          background-color: var(--dt-form-background-color, #fff);
-          border: 1px solid var(--dt-form-border-color, #ccc);
-          border-radius: 0;
+          background-color: var(
+            --dt-number-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(--dt-number-border-color, var(--dt-form-border-color, #cecece));
+          border-radius: var(
+            --dt-number-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-number-box-shadow,
             var(
@@ -52,7 +62,10 @@ export class DtNumberField extends DtFormBase {
           outline: none;
         }
         input.invalid {
-          border-color: var(--dt-form-invalid-border-color, #dc3545);
+          border-color: var(
+            --dt-number-border-color-alert,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
 
         .icon-overlay {
@@ -99,7 +112,6 @@ export class DtNumberField extends DtFormBase {
           newValue: e.target.value,
         },
         bubbles: true,
-        composed: true,
       });
 
       this.value = e.target.value;

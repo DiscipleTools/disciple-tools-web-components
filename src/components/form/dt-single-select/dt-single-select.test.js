@@ -1,6 +1,6 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, aTimeout, nextFrame } from '@open-wc/testing';
-import { selectOption, sendKeys } from '@web/test-runner-commands';
+import { fixture, expect, nextFrame } from '@open-wc/testing';
+import { sendKeys } from '@web/test-runner-commands';
 
 import './dt-single-select.js';
 
@@ -24,7 +24,7 @@ describe('dt-single-select', () => {
     const el = await fixture(
       html`<dt-single-select
         placeholder="Custom Placeholder"
-      ></dt-single-select>`
+      ></dt-single-select>`,
     );
     const select = el.shadowRoot.querySelector('select');
 
@@ -37,7 +37,7 @@ describe('dt-single-select', () => {
     const el = await fixture(
       html`<dt-single-select
         options="${JSON.stringify(options)}"
-      ></dt-single-select>`
+      ></dt-single-select>`,
     );
     const select = el.shadowRoot.querySelector('select');
 
@@ -51,7 +51,7 @@ describe('dt-single-select', () => {
       html`<dt-single-select
         value="opt1"
         options="${JSON.stringify(options)}"
-      ></dt-single-select>`
+      ></dt-single-select>`,
     );
     const select = el.shadowRoot.querySelector('select');
 
@@ -63,7 +63,7 @@ describe('dt-single-select', () => {
       html`<dt-single-select
         value="opt1"
         options="${JSON.stringify(options)}"
-      ></dt-single-select>`
+      ></dt-single-select>`,
     );
     const select = el.shadowRoot.querySelector('select');
 
@@ -80,39 +80,37 @@ describe('dt-single-select', () => {
       html`<dt-single-select
         value=""
         options="${JSON.stringify(options)}"
-      ></dt-single-select>`
+      ></dt-single-select>`,
     );
     const select = el.shadowRoot.querySelector('select');
 
     select.focus();
-    sendKeys({ type: 'Option 1'});
+    await sendKeys({ type: 'Option 1' });
     select.dispatchEvent(new Event('change'));
-
-    await aTimeout(100);
 
     expect(select.value).to.equal('opt1');
     expect(el.value).to.equal('opt1');
   });
 
   it('triggers change event', async () => {
+    let eventDetail = null;
     const el = await fixture(
       html`<dt-single-select
         name="custom-name"
+        value="opt2"
         options="${JSON.stringify(options)}"
-      ></dt-single-select>`
+        @change="${e => (eventDetail = e.detail)}"
+      ></dt-single-select>`,
     );
+
     const select = el.shadowRoot.querySelector('select');
+    select.value = 'opt1';
+    select.dispatchEvent(new Event('change'));
 
-    setTimeout(() => {
-      select.value = 'opt1';
-      select.dispatchEvent(new Event('change'));
-    });
-
-    const { detail } = await oneEvent(el, 'change');
-
-    expect(detail.field).to.equal('custom-name');
-    expect(detail.newValue).to.eql('opt1');
-    expect(detail.oldValue).to.eql(undefined);
+    expect(eventDetail).to.not.be.null;
+    expect(eventDetail.field).to.equal('custom-name');
+    expect(eventDetail.newValue).to.equal('opt1');
+    expect(eventDetail.oldValue).to.equal('opt2');
   });
 
   it('passes the a11y audit', async () => {
@@ -120,7 +118,7 @@ describe('dt-single-select', () => {
       html`<dt-single-select
         name="custom-name"
         options="${JSON.stringify(options)}"
-      ></dt-single-select>`
+      ></dt-single-select>`,
     );
 
     await expect(el).shadowDom.to.be.accessible();
@@ -135,7 +133,7 @@ describe('dt-single-select', () => {
       html`<dt-single-select
         value="opt1"
         options="${JSON.stringify(colorOptions)}"
-      ></dt-single-select>`
+      ></dt-single-select>`,
     );
     const select = el.shadowRoot.querySelector('select');
 

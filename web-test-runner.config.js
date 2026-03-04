@@ -4,7 +4,7 @@ import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
 const filteredLogs = ['Running in dev mode', 'Lit is in dev mode'];
 
 export default {
-  testsFinishTimeout: 30000,
+  testsFinishTimeout: 10000,
   /** Test files to run */
   files: [
     'src/**/*.test.js',
