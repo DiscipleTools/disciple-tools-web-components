@@ -41,6 +41,7 @@ export default class ComponentService {
       'dt-textarea',
       'dt-toggle',
       'dt-multi-text',
+      'dt-multi-text-groups',
       'dt-multi-select-button-group',
       'dt-list',
       'dt-button',
@@ -320,7 +321,7 @@ export default class ComponentService {
             },
           }));
 
-          if (component === 'dt-location-map') {
+          if (component === 'dt-location-map' || component === 'dt-multi-text-groups') {
             const componentTarget = event.target;
             componentTarget.value = apiResponse[field];
           }
@@ -568,6 +569,30 @@ export default class ComponentService {
               value,
             }];
           }
+          break;
+        case 'dt-multi-text-groups':
+          let formattedGroupValues = [];
+          if (Array.isArray(value)) {
+            formattedGroupValues = value
+            // Remove empty values
+            .filter(x => x.value !== '')
+            // Map to desired format
+            .map(x => {
+              const ret = {
+                ...x,
+              };
+              delete ret.tempKey;
+              return ret;
+            });
+          } else if (typeof value === 'string') {
+            formattedGroupValues = [{
+              value,
+            }];
+          }
+          returnValue = {
+            values: formattedGroupValues,
+            force_values: false
+          };
           break;
         default:
           break;
