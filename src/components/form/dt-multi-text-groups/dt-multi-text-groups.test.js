@@ -5,26 +5,24 @@ import './dt-multi-text-groups.js';
 
 describe('DtMultiTextGroups', () => {
 
-  it('sets placeholder', async () => {
-    const el = await fixture(
-      html`<dt-multi-text-groups placeholder="Custom Placeholder"></dt-multi-text-groups>`
-    );
-    const input = el.shadowRoot.querySelector('input');
-
-    expect(input.placeholder).to.equal('Custom Placeholder');
-  });
-
   it('sets value from attribute', async () => {
     const el = await fixture(
       html`<dt-multi-text-groups
         value="${JSON.stringify([{
-          key: 'cc01',
+          meta_id: 'cc01',
           value: 'Value 1',
-          verified: true,
+          type: 'one',
         }, {
-          key: 'cc02',
+          meta_id: 'cc02',
           value: 'Value 2',
-          verified: true,
+          type: 'two',
+        }])}"
+        groups="${JSON.stringify([{
+          id: 'one',
+          label: 'Group 1',
+        }, {
+          id: 'two',
+          label: 'Group 2',
         }])}"
       ></dt-multi-text-groups>`
     );
@@ -43,41 +41,56 @@ describe('DtMultiTextGroups', () => {
     const el = await fixture(
       html`<dt-multi-text-groups
         value="${JSON.stringify([{
-          key: 'cc01',
+          meta_id: 'cc01',
           value: 'Value 1',
-          verified: true,
+          type: 'one',
         }, {
-          key: 'cc02',
+          meta_id: 'cc02',
           value: 'Value 2',
-          verified: true,
+          type: 'two',
+        }])}"
+        groups="${JSON.stringify([{
+          id: 'one',
+          label: 'Group 1',
+        }, {
+          id: 'two',
+          label: 'Group 2',
         }])}"
       ></dt-multi-text-groups>`
     );
 
     el.reset();
-
     await nextFrame();
 
-    const inputGroup = el.shadowRoot.querySelector('.input-group');
+    // 1. Assert that no inputs are rendered
+    const inputs = el.shadowRoot.querySelectorAll('input');
+    expect(inputs).to.have.lengthOf(0);
 
-    const input = inputGroup.querySelector('input');
-
-    expect(input).to.have.attribute('type', 'text');
-    expect(input).to.have.value('');
+    // 2. Assert that the empty state UI is shown
+    const emptyStateDiv = el.shadowRoot.querySelector('.groups-no-value');
+    expect(emptyStateDiv).to.exist;
+    expect(emptyStateDiv.textContent).to.include('No items to show');
   });
 
   it('deletes an item on remove button click', async () => {
     const el = await fixture(
       html`<dt-multi-text-groups
         value="${JSON.stringify([{
-        key: 'cc01',
-        value: 'Value 1',
-        verified: true,
-      }, {
-        key: 'cc02',
-        value: 'Value 2',
-        verified: true,
-      }])}"
+          meta_id: 'cc01',
+          value: 'Value 1',
+          type: 'one',
+        }, {
+          meta_id: 'cc02',
+          value: 'Value 2',
+          type: 'two',
+        }])}"
+        groups="${JSON.stringify([{
+          id: 'one',
+          label: 'Group 1',
+        }, {
+          id: 'two',
+          label: 'Group 2',
+        }])}"
       ></dt-multi-text-groups>`
     );
 
@@ -90,15 +103,15 @@ describe('DtMultiTextGroups', () => {
     // marked as deleted in value
     expect(el.value.length).to.equal(2);
     expect(el.value).to.deep.include.include({
-      key: 'cc01',
+      meta_id: 'cc01',
       value: 'Value 1',
-      verified: true,
+      type: 'one',
       delete: true,
     });
     expect(el.value).to.deep.include.include({
-      key: 'cc02',
+      meta_id: 'cc02',
       value: 'Value 2',
-      verified: true,
+      type: 'two',
     });
 
     // not rendered in DOM
@@ -107,36 +120,49 @@ describe('DtMultiTextGroups', () => {
 
   it('triggers a change event - item added', async () => {
     const el = await fixture(
-      html`<dt-multi-text-groups></dt-multi-text-groups>`
+      html`<dt-multi-text-groups
+        value="${JSON.stringify([{ 
+          tempKey: 'new-key',
+          type: 'default', 
+          value: '' 
+        }])}"
+        groups="${JSON.stringify([{ id: 'default', label: 'Default Group' }])}"
+      ></dt-multi-text-groups>`
     );
+    
     const input = el.shadowRoot.querySelector('input');
 
+    const changeEventPromise = oneEvent(el, 'change');
+
     input.focus();
+    await sendKeys({ type: 'Test' });
+    input.blur();
 
-    setTimeout(async () => {
-      await sendKeys({ type: 'Test' });
-      input.blur();
-    })
-
-    const { detail } = await oneEvent(el, 'change');
+    const { detail } = await changeEventPromise;
 
     expect(detail.newValue.length).to.equal(1);
-    expect(detail.newValue[0].value).to.equal('Test')
-
+    expect(detail.newValue[0].value).to.equal('Test');
   });
 
   it('triggers a change event - item removed', async () => {
     const el = await fixture(
       html`<dt-multi-text-groups
         value="${JSON.stringify([{
-        key: 'cc01',
-        value: 'Value 1',
-        verified: true,
-      }, {
-        key: 'cc02',
-        value: 'Value 2',
-        verified: true,
-      }])}"
+          meta_id: 'cc01',
+          value: 'Value 1',
+          type: 'one',
+        }, {
+          meta_id: 'cc02',
+          value: 'Value 2',
+          type: 'two',
+        }])}"
+        groups="${JSON.stringify([{
+          id: 'one',
+          label: 'Group 1',
+        }, {
+          id: 'two',
+          label: 'Group 2',
+        }])}"
       ></dt-multi-text-groups>`
     );
 
