@@ -1,9 +1,22 @@
 import { html } from 'lit';
-import { fixture, expect, oneEvent, aTimeout, nextFrame } from '@open-wc/testing';
+import { fixture, expect, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 import './dt-multi-text-groups.js';
 
 describe('DtMultiTextGroups', () => {
+
+  it('sets placeholder', async () => {
+    const el = await fixture(
+      html`<dt-multi-text-groups 
+        placeholder="Custom Placeholder"
+        .value=${[{ tempKey: 'new-key', type: 'default', value: '' }]}
+        .groups=${[{ id: 'default', label: 'Default Group' }]}
+      ></dt-multi-text-groups>`
+    );
+    const input = el.shadowRoot.querySelector('input');
+
+    expect(input.placeholder).to.equal('Custom Placeholder');
+  });
 
   it('sets value from attribute', async () => {
     const el = await fixture(
@@ -60,13 +73,13 @@ describe('DtMultiTextGroups', () => {
     );
 
     el.reset();
+
     await nextFrame();
 
-    // 1. Assert that no inputs are rendered
+    // Assert that the inputs are cleared and the empty state is shown
     const inputs = el.shadowRoot.querySelectorAll('input');
     expect(inputs).to.have.lengthOf(0);
 
-    // 2. Assert that the empty state UI is shown
     const emptyStateDiv = el.shadowRoot.querySelector('.groups-no-value');
     expect(emptyStateDiv).to.exist;
     expect(emptyStateDiv.textContent).to.include('No items to show');
@@ -98,17 +111,20 @@ describe('DtMultiTextGroups', () => {
 
     const removeButton = el.shadowRoot.querySelector('button.btn-remove');
     removeButton.click();
-    await aTimeout(50);
+    
+    await nextFrame();
 
     // marked as deleted in value
     expect(el.value.length).to.equal(2);
-    expect(el.value).to.deep.include.include({
+    
+    expect(el.value).to.deep.include({
       meta_id: 'cc01',
       value: 'Value 1',
       type: 'one',
       delete: true,
     });
-    expect(el.value).to.deep.include.include({
+    
+    expect(el.value).to.deep.include({
       meta_id: 'cc02',
       value: 'Value 2',
       type: 'two',
@@ -126,22 +142,32 @@ describe('DtMultiTextGroups', () => {
           type: 'default', 
           value: '' 
         }])}"
-        groups="${JSON.stringify([{ id: 'default', label: 'Default Group' }])}"
+        groups="${JSON.stringify([{
+          id: 'default',
+          label: 'Default Group'
+        }])}"
       ></dt-multi-text-groups>`
     );
     
     const input = el.shadowRoot.querySelector('input');
+    
+    // 1. Create a variable to hold the event data
+    let changeEventDetail;
 
-    const changeEventPromise = oneEvent(el, 'change');
+    // 2. Listen for the event and update the variable
+    el.addEventListener('change', (e) => {
+      changeEventDetail = e.detail;
+    });
 
+    // 3. Trigger the event
     input.focus();
     await sendKeys({ type: 'Test' });
     input.blur();
 
-    const { detail } = await changeEventPromise;
-
-    expect(detail.newValue.length).to.equal(1);
-    expect(detail.newValue[0].value).to.equal('Test');
+    // 4. Assert against the captured variable
+    expect(changeEventDetail).to.exist;
+    expect(changeEventDetail.newValue.length).to.equal(1);
+    expect(changeEventDetail.newValue[0].value).to.equal('Test');
   });
 
   it('triggers a change event - item removed', async () => {
@@ -168,15 +194,25 @@ describe('DtMultiTextGroups', () => {
 
     expect(el.shadowRoot.querySelectorAll('input')).to.have.length(2);
 
+    // 1. Create a variable to hold the event data
+    let changeEventDetail;
+
+    // 2. Listen for the event
+    el.addEventListener('change', (e) => {
+      changeEventDetail = e.detail;
+    });
+
+    // 3. Trigger the event
     const removeButton = el.shadowRoot.querySelector('button.btn-remove');
+    removeButton.click();
+    
+    await nextFrame();
 
-    setTimeout(() => removeButton.click());
-
-    const { detail } = await oneEvent(el, 'change');
-
-    expect(detail.oldValue).to.have.length(2);
-    expect(detail.newValue).to.have.length(2);
-    expect(detail.newValue[0].value).to.equal('Value 1')
-    expect(detail.newValue[0].delete).to.equal(true);
+    // 4. Assert against the captured variable
+    expect(changeEventDetail).to.exist;
+    expect(changeEventDetail.oldValue).to.have.length(2);
+    expect(changeEventDetail.newValue).to.have.length(2);
+    expect(changeEventDetail.newValue[0].value).to.equal('Value 1');
+    expect(changeEventDetail.newValue[0].delete).to.equal(true);
   });
 });
