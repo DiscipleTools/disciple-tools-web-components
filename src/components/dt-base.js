@@ -48,6 +48,16 @@ export default class DtBase extends LitElement {
       : null;
   }
 
+  /**
+   * Standardizes locale format to use underscores instead of hyphens
+   * @param {string} locale - The locale string to standardize
+   * @returns {string} The standardized locale string
+   * @private
+   */
+  _standardizeLocale(locale) {
+    return locale ? locale.replace(/-/g, '_') : locale;
+  }
+
   constructor() {
     super();
     updateWhenLocaleChanges(this);
@@ -73,7 +83,7 @@ export default class DtBase extends LitElement {
       if (langEl) {
         const lang = langEl.getAttribute('lang');
         if (lang) {
-          this.locale = lang;
+          this.locale = this._standardizeLocale(lang);
         }
       }
     }
@@ -86,7 +96,7 @@ export default class DtBase extends LitElement {
         const parentComponent = rootNode.host;
         // Access attributes or properties of the parent component
         if (parentComponent.locale) {
-          this.locale = parentComponent.locale;
+          this.locale = this._standardizeLocale(parentComponent.locale);
         }
       }
     }
