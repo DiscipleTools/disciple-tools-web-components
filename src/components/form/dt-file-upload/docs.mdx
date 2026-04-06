@@ -30,6 +30,7 @@ A web component for uploading multiple files (pictures, documents, PDFs, voice m
 - **Error handling**: Clear error messages for validation failures
 - **Compact upload zone**: Default collapsed state (cloud icon only); expands on hover, click, or drag-over; collapses after upload, staging, or when idle
 - **Automatic file type icons**: Automatically detects and displays appropriate icons for common file types (PDF, Word, text, HTML, JSON, XML) based on MIME type or file extension
+- **Accepted file types label**: Display user-friendly category labels (e.g., "Images, PDFs, Documents") instead of raw MIME types in the upload zone hint text
 
 ### Usage Examples
 
@@ -90,6 +91,22 @@ When `file-type-icon` is not specified, the component automatically detects appr
 - Unknown file types → `mdi:file-outline` (default)
 
 The component matches icons by MIME type first, then falls back to file extension if MIME type is unavailable.
+
+#### With Accepted File Types Label
+
+Use `accepted-file-types-label` to display a user-friendly label instead of raw MIME types in the upload hint. This is especially useful for translation support, as the label can be passed from the theme already translated.
+
+```html
+<dt-file-upload
+  name="files"
+  label="Upload Files"
+  accepted-file-types='["image/*", "application/pdf", ".doc", ".docx"]'
+  accepted-file-types-label="Images, PDFs, Documents"
+  post-type="contacts"
+  post-id="123"
+  meta-key="files"
+></dt-file-upload>
+```
 
 #### Manual Upload Mode
 

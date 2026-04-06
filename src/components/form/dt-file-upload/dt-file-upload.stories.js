@@ -47,6 +47,7 @@ export default {
       options: ['grid', 'list'],
     },
     fileTypeIcon: { control: 'text' },
+    acceptedFileTypesLabel: { control: 'text' },
     autoUpload: { control: 'boolean' },
     postType: { control: 'text' },
     postId: { control: 'text' },
@@ -71,6 +72,7 @@ function Template(args) {
     label = 'Upload Files',
     value = [],
     acceptedFileTypes = ['image/*', 'application/pdf'],
+    acceptedFileTypesLabel,
     maxFileSize,
     maxFiles,
     deleteEnabled = true,
@@ -114,6 +116,7 @@ function Template(args) {
       label=${label}
       .value=${value}
       .acceptedFileTypes=${acceptedFileTypes}
+      accepted-file-types-label=${ifDefined(acceptedFileTypesLabel)}
       max-file-size=${ifDefined(maxFileSize)}
       max-files=${ifDefined(maxFiles)}
       .deleteEnabled=${deleteEnabled}
@@ -257,6 +260,12 @@ MaxFileSize.args = {
 export const CustomFileTypes = Template.bind({});
 CustomFileTypes.args = {
   acceptedFileTypes: ['.pdf', '.doc', '.docx'],
+};
+
+export const AcceptedFileTypesLabel = Template.bind({});
+AcceptedFileTypesLabel.args = {
+  acceptedFileTypes: ['image/*', 'application/pdf', '.doc', '.docx'],
+  acceptedFileTypesLabel: 'Images, PDFs, Documents',
 };
 
 export const AutoFileTypeIcons = Template.bind({});

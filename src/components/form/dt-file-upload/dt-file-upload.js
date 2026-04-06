@@ -421,6 +421,10 @@ export class DtFileUpload extends DtFormBase {
         type: Array,
         attribute: 'accepted-file-types',
       },
+      acceptedFileTypesLabel: {
+        type: String,
+        attribute: 'accepted-file-types-label',
+      },
       maxFileSize: {
         type: Number,
         attribute: 'max-file-size',
@@ -664,6 +668,11 @@ export class DtFileUpload extends DtFormBase {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  _formatAcceptedTypes() {
+    if (this.acceptedFileTypesLabel) return this.acceptedFileTypesLabel;
+    return (this.acceptedFileTypes || []).join(', ');
   }
 
   _isImage(file) {
@@ -1371,7 +1380,7 @@ export class DtFileUpload extends DtFormBase {
           <div class="upload-zone-content">
             <span class="upload-icon"><dt-icon icon="mdi:cloud-upload"></dt-icon></span>
             <span class="expandable upload-text">Drag files here or click to upload</span>
-            <span class="expandable upload-hint">${(this.acceptedFileTypes || []).join(', ')}${this.maxFileSize ? ` • Max ${this.maxFileSize} MB` : ''}</span>
+            <span class="expandable upload-hint">${this._formatAcceptedTypes()}${this.maxFileSize ? ` • Max ${this.maxFileSize} MB` : ''}</span>
           </div>
         </div>
 

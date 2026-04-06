@@ -46,9 +46,9 @@
         <source>Choose which fields to display as columns in the list</source>
         <target>Scegli quali campi visualizzare come colonne nell'elenco</target>
       </trans-unit>
-      <trans-unit id="scb9a1ff437efbd2a">
+      <trans-unit id="scb9a1ff437efbd2a" xml:space="preserve">
         <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
-        <target>Seleziona tutti i <x id="0" equiv-text="${this.postType}"/>vuoi aggiornare dalla lista e aggiornali sotto</target>
+        <target state="translated">Seleziona tutti i <x id="0" equiv-text="${this.postType}"/> che vuoi aggiornare dalla lista e aggiornali sotto</target>
       </trans-unit>
       <trans-unit id="sac83d7f9358b43db">
         <source><x id="0" equiv-text="${this.postTypeLabel ? this.postTypeLabel : this.postType}"/> List</source>
