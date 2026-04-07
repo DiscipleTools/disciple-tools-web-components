@@ -1,7 +1,11 @@
 import { html } from 'lit';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
-import { FormDecorator, LocaleDecorator } from '../../../stories-utils.js';
+import {
+  AlignBottomDecorator,
+  FormDecorator,
+  LocaleDecorator,
+} from '../../../stories-utils.js';
 import './dt-location.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -196,6 +200,13 @@ export const LoadOptionsFromAPI = {
   args: {
     options: null,
     onLoad: onLoadEvent,
+  },
+};
+
+export const OptionsListAbove = {
+  decorators: [AlignBottomDecorator],
+  args: {
+    options: basicOptions,
   },
 };
 

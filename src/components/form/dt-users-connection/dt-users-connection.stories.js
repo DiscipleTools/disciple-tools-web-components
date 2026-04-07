@@ -3,6 +3,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { action } from '@storybook/addon-actions';
 import { argTypes } from '../../../stories-theme.js';
 import {
+  AlignBottomDecorator,
   FormDecorator,
   LocaleDecorator,
   onAutoSave,
@@ -194,6 +195,12 @@ export const OptionsOpen = {
   },
 };
 
+export const OptionsListAbove = {
+  decorators: [AlignBottomDecorator],
+  args: {
+    options: basicOptions,
+  },
+};
 export const LoadOptionsFromAPI = {
   args: {
     options: null,

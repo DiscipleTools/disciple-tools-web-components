@@ -6,6 +6,7 @@ import {
   LocaleDecorator,
   FormDecorator,
   onAutoSave,
+  AlignBottomDecorator,
 } from '../../../stories-utils.js';
 import './dt-connection.js';
 
@@ -238,6 +239,13 @@ export const OptionsOpen = {
     value: [basicOptions[0]],
     options: basicOptions,
     open: true,
+  },
+};
+
+export const OptionsListAbove = {
+  decorators: [AlignBottomDecorator],
+  args: {
+    options: basicOptions,
   },
 };
 

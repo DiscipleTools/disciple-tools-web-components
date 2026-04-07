@@ -6,6 +6,7 @@ import {
   LocaleDecorator,
   FormDecorator,
   onAutoSave,
+  AlignBottomDecorator,
 } from '../../../stories-utils.js';
 import './dt-tags.js';
 
@@ -224,6 +225,12 @@ export const LoadOptionsFromAPI = {
   },
 };
 
+export const OptionsListAbove = {
+  decorators: [AlignBottomDecorator],
+  args: {
+    options: basicOptions,
+  },
+};
 export const AddNewOption = {
   args: {
     allowAdd: true,

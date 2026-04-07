@@ -6,6 +6,7 @@ import {
   LocaleDecorator,
   FormDecorator,
   onAutoSave,
+  AlignBottomDecorator,
 } from '../../../stories-utils.js';
 import './dt-multi-select.js';
 
@@ -169,6 +170,13 @@ export const OptionsOpen = {
     value: ['opt1'],
     options: basicOptions,
     open: true,
+  },
+};
+
+export const OptionsListAbove = {
+  decorators: [AlignBottomDecorator],
+  args: {
+    options: basicOptions,
   },
 };
 
