@@ -336,8 +336,8 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
 
   // Add or modify this method in your DtMultiSelect class
 
-  updated() {
-    super.updated();
+  updated(changedProperties) {
+    super.updated(changedProperties);
 
     this._updateContainerHeight();
   }
@@ -461,10 +461,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   }
 
   render() {
-    const optionListStyles = {
-      display: this.open ? 'block' : 'none',
-      top: this.containerHeight ? `${this.containerHeight}px` : '2.5rem',
-    };
+    const optionListStyles = this.optionListStyles;
     return html`
       ${this.labelTemplate()}
 

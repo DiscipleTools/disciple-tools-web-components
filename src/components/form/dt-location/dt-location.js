@@ -110,8 +110,8 @@ export class DtLocation extends DtTags {
     }
   }
 
-  updated() {
-    super.updated();
+  updated(changedProperties) {
+    super.updated(changedProperties);
 
     // set variable with width of container for truncating selected options via CSS
     const container = this.shadowRoot.querySelector('.input-group');
@@ -221,10 +221,7 @@ export class DtLocation extends DtTags {
   }
 
   render() {
-    const optionListStyles = {
-      display: this.open ? 'block' : 'none',
-      top: `${this.containerHeight}px`,
-    };
+    const optionListStyles = this.optionListStyles;
     return html`
       ${this.labelTemplate()}
 

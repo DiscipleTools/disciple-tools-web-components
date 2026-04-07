@@ -284,10 +284,7 @@ export class DtTags extends DtMultiSelect {
   }
 
   render() {
-    const optionListStyles = {
-      display: this.open ? 'block' : 'none',
-      top: this.containerHeight ? `${this.containerHeight}px` : '2.5rem',
-    };
+    const optionListStyles = this.optionListStyles;
     return html`
       ${this.labelTemplate()}
 
