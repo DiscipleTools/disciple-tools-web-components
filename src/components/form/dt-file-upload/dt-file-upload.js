@@ -25,7 +25,10 @@ export class DtFileUpload extends DtFormBase {
           border-radius: 4px;
           text-align: center;
           background-color: var(--dt-upload-background-color, #fafafa);
-          transition: padding 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+          transition:
+            padding 0.2s ease,
+            background-color 0.2s ease,
+            border-color 0.2s ease;
           cursor: pointer;
           position: relative;
           width: 100%;
@@ -404,7 +407,7 @@ export class DtFileUpload extends DtFormBase {
         type: Array,
         reflect: true,
         converter: {
-          fromAttribute: (val) => {
+          fromAttribute: val => {
             if (val == null || val === '') return [];
             try {
               const parsed = JSON.parse(val);
@@ -413,7 +416,7 @@ export class DtFileUpload extends DtFormBase {
               return [];
             }
           },
-          toAttribute: (val) =>
+          toAttribute: val =>
             Array.isArray(val) && val.length > 0 ? JSON.stringify(val) : '',
         },
       },
@@ -437,21 +440,24 @@ export class DtFileUpload extends DtFormBase {
         type: Boolean,
         attribute: 'delete-enabled',
         converter: {
-          fromAttribute: (v) => (v == null || v === '' ? true : v !== 'false' && v !== false),
+          fromAttribute: v =>
+            v == null || v === '' ? true : v !== 'false' && v !== false,
         },
       },
       downloadEnabled: {
         type: Boolean,
         attribute: 'download-enabled',
         converter: {
-          fromAttribute: (v) => (v == null || v === '' ? true : v !== 'false' && v !== false),
+          fromAttribute: v =>
+            v == null || v === '' ? true : v !== 'false' && v !== false,
         },
       },
       renameEnabled: {
         type: Boolean,
         attribute: 'rename-enabled',
         converter: {
-          fromAttribute: (v) => (v == null || v === '' ? true : v !== 'false' && v !== false),
+          fromAttribute: v =>
+            v == null || v === '' ? true : v !== 'false' && v !== false,
         },
       },
       displayLayout: {
@@ -466,7 +472,7 @@ export class DtFileUpload extends DtFormBase {
         type: Boolean,
         attribute: 'auto-upload',
         converter: {
-          fromAttribute: (v) => {
+          fromAttribute: v => {
             if (v == null) return true;
             const s = String(v).toLowerCase().trim();
             return s !== 'false' && s !== '0' && v !== false;
@@ -563,16 +569,12 @@ export class DtFileUpload extends DtFormBase {
       this.value = this._parseValue(this.value);
     }
     super.firstUpdated(changedProperties);
-    this._setupResizeObserver();
   }
 
   updated(changedProperties) {
     super.updated(changedProperties);
     if (changedProperties.has('value')) {
       this._setFormValue(this.value);
-    }
-    if (changedProperties.has('value') || changedProperties.has('stagedFiles') || changedProperties.has('error')) {
-      this.updateComplete.then(() => this._refreshMasonry());
     }
     if (changedProperties.has('_editingFileKey')) {
       if (this._editingFileKey) {
@@ -587,31 +589,6 @@ export class DtFileUpload extends DtFormBase {
       } else {
         this._removeKeydownListener();
       }
-    }
-  }
-
-  _setupResizeObserver() {
-    if (typeof ResizeObserver === 'undefined') return;
-    this._resizeObserver = new ResizeObserver(() => {
-      this._refreshMasonry();
-    });
-    this._resizeObserver.observe(this);
-  }
-
-  _refreshMasonry() {
-    if (typeof window !== 'undefined' && window.jQuery) {
-      const host = this;
-      requestAnimationFrame(() => {
-        let $container = null;
-        if (window.masonGrid && window.masonGrid.length && window.masonGrid.masonry) {
-          $container = window.masonGrid;
-        } else {
-          $container = window.jQuery(host).closest('.grid, .masonry-container, .masonry, [data-masonry]');
-        }
-        if ($container && $container.length && $container.masonry) {
-          $container.masonry('layout');
-        }
-      });
     }
   }
 
@@ -684,8 +661,10 @@ export class DtFileUpload extends DtFormBase {
     if (!mdiStr || typeof mdiStr !== 'string') return '';
     const s = mdiStr.trim();
     if (s.startsWith('mdi:')) return s;
-    if (s.includes('mdi-')) return `mdi:${s.replace(/.*mdi-/, '').replace(/\s/g, '-')}`;
-    if (s.startsWith('mdi ')) return `mdi:${s.replace(/^mdi\s+/, '').replace(/\s/g, '-')}`;
+    if (s.includes('mdi-'))
+      return `mdi:${s.replace(/.*mdi-/, '').replace(/\s/g, '-')}`;
+    if (s.startsWith('mdi '))
+      return `mdi:${s.replace(/^mdi\s+/, '').replace(/\s/g, '-')}`;
     return s;
   }
 
@@ -852,14 +831,15 @@ export class DtFileUpload extends DtFormBase {
       this.stagedFiles = [...this.stagedFiles, ...validFiles];
       this._uploadZoneExpanded = false;
       this.requestUpdate();
-      this.updateComplete.then(() => this._refreshMasonry());
     }
   }
 
   _validateFiles(files) {
     const validFiles = [];
     const maxBytes = this.maxFileSize ? this.maxFileSize * 1024 * 1024 : null;
-    const accept = Array.isArray(this.acceptedFileTypes) ? this.acceptedFileTypes : ['image/*', 'application/pdf'];
+    const accept = Array.isArray(this.acceptedFileTypes)
+      ? this.acceptedFileTypes
+      : ['image/*', 'application/pdf'];
     const acceptStr = accept.join(',');
 
     for (const file of files) {
@@ -868,7 +848,7 @@ export class DtFileUpload extends DtFormBase {
         continue;
       }
       if (acceptStr && acceptStr !== '*') {
-        const match = accept.some((pattern) => {
+        const match = accept.some(pattern => {
           if (pattern.startsWith('.')) {
             return file.name.toLowerCase().endsWith(pattern.toLowerCase());
           }
@@ -876,7 +856,11 @@ export class DtFileUpload extends DtFormBase {
             const base = pattern.slice(0, -2);
             return (file.type || '').startsWith(base);
           }
-          return file.type === pattern || (file.name && file.name.toLowerCase().endsWith(`.${pattern.split('/')[1]}`));
+          return (
+            file.type === pattern ||
+            (file.name &&
+              file.name.toLowerCase().endsWith(`.${pattern.split('/')[1]}`))
+          );
         });
         if (!match) {
           this.error = `File type not allowed: ${file.name}`;
@@ -932,7 +916,9 @@ export class DtFileUpload extends DtFormBase {
   getPendingFilesForUpload() {
     const pending = [...(this.stagedFiles || [])];
     const seen = new Set(
-      pending.map((f) => `${f?.name || ''}::${f?.size || 0}::${f?.lastModified || 0}`)
+      pending.map(
+        f => `${f?.name || ''}::${f?.size || 0}::${f?.lastModified || 0}`,
+      ),
     );
     const files = this._parseValue(this.value);
     for (const item of files) {
@@ -970,11 +956,14 @@ export class DtFileUpload extends DtFormBase {
         this.dispatchEvent(
           new CustomEvent('change', {
             bubbles: true,
-            detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
-          })
+            detail: {
+              field: this.name,
+              oldValue: previousFiles,
+              newValue: nextFiles,
+            },
+          }),
         );
         // Standalone mode must stay local-only and never trigger API upload listeners.
-        this._refreshMasonry();
       } catch (err) {
         this.error = err?.message || 'Upload failed';
       } finally {
@@ -1001,13 +990,15 @@ export class DtFileUpload extends DtFormBase {
           let nextFiles = previousFiles;
 
           const newFiles = (result.uploaded_files || [])
-            .filter((uf) => uf.uploaded && uf.file)
-            .map((uf) => uf.file);
+            .filter(uf => uf.uploaded && uf.file)
+            .map(uf => uf.file);
 
           if (newFiles.length > 0) {
             // Merge: preserve existing file objects (they have correct thumbnails) and append new ones.
             // Avoid replacing with GET fieldValue which may return stale or differently formatted data.
-            const existingKeys = new Set(previousFiles.map((f) => String(f.key || f)));
+            const existingKeys = new Set(
+              previousFiles.map(f => String(f.key || f)),
+            );
             const merged = [...previousFiles];
             for (const nf of newFiles) {
               const k = String(nf.key || nf);
@@ -1027,16 +1018,19 @@ export class DtFileUpload extends DtFormBase {
           this.dispatchEvent(
             new CustomEvent('change', {
               bubbles: true,
-              detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
-            })
+              detail: {
+                field: this.name,
+                oldValue: previousFiles,
+                newValue: nextFiles,
+              },
+            }),
           );
-          this._refreshMasonry();
           this._uploadZoneExpanded = false;
           this.saved = true;
           this.uploading = false;
           this.loading = false;
         },
-        onError: (error) => {
+        onError: error => {
           console.error('Upload error:', error);
           this.error = error.message || 'Upload failed';
           this.uploading = false;
@@ -1054,22 +1048,35 @@ export class DtFileUpload extends DtFormBase {
 
     if (this._isStandaloneMode()) {
       const previousFiles = this._parseValue(this.value);
-      const fileToDelete = previousFiles.find((f) => (f.key || f) === fileKey);
+      const fileToDelete = previousFiles.find(f => (f.key || f) === fileKey);
       // Clean up blob URL if it exists (for standalone mode)
-      if (fileToDelete && fileToDelete.url && fileToDelete.url.startsWith('blob:')) {
+      if (
+        fileToDelete &&
+        fileToDelete.url &&
+        fileToDelete.url.startsWith('blob:')
+      ) {
         URL.revokeObjectURL(fileToDelete.url);
       }
-      if (fileToDelete && fileToDelete.thumbnail_url && fileToDelete.thumbnail_url.startsWith('blob:') && fileToDelete.thumbnail_url !== fileToDelete.url) {
+      if (
+        fileToDelete &&
+        fileToDelete.thumbnail_url &&
+        fileToDelete.thumbnail_url.startsWith('blob:') &&
+        fileToDelete.thumbnail_url !== fileToDelete.url
+      ) {
         URL.revokeObjectURL(fileToDelete.thumbnail_url);
       }
       this._standaloneFilesByKey.delete(String(fileKey));
-      const nextFiles = previousFiles.filter((f) => (f.key || f) !== fileKey);
+      const nextFiles = previousFiles.filter(f => (f.key || f) !== fileKey);
       this.value = nextFiles;
       this.dispatchEvent(
         new CustomEvent('change', {
           bubbles: true,
-          detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
-        })
+          detail: {
+            field: this.name,
+            oldValue: previousFiles,
+            newValue: nextFiles,
+          },
+        }),
       );
       // Dispatch dt:delete-file event for Storybook actions panel
       this.dispatchEvent(
@@ -1079,9 +1086,8 @@ export class DtFileUpload extends DtFormBase {
             fileKey,
             metaKey: this.metaKey || '',
           },
-        })
+        }),
       );
-      this.updateComplete.then(() => this._refreshMasonry());
       return;
     }
 
@@ -1098,18 +1104,21 @@ export class DtFileUpload extends DtFormBase {
         metaKey: this.metaKey,
         onSuccess: () => {
           const previousFiles = this._parseValue(this.value);
-          const nextFiles = previousFiles.filter((f) => (f.key || f) !== fileKey);
+          const nextFiles = previousFiles.filter(f => (f.key || f) !== fileKey);
           this.value = nextFiles;
           this.dispatchEvent(
             new CustomEvent('change', {
               bubbles: true,
-              detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
-            })
+              detail: {
+                field: this.name,
+                oldValue: previousFiles,
+                newValue: nextFiles,
+              },
+            }),
           );
-          this.updateComplete.then(() => this._refreshMasonry());
           this.loading = false;
         },
-        onError: (error) => {
+        onError: error => {
           console.error('Delete error:', error);
           this.error = error.message || 'Delete failed';
           this.loading = false;
@@ -1125,7 +1134,7 @@ export class DtFileUpload extends DtFormBase {
 
     if (this._isStandaloneMode()) {
       const previousFiles = this._parseValue(this.value);
-      const nextFiles = previousFiles.map((f) => {
+      const nextFiles = previousFiles.map(f => {
         const k = f.key || f;
         if (k === fileKey) return { ...f, name: newName };
         return f;
@@ -1135,8 +1144,12 @@ export class DtFileUpload extends DtFormBase {
       this.dispatchEvent(
         new CustomEvent('change', {
           bubbles: true,
-          detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
-        })
+          detail: {
+            field: this.name,
+            oldValue: previousFiles,
+            newValue: nextFiles,
+          },
+        }),
       );
       // Dispatch dt:rename-file event for Storybook actions panel
       this.dispatchEvent(
@@ -1147,9 +1160,8 @@ export class DtFileUpload extends DtFormBase {
             newName,
             metaKey: this.metaKey || '',
           },
-        })
+        }),
       );
-      this.updateComplete.then(() => this._refreshMasonry());
       return;
     }
 
@@ -1167,7 +1179,7 @@ export class DtFileUpload extends DtFormBase {
         metaKey: this.metaKey,
         onSuccess: () => {
           const previousFiles = this._parseValue(this.value);
-          const nextFiles = previousFiles.map((f) => {
+          const nextFiles = previousFiles.map(f => {
             const k = f.key || f;
             if (k === fileKey) return { ...f, name: newName };
             return f;
@@ -1177,13 +1189,16 @@ export class DtFileUpload extends DtFormBase {
           this.dispatchEvent(
             new CustomEvent('change', {
               bubbles: true,
-              detail: { field: this.name, oldValue: previousFiles, newValue: nextFiles },
-            })
+              detail: {
+                field: this.name,
+                oldValue: previousFiles,
+                newValue: nextFiles,
+              },
+            }),
           );
-          this.updateComplete.then(() => this._refreshMasonry());
           this.loading = false;
         },
-        onError: (error) => {
+        onError: error => {
           console.error('Rename error:', error);
           this.error = error?.message || 'Rename failed';
           this.loading = false;
@@ -1213,8 +1228,9 @@ export class DtFileUpload extends DtFormBase {
     this._editingFileName = '';
     if (!trimmed) return;
     const files = this._parseValue(this.value);
-    const file = files.find((f) => (f.key || f) === key);
-    const currentName = file?.name || (typeof key === 'string' ? key.split('/').pop() : '');
+    const file = files.find(f => (f.key || f) === key);
+    const currentName =
+      file?.name || (typeof key === 'string' ? key.split('/').pop() : '');
     if (trimmed === currentName) return;
     this._renameFile(key, trimmed);
   }
@@ -1245,7 +1261,10 @@ export class DtFileUpload extends DtFormBase {
       const url = file.url;
       if (!url) return;
       const fileKey = file.key || file;
-      const fileName = file.name || (typeof fileKey === 'string' ? fileKey.split('/').pop() : 'download') || 'download';
+      const fileName =
+        file.name ||
+        (typeof fileKey === 'string' ? fileKey.split('/').pop() : 'download') ||
+        'download';
       const a = document.createElement('a');
       a.href = url;
       a.download = fileName;
@@ -1263,14 +1282,17 @@ export class DtFileUpload extends DtFormBase {
             fileName: fileName,
             metaKey: this.metaKey || '',
           },
-        })
+        }),
       );
       return;
     }
 
     // API mode: dispatch event for componentService to handle
     const fileKey = file.key || file;
-    const fileName = file.name || (typeof fileKey === 'string' ? fileKey.split('/').pop() : 'download') || 'download';
+    const fileName =
+      file.name ||
+      (typeof fileKey === 'string' ? fileKey.split('/').pop() : 'download') ||
+      'download';
 
     // Dispatch dt:download-file event - componentService will handle the API call
     const event = new CustomEvent('dt:download-file', {
@@ -1282,7 +1304,7 @@ export class DtFileUpload extends DtFormBase {
         onSuccess: () => {
           // Download triggered successfully
         },
-        onError: (error) => {
+        onError: error => {
           console.error('Download error:', error);
           this.error = error.message || 'Download failed';
         },
@@ -1296,7 +1318,10 @@ export class DtFileUpload extends DtFormBase {
     const files = Array.isArray(this.value) ? this.value : [];
     if (this.required && files.length === 0) {
       this.invalid = true;
-      this.internals?.setValidity?.({ valueMissing: true }, this.requiredMessage || 'This field is required');
+      this.internals?.setValidity?.(
+        { valueMissing: true },
+        this.requiredMessage || 'This field is required',
+      );
     } else {
       this.invalid = false;
       this.internals?.setValidity?.({});
@@ -1323,7 +1348,10 @@ export class DtFileUpload extends DtFormBase {
         iconValue.startsWith('data:');
 
       if (looksLikeUrl) {
-        iconContent = html`<img src="${iconValue}" alt="${this.iconAltText || ''}" />`;
+        iconContent = html`<img
+          src="${iconValue}"
+          alt="${this.iconAltText || ''}"
+        />`;
       } else if (iconValue.toLowerCase().includes('mdi')) {
         const iconify = this._mdiToIconify(iconValue);
         if (iconify) {
@@ -1378,157 +1406,258 @@ export class DtFileUpload extends DtFormBase {
             @change=${this._handleFileSelect}
           />
           <div class="upload-zone-content">
-            <span class="upload-icon"><dt-icon icon="mdi:cloud-upload"></dt-icon></span>
-            <span class="expandable upload-text">Drag files here or click to upload</span>
-            <span class="expandable upload-hint">${this._formatAcceptedTypes()}${this.maxFileSize ? ` • Max ${this.maxFileSize} MB` : ''}</span>
+            <span class="upload-icon"
+              ><dt-icon icon="mdi:cloud-upload"></dt-icon
+            ></span>
+            <span class="expandable upload-text"
+              >Drag files here or click to upload</span
+            >
+            <span class="expandable upload-hint"
+              >${this._formatAcceptedTypes()}${this.maxFileSize
+                ? ` • Max ${this.maxFileSize} MB`
+                : ''}</span
+            >
           </div>
         </div>
 
-        ${when(this.stagedFiles.length > 0 && !this.autoUpload, () => html`
-          <div class="staged-files">
-            <div class="staged-files-title">Staged files (${this.stagedFiles.length})</div>
-            ${repeat(this.stagedFiles, (f, i) => `${f.name}-${f.size}-${i}`, (f, i) => html`
-              <div class="staged-file-item">
-                <span>${f.name} (${this._formatFileSize(f.size)})</span>
-                <button class="remove" type="button" title="Remove" @click=${(e) => { e.stopPropagation(); this._removeStagedFile(i); }}>
-                  <dt-icon icon="mdi:trash-can"></dt-icon>
-                </button>
+        ${when(
+          this.stagedFiles.length > 0 && !this.autoUpload,
+          () => html`
+            <div class="staged-files">
+              <div class="staged-files-title">
+                Staged files (${this.stagedFiles.length})
               </div>
-            `)}
-            <button class="upload-staged-btn" type="button" ?disabled=${this.uploading} @click=${() => this.uploadStagedFiles()}>
-              Upload
-            </button>
-          </div>
-        `)}
-
+              ${repeat(
+                this.stagedFiles,
+                (f, i) => `${f.name}-${f.size}-${i}`,
+                (f, i) => html`
+                  <div class="staged-file-item">
+                    <span>${f.name} (${this._formatFileSize(f.size)})</span>
+                    <button
+                      class="remove"
+                      type="button"
+                      title="Remove"
+                      @click=${e => {
+                        e.stopPropagation();
+                        this._removeStagedFile(i);
+                      }}
+                    >
+                      <dt-icon icon="mdi:trash-can"></dt-icon>
+                    </button>
+                  </div>
+                `,
+              )}
+              <button
+                class="upload-staged-btn"
+                type="button"
+                ?disabled=${this.uploading}
+                @click=${() => this.uploadStagedFiles()}
+              >
+                Upload
+              </button>
+            </div>
+          `,
+        )}
         ${when(
           this.loading || this.saved,
           () => html`
             <div class="status-indicators">
-              ${this.renderIconLoading()}
-              ${this.renderIconSaved()}
+              ${this.renderIconLoading()} ${this.renderIconSaved()}
             </div>
-          `
+          `,
         )}
+        ${when(
+          files.length > 0,
+          () => html`
+            <div class="files-container">
+              <div class=${isGrid ? 'files-grid' : 'files-list'}>
+                ${repeat(
+                  files,
+                  f => f.key || f,
+                  file => {
+                    const key =
+                      typeof file.key === 'string'
+                        ? file.key
+                        : typeof file === 'string'
+                          ? file
+                          : String(file.key ?? file.name ?? '');
+                    const name =
+                      file.name ||
+                      (typeof key === 'string' ? key.split('/').pop() : '');
+                    const size = file.size;
+                    const previewUrl = this._getFilePreviewUrl(file);
+                    const isImage = this._isImage(file);
+                    const isEditing = this._editingFileKey === key;
 
-        ${when(files.length > 0, () => html`
-          <div class="files-container">
-            <div class=${isGrid ? 'files-grid' : 'files-list'}>
-              ${repeat(
-                files,
-                (f) => f.key || f,
-                (file) => {
-                  const key = typeof file.key === 'string' ? file.key : (typeof file === 'string' ? file : String(file.key ?? file.name ?? ''));
-                  const name = file.name || (typeof key === 'string' ? key.split('/').pop() : '');
-                  const size = file.size;
-                  const previewUrl = this._getFilePreviewUrl(file);
-                  const isImage = this._isImage(file);
-                  const isEditing = this._editingFileKey === key;
-
-                  return html`
-                    <div class="file-item ${isGrid ? 'file-item-grid' : 'file-item-list'}">
-                      ${when(
-                        previewUrl,
-                        () => html`
-                          <a
-                            class="file-preview-link"
-                            href=${previewUrl || file.url || '#'}
-                            target="_blank"
-                            rel="noopener"
-                            @click=${(e) => {
-                              if (!previewUrl && !file.url) e.preventDefault();
-                            }}
-                          >
-                            <img src="${previewUrl}" alt="${name}" loading="lazy" />
-                          </a>
-                        `,
-                        () => html`
-                          ${file.url
-                            ? html`
-                                <a
-                                  class="file-preview-link file-icon-area"
-                                  href=${file.url}
-                                  target="_blank"
-                                  rel="noopener"
-                                >
-                                  ${this._renderFileTypeIcon(file) || (isImage ? html`<dt-icon icon="mdi:image"></dt-icon>` : html`<dt-icon icon="mdi:file-outline"></dt-icon>`)}
-                                </a>
-                              `
-                            : html`
-                                <div class="file-icon-area">
-                                  ${this._renderFileTypeIcon(file) || (isImage ? html`<dt-icon icon="mdi:image"></dt-icon>` : html`<dt-icon icon="mdi:file-outline"></dt-icon>`)}
-                                </div>
-                              `
-                          }
-                        `
-                      )}
-                      ${when(
-                        isEditing,
-                        () => html`
-                          <input
-                            class="file-name-edit"
-                            type="text"
-                            .value=${this._editingFileName}
-                            @input=${(e) => { this._editingFileName = e.target.value; }}
-                            @keydown=${(e) => {
-                              if (e.key === 'Enter' || e.keyCode === 13) {
-                                e.preventDefault();
+                    return html`
+                      <div
+                        class="file-item ${isGrid
+                          ? 'file-item-grid'
+                          : 'file-item-list'}"
+                      >
+                        ${when(
+                          previewUrl,
+                          () => html`
+                            <a
+                              class="file-preview-link"
+                              href=${previewUrl || file.url || '#'}
+                              target="_blank"
+                              rel="noopener"
+                              @click=${e => {
+                                if (!previewUrl && !file.url)
+                                  e.preventDefault();
+                              }}
+                            >
+                              <img
+                                src="${previewUrl}"
+                                alt="${name}"
+                                loading="lazy"
+                              />
+                            </a>
+                          `,
+                          () => html`
+                            ${file.url
+                              ? html`
+                                  <a
+                                    class="file-preview-link file-icon-area"
+                                    href=${file.url}
+                                    target="_blank"
+                                    rel="noopener"
+                                  >
+                                    ${this._renderFileTypeIcon(file) ||
+                                    (isImage
+                                      ? html`<dt-icon
+                                          icon="mdi:image"
+                                        ></dt-icon>`
+                                      : html`<dt-icon
+                                          icon="mdi:file-outline"
+                                        ></dt-icon>`)}
+                                  </a>
+                                `
+                              : html`
+                                  <div class="file-icon-area">
+                                    ${this._renderFileTypeIcon(file) ||
+                                    (isImage
+                                      ? html`<dt-icon
+                                          icon="mdi:image"
+                                        ></dt-icon>`
+                                      : html`<dt-icon
+                                          icon="mdi:file-outline"
+                                        ></dt-icon>`)}
+                                  </div>
+                                `}
+                          `,
+                        )}
+                        ${when(
+                          isEditing,
+                          () => html`
+                            <input
+                              class="file-name-edit"
+                              type="text"
+                              .value=${this._editingFileName}
+                              @input=${e => {
+                                this._editingFileName = e.target.value;
+                              }}
+                              @keydown=${e => {
+                                if (e.key === 'Enter' || e.keyCode === 13) {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  this._commitRename(key, e.target.value);
+                                } else if (
+                                  e.key === 'Escape' ||
+                                  e.keyCode === 27
+                                ) {
+                                  e.preventDefault();
+                                  this._cancelRename();
+                                }
+                              }}
+                              @blur=${e =>
+                                this._handleRenameBlur(key, e.target.value)}
+                              @click=${e => e.stopPropagation()}
+                            />
+                          `,
+                          () => html`
+                            <div
+                              class="file-name ${this.renameEnabled &&
+                              !this.disabled
+                                ? 'file-name-editable'
+                                : ''}"
+                              role=${this.renameEnabled && !this.disabled
+                                ? 'button'
+                                : undefined}
+                              tabindex=${this.renameEnabled && !this.disabled
+                                ? 0
+                                : undefined}
+                              @click=${e => {
                                 e.stopPropagation();
-                                this._commitRename(key, e.target.value);
-                              } else if (e.key === 'Escape' || e.keyCode === 27) {
-                                e.preventDefault();
-                                this._cancelRename();
-                              }
-                            }}
-                            @blur=${(e) => this._handleRenameBlur(key, e.target.value)}
-                            @click=${(e) => e.stopPropagation()}
-                          />
-                        `,
-                        () => html`
-                          <div
-                            class="file-name ${this.renameEnabled && !this.disabled ? 'file-name-editable' : ''}"
-                            role=${this.renameEnabled && !this.disabled ? 'button' : undefined}
-                            tabindex=${this.renameEnabled && !this.disabled ? 0 : undefined}
-                            @click=${(e) => {
-                              e.stopPropagation();
-                              if (this.renameEnabled && !this.disabled) this._startRename(key, name);
-                            }}
-                            @keydown=${(e) => {
-                              if (this.renameEnabled && !this.disabled && (e.key === 'Enter' || e.key === ' ')) {
-                                e.preventDefault();
-                                this._startRename(key, name);
-                              }
-                            }}
-                          >
-                            ${name}
-                          </div>
-                        `
-                      )}
-                      ${when(size != null, () => html`<div class="file-size">${this._formatFileSize(size)}</div>`)}
-                      <div class="file-actions">
-                        ${when(
-                          this.downloadEnabled && file.url,
-                          () => html`
-                            <button class="download" type="button" @click=${(e) => { e.stopPropagation(); this._downloadFile(file); }} title="Download"><dt-icon icon="mdi:cloud-download"></dt-icon></button>
-                          `
+                                if (this.renameEnabled && !this.disabled)
+                                  this._startRename(key, name);
+                              }}
+                              @keydown=${e => {
+                                if (
+                                  this.renameEnabled &&
+                                  !this.disabled &&
+                                  (e.key === 'Enter' || e.key === ' ')
+                                ) {
+                                  e.preventDefault();
+                                  this._startRename(key, name);
+                                }
+                              }}
+                            >
+                              ${name}
+                            </div>
+                          `,
                         )}
                         ${when(
-                          this.deleteEnabled && !this.disabled,
-                          () => html`
-                            <button class="delete" type="button" @click=${(e) => { e.stopPropagation(); this._deleteFile(key); }} title="Delete"><dt-icon icon="mdi:trash-can"></dt-icon></button>
-                          `
+                          size != null,
+                          () =>
+                            html`<div class="file-size">
+                              ${this._formatFileSize(size)}
+                            </div>`,
                         )}
+                        <div class="file-actions">
+                          ${when(
+                            this.downloadEnabled && file.url,
+                            () => html`
+                              <button
+                                class="download"
+                                type="button"
+                                @click=${e => {
+                                  e.stopPropagation();
+                                  this._downloadFile(file);
+                                }}
+                                title="Download"
+                              >
+                                <dt-icon icon="mdi:cloud-download"></dt-icon>
+                              </button>
+                            `,
+                          )}
+                          ${when(
+                            this.deleteEnabled && !this.disabled,
+                            () => html`
+                              <button
+                                class="delete"
+                                type="button"
+                                @click=${e => {
+                                  e.stopPropagation();
+                                  this._deleteFile(key);
+                                }}
+                                title="Delete"
+                              >
+                                <dt-icon icon="mdi:trash-can"></dt-icon>
+                              </button>
+                            `,
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  `;
-                }
-              )}
+                    `;
+                  },
+                )}
+              </div>
             </div>
-          </div>
-        `)}
-
-        ${this.renderIconInvalid()}
-        ${this.renderError()}
+          `,
+        )}
+        ${this.renderIconInvalid()} ${this.renderError()}
       </div>
     `;
   }
