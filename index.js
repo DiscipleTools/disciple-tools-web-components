@@ -20,6 +20,7 @@ export { DtText } from './src/components/form/dt-text/dt-text.js';
 export { DtTextArea } from './src/components/form/dt-textarea/dt-textarea.js';
 export { DtToggle } from './src/components/form/dt-toggle/dt-toggle.js';
 export { DtMultiText } from './src/components/form/dt-multi-text/dt-multi-text.js';
+export { DtMultiTextGroups } from './src/components/form/dt-multi-text-groups/dt-multi-text-groups.js';
 export { DtMultiSelectButtonGroup } from './src/components/form/dt-multi-select-button-group/dt-multi-select-button-group.js';
 export { DtFileUpload } from './src/components/form/dt-file-upload/dt-file-upload.js';
 
