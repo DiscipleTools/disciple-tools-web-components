@@ -44,7 +44,8 @@ export const Basic = {
 
 export const TextOverflow = {
   args: {
-    label: 'My <Field> Label that is "long" & \'longer\' and longerer and longererer and longerererer',
+    label:
+      'My <Field> Label that is "long" & \'longer\' and longerer and longererer and longerererer',
   },
   globals: {
     viewport: 'mobile1',
@@ -57,15 +58,21 @@ export const UrlIcon = {
   },
 };
 
+export const MdiIcon = {
+  args: {
+    icon: 'mdi mdi-phone',
+  },
+};
+
 export const ImgLabel = {
   args: {
     label: 'My Field Label',
     slotContent: html`<img
-    slot="icon-start"
-    src="https://placeholder.pics/svg/100/000000-C3C3C3/FFFFFF/icon"
-    alt="icon"
-  />`,
-  }
+      slot="icon-start"
+      src="https://placeholder.pics/svg/100/000000-C3C3C3/FFFFFF/icon"
+      alt="icon"
+    />`,
+  },
 };
 
 export const SvgLabel = {

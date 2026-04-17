@@ -1,6 +1,7 @@
 import { html, css } from 'lit';
 import { msg } from '@lit/localize';
 import DtBase from '../../dt-base.js';
+import '../../icons/dt-icon.js';
 
 /**
  * Form label to be displayed above input field
@@ -42,12 +43,19 @@ export class DtLabel extends DtBase {
       .icon {
         height: var(--dt-label-font-size, 14px);
         width: auto;
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
 
         &:empty,
         &:has(slot:not(.slotted):empty) {
           display: none;
         }
+      }
+
+      .icon dt-icon,
+      .icon img {
+        height: 100%;
+        width: auto;
       }
 
       .icon.private {
@@ -85,7 +93,7 @@ export class DtLabel extends DtBase {
 
   static get properties() {
     return {
-      /** URL to an icon to be displayed before the label */
+      /** Icon to display before the label: font-icon class (e.g. "mdi mdi-file-arrow-up-down") or image URL */
       icon: { type: String },
       /** Alt test for icon */
       iconAltText: { type: String },
@@ -94,6 +102,44 @@ export class DtLabel extends DtBase {
       /** Customize tooltip text for private icon hover state. Pass in correct language content. */
       privateLabel: { type: String },
     };
+  }
+
+  /**
+   * Converts MDI class format (e.g. "mdi mdi-file-arrow-up-down-outline") to Iconify format (e.g. "mdi:file-arrow-up-down-outline").
+   */
+  _mdiToIconify(iconValue) {
+    // "mdi mdi-icon-name" -> "mdi:icon-name"
+    if (/^mdi\s+mdi-/.test(iconValue)) {
+      return iconValue.replace(/^mdi\s+mdi-/, 'mdi:');
+    }
+    // "mdi-icon-name" -> "mdi:icon-name"
+    if (/^mdi-/.test(iconValue)) {
+      return iconValue.replace(/^mdi-/, 'mdi:');
+    }
+    return iconValue;
+  }
+
+  /**
+   * Renders icon content: font-icon (via dt-icon, same as dt-upload-file) or image URL.
+   */
+  _renderIconContent() {
+    if (!this.icon || !this.icon.trim()) return null;
+
+    const iconValue = this.icon.trim();
+    const looksLikeUrl =
+      iconValue.startsWith('http://') ||
+      iconValue.startsWith('https://') ||
+      iconValue.startsWith('/') ||
+      iconValue.startsWith('data:');
+
+    if (!looksLikeUrl && iconValue.toLowerCase().includes('mdi')) {
+      return html`<dt-icon
+        icon="${this._mdiToIconify(iconValue)}"
+        size="1em"
+      ></dt-icon>`;
+    }
+
+    return html`<img src="${iconValue}" alt="${this.iconAltText || ''}" />`;
   }
 
   firstUpdated() {
@@ -153,11 +199,7 @@ export class DtLabel extends DtBase {
     return html`
       <div class="label" part="label">
         <span class="icon icon-start">
-          <slot name="icon-start"
-            >${this.icon
-              ? html`<img src="${this.icon}" alt="${this.iconAltText}" />`
-              : null}</slot
-          >
+          <slot name="icon-start">${this._renderIconContent()}</slot>
         </span>
         <span class="label-text"><slot></slot></span>
 
