@@ -8,18 +8,21 @@
       <trans-unit id="s04ceadb276bbe149">
         <source>Loading options...</source>
       </trans-unit>
-      <trans-unit id="sd2e180dab4fbcfb9">
+      <trans-unit id="sd2e180dab4fbcfb9" xml:space="preserve">
         <source>No Data Available</source>
+        <target state="translated" state-qualifier="leveraged-mt">Ko si Data Wa</target>
       </trans-unit>
       <trans-unit id="sf9aee319a006c9b4" xml:space="preserve">
         <source>Add</source>
         <target state="translated">Fikun-un</target>
       </trans-unit>
-      <trans-unit id="sbf1ca928ec1deb62">
+      <trans-unit id="sbf1ca928ec1deb62" xml:space="preserve">
         <source>Need more help?</source>
+        <target state="translated" state-qualifier="leveraged-mt">Ṣe o nilo iranlọwọ diẹ sii?</target>
       </trans-unit>
-      <trans-unit id="s226be12a5b1a27e8">
+      <trans-unit id="s226be12a5b1a27e8" xml:space="preserve">
         <source>Read the documentation</source>
+        <target state="translated" state-qualifier="leveraged-mt">Ka iwe naa</target>
       </trans-unit>
       <trans-unit id="s5e8250fb85d64c23" xml:space="preserve">
         <source>Close</source>
@@ -32,15 +35,17 @@
         <source>Save</source>
         <target state="translated">Fipamọ</target>
       </trans-unit>
-      <trans-unit id="s49730f3d5751a433">
+      <trans-unit id="s49730f3d5751a433" xml:space="preserve">
         <source>Loading...</source>
+        <target state="translated" state-qualifier="leveraged-mt">Nkojọpọ ...</target>
       </trans-unit>
       <trans-unit id="s625ad019db843f94" xml:space="preserve">
         <source>Use</source>
         <target state="translated">Lo</target>
       </trans-unit>
-      <trans-unit id="sd1a8dc951b2b6a98">
+      <trans-unit id="sd1a8dc951b2b6a98" xml:space="preserve">
         <source>Choose which fields to display as columns in the list</source>
+        <target state="translated" state-qualifier="leveraged-mt">Yan awọn aaye wo lati han bi awọn ọwọn ninu atokọ naa</target>
       </trans-unit>
       <trans-unit id="scb9a1ff437efbd2a">
         <source>Select all the <x id="0" equiv-text="${this.postType}"/> you want to update from the list, and update them below</source>
@@ -51,14 +56,17 @@
       <trans-unit id="seafe6ef133ede7da">
         <source>Showing 1 of <x id="0" equiv-text="${this.total}"/></source>
       </trans-unit>
-      <trans-unit id="s41cb4006238ebd3b">
+      <trans-unit id="s41cb4006238ebd3b" xml:space="preserve">
         <source>Bulk Edit</source>
+        <target state="translated" state-qualifier="leveraged-mt">Olopobobo Ṣatunkọ</target>
       </trans-unit>
-      <trans-unit id="s36cb242ac90353bc">
+      <trans-unit id="s36cb242ac90353bc" xml:space="preserve">
         <source>Fields</source>
+        <target state="translated" state-qualifier="leveraged-mt">Awọn aaye</target>
       </trans-unit>
-      <trans-unit id="s9d51bfd93b5dbeca">
+      <trans-unit id="s9d51bfd93b5dbeca" xml:space="preserve">
         <source>Show Archived</source>
+        <target state="translated" state-qualifier="leveraged-mt">Ṣe afihan Ti a Gbepamọ</target>
       </trans-unit>
       <trans-unit id="sb59d68ed12d46377">
         <source>Loading</source>
