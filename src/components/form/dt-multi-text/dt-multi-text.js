@@ -160,7 +160,7 @@ export class DtMultiText extends DtText {
             color: var(--dt-multi-text-remove-button-hover-color, #ffffff);
           }
         }
-        .icon-btn {
+        .btn-add {
           background-color: transparent;
           border: none;
           cursor: pointer;
@@ -434,7 +434,7 @@ export class DtMultiText extends DtText {
             @click="${this._addItem}"
             @keydown="${this._inputKeyDown}"
             @blur="${this._handleButtonBlur}"
-            class="icon-btn"
+            class="btn-add"
             id="add-item"
             type="button"
             tabindex="1"
