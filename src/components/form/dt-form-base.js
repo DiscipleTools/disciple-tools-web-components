@@ -401,13 +401,13 @@ export default class DtFormBase extends DtBase {
       this._field.reset();
     }
     if (this.loading) {
-      this.setAttribute('loading', false);
+      this.removeAttribute('loading');
     }
     if (this.saved) {
-      this.setAttribute('saved', false);
+      this.removeAttribute('saved');
     }
     if (this.error) {
-      this.setAttribute('error', false);
+      this.removeAttribute('error');
     }
     this.value = '';
     this._setFormValue('');
