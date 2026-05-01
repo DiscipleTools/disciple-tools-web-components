@@ -72,7 +72,7 @@ describe('DtMultiText', () => {
   });
 
   it('adds a new item on add button click', async () => {
-    const el = await fixture(html`<dt-multi-text></dt-multi-text>`);
+    const el = await fixture(html`<dt-multi-text label="Default List"></dt-multi-text>`);
 
     expect(el.shadowRoot.querySelectorAll('input')).to.have.length(1);
 

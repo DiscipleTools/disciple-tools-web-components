@@ -160,24 +160,14 @@ export class DtMultiText extends DtText {
             color: var(--dt-multi-text-remove-button-hover-color, #ffffff);
           }
         }
-        .input-addon.btn-add {
-          color: var(
-            --dt-multi-text-add-button-color,
-            var(--success-color, #cc4b37)
-          );
-          &:disabled {
-            color: var(
-              --dt-multi-text-disabled-color,
-              var(--dt-form-placeholder-color, #999)
-            );
-          }
-          &:hover:not([disabled]) {
-            background-color: var(
-              --dt-multi-text-add-button-hover-background-color,
-              var(--success-color, #cc4b37)
-            );
-            color: var(--dt-multi-text-add-button-hover-color, #ffffff);
-          }
+        .btn-add {
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          height: 1.25em;
+          padding: 0;
+          color: var(--success-color, #cc4b37);
+          transform: scale(1.5);
         }
 
         .icon-overlay {
@@ -300,6 +290,7 @@ export class DtMultiText extends DtText {
       <div class="field-container">
         <input
           data-key="${item.key ?? item.tempKey}"
+          tabindex="1"
           name="${this.name}"
           aria-label="${this.label}"
           type="${this.type || 'text'}"
@@ -317,6 +308,7 @@ export class DtMultiText extends DtText {
           () => html`
             <button
               class="input-addon btn-remove"
+              tabindex="1"
               @click=${this._removeItem}
               data-key="${item.key ?? item.tempKey}"
               ?disabled=${this.disabled}
@@ -326,13 +318,6 @@ export class DtMultiText extends DtText {
           `,
           () => html``,
         )}
-        <button
-          class="input-addon btn-add"
-          @click=${this._addItem}
-          ?disabled=${this.disabled}
-        >
-          <dt-icon icon="mdi:plus-thick"></dt-icon>
-        </button>
       </div>
     `;
   }
@@ -426,6 +411,40 @@ export class DtMultiText extends DtText {
       invalid: this.touched && this.invalid,
     };
     return classes;
+  }
+
+    labelTemplate() {
+    if (!this.label) {
+      return '';
+    }
+
+    return html`
+      <dt-label
+        ?private=${this.private}
+        privateLabel="${this.privateLabel}"
+        iconAltText="${this.iconAltText}"
+        icon="${this.icon}"
+        exportparts="label: label-container"
+      >
+        ${!this.icon
+          ? html`<slot name="icon-start" slot="icon-start"></slot>`
+          : null}
+        ${this.label}
+        <slot name="icon-end" slot="icon-end">
+          <button
+            @click="${this._addItem}"
+            @keydown="${this._inputKeyDown}"
+            @blur="${this._handleButtonBlur}"
+            class="btn-add"
+            id="add-item"
+            type="button"
+            tabindex="1"
+          >
+            <dt-icon icon="mdi:plus-thick"></dt-icon>
+          </button>
+        </slot>
+      </dt-label>
+    `;
   }
 
   render() {
