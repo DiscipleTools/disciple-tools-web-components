@@ -308,6 +308,7 @@ export class DtMultiText extends DtText {
           () => html`
             <button
               class="input-addon btn-remove"
+              tabindex="1"
               @click=${this._removeItem}
               data-key="${item.key ?? item.tempKey}"
               ?disabled=${this.disabled}
