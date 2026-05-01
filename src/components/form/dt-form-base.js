@@ -400,6 +400,15 @@ export default class DtFormBase extends DtBase {
     if (this._field?.reset) {
       this._field.reset();
     }
+    if (this.loading) {
+      this.removeAttribute('loading');
+    }
+    if (this.saved) {
+      this.removeAttribute('saved');
+    }
+    if (this.error) {
+      this.removeAttribute('error');
+    }
     this.value = '';
     this._setFormValue('');
   }
