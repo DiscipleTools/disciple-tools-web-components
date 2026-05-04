@@ -171,11 +171,11 @@ export class DtMultiText extends DtText {
         }
 
         .icon-overlay {
-          inset-inline-end: 3.5rem;
+          inset-inline-end: 0.5rem;
           height: 100%;
         }
         .field-container:has(.btn-remove) ~ .icon-overlay {
-          inset-inline-end: 5.5rem;
+          inset-inline-end: 3rem;
         }
       `,
     ];
@@ -413,7 +413,7 @@ export class DtMultiText extends DtText {
     return classes;
   }
 
-    labelTemplate() {
+  labelTemplate() {
     if (!this.label) {
       return '';
     }
