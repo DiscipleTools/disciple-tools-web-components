@@ -27,7 +27,7 @@ export class DtMultiTextGroups extends DtMultiText {
         .groups-list {
         position: relative;
         }
-          
+
         .option-list {
           display: block;
           position: absolute;
@@ -142,7 +142,7 @@ export class DtMultiTextGroups extends DtMultiText {
     };
     if (this.value[0]?.type) {
       this.value = [...this.value, newValue];
-      
+
     } else {
       this.value = [newValue];
     }
@@ -216,7 +216,7 @@ export class DtMultiTextGroups extends DtMultiText {
             value: e.target?.value,
           };
         }
-        
+
         return x;
       });
       event.detail.newValue = this.value;
@@ -448,8 +448,8 @@ export class DtMultiTextGroups extends DtMultiText {
       pad += titleCount * 2.5;
     }
     pad += 0.5;
-    console.log(pad);
-    
+    // console.log(pad);
+
     const styleStr = `padding-block-end: ${pad.toString()}rem`;
     return html`
       ${this.renderIconInvalid()} ${this.renderError()}
@@ -503,7 +503,7 @@ export class DtMultiTextGroups extends DtMultiText {
         No items to show.<button class="link-button" @click=${this.handleClick}>Add items</button>
       </div>
       `;
-    
+
   }
 
   get classes() {
