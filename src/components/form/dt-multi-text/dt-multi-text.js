@@ -168,6 +168,13 @@ export class DtMultiText extends DtText {
           padding: 0;
           color: var(--success-color, #cc4b37);
           transform: scale(1.5);
+
+          &:disabled { 
+            color: var(
+              --dt-multi-text-disabled-color,
+              var(--dt-form-placeholder-color, #999)
+            );
+          } 
         }
 
         .icon-overlay {
@@ -439,6 +446,7 @@ export class DtMultiText extends DtText {
             id="add-item"
             type="button"
             tabindex="1"
+            ?disabled=${this.disabled}
           >
             <dt-icon icon="mdi:plus-thick"></dt-icon>
           </button>
