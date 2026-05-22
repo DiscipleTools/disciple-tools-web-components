@@ -161,6 +161,7 @@ export class DtMultiTextGroups extends DtMultiText {
 
   _removeItem(e) {
     const keyToRemove = e.currentTarget.dataset.key;
+    console.log(e.currentTarget);
     if (keyToRemove) {
       const event = new CustomEvent('change', {
         bubbles: true,
@@ -178,7 +179,7 @@ export class DtMultiTextGroups extends DtMultiText {
         .map(x => {
           const item = { ...x };
           // add `delete` prop to clicked item
-          if (x.meta_id === keyToRemove || x.tempKey === keyToRemove) {
+          if (x.key === keyToRemove || x.tempKey === keyToRemove) {
             item.delete = true;
             this.activeGroup = item.group;
           }
@@ -208,7 +209,7 @@ export class DtMultiTextGroups extends DtMultiText {
 
       // update this item's value in the list
       this.value = this.value.map(x => {
-        if (x.meta_id === key || x.tempKey === key) {
+        if (x.key === key || x.tempKey === key) {
           this.activeGroup = x.group;
 
           return {
@@ -330,7 +331,7 @@ export class DtMultiTextGroups extends DtMultiText {
     return html`
       <div class="field-container">
         <input
-          data-key="${item.meta_id ?? item.tempKey}"
+          data-key="${item.key ?? item.tempKey}"
           tabindex="1"
           name="${this.name}"
           aria-label="${this.label}"
@@ -351,7 +352,7 @@ export class DtMultiTextGroups extends DtMultiText {
               class="input-addon btn-remove"
               tabindex="1"
               @click=${this._removeItem}
-              data-key="${item.meta_id ?? item.tempKey}"
+              data-key="${item.key ?? item.tempKey}"
               ?disabled=${this.disabled}
             >
               <dt-icon icon="mdi:close"></dt-icon>
@@ -485,6 +486,7 @@ export class DtMultiTextGroups extends DtMultiText {
           )}
         `;
         }
+        return null;
       });
     }
 
