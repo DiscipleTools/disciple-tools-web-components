@@ -235,7 +235,7 @@ export class DtSingleSelect extends DtFormBase {
           aria-label="${this.name}"
           @change="${this._change}"
           class="${classMap(this.classes)}"
-          style="${this.color ? 'background-color: ' + this.color + ';' : ''}"
+          style="${this.color ? `background-color: ${  this.color  };` : ''}"
           ?disabled="${this.disabled}"
           ?required=${this.required}
           part="select"

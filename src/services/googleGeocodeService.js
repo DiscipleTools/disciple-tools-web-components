@@ -9,6 +9,7 @@ export default class GoogleGeocodeService {
       document.body.appendChild(script);
     }
   }
+
   /**
    * Search places via Mapbox API
    * @param query
@@ -71,8 +72,8 @@ export default class GoogleGeocodeService {
   async _getPlaceSuggestionsRest(query, language = 'en') {
     // Legacy failed; fallback to Places v1 REST
     const url =
-      'https://places.googleapis.com/v1/places:autocomplete?key=' +
-      encodeURIComponent(this.token);
+      `https://places.googleapis.com/v1/places:autocomplete?key=${ 
+      encodeURIComponent(this.token)}`;
     const body = {
       input: query,
       // language,

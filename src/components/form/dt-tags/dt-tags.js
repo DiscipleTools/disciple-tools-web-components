@@ -290,7 +290,7 @@ export class DtTags extends DtMultiSelect {
   }
 
   render() {
-    const optionListStyles = this.optionListStyles;
+    const {optionListStyles} = this;
     return html`
       ${this.labelTemplate()}
 

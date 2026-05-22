@@ -228,7 +228,7 @@ export class DtLocation extends DtTags {
   }
 
   render() {
-    const optionListStyles = this.optionListStyles;
+    const {optionListStyles} = this;
     return html`
       ${this.labelTemplate()}
 

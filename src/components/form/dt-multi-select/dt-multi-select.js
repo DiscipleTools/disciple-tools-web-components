@@ -467,7 +467,7 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   }
 
   render() {
-    const optionListStyles = this.optionListStyles;
+    const {optionListStyles} = this;
     return html`
       ${this.labelTemplate()}
 

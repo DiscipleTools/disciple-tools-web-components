@@ -156,8 +156,7 @@ export default {
     error: '',
     onChange: action('on-change'),
   },
-  render: args => {
-    return html`
+  render: args => html`
       <div style="width: ${ifDefined(args.width)}px;">
         <dt-church-health-circle
           name="${ifDefined(args.name)}"
@@ -174,8 +173,7 @@ export default {
           ${args.slot}
         </dt-church-health-circle>
       </div>
-    `;
-  },
+    `,
 };
 
 export const Empty = {};
@@ -296,11 +294,11 @@ export const ApiSettings = {
     ],
     settings: null,
   },
-};*/
+}; */
 /*
 export const ApiGroup = {
   args: {
     groupId: 3,
     group: null,
   },
-};*/
+}; */

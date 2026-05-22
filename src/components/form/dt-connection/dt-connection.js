@@ -287,7 +287,7 @@ export class DtConnection extends DtTags {
   }
 
   render() {
-    const optionListStyles = this.optionListStyles;
+    const {optionListStyles} = this;
     return html`
       ${this.labelTemplate()}
 
