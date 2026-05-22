@@ -25,6 +25,16 @@ export default class DtFormBase extends DtBase {
     return [
       ...super.styles,
       css`
+        .readonly-btn {
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          height: 0.9em;
+          padding: 0;
+          color: var(--primary-color, #cc4b37);
+          transform: scale(1.5);
+        }
+        
         .input-group {
           position: relative;
         }
@@ -53,6 +63,13 @@ export default class DtFormBase extends DtBase {
         .icon-overlay.success {
           color: var(--success-color);
           width: 1.4rem;
+        }
+
+        .readonly-options {
+          margin-top: .5rem;
+          margin-left: 1.2rem;
+          line-height: 1.6;
+          font-family: var(--font-family);
         }
       `,
       css`
@@ -125,6 +142,8 @@ export default class DtFormBase extends DtBase {
       privateLabel: { type: String },
       /** Disables field. */
       disabled: { type: Boolean },
+      /** Shows data without the form input field. */
+      readonly: { type: Boolean },
       /** Validates that field is not empty when form is submitted and displays error if not. */
       required: { type: Boolean },
       /** Error message to be displayed for required field validation. */
@@ -319,8 +338,27 @@ export default class DtFormBase extends DtBase {
           ? html`<slot name="icon-start" slot="icon-start"></slot>`
           : null}
         ${this.label}
+        ${this.readonly && !this.disabled
+          ? html`
+            <slot name="icon-end" slot="icon-end">
+              <button
+                @click="${this.switchReadOnly}"
+                @keydown="${this._inputKeyDown}"
+                @blur="${this._handleButtonBlur}"
+                class="readonly-btn"
+                id="add-item"
+                type="button"
+                tabindex="1"
+              >
+                <dt-icon icon="mdi:pencil"></dt-icon>
+              </button>
+            </slot>`:null}
       </dt-label>
     `;
+  }
+
+  switchReadOnly() {
+    this.readonly = false;
   }
 
   _errorClasses() {

@@ -5,6 +5,7 @@ import { DtMultiSelect } from '../dt-multi-select/dt-multi-select.js';
 import './dt-church-health-circle-icon.js';
 import '../dt-toggle/dt-toggle.js';
 
+
 export class DtChurchHealthCircle extends DtMultiSelect {
   static get styles() {
     return [
@@ -63,6 +64,9 @@ export class DtChurchHealthCircle extends DtMultiSelect {
         .health-circle--disabled dt-church-health-icon {
           cursor: not-allowed;
         }
+        .health-circle--readonly dt-church-health-icon {
+          cursor: not-allowed;
+        }
 
         dt-church-health-icon {
           position: absolute;
@@ -80,6 +84,12 @@ export class DtChurchHealthCircle extends DtMultiSelect {
           --az: calc(var(--i) * 1turn / var(--icon-count));
           transform: rotate(var(--az)) translate(var(--radius))
             rotate(calc(-1 * var(--az)));
+        }
+
+        .corner-button{
+          position: absolute; 
+          top: 0;
+          right: 0;
         }
       `,
       css`
@@ -170,6 +180,7 @@ export class DtChurchHealthCircle extends DtMultiSelect {
               'health-circle': true,
               'health-circle--committed': this.isCommited,
               'health-circle--disabled': this.disabled,
+              'health-circle--readonly': this.readonly,
             })}
           >
             <div class="health-circle__grid">
@@ -181,7 +192,7 @@ export class DtChurchHealthCircle extends DtMultiSelect {
                     .active=${(this.value || []).indexOf(key) !== -1}
                     .style="--i: ${index + 1}"
                     .missingIcon="${this.missingIcon}"
-                    ?disabled=${this.disabled}
+                    ?disabled=${this.disabled || this.readonly}
                     data-value="${key}"
                     @change="${this.handleIconClick}"
                   >
@@ -191,7 +202,9 @@ export class DtChurchHealthCircle extends DtMultiSelect {
             ${this.renderIconLoading()} ${this.renderIconSaved()}
           </div>
         </div>
-
+        
+        ${!this.readonly
+          ? html`
         <dt-toggle
           name="church_commitment"
           label="${this.options?.church_commitment?.label}"
@@ -200,9 +213,26 @@ export class DtChurchHealthCircle extends DtMultiSelect {
           ?checked=${this.isCommited}
           data-value="church_commitment"
         >
-        </dt-toggle>
+        </dt-toggle>`
+            : 
+          null}
         ${this.renderError()}
       </div>
+      ${this.readonly && !this.disabled
+          ? html`
+            <div class="corner-button">
+              <button
+                @click="${this.switchReadOnly}"
+                @keydown="${this._inputKeyDown}"
+                @blur="${this._handleButtonBlur}"
+                class="readonly-btn"
+                id="add-item"
+                type="button"
+                tabindex="1"
+              >
+                <dt-icon icon="mdi:pencil"></dt-icon>
+              </button>
+            </div>`:null}
     `;
   }
 

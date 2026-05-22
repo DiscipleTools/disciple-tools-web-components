@@ -262,7 +262,22 @@ export class DtLocationMap extends DtFormBase {
           ? html`<slot name="icon-start" slot="icon-start"></slot>`
           : null}
         ${this.label}
-        ${!this.open && (this.limit == 0 || this.locations.length < this.limit)
+        ${this.readonly && !this.disabled
+          ? html`
+            <slot name="icon-end" slot="icon-end">
+              <button
+                @click="${this.switchReadOnly}"
+                @keydown="${this._inputKeyDown}"
+                @blur="${this._handleButtonBlur}"
+                class="readonly-btn"
+                id="add-item"
+                type="button"
+                tabindex="1"
+              >
+                <dt-icon icon="mdi:pencil"></dt-icon>
+              </button>
+            </slot>`:null}
+        ${!this.readonly && !this.open && (this.limit == 0 || this.locations.length < this.limit)
           ? html`
               <slot name="icon-end" slot="icon-end">
                 <button
@@ -311,6 +326,8 @@ export class DtLocationMap extends DtFormBase {
     });
     return html`
       ${this.labelTemplate()}
+      ${!this.readonly
+          ? html`
       <div class="input-group">
         ${repeat(
           this.locations || [],
@@ -318,7 +335,16 @@ export class DtLocationMap extends DtFormBase {
           (opt, idx) => this.renderItem(opt, idx),
         )}
         ${this.renderError()} ${this.renderIconInvalid()}
-      </div>
+      </div>`
+            : 
+          html`<div class="readonly-options">
+              ${repeat(
+                this.locations || [],
+                opt => html`<div>
+                  ${opt.label}
+                </div>`,
+              )}
+      </div>`}
     `;
   }
 }

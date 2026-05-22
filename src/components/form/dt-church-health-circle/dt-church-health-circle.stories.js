@@ -165,6 +165,7 @@ export default {
           .options="${args.options}"
           missingIcon="${ifDefined(args.missingIcon)}"
           ?disabled=${args.disabled}
+          ?readonly=${args.readonly}
           ?loading="${args.loading}"
           ?saved="${args.saved}"
           error="${ifDefined(args.error)}"
@@ -219,6 +220,13 @@ export const Disabled = {
   args: {
     value: ['church_bible'],
     disabled: true,
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    value: ['church_bible'],
+    readonly: true,
   },
 };
 

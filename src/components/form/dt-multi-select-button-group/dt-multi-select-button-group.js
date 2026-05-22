@@ -168,7 +168,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
         context=${context}
         .value=${opt.id}
         @click="${this._clickOption}"
-        ?disabled="${this.disabled}"
+        ?disabled="${this.disabled || this.readonly}"
         ?outline="${outline}"
         role="button"
         value="${opt.id}"

@@ -43,6 +43,7 @@ export default {
       name = 'field-name',
       label = 'Field Name',
       disabled = false,
+      readonly = false,
       checked = false,
       icons = false,
       required = false,
@@ -64,6 +65,7 @@ export default {
         ?checked=${checked}
         ?icons=${icons}
         ?disabled=${disabled}
+        ?readonly=${readonly}
         ?required=${required}
         requiredMessage=${ifDefined(requiredMessage)}
         icon="${ifDefined(icon)}"
@@ -112,6 +114,13 @@ export const Disabled = {
   args: {
     checked: false,
     disabled: true,
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    checked: false,
+    readonly: true,
   },
 };
 

@@ -65,6 +65,7 @@ export default {
       placeholder,
       type,
       disabled,
+      readonly,
       required,
       requiredMessage,
       icon,
@@ -86,6 +87,7 @@ export default {
         placeholder="${ifDefined(placeholder)}"
         type="${ifDefined(type)}"
         ?disabled=${disabled}
+        ?readonly=${readonly}
         ?required=${required}
         requiredMessage="${ifDefined(requiredMessage)}"
         icon="${ifDefined(icon)}"
@@ -153,6 +155,22 @@ export const Disabled = {
         value: 'Lorem Ipsum',
         key: 'comm_channel_1',
       },
+    ],
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    readonly: true,
+    value: [
+      {
+        value: 'Lorem Ipsum',
+        key: 'comm_channel_1',
+      },
+      {
+        value: 'Lorem Ipsum',
+        key: 'comm_channel_2',
+      }
     ],
   },
 };

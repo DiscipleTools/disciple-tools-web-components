@@ -224,6 +224,8 @@ export class DtSingleSelect extends DtFormBase {
     return html`
       ${this.labelTemplate()}
 
+      ${!this.readonly
+          ? html`
       <div
         class="input-group ${this.disabled ? 'disabled' : ''}"
         dir="${this.RTL ? 'rtl' : 'ltr'}"
@@ -251,7 +253,11 @@ export class DtSingleSelect extends DtFormBase {
         </select>
 
         ${this.renderIcons()}
-      </div>
+      </div>`
+            : 
+          html`<div class="readonly-options">
+              ${(this.options || []).find(i => i.id === this.value)?.label || ''}
+          </div>`}
     `;
   }
 }

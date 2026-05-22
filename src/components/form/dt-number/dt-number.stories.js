@@ -47,6 +47,7 @@ export default {
       min,
       max,
       disabled = false,
+      readonly = false,
       required = false,
       requiredMessage,
       icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
@@ -67,6 +68,7 @@ export default {
         min=${ifDefined(min)}
         max=${ifDefined(max)}
         ?disabled=${disabled}
+        ?readonly=${readonly}
         ?required=${required}
         requiredMessage=${ifDefined(requiredMessage)}
         icon="${ifDefined(icon)}"
@@ -108,6 +110,13 @@ export const AutoSave = {
 export const Disabled = {
   args: {
     disabled: true,
+    value: 42,
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    readonly: true,
     value: 42,
   },
 };

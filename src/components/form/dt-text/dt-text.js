@@ -159,6 +159,8 @@ export class DtText extends DtFormBase {
     return html`
       ${this.labelTemplate()}
 
+      ${!this.readonly
+          ? html`
       <div class="input-group">
         <input
           id="${this.id}"
@@ -178,7 +180,11 @@ export class DtText extends DtFormBase {
         />
 
         ${this.renderIcons()}
-      </div>
+      </div>`
+          : 
+        html`<div class="readonly-options">
+            ${this.value || ''}
+        </div>`}
     `;
   }
 }

@@ -113,6 +113,7 @@ export default {
       placeholder,
       value,
       disabled,
+      readonly,
       required,
       requiredMessage,
       icon,
@@ -137,6 +138,7 @@ export default {
         .options="${options}"
         .value="${value}"
         ?disabled="${disabled}"
+        ?readonly="${readonly}"
         ?required="${required}"
         requiredMessage="${requiredMessage}"
         icon="${icon}"
@@ -251,6 +253,14 @@ export const Disabled = {
     value: ['qui est esse'],
     options: basicOptions,
     disabled: true,
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    value: ['qui est esse', 'opt8'],
+    options: basicOptions,
+    readonly: true,
   },
 };
 
