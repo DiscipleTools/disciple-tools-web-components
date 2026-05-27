@@ -437,7 +437,22 @@ export class DtMultiText extends DtText {
           ? html`<slot name="icon-start" slot="icon-start"></slot>`
           : null}
         ${this.label}
-        <slot name="icon-end" slot="icon-end">
+        ${this.readonly && !this.disabled
+          ? html`
+            <slot name="icon-end" slot="icon-end">
+              <button
+                @click="${this.switchReadOnly}"
+                @keydown="${this._inputKeyDown}"
+                @blur="${this._handleButtonBlur}"
+                class="readonly-btn"
+                id="add-item"
+                type="button"
+                tabindex="1"
+              >
+                <dt-icon icon="mdi:pencil"></dt-icon>
+              </button>
+            </slot>`:
+        html`<slot name="icon-end" slot="icon-end">
           <button
             @click="${this._addItem}"
             @keydown="${this._inputKeyDown}"
@@ -450,7 +465,7 @@ export class DtMultiText extends DtText {
           >
             <dt-icon icon="mdi:plus-thick"></dt-icon>
           </button>
-        </slot>
+        </slot>`}
       </dt-label>
     `;
   }
@@ -468,9 +483,16 @@ export class DtMultiText extends DtText {
           html`<div class="readonly-options">
               ${repeat(
                 this.value || [],
-                opt => html`<div>
-                  ${opt.value}
-                </div>`,
+                opt => 
+                {
+                  if (opt.type === 'email') {
+                    return html`<div><a href="mailto:${opt.value}">${opt.value}</a></div>`;
+                  }
+                  if (opt.type === 'tel') {
+                    return html`<div><a href="tel:${opt.value}">${opt.value}</a></div>`;
+                  }
+                  return html`<div>${opt.value}</div>`;
+                }
               )}
           </div>`}
     `;

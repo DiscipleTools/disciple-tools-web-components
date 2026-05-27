@@ -285,15 +285,25 @@ export const ReadOnly = {
       {
         id: 2,
         label: 'test',
-      },
-      {
-        id: 3,
-        label: 'WeeWoo',
       }],
     options: basicOptions,
     readonly: true,
   },
 };
+
+export const ReadOnlyDisabled = {
+  args: {
+    value: [basicOptions[1],
+      {
+        id: 2,
+        label: 'test',
+      }],
+    options: basicOptions,
+    readonly: true,
+    disabled: true,
+  },
+};
+
 export const PrivateField = {
   args: {
     private: true,

@@ -124,6 +124,14 @@ export const ReadOnly = {
   },
 };
 
+export const ReadOnlyDisabled = {
+  args: {
+    checked: false,
+    readonly: true,
+    disabled: true,
+  },
+};
+
 export const DisabledOn = {
   args: {
     checked: true,

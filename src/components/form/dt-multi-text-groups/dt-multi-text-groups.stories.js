@@ -197,6 +197,34 @@ export const ReadOnly = {
   }
 }
 
+export const ReadOnlyDisabled = {
+  args: {
+    groups: [
+      { id: 'one', label: 'Group 1' }, 
+      { id: 'two', label: 'Group 2' }
+    ],
+    readonly: true,
+    disabled: true,
+    value: [
+      {
+        value: 'Lorem Ipsum',
+        key: 'comm_channel_1',
+        group: 'one'
+      },
+      {
+        value: 'Lorem Ipsu2',
+        key: 'comm_channel_2',
+        group: 'two'
+      },
+      {
+        value: 'Lorem Ipsum',
+        key: 'comm_channel_3',
+        group: 'two'
+      }
+    ],
+  }
+}
+
 export const privateField = {
   args: {
     groups: [

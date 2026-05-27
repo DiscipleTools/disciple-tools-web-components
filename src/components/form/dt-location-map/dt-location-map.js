@@ -312,6 +312,7 @@ export class DtLocationMap extends DtFormBase {
         @delete=${this.deleteItem}
         @select=${this.selectLocation}
         ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
         ?invalid=${this.invalid && this.touched}
         ?loading=${showStatus ? this.loading : false}
         ?saved=${showStatus ? this.saved : false}
@@ -326,25 +327,14 @@ export class DtLocationMap extends DtFormBase {
     });
     return html`
       ${this.labelTemplate()}
-      ${!this.readonly
-          ? html`
-      <div class="input-group">
+      <div class=${this.readonly ? 'readonly-options' : 'input-group'}>
         ${repeat(
           this.locations || [],
           opt => opt.id,
           (opt, idx) => this.renderItem(opt, idx),
         )}
         ${this.renderError()} ${this.renderIconInvalid()}
-      </div>`
-            : 
-          html`<div class="readonly-options">
-              ${repeat(
-                this.locations || [],
-                opt => html`<div>
-                  ${opt.label}
-                </div>`,
-              )}
-      </div>`}
+      </div>
     `;
   }
 }

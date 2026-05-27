@@ -225,6 +225,14 @@ export const ReadOnly = {
   },
 };
 
+export const ReadOnlyDisabled = {
+  args: {
+    value: [basicOptions[0], basicOptions[1], basicOptions[2]],
+    readonly: true,
+    disabled: true,
+  },
+};
+
 export const PrivateField = {
   args: {
     value: [basicOptions[0]],

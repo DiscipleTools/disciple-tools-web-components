@@ -130,6 +130,14 @@ export const ReadOnly = {
   },
 };
 
+export const ReadOnlyDisabled = {
+  args: {
+    value: '2020-01-01',
+    readonly: true,
+    disabled: true,
+  },
+};
+
 export const PrivateField = {
   args: {
     private: true,

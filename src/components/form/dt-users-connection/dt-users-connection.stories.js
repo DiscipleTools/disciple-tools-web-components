@@ -234,9 +234,26 @@ export const Disabled = {
 
 export const ReadOnly = {
   args: {
-    value: [basicOptions[1], basicOptions[2]],
+    value: [basicOptions[1], {
+      id: 2,
+      label: 'test',
+      link: '/#opt2',
+    }],
     options: basicOptions,
     readonly: true,
+  },
+};
+
+export const ReadOnlyDisabled = {
+  args: {
+    value: [basicOptions[1], {
+      id: 2,
+      label: 'test',
+      link: '/#opt2',
+    }],
+    options: basicOptions,
+    readonly: true,
+    disabled: true,
   },
 };
 

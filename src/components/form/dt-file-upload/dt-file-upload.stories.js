@@ -53,6 +53,7 @@ export default {
     postId: { control: 'text' },
     metaKey: { control: 'text' },
     disabled: { control: 'boolean' },
+    readonly: { control: 'boolean' },
     loading: { control: 'boolean' },
     saved: { control: 'boolean' },
     ...argTypes,
@@ -85,6 +86,7 @@ function Template(args) {
     postId = '',
     metaKey = '',
     disabled = false,
+    readonly = false,
     required = false,
     requiredMessage,
     icon = 'mdi:cloud-upload',
@@ -129,6 +131,7 @@ function Template(args) {
       postId=${postId}
       meta-key=${metaKey}
       ?disabled=${disabled}
+      ?readonly=${readonly}
       ?required=${required}
       requiredMessage=${ifDefined(requiredMessage)}
       icon="${icon}"
@@ -336,6 +339,45 @@ Disabled.args = {
       size: 123456,
       thumbnail_url: SAMPLE_THUMBNAIL_URL,
       url: SAMPLE_IMAGE_URL,
+    },
+  ],
+};
+
+export const ReadOnly = Template.bind({});
+ReadOnly.args = {
+  readonly: true,
+  value: [
+    {
+      key: 'site_id/prefix_randomstring1.jpg',
+      name: 'photo1.jpg',
+      type: 'image/jpeg',
+      size: 123456,
+      thumbnail_url: SAMPLE_THUMBNAIL_URL,
+      url: SAMPLE_IMAGE_URL,
+    },
+  ],
+};
+
+export const ReadOnlyListLayout = Template.bind({});
+ReadOnlyListLayout.args = {
+  displayLayout: 'list',
+  readonly: true,
+  value: [
+    {
+      key: 'site_id/prefix_randomstring1.jpg',
+      name: 'photo1.jpg',
+      type: 'image/jpeg',
+      size: 123456,
+      thumbnail_key: 'site_id/prefix_randomstring1_thumbnail.jpg',
+      thumbnail_url: SAMPLE_THUMBNAIL_URL,
+      url: SAMPLE_IMAGE_URL,
+    },
+    {
+      key: 'site_id/prefix_randomstring2.pdf',
+      name: 'document.pdf',
+      type: 'application/pdf',
+      size: 456789,
+      url: SAMPLE_PDF_URL,
     },
   ],
 };

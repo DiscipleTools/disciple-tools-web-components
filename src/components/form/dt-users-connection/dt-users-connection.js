@@ -258,7 +258,9 @@ export class DtUsersConnection extends DtTags {
           </div>`
             : 
           html`<div>
-              ${opt.label}
+            ${opt.link
+                ? html`<a href="${opt.link}">${opt.label}</a>`
+                : html`<div>${opt.label}</div>`}
           </div>`}
         `,
       );

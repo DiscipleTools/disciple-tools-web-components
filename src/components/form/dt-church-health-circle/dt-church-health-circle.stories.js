@@ -228,6 +228,14 @@ export const ReadOnly = {
   },
 };
 
+export const ReadOnlyDisabled = {
+  args: {
+    value: ['church_bible'],
+    readonly: true,
+    disabled: true,
+  },
+};
+
 export const PrivateField = {
   args: {
     private: true,

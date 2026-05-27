@@ -71,6 +71,10 @@ export default class DtFormBase extends DtBase {
           line-height: 1.6;
           font-family: var(--font-family);
         }
+
+        .readonly-options a {
+          color: var(--primary-color, #0a84ff);
+        }
       `,
       css`
         @keyframes fadeOut {

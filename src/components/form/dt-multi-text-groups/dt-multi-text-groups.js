@@ -583,14 +583,20 @@ export class DtMultiTextGroups extends DtMultiText {
         </div>`
               : 
             html`
-            ${repeat(this.groups, group => html`<h3 class="heading">${group.label}</h3>
+
+            ${this.value ? repeat(this.groups, group => html`<h3 class="heading">${group.label}</h3>
+
               <div class="readonly-options">
                 ${repeat(
                   (this.value || []).filter(item => item.group === group.id),
                   item => html`<div class="group-item">${item.value}</div>`
                 )}
               </div>`
-            )}`
+            ) : html`
+            <div class="groups-no-value">
+              No items to show.
+            </div>
+            `}`
           }
       `;
     }

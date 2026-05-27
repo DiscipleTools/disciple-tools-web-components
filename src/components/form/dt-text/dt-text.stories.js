@@ -121,6 +121,14 @@ export const ReadOnly = {
   },
 };
 
+export const ReadOnlyDisabled = {
+  args: {
+    readonly: true,
+    disabled: true,
+    value: 'Lorem Ipsum',
+  },
+};
+
 export const PrivateField = {
   args: {
     private: true,

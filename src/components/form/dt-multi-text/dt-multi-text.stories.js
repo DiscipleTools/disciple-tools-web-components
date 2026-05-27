@@ -164,12 +164,33 @@ export const ReadOnly = {
     readonly: true,
     value: [
       {
-        value: 'Lorem Ipsum',
+        value: 'email@test.com',
         key: 'comm_channel_1',
+        type: 'email',
       },
       {
-        value: 'Lorem Ipsum',
+        value: '+1 123 456 7890',
         key: 'comm_channel_2',
+        type: 'tel',
+      }
+    ],
+  },
+};
+
+export const ReadOnlyDisabled = {
+  args: {
+    readonly: true,
+    disabled: true,
+    value: [
+      {
+        value: 'email@test.com',
+        key: 'comm_channel_1',
+        type: 'email',
+      },
+      {
+        value: '+1 123 456 7890',
+        key: 'comm_channel_2',
+        type: 'tel',
       }
     ],
   },

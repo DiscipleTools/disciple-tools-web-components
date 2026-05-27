@@ -114,6 +114,7 @@ export default {
         value=''
         label="Text Field"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-text>
 
@@ -123,6 +124,7 @@ export default {
         value=''
         label="Textarea Field"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-textarea>
 
@@ -131,6 +133,7 @@ export default {
         name='numberField'
         label="Number Field"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-number>
 
@@ -139,6 +142,7 @@ export default {
         name="multiTextField"
         label="MultiText Field"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-multi-text>
 
@@ -147,6 +151,7 @@ export default {
         name="multiTextGroupsField"
         label="MultiText Groups Field"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
         .groups=${groups}
       ></dt-multi-text-groups>
@@ -156,6 +161,7 @@ export default {
         name="dateField"
         label="Date Field"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-date>
 
@@ -164,6 +170,7 @@ export default {
         name="dateTimeField"
         label="Date Time Field"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-datetime>
 
@@ -172,6 +179,7 @@ export default {
         name="toggleField"
         label="Boolean Field"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-toggle>
 
@@ -181,6 +189,7 @@ export default {
         value="opt1"
         options="${JSON.stringify(options)}"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-single-select>
 
@@ -190,6 +199,7 @@ export default {
         value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
         options="${JSON.stringify(options)}"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-multi-select>
 
@@ -199,6 +209,7 @@ export default {
         value="${JSON.stringify(options.slice(0, 2).map(o => o.id))}"
         options="${JSON.stringify(options)}"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-multi-select-button-group>
 
@@ -207,6 +218,7 @@ export default {
         value="${JSON.stringify(['personal'])}"
         options="${JSON.stringify(tags)}"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-tags>
 
@@ -214,6 +226,7 @@ export default {
         label="Connection Field"
         options="${JSON.stringify(posts)}"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-connection>
 
@@ -222,6 +235,7 @@ export default {
         options="${JSON.stringify(posts)}"
         filters="${JSON.stringify(locationFilters)}"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-location>
 
@@ -229,6 +243,7 @@ export default {
         label="Location Meta Field"
         options="${JSON.stringify(posts)}"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-location-map>
 
@@ -236,6 +251,7 @@ export default {
         label="File Upload Field"
         name="fileUploadField"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         error="${ifDefined(args.error)}"
       ></dt-file-upload>
 
@@ -245,6 +261,7 @@ export default {
          label="Button"
          context="primary"
          ?disabled=${args.disabled}
+         ?readonly=${args.readonly}
          error="${ifDefined(args.error)}"
        >Click Me</dt-button>
     </dt-tile>
@@ -256,6 +273,12 @@ export const Components = {};
 export const Disabled = {
   args: {
     disabled: true,
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    readonly: true,
   },
 };
 
