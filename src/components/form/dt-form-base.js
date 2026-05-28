@@ -75,6 +75,9 @@ export default class DtFormBase extends DtBase {
         .readonly-options a {
           color: var(--primary-color, #0a84ff);
         }
+        .readonly-options dt-icon {
+          color: var(--primary-color, #0a84ff);
+        }
       `,
       css`
         @keyframes fadeOut {

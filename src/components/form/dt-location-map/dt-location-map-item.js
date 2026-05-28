@@ -802,8 +802,9 @@ export default class DtLocationMapItem extends DtBase {
       </div>`
             : 
           html`<div>
-                  <button class="link-style" @click="${this._openMapModal}">${this.metadata?.label}</button>
-                </div>`
+            <button class="link-style" @click="${this._openMapModal}">${this.metadata?.label}</button>
+            <dt-icon icon="mdi:map-search" style="color: var(--primary-color, #0a84ff);"></dt-icon>
+          </div>`
         }
 
 

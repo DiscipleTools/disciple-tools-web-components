@@ -486,10 +486,16 @@ export class DtMultiText extends DtText {
                 opt => 
                 {
                   if (opt.type === 'email') {
-                    return html`<div><a href="mailto:${opt.value}">${opt.value}</a></div>`;
+                    return html`<div>
+                      <a href="mailto:${opt.value}">${opt.value}</a>
+                      <dt-icon icon="mdi:email-arrow-right"></dt-icon>
+                    </div>`;
                   }
                   if (opt.type === 'tel') {
-                    return html`<div><a href="tel:${opt.value}">${opt.value}</a></div>`;
+                    return html`<div>
+                      <a href="tel:${opt.value}">${opt.value}</a>
+                      <dt-icon icon="mdi:phone-outgoing"></dt-icon>
+                    </div>`;
                   }
                   return html`<div>${opt.value}</div>`;
                 }
