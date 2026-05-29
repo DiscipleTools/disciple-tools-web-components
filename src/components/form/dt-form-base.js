@@ -77,6 +77,8 @@ export default class DtFormBase extends DtBase {
         }
         .readonly-options dt-icon {
           color: var(--primary-color, #0a84ff);
+          line-height: 0;
+          vertical-align: middle;
         }
       `,
       css`

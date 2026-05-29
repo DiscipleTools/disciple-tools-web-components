@@ -212,12 +212,12 @@ export const ReadOnlyDisabled = {
         group: 'one'
       },
       {
-        value: 'Lorem Ipsu2',
+        value: 'Lorem Ipsum',
         key: 'comm_channel_2',
         group: 'two'
       },
       {
-        value: 'Lorem Ipsum',
+        value: 'Lorem Ipsum2',
         key: 'comm_channel_3',
         group: 'two'
       }

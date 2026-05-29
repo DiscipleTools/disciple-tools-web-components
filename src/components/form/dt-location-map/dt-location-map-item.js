@@ -248,6 +248,16 @@ export default class DtLocationMapItem extends DtBase {
           cursor: pointer;
           font: inherit;
         }
+
+        .location-item-wrapper {
+          display: inline-flex;
+          align-items: center;
+        }
+        .location-item-wrapper dt-icon {
+          color: var(--primary-color, #0a84ff);
+          line-height: 0;
+          vertical-align: middle;
+          padding-left: .5rem;
       `,
       css`
         /* === Inline Icons === */
@@ -801,11 +811,12 @@ export default class DtLocationMapItem extends DtBase {
         ${this.renderIconSaved(hasGeometry)}
       </div>`
             : 
-          html`<div>
+            html`${existingValue ?
+          html`<div class="location-item-wrapper">
             <button class="link-style" @click="${this._openMapModal}">${this.metadata?.label}</button>
-            <dt-icon icon="mdi:map-search" style="color: var(--primary-color, #0a84ff);"></dt-icon>
-          </div>`
-        }
+            <dt-icon icon="mdi:map-search"></dt-icon>
+          </div>` : null}
+        `}
 
 
       <dt-map-modal

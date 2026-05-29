@@ -485,15 +485,15 @@ export class DtMultiText extends DtText {
                 this.value || [],
                 opt => 
                 {
-                  if (opt.type === 'email') {
+                  if (this.type === 'email') {
                     return html`<div>
                       <a href="mailto:${opt.value}">${opt.value}</a>
                       <dt-icon icon="mdi:email-arrow-right"></dt-icon>
                     </div>`;
                   }
-                  if (opt.type === 'tel') {
+                  if (this.type === 'tel') {
                     return html`<div>
-                      <a href="tel:${opt.value}">${opt.value}</a>
+                      <a href="tel:${opt.value.replace(/[^\d+]/g, '')}">${opt.value}</a>
                       <dt-icon icon="mdi:phone-outgoing"></dt-icon>
                     </div>`;
                   }

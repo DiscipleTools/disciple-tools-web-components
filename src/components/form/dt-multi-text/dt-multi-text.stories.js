@@ -166,14 +166,13 @@ export const ReadOnly = {
       {
         value: 'email@test.com',
         key: 'comm_channel_1',
-        type: 'email',
       },
       {
-        value: '+1 123 456 7890',
+        value: 'example@example.com',
         key: 'comm_channel_2',
-        type: 'tel',
       }
     ],
+    type: 'email',
   },
 };
 
@@ -183,16 +182,15 @@ export const ReadOnlyDisabled = {
     disabled: true,
     value: [
       {
-        value: 'email@test.com',
+        value: '+5-987-654-3210',
         key: 'comm_channel_1',
-        type: 'email',
       },
       {
         value: '+1 123 456 7890',
         key: 'comm_channel_2',
-        type: 'tel',
       }
     ],
+    type: 'tel',
   },
 };
 
