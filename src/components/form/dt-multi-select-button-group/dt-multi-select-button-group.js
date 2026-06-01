@@ -73,14 +73,6 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
         .invalid ~ .error-container {
           border-top-width: 1px;
         }
-
-        .item-wrapper {
-          display: flex;
-          align-items: center;
-        }
-        .item-wrapper .icon {
-          margin-left: .5rem;
-        }
       `,
     ];
   }
@@ -246,13 +238,13 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
               .includes(opt.id))
               .map(
                 opt => html`
-                  <div class="item-wrapper">
-                    <span>${opt.label}</span>
+                  <div>
                     ${opt.icon
                       ? html`<span class="icon"
                           ><img src="${opt.icon}" alt="${this.iconAltText}"
                         /></span>`
                       : null}
+                    <span>${opt.label}</span>
                   </div>`)}
             </div>`
         }`
