@@ -7,7 +7,7 @@ export class DtTile extends DtBase {
       :host {
         font-family: var(--dt-tile-font-family, var(--font-family));
         font-size: var(--dt-tile-font-size, 14px);
-        font-weight: var(--dt-tile-font-weight, 700);
+        font-weight: var(--dt-tile-font-weight, normal);
         overflow: hidden;
         text-overflow: ellipsis;
       }
