@@ -229,7 +229,7 @@ export class DtToggle extends DtFormBase {
               class="toggle-input"
               .checked=${this.checked || 0}
               @click=${this.onChange}
-              ?disabled=${this.disabled}
+              ?disabled=${this.disabled || this.readonly}
             />
             <span class="toggle-display" @click=${this.onClickToggle}>
               ${this.icons ? html` ${check} ${cross} ` : html``}

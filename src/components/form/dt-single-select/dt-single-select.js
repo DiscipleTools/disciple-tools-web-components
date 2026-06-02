@@ -224,6 +224,8 @@ export class DtSingleSelect extends DtFormBase {
     return html`
       ${this.labelTemplate()}
 
+      ${!this.readonly
+          ? html`
       <div
         class="input-group ${this.disabled ? 'disabled' : ''}"
         dir="${this.RTL ? 'rtl' : 'ltr'}"
@@ -233,7 +235,7 @@ export class DtSingleSelect extends DtFormBase {
           aria-label="${this.name}"
           @change="${this._change}"
           class="${classMap(this.classes)}"
-          style="${this.color ? 'background-color: ' + this.color + ';' : ''}"
+          style="${this.color ? `background-color: ${  this.color  };` : ''}"
           ?disabled="${this.disabled}"
           ?required=${this.required}
           part="select"
@@ -251,7 +253,11 @@ export class DtSingleSelect extends DtFormBase {
         </select>
 
         ${this.renderIcons()}
-      </div>
+      </div>`
+            : 
+          html`<div class="readonly-options">
+              ${(this.options || []).find(i => i.id === this.value)?.label || ''}
+          </div>`}
     `;
   }
 }

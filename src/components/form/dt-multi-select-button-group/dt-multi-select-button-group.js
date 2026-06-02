@@ -168,7 +168,7 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
         context=${context}
         .value=${opt.id}
         @click="${this._clickOption}"
-        ?disabled="${this.disabled}"
+        ?disabled="${this.disabled || this.readonly}"
         ?outline="${outline}"
         role="button"
         value="${opt.id}"
@@ -216,6 +216,8 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
   render() {
     return html`
       ${this.labelTemplate()}
+      ${!this.readonly
+          ? html`
       <div
         class="input-group ${this.disabled ? 'disabled' : ''}"
         part="input-group"
@@ -228,8 +230,24 @@ export class DtMultiSelectButtonGroup extends DtFormBase {
           )}
         </div>
         ${this.renderIcons()}
-      </div>
-    `;
+      </div>`
+            :
+            html`<div class="readonly-options">
+            ${this.options
+              .filter(opt => (this.value ?? [])
+              .includes(opt.id))
+              .map(
+                opt => html`
+                  <div>
+                    ${opt.icon
+                      ? html`<span class="icon"
+                          ><img src="${opt.icon}" alt="${this.iconAltText}"
+                        /></span>`
+                      : null}
+                    <span>${opt.label}</span>
+                  </div>`)}
+            </div>`
+        }`
   }
 }
 

@@ -44,6 +44,7 @@ export default {
     value = '',
     placeholder,
     disabled = false,
+    readonly = false,
     required = false,
     requiredMessage,
     icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
@@ -66,6 +67,7 @@ export default {
       placeholder=${placeholder}
       type=${type}
       ?disabled=${disabled}
+      ?readonly=${readonly}
       ?required=${required}
       requiredMessage=${requiredMessage}
       icon="${icon}"
@@ -164,6 +166,61 @@ export const Disabled = {
         key: 'comm_channel_1',
         group: 'one'
       },
+    ],
+  }
+}
+
+export const ReadOnly = {
+  args: {
+    groups: [
+      { id: 'one', label: 'Group 1' }, 
+      { id: 'two', label: 'Group 2' }
+    ],
+    readonly: true,
+    value: [
+      {
+        value: 'Lorem Ipsum',
+        key: 'comm_channel_1',
+        group: 'one'
+      },
+      {
+        value: 'Lorem Ipsu2',
+        key: 'comm_channel_2',
+        group: 'two'
+      },
+      {
+        value: 'Lorem Ipsum',
+        key: 'comm_channel_3',
+        group: 'two'
+      }
+    ],
+  }
+}
+
+export const ReadOnlyDisabled = {
+  args: {
+    groups: [
+      { id: 'one', label: 'Group 1' }, 
+      { id: 'two', label: 'Group 2' }
+    ],
+    readonly: true,
+    disabled: true,
+    value: [
+      {
+        value: 'Lorem Ipsum',
+        key: 'comm_channel_1',
+        group: 'one'
+      },
+      {
+        value: 'Lorem Ipsum',
+        key: 'comm_channel_2',
+        group: 'two'
+      },
+      {
+        value: 'Lorem Ipsum2',
+        key: 'comm_channel_3',
+        group: 'two'
+      }
     ],
   }
 }

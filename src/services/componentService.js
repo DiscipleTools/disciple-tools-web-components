@@ -302,9 +302,9 @@ export default class ComponentService {
                 new CustomEvent('dt:post:update', {
                   detail: {
                     response: apiResponse,
-                    field: field,
+                    field,
                     value: apiValue,
-                    component: component,
+                    component,
                   },
                 }),
               );
@@ -355,9 +355,9 @@ export default class ComponentService {
             new CustomEvent('dt:post:update', {
               detail: {
                 response: apiResponse,
-                field: field,
+                field,
                 value: apiValue,
-                component: component,
+                component,
               },
             }),
           );
@@ -855,10 +855,10 @@ export default class ComponentService {
     }
 
     // Handle object arrays
-    const getObjectKey = obj => {
+    const getObjectKey = obj => 
       // Use stringified object as key to ensure uniqueness
-      return JSON.stringify(obj);
-    };
+       JSON.stringify(obj)
+    ;
 
     const value1Map = new Map(value1.map(item => [getObjectKey(item), item]));
     const value2Map = new Map(value2.map(item => [getObjectKey(item), item]));

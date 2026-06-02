@@ -144,6 +144,8 @@ export class DtTextArea extends DtFormBase {
     return html`
       ${this.labelTemplate()}
 
+      ${!this.readonly
+          ? html`
       <div class="input-group">
         <textarea
           id="${this.id}"
@@ -159,7 +161,11 @@ export class DtTextArea extends DtFormBase {
         ></textarea>
 
         ${this.renderIcons()}
-      </div>
+      </div>`
+          : 
+        html`<div class="readonly-options">
+            ${this.value || ''}
+        </div>`}
     `;
   }
 }

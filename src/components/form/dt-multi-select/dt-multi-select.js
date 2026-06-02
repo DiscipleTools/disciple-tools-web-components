@@ -408,6 +408,8 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         .filter(val => val.charAt(0) !== '-')
         .map(
           val => html`
+          ${!this.readonly
+              ? html`
             <div
               class="selected-option"
               @click="${this._handleItemClick}"
@@ -425,7 +427,11 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
               >
                 x
               </button>
-            </div>
+          </div>`
+            : 
+          html`<div>
+              ${this.options.find(option => option.id === val).label}
+          </div>`}
           `,
         )
     );
@@ -461,10 +467,12 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
   }
 
   render() {
-    const optionListStyles = this.optionListStyles;
+    const {optionListStyles} = this;
     return html`
       ${this.labelTemplate()}
 
+      ${!this.readonly
+          ? html`
       <div
         class="input-group ${this.disabled ? 'disabled' : ''}"
         @click="${this._handleDivClick}"
@@ -501,7 +509,11 @@ export class DtMultiSelect extends HasOptionsList(DtFormBase) {
         </ul>
 
         ${this.renderIcons()}
-      </div>
+      </div>`
+            : 
+          html`<div class="readonly-options">
+              ${this._renderSelectedOptions()}
+          </div>`}
     `;
   }
 }

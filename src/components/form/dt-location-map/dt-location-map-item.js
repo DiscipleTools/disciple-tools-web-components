@@ -17,6 +17,7 @@ export default class DtLocationMapItem extends DtBase {
       googleToken: { type: String, attribute: 'google-token' },
       metadata: { type: Object },
       disabled: { type: Boolean },
+      readonly: { type: Boolean },
       open: {
         type: Boolean,
         state: true,
@@ -237,6 +238,26 @@ export default class DtLocationMapItem extends DtBase {
           color: var(--dt-text-placeholder-color, #999);
           cursor: not-allowed;
         }
+
+        button.link-style {
+          background: none;
+          border: none;
+          padding: 0;
+          color: var(--primary-color, #0a84ff);
+          text-decoration: underline;
+          cursor: pointer;
+          font: inherit;
+        }
+
+        .location-item-wrapper {
+          display: inline-flex;
+          align-items: center;
+        }
+        .location-item-wrapper dt-icon {
+          color: var(--primary-color, #0a84ff);
+          line-height: 0;
+          vertical-align: middle;
+          padding-left: .5rem;
       `,
       css`
         /* === Inline Icons === */
@@ -726,6 +747,8 @@ export default class DtLocationMapItem extends DtBase {
     const existingValue = !!this.metadata?.label;
     const hasGeometry = this.metadata?.lat && this.metadata?.lng;
     return html`
+      ${!this.readonly
+          ? html`
       <div class="input-group">
         <div class="${classMap(this.classes)}">
           <input
@@ -786,7 +809,15 @@ export default class DtLocationMapItem extends DtBase {
             ></dt-spinner>`
           : null}
         ${this.renderIconSaved(hasGeometry)}
-      </div>
+      </div>`
+            : 
+            html`${existingValue ?
+          html`<div class="location-item-wrapper">
+            <button class="link-style" @click="${this._openMapModal}">${this.metadata?.label}</button>
+            <dt-icon icon="mdi:map-search"></dt-icon>
+          </div>` : null}
+        `}
+
 
       <dt-map-modal
         .metadata=${this.metadata}

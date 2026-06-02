@@ -156,8 +156,7 @@ export default {
     error: '',
     onChange: action('on-change'),
   },
-  render: args => {
-    return html`
+  render: args => html`
       <div style="width: ${ifDefined(args.width)}px;">
         <dt-church-health-circle
           name="${ifDefined(args.name)}"
@@ -165,6 +164,7 @@ export default {
           .options="${args.options}"
           missingIcon="${ifDefined(args.missingIcon)}"
           ?disabled=${args.disabled}
+          ?readonly=${args.readonly}
           ?loading="${args.loading}"
           ?saved="${args.saved}"
           error="${ifDefined(args.error)}"
@@ -173,8 +173,7 @@ export default {
           ${args.slot}
         </dt-church-health-circle>
       </div>
-    `;
-  },
+    `,
 };
 
 export const Empty = {};
@@ -218,6 +217,21 @@ export const WidthLarge = {
 export const Disabled = {
   args: {
     value: ['church_bible'],
+    disabled: true,
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    value: ['church_bible'],
+    readonly: true,
+  },
+};
+
+export const ReadOnlyDisabled = {
+  args: {
+    value: ['church_bible'],
+    readonly: true,
     disabled: true,
   },
 };
@@ -288,11 +302,11 @@ export const ApiSettings = {
     ],
     settings: null,
   },
-};*/
+}; */
 /*
 export const ApiGroup = {
   args: {
     groupId: 3,
     group: null,
   },
-};*/
+}; */

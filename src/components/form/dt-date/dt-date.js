@@ -218,6 +218,7 @@ export class DtDate extends DtFormBase {
     };
     return classes;
   }
+
   get fieldContainerClasses() {
     return {
       'field-container': true,
@@ -232,9 +233,17 @@ export class DtDate extends DtFormBase {
       this.timestamp = new Date(this.value).getTime();
     }
 
+    let readonlyValue = this.value;
+    if (this.value) {
+        const [y, m, d] = this.value.split('-');
+        readonlyValue = `${m}/${d}/${y}`;
+    }
+
     return html`
       ${this.labelTemplate()}
 
+      ${!this.readonly
+          ? html`
       <div class="input-group">
         <div class="${classMap(this.fieldContainerClasses)}">
           <input
@@ -265,7 +274,11 @@ export class DtDate extends DtFormBase {
         </div>
 
         ${this.renderIcons()}
-      </div>
+      </div>`
+            : 
+          html`<div class="readonly-options">
+              ${readonlyValue}
+          </div>`}
     `;
   }
 

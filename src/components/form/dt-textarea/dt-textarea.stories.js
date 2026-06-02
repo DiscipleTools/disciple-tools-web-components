@@ -43,6 +43,7 @@ export default {
       label = 'Field Name',
       value,
       disabled = false,
+      readonly = false,
       required = false,
       requiredMessage,
       icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
@@ -61,6 +62,7 @@ export default {
         label=${ifDefined(label)}
         value=${ifDefined(value)}
         ?disabled=${disabled}
+        ?readonly=${readonly}
         ?required=${required}
         requiredMessage=${ifDefined(requiredMessage)}
         icon="${ifDefined(icon)}"
@@ -101,6 +103,21 @@ export const AutoSave = {
 
 export const Disabled = {
   args: {
+    disabled: true,
+    value: 'Lorem Ipsum',
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    readonly: true,
+    value: 'Lorem Ipsum',
+  },
+};
+
+export const ReadOnlyDisabled = {
+  args: {
+    readonly: true,
     disabled: true,
     value: 'Lorem Ipsum',
   },

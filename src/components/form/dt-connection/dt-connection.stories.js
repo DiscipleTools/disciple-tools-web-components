@@ -135,6 +135,7 @@ export default {
       placeholder,
       value,
       disabled,
+      readonly,
       required,
       requiredMessage,
       icon,
@@ -160,6 +161,7 @@ export default {
         .options="${options}"
         .value="${value}"
         ?disabled=${disabled}
+        ?readonly=${readonly}
         ?required=${required}
         requiredMessage="${ifDefined(requiredMessage)}"
         icon="${ifDefined(icon)}"
@@ -277,6 +279,31 @@ export const Disabled = {
     disabled: true,
   },
 };
+export const ReadOnly = {
+  args: {
+    value: [basicOptions[1],
+      {
+        id: 2,
+        label: 'test',
+      }],
+    options: basicOptions,
+    readonly: true,
+  },
+};
+
+export const ReadOnlyDisabled = {
+  args: {
+    value: [basicOptions[1],
+      {
+        id: 2,
+        label: 'test',
+      }],
+    options: basicOptions,
+    readonly: true,
+    disabled: true,
+  },
+};
+
 export const PrivateField = {
   args: {
     private: true,

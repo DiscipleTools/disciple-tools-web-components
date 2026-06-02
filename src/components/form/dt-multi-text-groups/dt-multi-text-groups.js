@@ -138,9 +138,9 @@ export class DtMultiTextGroups extends DtMultiText {
       verified: false,
       value: '',
       tempKey: Date.now().toString(),
-      type: group.id,
+      group: group.id,
     };
-    if (this.value[0]?.type) {
+    if (this.value[0]?.group) {
       this.value = [...this.value, newValue];
 
     } else {
@@ -161,6 +161,7 @@ export class DtMultiTextGroups extends DtMultiText {
 
   _removeItem(e) {
     const keyToRemove = e.currentTarget.dataset.key;
+    console.log(e.currentTarget);
     if (keyToRemove) {
       const event = new CustomEvent('change', {
         bubbles: true,
@@ -178,9 +179,9 @@ export class DtMultiTextGroups extends DtMultiText {
         .map(x => {
           const item = { ...x };
           // add `delete` prop to clicked item
-          if (x.meta_id === keyToRemove || x.tempKey === keyToRemove) {
+          if (x.key === keyToRemove || x.tempKey === keyToRemove) {
             item.delete = true;
-            this.activeGroup = item.type;
+            this.activeGroup = item.group;
           }
           return item;
         });
@@ -208,8 +209,8 @@ export class DtMultiTextGroups extends DtMultiText {
 
       // update this item's value in the list
       this.value = this.value.map(x => {
-        if (x.meta_id === key || x.tempKey === key) {
-          this.activeGroup = x.type;
+        if (x.key === key || x.tempKey === key) {
+          this.activeGroup = x.group;
 
           return {
             ...x,
@@ -330,7 +331,7 @@ export class DtMultiTextGroups extends DtMultiText {
     return html`
       <div class="field-container">
         <input
-          data-key="${item.meta_id ?? item.tempKey}"
+          data-key="${item.key ?? item.tempKey}"
           tabindex="1"
           name="${this.name}"
           aria-label="${this.label}"
@@ -345,13 +346,13 @@ export class DtMultiTextGroups extends DtMultiText {
         />
 
         ${when(
-          (this.value[0]?.type) || (!this.groups && itemCount > 1),
+          (this.value[0]?.group) || (!this.groups && itemCount > 1),
           () => html`
             <button
               class="input-addon btn-remove"
               tabindex="1"
               @click=${this._removeItem}
-              data-key="${item.meta_id ?? item.tempKey}"
+              data-key="${item.key ?? item.tempKey}"
               ?disabled=${this.disabled}
             >
               <dt-icon icon="mdi:close"></dt-icon>
@@ -396,10 +397,10 @@ export class DtMultiTextGroups extends DtMultiText {
     for (const [i, item] of (this.value || []).entries()) {
       if (item.delete && !this.isDeleting) {
         this.isDeleting = true;
-        this.activeGroup = item.type;
+        this.activeGroup = item.group;
       }
     }
-    const remainingItemsPerGroup = this.groups.map(group => (this.value || []).filter(item => item.type === group.id && !item.delete).length);
+    const remainingItemsPerGroup = this.groups.map(group => (this.value || []).filter(item => item.group === group.id && !item.delete).length);
     let itemsAbove = 0;
     let itemsBelow = 0;
     for (let i = remainingItemsPerGroup.length-1; i > groupIndex; i-=1) {
@@ -423,14 +424,14 @@ export class DtMultiTextGroups extends DtMultiText {
       let itemCount = 0;
       if (i > groupIndex) {
         // add padding for each item, every item if we are deleting (icon shows at top element)
-        itemCount = (this.value || []).filter(item => item.type === group.id && !item.delete).length;
+        itemCount = (this.value || []).filter(item => item.group === group.id && !item.delete).length;
 
         // if at least 1 item in group, we add for the group title as well, only if it's below our group
         if (itemCount > 0) {
           titleCount += 1;
         }
       } else if (i === groupIndex) {
-        itemCount = (this.value || []).filter(item => item.type === group.id && !item.delete).length-1;
+        itemCount = (this.value || []).filter(item => item.group === group.id && !item.delete).length-1;
         if (this.isDeleting && itemCount === 0){
           if (itemsAbove > 0) {
             itemCount = itemsAbove-1;
@@ -438,7 +439,7 @@ export class DtMultiTextGroups extends DtMultiText {
             titleCount -= 1;
           }
         } else {
-          itemCount = (this.value || []).filter(item => item.type === group.id && !item.delete).length-1;
+          itemCount = (this.value || []).filter(item => item.group === group.id && !item.delete).length-1;
         }
       }
       pad += itemCount;
@@ -469,10 +470,10 @@ export class DtMultiTextGroups extends DtMultiText {
     }
 
     const firstIndex = this.value[0];
-    if (this.groups && (firstIndex && firstIndex.type)) {
+    if (this.groups && (firstIndex && firstIndex.group)) {
       return this.groups.map(group => {
         const groupItems = (this.value ?? []).filter(
-          x => !x.delete && x.type === group.id
+          x => !x.delete && x.group === group.id
         );
 
         if (groupItems.length > 0) {
@@ -485,6 +486,7 @@ export class DtMultiTextGroups extends DtMultiText {
           )}
         `;
         }
+        return null;
       });
     }
 
@@ -531,7 +533,22 @@ export class DtMultiTextGroups extends DtMultiText {
           ? html`<slot name="icon-start" slot="icon-start"></slot>`
           : null}
         ${this.label}
-        <slot name="icon-end" slot="icon-end">
+        ${this.readonly && !this.disabled
+          ? html`
+            <slot name="icon-end" slot="icon-end">
+              <button
+                @click="${this.switchReadOnly}"
+                @keydown="${this._inputKeyDown}"
+                @blur="${this._handleButtonBlur}"
+                class="readonly-btn"
+                id="add-item"
+                type="button"
+                tabindex="1"
+              >
+                <dt-icon icon="mdi:pencil"></dt-icon>
+              </button>
+            </slot>`:
+        html`<slot name="icon-end" slot="icon-end">
           <button
             @click="${this.handleClick}"
             @keydown="${this._inputKeyDown}"
@@ -550,10 +567,39 @@ export class DtMultiTextGroups extends DtMultiText {
             </ul>
           </div>
           ` : ''}
-        </slot>
+        </slot>`}
       </dt-label>
     `;
   }
+
+  render() {
+      return html`
+        ${this.labelTemplate()}
+  
+        ${!this.readonly
+            ? html`
+        <div class="input-group">
+          ${this._renderInputFields()} ${this.renderIcons()}
+        </div>`
+              : 
+            html`
+
+            ${this.value ? repeat(this.groups, group => html`<h3 class="heading">${group.label}</h3>
+
+              <div class="readonly-options">
+                ${repeat(
+                  (this.value || []).filter(item => item.group === group.id),
+                  item => html`<div class="group-item">${item.value}</div>`
+                )}
+              </div>`
+            ) : html`
+            <div class="groups-no-value">
+              No items to show.
+            </div>
+            `}`
+          }
+      `;
+    }
 }
 
 window.customElements.define('dt-multi-text-groups', DtMultiTextGroups);

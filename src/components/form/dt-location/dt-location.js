@@ -201,6 +201,9 @@ export class DtLocation extends DtTags {
       .filter(i => !i.delete)
       .map(
         opt => html`
+      
+        ${!this.readonly
+            ? html`
           <div class="selected-option">
             <a
               href="${opt.link}"
@@ -215,16 +218,22 @@ export class DtLocation extends DtTags {
             >
               x
             </button>
-          </div>
+          </div>`
+            : 
+          html`<div>
+              ${opt.label}
+          </div>`}
         `,
       );
   }
 
   render() {
-    const optionListStyles = this.optionListStyles;
+    const {optionListStyles} = this;
     return html`
       ${this.labelTemplate()}
 
+      ${!this.readonly
+          ? html`
       <div class="input-group ${this.disabled ? 'disabled' : ''}">
         <div
           class="field-container"
@@ -258,7 +267,11 @@ export class DtLocation extends DtTags {
           ${this._renderOptions()}
         </ul>
         ${this.renderIconInvalid()} ${this.renderError()}
-      </div>
+      </div>`
+            : 
+          html`<div class="readonly-options">
+              ${this._renderSelectedOptions()}
+          </div>`}
     `;
   }
 }

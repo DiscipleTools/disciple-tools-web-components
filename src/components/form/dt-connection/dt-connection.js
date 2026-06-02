@@ -217,6 +217,8 @@ export class DtConnection extends DtTags {
       .filter(i => !i.delete)
       .map(
         opt => html`
+        ${!this.readonly
+            ? html`
           <div
             class="selected-option"
             @click="${this._handleItemClick}"
@@ -239,8 +241,14 @@ export class DtConnection extends DtTags {
             >
               x
             </button>
-          </div>
-        `,
+          </div>`
+            : 
+          html`<div>
+            ${opt.link
+                ? html`<a href="${opt.link}">${opt.label}</a>`
+                : html`<div>${opt.label}</div>`}
+          </div>`}
+      `,
       );
   }
 
@@ -281,10 +289,12 @@ export class DtConnection extends DtTags {
   }
 
   render() {
-    const optionListStyles = this.optionListStyles;
+    const {optionListStyles} = this;
     return html`
       ${this.labelTemplate()}
 
+      ${!this.readonly
+          ? html`
       <div
         class="input-group ${this.disabled ? 'disabled' : ''} ${this.allowAdd
           ? 'allowAdd'
@@ -319,7 +329,11 @@ export class DtConnection extends DtTags {
           ${this._renderOptions()}
         </ul>
         ${this.renderIcons()}
-      </div>
+      </div>`
+            : 
+          html`<div class="readonly-options">
+              ${this._renderSelectedOptions()}
+          </div>`}
     `;
   }
 }

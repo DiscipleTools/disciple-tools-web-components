@@ -437,7 +437,22 @@ export class DtMultiText extends DtText {
           ? html`<slot name="icon-start" slot="icon-start"></slot>`
           : null}
         ${this.label}
-        <slot name="icon-end" slot="icon-end">
+        ${this.readonly && !this.disabled
+          ? html`
+            <slot name="icon-end" slot="icon-end">
+              <button
+                @click="${this.switchReadOnly}"
+                @keydown="${this._inputKeyDown}"
+                @blur="${this._handleButtonBlur}"
+                class="readonly-btn"
+                id="add-item"
+                type="button"
+                tabindex="1"
+              >
+                <dt-icon icon="mdi:pencil"></dt-icon>
+              </button>
+            </slot>`:
+        html`<slot name="icon-end" slot="icon-end">
           <button
             @click="${this._addItem}"
             @keydown="${this._inputKeyDown}"
@@ -450,7 +465,7 @@ export class DtMultiText extends DtText {
           >
             <dt-icon icon="mdi:plus-thick"></dt-icon>
           </button>
-        </slot>
+        </slot>`}
       </dt-label>
     `;
   }
@@ -458,9 +473,34 @@ export class DtMultiText extends DtText {
   render() {
     return html`
       ${this.labelTemplate()}
+
+      ${!this.readonly
+          ? html`
       <div class="input-group">
         ${this._renderInputFields()} ${this.renderIcons()}
-      </div>
+      </div>`
+            : 
+          html`<div class="readonly-options">
+              ${repeat(
+                this.value || [],
+                opt => 
+                {
+                  if (this.type === 'email') {
+                    return html`<div>
+                      <a href="mailto:${opt.value}">${opt.value}</a>
+                      <dt-icon icon="mdi:email-arrow-right"></dt-icon>
+                    </div>`;
+                  }
+                  if (this.type === 'tel') {
+                    return html`<div>
+                      <a href="tel:${opt.value.replace(/[^\d+]/g, '')}">${opt.value}</a>
+                      <dt-icon icon="mdi:phone-outgoing"></dt-icon>
+                    </div>`;
+                  }
+                  return html`<div>${opt.value}</div>`;
+                }
+              )}
+          </div>`}
     `;
   }
 }

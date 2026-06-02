@@ -721,7 +721,7 @@ export class DtFileUpload extends DtFormBase {
     if (file.name) {
       const parts = file.name.split('.');
       if (parts.length > 1) {
-        const ext = '.' + parts.pop().toLowerCase();
+        const ext = `.${  parts.pop().toLowerCase()}`;
         if (mapping[ext]) {
           return mapping[ext];
         }
@@ -1258,7 +1258,7 @@ export class DtFileUpload extends DtFormBase {
 
     if (this._isStandaloneMode()) {
       // Standalone mode: use direct URL if available
-      const url = file.url;
+      const {url} = file;
       if (!url) return;
       const fileKey = file.key || file;
       const fileName =
@@ -1278,8 +1278,8 @@ export class DtFileUpload extends DtFormBase {
         new CustomEvent('dt:download-file', {
           bubbles: true,
           detail: {
-            fileKey: fileKey,
-            fileName: fileName,
+            fileKey,
+            fileName,
             metaKey: this.metaKey || '',
           },
         }),
@@ -1298,8 +1298,8 @@ export class DtFileUpload extends DtFormBase {
     const event = new CustomEvent('dt:download-file', {
       bubbles: true,
       detail: {
-        fileKey: fileKey,
-        fileName: fileName,
+        fileKey,
+        fileName,
         metaKey: this.metaKey,
         onSuccess: () => {
           // Download triggered successfully
@@ -1372,6 +1372,21 @@ export class DtFileUpload extends DtFormBase {
           ? html`<span slot="icon-start">${iconContent}</span>`
           : html`<slot name="icon-start" slot="icon-start"></slot>`}
         ${this.label}
+        ${this.readonly && !this.disabled
+          ? html`
+            <slot name="icon-end" slot="icon-end">
+              <button
+                @click="${this.switchReadOnly}"
+                @keydown="${this._inputKeyDown}"
+                @blur="${this._handleButtonBlur}"
+                class="readonly-btn"
+                id="add-item"
+                type="button"
+                tabindex="1"
+              >
+                <dt-icon icon="mdi:pencil"></dt-icon>
+              </button>
+            </slot>`:null}
       </dt-label>
     `;
   }
@@ -1384,6 +1399,8 @@ export class DtFileUpload extends DtFormBase {
     return html`
       <div class="input-group">
         ${this.labelTemplate()}
+          ${!this.readonly
+            ? html`
         <div
           class="upload-zone ${classMap({
             compact: !this._uploadZoneExpanded,
@@ -1418,7 +1435,8 @@ export class DtFileUpload extends DtFormBase {
                 : ''}</span
             >
           </div>
-        </div>
+        </div>`
+            : null}
 
         ${when(
           this.stagedFiles.length > 0 && !this.autoUpload,
@@ -1484,7 +1502,7 @@ export class DtFileUpload extends DtFormBase {
                     const name =
                       file.name ||
                       (typeof key === 'string' ? key.split('/').pop() : '');
-                    const size = file.size;
+                    const {size} = file;
                     const previewUrl = this._getFilePreviewUrl(file);
                     const isImage = this._isImage(file);
                     const isEditing = this._editingFileKey === key;
@@ -1633,7 +1651,7 @@ export class DtFileUpload extends DtFormBase {
                             `,
                           )}
                           ${when(
-                            this.deleteEnabled && !this.disabled,
+                            this.deleteEnabled && !this.disabled && !this.readonly,
                             () => html`
                               <button
                                 class="delete"

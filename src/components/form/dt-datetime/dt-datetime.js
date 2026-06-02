@@ -35,9 +35,24 @@ export class DtDatetime extends DtDate {
       this.timestamp = new Date(this.value).getTime();
     }
 
+    let readonlyValue = this.value;
+    if (this.value) {
+      const dateObj = new Date(this.value);
+      readonlyValue = new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+      }).format(dateObj);
+    }
+
     return html`
       ${this.labelTemplate()}
 
+      ${!this.readonly
+          ? html`
       <div class="input-group">
         <div class="${classMap(this.fieldContainerClasses)}">
           <input
@@ -68,7 +83,11 @@ export class DtDatetime extends DtDate {
         </div>
 
         ${this.renderIcons()}
-      </div>
+      </div>`
+            : 
+          html`<div class="readonly-options">
+              ${readonlyValue}
+          </div>`}
     `;
   }
 }

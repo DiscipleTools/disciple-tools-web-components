@@ -85,6 +85,7 @@ export default {
       options,
       value = [],
       disabled = false,
+      readonly = false,
       required = false,
       requiredMessage,
       icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
@@ -104,6 +105,7 @@ export default {
         .options=${options}
         .value=${value}
         ?disabled=${disabled}
+        ?readonly=${readonly}
         ?required=${required}
         requiredMessage=${ifDefined(requiredMessage)}
         icon=${ifDefined(icon)}
@@ -154,6 +156,23 @@ export const Disabled = {
   args: {
     value: ['opt2'],
     options: basicOptions,
+    disabled: true,
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    value: ['opt1', 'opt2', 'opt7'],
+    options: basicOptions,
+    readonly: true,
+  },
+};
+
+export const ReadOnlyDisabled = {
+  args: {
+    value: ['opt2'],
+    options: basicOptions,
+    readonly: true,
     disabled: true,
   },
 };

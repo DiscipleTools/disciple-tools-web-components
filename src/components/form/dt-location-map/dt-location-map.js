@@ -262,7 +262,22 @@ export class DtLocationMap extends DtFormBase {
           ? html`<slot name="icon-start" slot="icon-start"></slot>`
           : null}
         ${this.label}
-        ${!this.open && (this.limit == 0 || this.locations.length < this.limit)
+        ${this.readonly && !this.disabled
+          ? html`
+            <slot name="icon-end" slot="icon-end">
+              <button
+                @click="${this.switchReadOnly}"
+                @keydown="${this._inputKeyDown}"
+                @blur="${this._handleButtonBlur}"
+                class="readonly-btn"
+                id="add-item"
+                type="button"
+                tabindex="1"
+              >
+                <dt-icon icon="mdi:pencil"></dt-icon>
+              </button>
+            </slot>`:null}
+        ${!this.readonly && !this.open && (this.limit == 0 || this.locations.length < this.limit)
           ? html`
               <slot name="icon-end" slot="icon-end">
                 <button
@@ -297,6 +312,7 @@ export class DtLocationMap extends DtFormBase {
         @delete=${this.deleteItem}
         @select=${this.selectLocation}
         ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
         ?invalid=${this.invalid && this.touched}
         ?loading=${showStatus ? this.loading : false}
         ?saved=${showStatus ? this.saved : false}
@@ -311,7 +327,7 @@ export class DtLocationMap extends DtFormBase {
     });
     return html`
       ${this.labelTemplate()}
-      <div class="input-group">
+      <div class=${this.readonly ? 'readonly-options' : 'input-group'}>
         ${repeat(
           this.locations || [],
           opt => opt.id,

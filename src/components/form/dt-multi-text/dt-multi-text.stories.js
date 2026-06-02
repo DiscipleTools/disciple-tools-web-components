@@ -65,6 +65,7 @@ export default {
       placeholder,
       type,
       disabled,
+      readonly,
       required,
       requiredMessage,
       icon,
@@ -86,6 +87,7 @@ export default {
         placeholder="${ifDefined(placeholder)}"
         type="${ifDefined(type)}"
         ?disabled=${disabled}
+        ?readonly=${readonly}
         ?required=${required}
         requiredMessage="${ifDefined(requiredMessage)}"
         icon="${ifDefined(icon)}"
@@ -154,6 +156,41 @@ export const Disabled = {
         key: 'comm_channel_1',
       },
     ],
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    readonly: true,
+    value: [
+      {
+        value: 'email@test.com',
+        key: 'comm_channel_1',
+      },
+      {
+        value: 'example@example.com',
+        key: 'comm_channel_2',
+      }
+    ],
+    type: 'email',
+  },
+};
+
+export const ReadOnlyDisabled = {
+  args: {
+    readonly: true,
+    disabled: true,
+    value: [
+      {
+        value: '+5-987-654-3210',
+        key: 'comm_channel_1',
+      },
+      {
+        value: '+1 123 456 7890',
+        key: 'comm_channel_2',
+      }
+    ],
+    type: 'tel',
   },
 };
 

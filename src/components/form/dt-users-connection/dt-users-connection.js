@@ -238,6 +238,8 @@ export class DtUsersConnection extends DtTags {
       .filter(i => !i.delete)
       .map(
         opt => html`
+        ${!this.readonly
+            ? html`
           <div class="selected-option">
             <a
               href="${opt.link}"
@@ -253,7 +255,13 @@ export class DtUsersConnection extends DtTags {
             >
               x
             </button>
-          </div>
+          </div>`
+            : 
+          html`<div>
+            ${opt.link
+                ? html`<a href="${opt.link}">${opt.label}</a>`
+                : html`<div>${opt.label}</div>`}
+          </div>`}
         `,
       );
   }

@@ -45,6 +45,7 @@ export default {
       value = '',
       timestamp,
       disabled = false,
+      readonly = false,
       required = false,
       requiredMessage,
       icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
@@ -64,6 +65,7 @@ export default {
         value=${ifDefined(value)}
         timestamp=${ifDefined(timestamp)}
         ?disabled=${disabled}
+        ?readonly=${readonly}
         ?required=${required}
         requiredMessage=${ifDefined(requiredMessage)}
         icon=${ifDefined(icon)}
@@ -117,6 +119,21 @@ export const AutoSave = {
 export const Disabled = {
   args: {
     value: '2020-01-01',
+    disabled: true,
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    value: '2020-01-01',
+    readonly: true,
+  },
+};
+
+export const ReadOnlyDisabled = {
+  args: {
+    value: '2020-01-01',
+    readonly: true,
     disabled: true,
   },
 };

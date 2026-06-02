@@ -116,6 +116,7 @@ export default {
       placeholder,
       value,
       disabled = false,
+      readonly = false,
       required = false,
       requiredMessage,
       icon = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png',
@@ -140,6 +141,7 @@ export default {
         placeholder="${ifDefined(args.placeholder)}"
         .value="${args.value}"
         ?disabled=${args.disabled}
+        ?readonly=${args.readonly}
         ?required=${args.required}
         requiredMessage="${ifDefined(args.requiredMessage)}"
         icon="${ifDefined(args.icon)}"
@@ -212,6 +214,21 @@ export const AutoSave = {
 export const Disabled = {
   args: {
     value: [basicOptions[0]],
+    disabled: true,
+  },
+};
+
+export const ReadOnly = {
+  args: {
+    value: [basicOptions[0], basicOptions[1], basicOptions[2]],
+    readonly: true,
+  },
+};
+
+export const ReadOnlyDisabled = {
+  args: {
+    value: [basicOptions[0], basicOptions[1], basicOptions[2]],
+    readonly: true,
     disabled: true,
   },
 };
