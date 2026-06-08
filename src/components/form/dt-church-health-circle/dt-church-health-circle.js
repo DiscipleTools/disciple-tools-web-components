@@ -17,10 +17,16 @@ export class DtChurchHealthCircle extends DtMultiSelect {
           --circle-size: var(--container-width, 250px);
           /* Dynamically calculate icon size based on circle size. Max: 125px */
           --icon-size: min(calc(var(--circle-size) / 5), 125px);
+          /* Inner padding scales with the circle, with a 0.5rem minimum.
+             Expressed as a unitless multiple of --circle-size rather than a
+             length / length division (which Firefox rejects, invalidating
+             --radius and dropping the icon transform). 0.032 ≈ 8px / 250px,
+             so this still resolves to 0.5rem at the default 250px circle. */
           --circle-padding: max(
             0.5rem,
-            calc(var(--circle-size) / 250px * 0.5rem)
+            calc(var(--circle-size) * 0.032)
           );
+          
           --radius: calc(
             0.5 * var(--circle-size) - 0.5 *
               var(--icon-size) - var(--circle-padding)
