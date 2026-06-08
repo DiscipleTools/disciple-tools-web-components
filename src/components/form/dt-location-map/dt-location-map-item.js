@@ -3,8 +3,6 @@ import { styleMap } from 'lit/directives/style-map.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { msg } from '@lit/localize';
 import DtBase from '../../dt-base.js';
-import MapboxService from '../../../services/mapboxService.js';
-import GoogleGeocodeService from '../../../services/googleGeocodeService.js';
 import '../../icons/dt-icon.js';
 import './dt-map-modal.js';
 
@@ -318,21 +316,6 @@ export default class DtLocationMapItem extends DtBase {
         input.focus();
       }
     });
-
-    if (this.mapboxToken) {
-      this.mapboxService = new MapboxService(this.mapboxToken);
-    }
-  }
-
-  firstUpdated() {
-    // Only load Google Maps API for new/empty location items
-    if (this.googleToken && !this.metadata?.lat) {
-      this.googleGeocodeService = new GoogleGeocodeService(
-        this.googleToken,
-        window,
-        document,
-      );
-    }
   }
 
   disconnectedCallback() {
@@ -428,28 +411,41 @@ export default class DtLocationMapItem extends DtBase {
   }
 
   async _select(metadata) {
-    if (metadata.place_id && this.googleGeocodeService) {
-      // Google Places autocomplete will give a place_id instead of geometry details,
-      // so we need to get those details by geocoding the full address from Place lookup
-      this.saved = false;
-      this.loading = true;
-      const place = await this.googleGeocodeService.getPlaceDetails(
-        metadata,
-        this.locale,
-      );
-      this.loading = false;
-      if (place) {
-        if (place.error) {
-          console.error(place.error);
-          this.error = place.error.message;
-          return;
-        }
-        metadata.lat = place.lat;
-        metadata.lng = place.lng;
-        metadata.level = place.level;
-      }
-    }
+    this.saved = false;
+    this.loading = true;
+    this.dispatchEvent(
+      new CustomEvent('dt:geocode', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          type: 'details',
+          suggestion: metadata,
+          locale: this.locale,
+          onSuccess: (place) => {
+            this.loading = false;
 
+            const updatedMetadata = { ...metadata };
+
+            if (place) {
+              updatedMetadata.lat = place.lat ?? metadata.lat;
+              updatedMetadata.lng = place.lng ?? metadata.lng;
+              updatedMetadata.level = place.level ?? metadata.level;
+            }
+            
+            this._finalizeSelect(updatedMetadata);
+          },
+          onError: (error) => {
+            this.loading = false;
+            console.error(error);
+            this.error = error?.message || 'Error fetching location details';
+            this._finalizeSelect(metadata);
+          },
+        },
+      })
+    );
+  }
+
+  _finalizeSelect(metadata) {
     // Create custom event with new/old values to pass to onchange function
     const options = {
       detail: {
@@ -541,58 +537,37 @@ export default class DtLocationMapItem extends DtBase {
   }
 
   /**
-   * Filter to options that:
-   *   1: are not selected
-   *   2: match the search query
+   * Filter to options that match the search query via injected geocoding
    * @private
    */
   async _filterOptions() {
     if (this.query) {
-      if (this.googleToken && this.googleGeocodeService) {
-        this.saved = false;
-        this.loading = true;
+      this.saved = false;
+      this.loading = true;
 
-        try {
-          const predictions =
-            await this.googleGeocodeService.getPlacePredictions(
-              this.query,
-              this.locale,
-            );
-
-          this.filteredOptions = (predictions || []).map(i => ({
-            label: i.description,
-            place_id: i.place_id,
-            source: 'user',
-            raw: i,
-          }));
-
-          this.loading = false;
-        } catch (ex) {
-          console.error(ex);
-          this.error =
-            ex.message || 'An error occurred while searching for locations.';
-          this.loading = false;
-          return;
-        }
-      } else if (this.mapboxToken && this.mapboxService) {
-        this.saved = false;
-        this.loading = true;
-
-        const results = await this.mapboxService.searchPlaces(
-          this.query,
-          this.locale,
-        );
-
-        this.filteredOptions = results.map(i => ({
-          lng: i.center[0],
-          lat: i.center[1],
-          level: i.place_type[0],
-          label: i.place_name,
-          source: 'user',
-        }));
-
-        this.loading = false;
-      }
+      this.dispatchEvent(
+        new CustomEvent('dt:geocode', {
+          bubbles: true,
+          composed: true,
+          detail: {
+            type: 'search',
+            query: this.query,
+            locale: this.locale,
+            onSuccess: (results) => {
+              this.filteredOptions = results || [];
+              this.loading = false;
+            },
+            onError: (error) => {
+              console.error(error);
+              this.error =
+                error?.message || 'An error occurred while searching for locations.';
+              this.loading = false;
+            },
+          },
+        }),
+      );
+    } else {
+      this.filteredOptions = [];
     }
     return this.filteredOptions;
   }
@@ -646,40 +621,37 @@ export default class DtLocationMapItem extends DtBase {
       const { location } = e?.detail;
       const { lat, lng } = location;
 
-      // reverse geocode location and save
-      if (this.googleGeocodeService) {
-        const results = await this.googleGeocodeService.reverseGeocode(
-          lng,
-          lat,
-          this.locale,
-        );
-        if (results && results.length) {
-          const place = results[0];
-          this._select({
-            lng: place.geometry.location.lng,
-            lat: place.geometry.location.lat,
-            level: place.types && place.types.length ? place.types[0] : null,
-            label: place.formatted_address,
-            source: 'user',
-          });
-        }
-      } else if (this.mapboxService) {
-        const results = await this.mapboxService.reverseGeocode(
-          lng,
-          lat,
-          this.locale,
-        );
-        if (results && results.length) {
-          const place = results[0];
-          this._select({
-            lng: place.center[0],
-            lat: place.center[1],
-            level: place.place_type[0],
-            label: place.place_name,
-            source: 'user',
-          });
-        }
-      }
+      this.saved = false;
+      this.loading = true;
+
+      this.dispatchEvent(
+        new CustomEvent('dt:geocode', {
+          bubbles: true,
+          composed: true,
+          detail: {
+            type: 'reverse',
+            lat,
+            lng,
+            locale: this.locale,
+            onSuccess: (place) => {
+              this.loading = false;
+              if (place) {
+                this._select({
+                  lng: place.lng,
+                  lat: place.lat,
+                  level: place.level,
+                  label: place.label,
+                  source: place.source || 'user',
+                });
+              }
+            },
+            onError: (error) => {
+              this.loading = false;
+              console.error(error);
+            },
+          },
+        }),
+      );
     }
   }
 
