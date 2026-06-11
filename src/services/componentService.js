@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 import ApiService from './apiService.js';
+import MapboxService from './mapboxService.js';
+import GoogleGeocodeService from './googleGeocodeService.js';
 
 export default class ComponentService {
   /**
@@ -54,6 +56,7 @@ export default class ComponentService {
       'dt-button',
       'dt-location',
       'dt-users-connection',
+      'dt-location-map',
     ];
   }
 
@@ -99,6 +102,22 @@ export default class ComponentService {
             this.handleGetDataEvent.bind(this),
           );
           el.dataset.eventDtGetData = true;
+        }
+        
+        if (!el.dataset.eventDtGeocode) {
+          el.addEventListener(
+            'dt:geocode',
+            this.handleGeocodeEvent.bind(this)
+          );
+          el.dataset.eventDtGeocode = true;
+        }
+
+        if (el.googleToken && !this.googleGeocodeService) {
+          this.googleGeocodeService = new GoogleGeocodeService(
+            el.googleToken,
+            window,
+            document,
+          );
         }
       });
     }
@@ -257,6 +276,97 @@ export default class ComponentService {
       } catch (ex) {
         onError(ex);
       }
+    }
+  }
+
+  /**
+   * Event listener for geocode events.
+   * Handles Mapbox and Google native API fallbacks.
+   * @param {Event} event
+   */
+  async handleGeocodeEvent(event) {
+    const details = event.detail;
+    if (!details) return;
+
+    const { type, query, suggestion, lat, lng, locale, onSuccess, onError } = details;
+    const el = event.target; // This is the dt-location-map-item
+
+    try {
+      if (el.googleToken) {
+        
+        if (type === 'search') {
+          const predictions = await this.googleGeocodeService.getPlacePredictions(query, locale);
+          const results = (predictions || []).map(i => ({
+            label: i.description,
+            place_id: i.place_id,
+            source: 'user',
+            raw: i,
+          }));
+          onSuccess(results);
+        } 
+        else if (type === 'details') {
+          const place = await this.googleGeocodeService.getPlaceDetails(suggestion, locale);
+          if (place && place.error) throw new Error(place.error.message);
+          
+          onSuccess({
+            ...suggestion,
+            lat: place?.lat,
+            lng: place?.lng,
+            level: place?.level
+          });
+        }
+        else if (type === 'reverse') {
+          const results = await this.googleGeocodeService.reverseGeocode(lng, lat, locale);
+          if (results && results.length) {
+            const place = results[0];
+            onSuccess({
+              lng: place.geometry.location.lng,
+              lat: place.geometry.location.lat,
+              level: place.types && place.types.length ? place.types[0] : null,
+              label: place.formatted_address,
+              source: 'user',
+            });
+          } else {
+            onSuccess(null);
+          }
+        }
+      } 
+      
+      else if (el.mapboxToken) {
+        const mapboxService = new MapboxService(el.mapboxToken);
+
+        if (type === 'search') {
+          const results = await mapboxService.searchPlaces(query, locale);
+          const formatted = results.map(i => ({
+            lng: i.center[0],
+            lat: i.center[1],
+            level: i.place_type[0],
+            label: i.place_name,
+            source: 'user',
+          }));
+          onSuccess(formatted);
+        } 
+        else if (type === 'details') {
+          onSuccess(suggestion); 
+        }
+        else if (type === 'reverse') {
+          const results = await mapboxService.reverseGeocode(lng, lat, locale);
+          if (results && results.length) {
+            const place = results[0];
+            onSuccess({
+              lng: place.center[0],
+              lat: place.center[1],
+              level: place.place_type[0],
+              label: place.place_name,
+              source: 'user',
+            });
+          } else {
+            onSuccess(null);
+          }
+        }
+      }
+    } catch (ex) {
+      if (onError) onError(ex);
     }
   }
 
