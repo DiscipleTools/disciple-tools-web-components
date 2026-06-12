@@ -70,6 +70,7 @@ export default class ComponentService {
 
     this.attachLoadEvents();
     this.attachFileUploadEvents();
+    this.attachGeocodeEvents();
   }
 
   /**
@@ -102,22 +103,6 @@ export default class ComponentService {
             this.handleGetDataEvent.bind(this),
           );
           el.dataset.eventDtGetData = true;
-        }
-        
-        if (!el.dataset.eventDtGeocode) {
-          el.addEventListener(
-            'dt:geocode',
-            this.handleGeocodeEvent.bind(this)
-          );
-          el.dataset.eventDtGeocode = true;
-        }
-
-        if (el.googleToken && !this.googleGeocodeService) {
-          this.googleGeocodeService = new GoogleGeocodeService(
-            el.googleToken,
-            window,
-            document,
-          );
         }
       });
     }
@@ -177,6 +162,36 @@ export default class ComponentService {
           el.addEventListener('dt:rename-file', this.handleRenameFileEvent.bind(this));
           el.addEventListener('dt:download-file', this.handleDownloadFileEvent.bind(this));
           el.dataset.eventDtUpload = true;
+        }
+      });
+    }
+  }
+
+  /**
+   * Attach geocode event listeners to components that handle geocoding operations
+   * @param {string} [selector] (Optional) Override default selector
+   */
+  attachGeocodeEvents(selector) {
+    const elements = document.querySelectorAll(
+      selector || 'dt-location-map'
+    );
+    if (elements) {
+      elements.forEach(el => {
+        // prevent multiple event attachments if this is called multiple times
+        if (!el.dataset.eventDtGeocode) {
+          el.addEventListener(
+            'dt:geocode',
+            this.handleGeocodeEvent.bind(this)
+          );
+          el.dataset.eventDtGeocode = true;
+        }
+
+        if (el.googleToken && !this.googleGeocodeService) {
+          this.googleGeocodeService = new GoogleGeocodeService(
+            el.googleToken,
+            window,
+            document,
+          );
         }
       });
     }
