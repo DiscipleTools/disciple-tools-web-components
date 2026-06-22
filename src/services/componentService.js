@@ -335,8 +335,8 @@ export default class ComponentService {
           if (results && results.length) {
             const place = results[0];
             onSuccess({
-              lng: place.geometry.location.lng,
-              lat: place.geometry.location.lat,
+              lng: place.geometry.location.lng(),
+              lat: place.geometry.location.lat(),
               level: place.types && place.types.length ? place.types[0] : null,
               label: place.formatted_address,
               source: 'user',
