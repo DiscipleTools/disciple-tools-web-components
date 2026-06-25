@@ -157,9 +157,16 @@ export class DtConnection extends DtTags {
               .toLocaleLowerCase()
               .includes(this.query.toLocaleLowerCase())),
       );
-    } else if (this.open || this.canUpdate) {
+    } else if (this.allOptions) {
+      // Cached API results available - filter locally without a new request
+      this.canUpdate = false;
+      this.filteredOptions = this.allOptions.filter(
+        opt => !selectedValues.includes(opt.id),
+      );
+    } else if (this.open) {
       // Only run this filtering if the list is open.
       // This prevents it from running on initial load before a `load` event is attached.
+      this.canUpdate = false;
       this.loading = true;
       this.filteredOptions = [];
 
@@ -173,7 +180,7 @@ export class DtConnection extends DtTags {
           query: this.query,
           onSuccess: result => {
             self.loading = false;
-
+            self.allOptions = result;
             // filter out selected values from list
             self.filteredOptions = result.filter(
               opt => !selectedValues.includes(opt.id),
@@ -182,7 +189,6 @@ export class DtConnection extends DtTags {
           onError: error => {
             console.warn(error);
             self.loading = false;
-            this.canUpdate = false;
           },
         },
       });

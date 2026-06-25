@@ -111,16 +111,22 @@ export class DtTags extends DtMultiSelect {
   }
 
   willUpdate(props) {
+    // Invalidate cached options when the query changes so the next open re-fetches
+    if (props?.has('query')) {
+      this.allOptions = null;
+    }
+
     super.willUpdate(props);
 
     if (props) {
       const openChanged = props.has('open');
       // When list is first opened and we don't have any options yet,
-      // trigger _filterOptions to load options
+      // OR when canUpdate signals stale data (e.g. after a selection),
+      // trigger _filterOptions to load/reload options
       if (
         openChanged &&
         this.open &&
-        (!this.filteredOptions || !this.filteredOptions.length)
+        (!this.filteredOptions || !this.filteredOptions.length || this.canUpdate)
       ) {
         this._filterOptions();
       }
@@ -145,9 +151,16 @@ export class DtTags extends DtMultiSelect {
               .toLocaleLowerCase()
               .includes(this.query.toLocaleLowerCase())),
       );
-    } else if (this.open || this.canUpdate) {
+    } else if (this.allOptions) {
+      // Cached API results available - filter locally without a new request
+      this.canUpdate = false;
+      this.filteredOptions = this.allOptions.filter(
+        opt => !selectedValues.includes(opt.id),
+      );
+    } else if (this.open) {
       // Only run this filtering if the list is open.
       // This prevents it from running on initial load before a `load` event is attached.
+      this.canUpdate = false;
       this.loading = true;
       this.filteredOptions = [];
 
@@ -179,7 +192,6 @@ export class DtTags extends DtMultiSelect {
           onError: error => {
             console.warn(error);
             self.loading = false;
-            this.canUpdate = false;
           },
         },
       });
