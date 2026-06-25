@@ -85,16 +85,19 @@ export class DtMapModal extends DtBase {
       // Add pin if there is one
       this.addPinFromMetadata();
 
-      // If map is editable add/move marker on click
-      this.map.on('click', (e) => {
+      // Keep pin in the center of the map
+      this.map.on('move', () => {
         if (!this.canEdit) {
           return;
         }
+
+        const currentCenter = this.map.getCenter();
+
         if (this.marker) {
-          this.marker.setLngLat(e.lngLat)
+          this.marker.setLngLat(currentCenter);
         } else {
           this.marker = new mapboxgl.Marker()
-            .setLngLat(e.lngLat)
+            .setLngLat(currentCenter)
             .addTo(this.map);
         }
       });
