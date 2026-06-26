@@ -144,6 +144,11 @@ export default class GoogleGeocodeService {
    */
   async getPlaceDetails(metadata, language = 'en') {
     let response = null;
+
+    if (!metadata || !metadata.place_id) {
+      return response;
+    }
+
     if (this.window.google) {
       const geocoder = new window.google.maps.Geocoder();
       try {
@@ -172,7 +177,7 @@ export default class GoogleGeocodeService {
     return response;
   }
 
-  /**
+/**
    * Reverse geocode a lng/lat pair to get place details
    * @param longitude
    * @param latitude
@@ -180,28 +185,24 @@ export default class GoogleGeocodeService {
    * @returns {Promise<Array>}
    */
   async reverseGeocode(longitude, latitude, language = 'en') {
-    const params = new URLSearchParams({
-      key: this.token,
-      latlng: `${latitude},${longitude}`,
-      language,
-      result_type: [
-        'point_of_interest',
-        'establishment',
-        'premise',
-        'street_address',
-        'neighborhood',
-        'sublocality',
-        'locality',
-        'colloquial_area',
-        'political',
-        'country',
-      ].join('|')
-    });
-    const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?${params}`;
-    const response = await fetch(apiUrl, { method: 'GET' });
+    return new Promise((resolve) => {
+      const geocoder = new this.window.google.maps.Geocoder();
+      const latlng = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
 
-    const result = await response.json();
-    return result?.results;
+      geocoder.geocode(
+        { location: latlng, language }, 
+        (results, status) => {
+          if (status === 'OK' && results) {
+            resolve(results);
+          } else if (status === 'ZERO_RESULTS') {
+            resolve([]);
+          } else {
+            console.error('Reverse geocoding failed:', status);
+            resolve([]);
+          }
+        }
+      );
+    });
   }
 
   convert_level(level) {

@@ -47,7 +47,7 @@ export class DtMapModal extends DtBase {
   connectedCallback() {
     super.connectedCallback();
 
-    this.canEdit = !this.metadata;
+    this.canEdit = !(this.metadata?.lat);
 
     if (!window.mapboxgl) {
       const script = document.createElement('script');
@@ -85,16 +85,19 @@ export class DtMapModal extends DtBase {
       // Add pin if there is one
       this.addPinFromMetadata();
 
-      // If map is editable add/move marker on click
-      this.map.on('click', (e) => {
+      // Keep pin in the center of the map
+      this.map.on('move', () => {
         if (!this.canEdit) {
           return;
         }
+
+        const currentCenter = this.map.getCenter();
+
         if (this.marker) {
-          this.marker.setLngLat(e.lngLat)
+          this.marker.setLngLat(currentCenter);
         } else {
           this.marker = new mapboxgl.Marker()
-            .setLngLat(e.lngLat)
+            .setLngLat(currentCenter)
             .addTo(this.map);
         }
       });
@@ -102,7 +105,7 @@ export class DtMapModal extends DtBase {
   }
 
   addPinFromMetadata() {
-    if (this.metadata) {
+    if (this.metadata?.lat) {
       const { lng, lat, level } = this.metadata;
       let zoom = 15
       if (level === 'admin0') {
@@ -137,7 +140,7 @@ export class DtMapModal extends DtBase {
   }
 
   onClose(e) {
-    if (e?.detail?.action === 'button' && this.marker) {
+    if (e?.detail?.action === 'button' && this.marker && this.canEdit) {
       this.dispatchEvent(new CustomEvent('submit', {
         detail: {
           location: this.marker.getLngLat(),
@@ -152,6 +155,7 @@ export class DtMapModal extends DtBase {
         .title=${this.metadata?.label}
         ?isopen=${this.isOpen}
         hideButton
+        closeButton
         @close=${this.onClose}
         tabindex="-1"
       >
