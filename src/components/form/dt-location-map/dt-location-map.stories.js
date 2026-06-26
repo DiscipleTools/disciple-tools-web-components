@@ -80,6 +80,7 @@ export default {
     error: { control: 'text' },
     slot: { control: 'text' },
     onChange: { action: 'on-change' },
+    onGeocode: { action: 'dt:geocode' },
     ...argTypes,
   },
   args: {
@@ -106,6 +107,7 @@ export default {
     error: '',
     slot: '',
     onChange: action('on-change'),
+    onGeocode: action('dt:geocode'),
   },
   render: args => {
     const {
@@ -125,6 +127,7 @@ export default {
       loading = false,
       saved = false,
       onChange,
+      onGeocode,
       open,
       slot,
       i18n,
@@ -155,6 +158,7 @@ export default {
         limit="${ifDefined(args.limit)}"
         error="${ifDefined(args.error)}"
         @change=${args.onChange}
+        @dt:geocode=${args.onGeocode}
       >
         ${args.slot}
       </dt-location-map>
