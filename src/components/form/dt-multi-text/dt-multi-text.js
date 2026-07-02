@@ -274,6 +274,7 @@ export class DtMultiText extends DtText {
     const key = e?.currentTarget?.dataset?.key;
     if (key) {
       const event = new CustomEvent('change', {
+        bubbles: true,
         detail: {
           field: this.name,
           oldValue: this.value,

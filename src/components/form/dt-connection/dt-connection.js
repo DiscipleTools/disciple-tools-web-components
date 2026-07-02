@@ -108,6 +108,7 @@ export class DtConnection extends DtTags {
         clickedValue = intVal;
       }
       const event = new CustomEvent('change', {
+        bubbles: true,
         detail: {
           field: this.name,
           oldValue: this.value,

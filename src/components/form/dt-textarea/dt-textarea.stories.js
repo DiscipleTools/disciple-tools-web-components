@@ -80,7 +80,11 @@ export default {
   },
 };
 
-export const Empty = {};
+export const Empty = {
+  args: {
+    placeholder: 'Enter text here...',
+  }
+};
 
 export const SvgIcon = {
   args: {
