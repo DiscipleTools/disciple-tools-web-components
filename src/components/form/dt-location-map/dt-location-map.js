@@ -148,6 +148,7 @@ export class DtLocationMap extends DtFormBase {
 
   selectLocation(evt) {
     const event = new CustomEvent('change', {
+      bubbles: true,
       detail: {
         field: this.name,
         oldValue: this.value,
@@ -184,6 +185,7 @@ export class DtLocationMap extends DtFormBase {
   deleteItem(evt) {
     this.activeItem = undefined;
     const event = new CustomEvent('change', {
+      bubbles: true,
       detail: {
         field: this.name,
         oldValue: this.value,
