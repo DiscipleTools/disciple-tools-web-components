@@ -27,12 +27,12 @@ export class DtCopyText extends DtBase {
         cursor: copy;
         font-size: 1em;
         display: block;
-        transform: translate(-1.5em, -0.3125em);
+        transform: translate(-1.5em);
         width: 1.25em;
       }
 
       :host([dir='rtl']) .copy_icon {
-        transform: translate(1.5em, -0.3125em);
+        transform: translate(1.5em);
       }
     `;
   }
