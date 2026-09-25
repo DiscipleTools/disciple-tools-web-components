@@ -68,7 +68,7 @@ class DtChurchHealthIcon extends DtBase {
     } = this;
     if (metric['font-icon']) {
       const iconKey = metric['font-icon'].replace('mdi mdi-', 'mdi:');
-      return html`<dt-icon icon="${iconKey}" size="unset"></dt-icon>`;
+      return html`<dt-icon icon="${iconKey}" size="100%"></dt-icon>`;
     }
     return html`<img
       src="${metric.icon ? metric.icon : missingIcon}"
