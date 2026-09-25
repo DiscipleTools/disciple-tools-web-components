@@ -133,6 +133,10 @@ export class DtConnection extends DtTags {
         this.shadowRoot.querySelector('input').focus();
       }
 
+      // Keep the form value in step, as _select does. Without this a native form
+      // submit posts the value as it was before the removal.
+      this._setFormValue(this.value);
+
       this._validateRequired();
     }
     document.activeElement.blur();
