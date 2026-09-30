@@ -458,5 +458,6 @@ export default class DtFormBase extends DtBase {
     }
     this.value = '';
     this._setFormValue('');
+    this.touched = false;
   }
 }
