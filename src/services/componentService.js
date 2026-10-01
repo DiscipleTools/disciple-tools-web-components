@@ -393,6 +393,7 @@ export default class ComponentService {
    * @returns {Promise<void>}
    */
   async handleChangeEvent(event) {
+    const startingId = this.postId;
     const details = event.detail;
     if (details) {
       const { field, newValue, oldValue, remove } = details;
@@ -403,8 +404,10 @@ export default class ComponentService {
         oldValue,
       );
 
-      event.target.removeAttribute('saved');
-      event.target.setAttribute('loading', true);
+      if (startingId === this.postId) {
+        event.target.removeAttribute('saved');
+        event.target.setAttribute('loading', true);
+      }
 
       if (component === 'dt-number') {
         // Debounce updates for dt-number component
@@ -434,17 +437,21 @@ export default class ComponentService {
                 }),
               );
 
-              event.target.removeAttribute('loading');
-              event.target.setAttribute('error', '');
-              event.target.setAttribute('saved', true);
+              if (startingId === this.postId) {
+                event.target.removeAttribute('loading');
+                event.target.setAttribute('error', '');
+                event.target.setAttribute('saved', true);
+              }
             } catch (error) {
               console.error(error);
-              event.target.removeAttribute('loading');
-              event.target.setAttribute('invalid', true); // this isn't hooked up yet
-              event.target.setAttribute(
-                'error',
-                error.message || error.toString(),
-              );
+              if (startingId === this.postId) {
+                event.target.removeAttribute('loading');
+                event.target.setAttribute('invalid', true); // this isn't hooked up yet
+                event.target.setAttribute(
+                  'error',
+                  error.message || error.toString(),
+                );
+              }
             }
           },
           1000,
@@ -487,19 +494,23 @@ export default class ComponentService {
             }),
           );
 
-          if (component === 'dt-location-map' || component === 'dt-multi-text-groups') {
-            const componentTarget = event.target;
-            componentTarget.value = apiResponse[field];
-          }
+          if (startingId === this.postId) {
+            if (component === 'dt-location-map' || component === 'dt-multi-text-groups') {
+              const componentTarget = event.target;
+              componentTarget.value = apiResponse[field];
+            }
 
-          event.target.removeAttribute('loading');
-          event.target.setAttribute('error', '');
-          event.target.setAttribute('saved', true);
+            event.target.removeAttribute('loading');
+            event.target.setAttribute('error', '');
+            event.target.setAttribute('saved', true);
+          }
         } catch (error) {
           console.error(error);
-          event.target.removeAttribute('loading');
-          event.target.setAttribute('invalid', true); // this isn't hooked up yet
-          event.target.setAttribute('error', error.message || error.toString());
+          if (startingId === this.postId) {
+            event.target.removeAttribute('loading');
+            event.target.setAttribute('invalid', true); // this isn't hooked up yet
+            event.target.setAttribute('error', error.message || error.toString());
+          }
         }
       }
     }
