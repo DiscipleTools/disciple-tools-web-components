@@ -203,7 +203,8 @@ export class DtModal extends DtBase {
         display: flex;
         gap: .5rem;
       }
-      .footer-button .button {
+      .footer-button .button,
+      :host .footer-button ::slotted(.button) {
         min-height: 2.25rem;
       }
       .footer-button .button.small {
